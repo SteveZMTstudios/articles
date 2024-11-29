@@ -4,7 +4,7 @@
   <url>
     <loc>http://blog.stevezmt.top/2024/11/28/hello-world/</loc>
     
-    <lastmod>2024-11-28</lastmod>
+    <lastmod>2024-11-29</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -38,12 +38,40 @@
 
   
   <url>
-    <loc>http://blog.stevezmt.top/tags/Markdown-%E6%B5%8B%E8%AF%95-%E7%99%BE%E5%BA%A6/</loc>
+    <loc>http://blog.stevezmt.top/tags/Markdown/</loc>
+    <lastmod>2024-11-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.stevezmt.top/tags/%E6%B5%8B%E8%AF%95/</loc>
+    <lastmod>2024-11-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.stevezmt.top/tags/%E7%99%BE%E5%BA%A6/</loc>
     <lastmod>2024-11-29</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
 
+  
+  <url>
+    <loc>http://blog.stevezmt.top/categories/Markdown/</loc>
+    <lastmod>2024-11-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.stevezmt.top/categories/Markdown/%E6%B5%8B%E8%AF%95/</loc>
+    <lastmod>2024-11-29</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
   
 </urlset>
