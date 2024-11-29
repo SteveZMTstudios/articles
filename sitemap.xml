@@ -20,9 +20,36 @@
   </url>
   
   <url>
+    <loc>http://blog.stevezmt.top/timeline/index.html</loc>
+    
+    <lastmod>2024-11-28</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.stevezmt.top/tagcloud/index.html</loc>
+    
+    <lastmod>2024-11-28</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://blog.stevezmt.top/tags/index.html</loc>
     
     <lastmod>2024-11-28</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.stevezmt.top/404.html</loc>
+    
+    <lastmod>2024-11-27</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

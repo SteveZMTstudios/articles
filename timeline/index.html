@@ -8,17 +8,19 @@
   <meta name="renderer" content="webkit">
 
   
-  <title>归档 | 老史尬侃</title>
+  <title>时间轴 | 老史尬侃</title>
 
   <link rel="shortcut icon" href="/images/favicon.png">
   <link rel="alternate" href="/atom.xml" title="老史尬侃" type="application/atom+xml">
   <meta name="description" content="随笔、日志、技术分享、个人作品">
 <meta property="og:type" content="website">
-<meta property="og:title" content="老史尬侃">
-<meta property="og:url" content="http://blog.stevezmt.top/archives/index.html">
+<meta property="og:title" content="时间轴">
+<meta property="og:url" content="http://blog.stevezmt.top/timeline/index.html">
 <meta property="og:site_name" content="老史尬侃">
 <meta property="og:description" content="随笔、日志、技术分享、个人作品">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-01-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2024-11-28T12:16:03.837Z">
 <meta property="article:author" content="Steve ZMT">
 <meta property="article:tag" content="blog, 博客, 随笔, SteveZMT, 史蒂夫ZMT">
 <meta name="twitter:card" content="summary">
@@ -29,7 +31,7 @@
 
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="application-name" content="老史尬侃">
-  <meta name="msapplication-starturl" content="http://blog.stevezmt.top/archives/">
+  <meta name="msapplication-starturl" content="http://blog.stevezmt.top/timeline/">
   <meta name="msapplication-navbutton-color" content="#9C27B0">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="老史尬侃">
@@ -37,7 +39,7 @@
   <link rel="apple-touch-icon" href="/images/favicon.png">
 
   
-    <link rel="canonical" href="http://blog.stevezmt.top/archives/index.html">
+    <link rel="canonical" href="http://blog.stevezmt.top/timeline/index.html">
   
 
   
@@ -171,50 +173,36 @@
 </aside>
 
   <main id="main" class="mdui-m-t-5 fadeIn animated">
-
-  <div class="mdui-chip mdui-m-b-3">
-    <span class="mdui-chip-icon mdui-color-theme-accent"><i class="mdui-icon material-icons">place</i></span>
-    <span class="mdui-chip-title">归档：/</span>
-  </div>
-
-
-
-
-  <article class="mdui-card mdui-m-b-5 mdui-hoverable">
-    <a href="/2024/11/28/hello-world/">
-      <header class="mdui-card-media mdui-ripple">
-        <img src="/images/random/material-12.png" style="max-height: 240px;">
-        <div class="mdui-card-media-covered">
-          <div class="mdui-card-primary">
-            <div class="mdui-card-primary-title">Hello World</div>
-            <div class="mdui-card-primary-subtitle"><i class="iconfont">&#xe697;</i> 2024-11-28 / <i class="iconfont">&#xe601;</i> Steve ZMT</div>
-          </div>
-        </div>
+  <style>
+    #timeline{max-width:750px;margin:0 auto;padding:0 8px}
+    #timeline h2{margin:.6em 0}
+    #timeline a{position:relative;display:-webkit-box;display:-ms-flexbox;display:flex;padding:8px 0;text-decoration:none;color:inherit;word-break:break-word;-webkit-transition:all .28s ease;transition:all .28s ease}
+    #timeline a:before{content:'';position:absolute;top:0;left:24px;z-index:1;width:2px;height:8px;background:#9c27b0}
+    #timeline a:after{content:'';position:absolute;top:24px;left:24px;z-index:1;width:2px;height:calc(100% - 24px);background:#9c27b0}
+    #timeline a span:first-child{-ms-flex-negative:0;flex-shrink:0;width:64px;margin-left:48px}
+    #timeline a span:first-child:before{content:'';position:absolute;top:8px;left:17px;z-index:2;width:16px;height:16px;border-radius:8px;background:#9c27b0;-webkit-transform:scale(.5);transform:scale(.5);-webkit-transition:all .28s ease;transition:all .28s ease}
+    #timeline a:hover{background-color:rgba(0,0,0,.1)}
+    .mdui-theme-layout-dark #timeline a:hover{background-color:rgba(255,255,255,.1)}
+    #timeline a:hover span:first-child:before{-webkit-transform:scale(.8);transform:scale(.8)}
+    #timeline a .mdui-icon{padding-left:8px;font-size:1em;color:#9c27b0;-webkit-transform:scale(1.5);transform:scale(1.5)}
+  </style>
+  <article id="timeline">
+    
+    
+      
+      
         
-      </header>
-    </a>
-    <div class="mdui-card-content mdui-typo">
+        <h2>2024</h2>
       
-        测试页面1echo &quot;Hello, World!&quot;
-
-The quick brown fox jumps over the  dog
-
-基于 MarkdownIt 解析引擎和 GitHub Flavored Markdown 语法规范。
-……
-      
-    </div>
-    <div class="mdui-text-center">
-      <a href="/2024/11/28/hello-world/" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple">阅读全文</a>
-    </div>
-    <footer class="mdui-card-actions">
-      
-        <a class="mdui-ripple article_categories-link" href="/categories/Markdown/">Markdown</a><a class="mdui-ripple article_categories-link" href="/categories/Markdown/%E6%B5%8B%E8%AF%95/">测试</a>
-      
-      
-        <a class="mdui-ripple article_tags-link" href="/tags/Markdown/" rel="tag">Markdown</a><a class="mdui-ripple article_tags-link" href="/tags/%E6%B5%8B%E8%AF%95/" rel="tag">测试</a><a class="mdui-ripple article_tags-link" href="/tags/%E7%99%BE%E5%BA%A6/" rel="tag">百度</a>
-      
-    </footer>
+      <a href="/2024/11/28/hello-world/">
+        <span>11-28</span>
+        <span>Hello World</span>
+      </a>
+    
   </article>
+
+
+
 
 
 
