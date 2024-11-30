@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://blog.stevezmt.top/new/index.html</loc>
+    
+    <lastmod>2024-11-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.stevezmt.top/404.html</loc>
+    
+    <lastmod>2024-11-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>http://blog.stevezmt.top/2024/03/22/hide-your-scanpen/</loc>
     
     <lastmod>2024-11-30</lastmod>
@@ -21,15 +39,6 @@
   
   <url>
     <loc>http://blog.stevezmt.top/2023/10/01/play-on-scanpen/</loc>
-    
-    <lastmod>2024-11-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>http://blog.stevezmt.top/404.html</loc>
     
     <lastmod>2024-11-30</lastmod>
     
