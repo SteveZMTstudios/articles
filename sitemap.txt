@@ -1,3 +1,4 @@
+http://blog.stevezmt.top/2024/12/01/talk-about-x-ai/
 http://blog.stevezmt.top/new/index.html
 http://blog.stevezmt.top/404.html
 http://blog.stevezmt.top/2024/03/22/hide-your-scanpen/
@@ -16,7 +17,11 @@ http://blog.stevezmt.top/tags/root/
 http://blog.stevezmt.top/tags/xposed/
 http://blog.stevezmt.top/tags/%E5%AE%89%E5%8D%93/
 http://blog.stevezmt.top/tags/%E5%8D%95%E8%AF%8D%E7%AC%94/
+http://blog.stevezmt.top/tags/AI/
+http://blog.stevezmt.top/tags/openai/
 http://blog.stevezmt.top/categories/Markdown/
 http://blog.stevezmt.top/categories/%E6%8A%98%E8%85%BE/
 http://blog.stevezmt.top/categories/Markdown/%E6%B5%8B%E8%AF%95/
 http://blog.stevezmt.top/categories/%E6%8A%98%E8%85%BE/%E7%94%B5%E5%AD%90%E5%9E%83%E5%9C%BE/
+http://blog.stevezmt.top/categories/%E6%8A%80%E6%9C%AF/
+http://blog.stevezmt.top/categories/%E6%8A%80%E6%9C%AF/%E7%9E%8E%E8%81%8A/
