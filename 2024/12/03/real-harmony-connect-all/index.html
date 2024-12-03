@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="renderer" content="webkit">
+
+  
+  <title>几乎超越鸿蒙的完全互联方案 | 老史尬侃</title>
+
+  <link rel="shortcut icon" href="/images/favicon.png">
+  <link rel="alternate" href="/atom.xml" title="老史尬侃" type="application/atom+xml">
+  <meta name="description" content="可能是这几天吃太饱了，花了一个周末，折腾了一个自己个人还算满意的全平台互联方案。 实现效果几乎可以完全满足我个人远程工作的需要，而且绝大部分组件都是开源，几乎无感知的实现了类似鸿蒙宣传的的完全互联方案。 但是好像目前只能限制在你自己的设备… 总体效果在我手边的两台安卓手机，一台安卓词典笔，一台安装了linux &amp; KDE Plasma的老旧笔记本上实现了：    - 随时随地的控制媒体设备">
+<meta property="og:type" content="article">
+<meta property="og:title" content="几乎超越鸿蒙的完全互联方案">
+<meta property="og:url" content="http://blog.stevezmt.top/2024/12/03/real-harmony-connect-all/index.html">
+<meta property="og:site_name" content="老史尬侃">
+<meta property="og:description" content="可能是这几天吃太饱了，花了一个周末，折腾了一个自己个人还算满意的全平台互联方案。 实现效果几乎可以完全满足我个人远程工作的需要，而且绝大部分组件都是开源，几乎无感知的实现了类似鸿蒙宣传的的完全互联方案。 但是好像目前只能限制在你自己的设备… 总体效果在我手边的两台安卓手机，一台安卓词典笔，一台安装了linux &amp; KDE Plasma的老旧笔记本上实现了：    - 随时随地的控制媒体设备">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/4@1080x2340.webp">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/1@454x493.webp">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/7@1080x2340.webp">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/2@370x800.webp">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/5@1080x2340.webp">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/6@1080x2340.webp">
+<meta property="article:published_time" content="2024-12-03T12:15:22.000Z">
+<meta property="article:modified_time" content="2024-12-03T14:49:22.001Z">
+<meta property="article:author" content="Steve ZMT">
+<meta property="article:tag" content="安卓">
+<meta property="article:tag" content="开源">
+<meta property="article:tag" content="互联">
+<meta property="article:tag" content="KDE">
+<meta property="article:tag" content="Root">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/4@1080x2340.webp">
+
+  <meta name="keywords" content=",安卓,开源,互联,KDE,Root">
+  <meta name="format-detection" content="telephone=no,email=no">
+  <meta name="theme-color" content="#9C27B0">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="老史尬侃">
+  <meta name="msapplication-starturl" content="http://blog.stevezmt.top/2024/12/03/real-harmony-connect-all/">
+  <meta name="msapplication-navbutton-color" content="#9C27B0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="老史尬侃">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="apple-touch-icon" href="/images/favicon.png">
+
+  
+    <link rel="canonical" href="http://blog.stevezmt.top/2024/12/03/real-harmony-connect-all/">
+  
+
+  
+  
+
+
+  
+  
+
+  
+<link rel="stylesheet" href="/css/mdui.css">
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/custom.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<!--
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create','G-T404DHJEEZ','auto');ga('send','pageview');
+</script>
+-->
+
+<!-- Google tag (gtag.js) -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T404DHJEEZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T404DHJEEZ');
+</script>
+
+
+<body class="mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-blue">
+  <script>var a=localStorage.getItem("mdui-theme-layout-dark");if(a){document.getElementsByTagName("body")[0].className+=" mdui-theme-layout-dark"};</script>
+  <script>if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches){document.getElementsByTagName("body")[0].className+=" mdui-theme-layout-dark"};</script>
+  <script>var a=localStorage.getItem("mdui-drawer-close");if(!a){document.getElementsByTagName("body")[0].className+=" mdui-drawer-body-left"};</script>
+  <header id="header" class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide mdui-appbar-inset">
+  <div class="mdui-toolbar mdui-color-theme">
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="mdui-icon material-icons">menu</i></a>
+    <a href="/" class="mdui-typo-headline">老史尬侃</a>
+    <div class="mdui-toolbar-spacer"></div>
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: '搜索'}"><i class="mdui-icon material-icons">search</i></a>
+    <a href="/atom.xml" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'RSS'}"><i class="mdui-icon material-icons">rss_feed</i></a>
+  </div>
+</header>
+<div class="mdui-dialog" id="search">
+  
+    <div class="search-form">
+      <input type="search" class="search-form-input" placeholder="搜索...">
+    </div>
+    <div class="search-result" data-resource="/search.xml"></div>
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer mdui-drawer-full-height">
+  <script>var a=localStorage.getItem("mdui-drawer-close");if(a){document.getElementById("sidebar").className+=" mdui-drawer-close"};</script>
+  <div class="mdui-grid-tile">
+    <img src="/images/banner.png" style="height: 160px;">
+    <img src="/images/avatar.jpg@128x128.webp" class="avatar-animation" style="position: absolute; top: 10%; left: 24px; width: 64px; height: 64px; border: 2px solid #fff; border-radius: 50%;">
+    <div class="mdui-grid-tile-actions">
+      <div class="mdui-grid-tile-text">
+        <div class="mdui-grid-tile-title">Steve ZMT</div>
+        <div class="mdui-grid-tile-subtitle"><i class="mdui-icon material-icons">art_track</i>又名“史蒂夫ZMT”的树洞。</div>
+      </div>
+      
+        <div class="mdui-grid-tile-buttons">
+          <a href="mailto:admin@stevezmt.top" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'admin@stevezmt.top'}"><i class="mdui-icon material-icons">email</i></a>
+        </div>
+      
+    </div>
+  </div>
+
+  <div class="mdui-list" mdui-collapse="{accordion: true}">
+    <a href="/" class="mdui-list-item mdui-ripple">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">home</i>
+      <div class="mdui-list-item-content">主页</div>
+    </a>
+    <div class="mdui-collapse-item">
+      <script>var a=localStorage.getItem("mdui-collapse-item-0");if(a){document.getElementsByClassName("mdui-collapse-item")[0].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-deep-orange">archive</i>
+        <div class="mdui-list-item-content">归档</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/archives/2024/12/">十二月 2024<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/03/">三月 2024<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/02/">二月 2024<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2023/10/">十月 2023<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/1970/01/">一月 1970<span class="mdui-ripple sidebar_archives-count">1</span></a>
+        
+      </div>
+    </div>
+    <div class="mdui-collapse-item">
+      <script>var a=localStorage.getItem("mdui-collapse-item-1");if(a){document.getElementsByClassName("mdui-collapse-item")[1].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-green">class</i>
+        <div class="mdui-list-item-content">分类</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/categories/Markdown/">Markdown<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/Markdown/%E6%B5%8B%E8%AF%95/">测试<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E6%8A%80%E6%9C%AF/%E7%9E%8E%E8%81%8A/">瞎聊<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E6%8A%98%E8%85%BE/">折腾<span class="mdui-ripple sidebar_archives-count">4</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E6%8A%98%E8%85%BE/%E7%94%B5%E5%AD%90%E5%9E%83%E5%9C%BE/">电子垃圾<span class="mdui-ripple sidebar_archives-count">3</span></a>
+        
+      </div>
+    </div>
+    <div class="mdui-collapse-item">
+      <script>var a=localStorage.getItem("mdui-collapse-item-2");if(a){document.getElementsByClassName("mdui-collapse-item")[2].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown">bookmark</i>
+        <div class="mdui-list-item-content">标签</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/tags/AI/" rel="tag">AI<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/KDE/" rel="tag">KDE<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/Markdown/" rel="tag">Markdown<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/Root/" rel="tag">Root<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/openai/" rel="tag">openai<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/root/" rel="tag">root<span class="mdui-ripple sidebar_archives-count">3</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/xposed/" rel="tag">xposed<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E4%BA%92%E8%81%94/" rel="tag">互联<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%8D%95%E8%AF%8D%E7%AC%94/" rel="tag">单词笔<span class="mdui-ripple sidebar_archives-count">3</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%AE%89%E5%8D%93/" rel="tag">安卓<span class="mdui-ripple sidebar_archives-count">4</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%BC%80%E6%BA%90/" rel="tag">开源<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E6%B5%8B%E8%AF%95/" rel="tag">测试<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E7%99%BE%E5%BA%A6/" rel="tag">百度<span class="mdui-ripple sidebar_archives-count">1</span></a>
+        
+      </div>
+    </div>
+    <a href="/about" class="mdui-list-item mdui-ripple">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-purple">person</i>
+      <div class="mdui-list-item-content">关于</div>
+    </a>
+  </div>
+
+  <div class="mdui-divider"></div>
+
+  <div class="mdui-list" mdui-collapse="{accordion: true}">
+    
+      <a href="/timeline" class="mdui-list-item mdui-ripple">时间轴</a>
+    
+      <a href="/tagcloud" class="mdui-list-item mdui-ripple">标签云</a>
+    
+      <a href="/gallery" class="mdui-list-item mdui-ripple">相册</a>
+    
+    <div class="mdui-collapse-item">
+      <script>var a=localStorage.getItem("mdui-collapse-item-3");if(a){document.getElementsByClassName("mdui-collapse-item")[3].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <div class="mdui-list-item-content">友情链接</div>
+        <i class="mdui-list-item-icon mdui-icon material-icons">link</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+          <a href="https://stevezmt.top/" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">史蒂夫ZMT 主页</a>
+        
+          <a href="https://blog.canyie.top/" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">残页的小博客</a>
+        
+          <a href="https://weishu.me/" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">Weishu&#39;s Notes</a>
+        
+        
+      </div>
+    </div>
+  </div>
+</aside>
+
+  <main id="main" class="mdui-m-t-5 fadeIn animated">
+  
+<link rel="stylesheet" href="//cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  <style>#main article .mdui-card-content .center-block{display:block!important;margin-right:auto!important;margin-left:auto!important}</style>
+  <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
+  <article class="mdui-card mdui-m-b-5">
+    <header class="mdui-card-media">
+      <img src="https://mirror.blog.stevezmt.top/images/random/material-7.png" style="max-height: 240px; width: 100%; object-fit: cover;">
+      <div class="mdui-card-media-covered">
+        <div class="mdui-card-primary">
+          <div class="mdui-card-primary-title">几乎超越鸿蒙的完全互联方案</div>
+          <div class="mdui-card-primary-subtitle"><i class="iconfont">&#xe697;</i> 2024-12-03 / <i class="iconfont">&#xe601;</i> Steve ZMT &nbsp;&nbsp; <span id="busuanzi_container_page_pv" style="display: none;"><i class="iconfont">&#xe7fd;</i> <span id="busuanzi_value_page_pv"></span></span></div>
+        </div>
+      </div>
+      <div class="mdui-card-menu">
+        
+          <button class="mdui-btn mdui-btn-icon mdui-text-color-white" mdui-menu="{target: '#qrcode', align: 'right'}"><i class="mdui-icon material-icons">devices</i></button>
+          <ul class="mdui-menu" id="qrcode">
+            
+              <li class="mdui-menu-item"><a class="mdui-text-center mdui-ripple">发送到手机</a></li>
+            
+            <li class="mdui-menu-item" disabled>
+              
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACZ0lEQVR42u3cW1IDMQwEwNz/0uEAgTCSvMqjer8o2HjdocpWxoLb/auvGx4eHh4eHh4e3pvxbvH1y0AP30/ufBzzr6f05oaHh4e3w/tnqQ0Yzx/8nJ2/fdHc8PDw8BZ5yeSew5Jx8oW+Ojc8PDy8z+U9f1XvTjw8PLxP51VL595r8fDw8N6fl3zgzzeJfOR8/MuzFjw8PLyYNwkIrv569XwPDw8PL+CVW5rGkWvy05f1lOHh4eHF/ZzJQlxFJkVz3liQF+t4eHh4V/PyQ6zehjFpsaq2duHh4eHt8KqtUXNkHhNX78HDw8Pb4SULdC+Erb4R1aO1ZoyLh4eHN+bl0Wq1zbTXjNULhfHw8PA2eb3Dp7zg7jUlVONdPDw8vFfxJuzqxtCLLaI4GA8PD2+F14sk8haEXgxRnQMeHh7eDm/eVpUf9lejh2oggoeHh7fJqx5fjRbuGFB9a/Dw8PA2eXkjaS9iqJbOvVIbDw8Pb4dXPl4aTDoH5LNq9pTh4eHh3af/Za4XEFSPxJIWgflRGR4eHt4OLzma6kUYo5b91tPx8PDwNnnVxTpvIMi3ikl7Kx4eHt4+72yUUA1nJ+Pg4eHhvZZXWIJbfxyV35m3veLh4eFt8qpXtUSetClUfw14eHh4O7yzi3Iy0bPhRfl8Dw8PD+8Qr7cZ9MY5deQ2Sqnx8PDwDvF6DVhJ0Zw3TlW3KDw8PLxP5OXFd94KkM/qcEqNh4eHdxkvL52r7GqrwSUbAx4eHt7RMKIXNFQPwyaFNR4eHt4Or1r45m1Y1THzkr0Q4+Lh4eEd5X3fhYeHh4eHh4eH9wbXD7Tfm6f4rScFAAAAAElFTkSuQmCC">
+              
+            </li>
+          </ul>
+        
+        
+          <button class="mdui-btn mdui-btn-icon mdui-text-color-white" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="mdui-icon material-icons">share</i></button>
+          <ul class="mdui-menu" id="share_menu">
+            <li class="mdui-menu-item">
+              <a href="https://service.weibo.com/share/share.php?appkey=&title=几乎超越鸿蒙的完全互联方案&url=http://blog.stevezmt.top/2024/12/03/real-harmony-connect-all/&pic=http://blog.stevezmt.top/images/favicon.png&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="https://twitter.com/intent/tweet?text=几乎超越鸿蒙的完全互联方案&url=http://blog.stevezmt.top/2024/12/03/real-harmony-connect-all/&via=Steve ZMT" target="_blank" class="mdui-ripple">分享到 Twitter</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="https://www.facebook.com/sharer/sharer.php?u=http://blog.stevezmt.top/2024/12/03/real-harmony-connect-all/" target="_blank" class="mdui-ripple">分享到 Facebook</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="https://plus.google.com/share?url=http://blog.stevezmt.top/2024/12/03/real-harmony-connect-all/" target="_blank" class="mdui-ripple">分享到 Google+</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="https://www.linkedin.com/shareArticle?mini=true&url=http://blog.stevezmt.top/2024/12/03/real-harmony-connect-all/&title=几乎超越鸿蒙的完全互联方案" target="_blank" class="mdui-ripple">分享到 LinkedIn</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="https://connect.qq.com/widget/shareqq/index.html?site=老史尬侃&title=几乎超越鸿蒙的完全互联方案&pics=http://blog.stevezmt.top/images/favicon.png&url=http://blog.stevezmt.top/2024/12/03/real-harmony-connect-all/" target="_blank" class="mdui-ripple">分享到 QQ</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="https://telegram.me/share/url?url=http://blog.stevezmt.top/2024/12/03/real-harmony-connect-all/&text=几乎超越鸿蒙的完全互联方案" target="_blank" class="mdui-ripple">分享到 Telegram</a>
+            </li>
+          </ul>
+        
+      </div>
+    </header>
+    <div class="mdui-card-content mdui-typo">
+      <p><del>可能是这几天吃太饱了</del>，花了一个周末，折腾了一个自己个人还算满意的全平台互联方案。</p>
+<p>实现效果几乎可以完全满足我个人远程工作的需要，而且绝大部分组件都是开源，几乎无感知的实现了类似鸿蒙宣传的的完全互联方案。</p>
+<p>但是好像目前只能限制在你自己的设备…</p>
+<h2 id="总体效果"><a href="#总体效果" class="headerlink" title="总体效果"></a>总体效果</h2><p>在我手边的两台安卓手机，一台安卓词典笔，一台安装了linux &amp; KDE Plasma的老旧笔记本上实现了：<br>    - 随时随地的控制媒体设备(穿网,kde-connect)<br>    - 异地访问设备文件(穿网,scp,ssh)<br>    - 远程桌面(穿网,vnc,rdp)（体验不好）<br>    - 通知同步，<strong>在电脑(<em>所有设备</em> )上接验证码</strong>(穿网,kde-connect)<br>    - 手机当鼠标键盘（或者电脑给手机当键盘）(穿网,kde-connect)<br>    - 剪贴板同步(穿网,kde-connect)<br>    - 远程锁屏&#x2F;关机&#x2F;快捷执行指令(穿网,kde-connect)<br>    - 浏览器投放(kde-connect)<br>    - 互联打印(理论可行，穿网)<br>    - 类AirDrop(穿网)</p>
+<p>这些可能在你看来就是装个软件的事，但是这其中最关键的是？<br>所有设备只要上网，离你多远都无所谓！</p>
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>先借助Tailscale实现了所有设备的内网穿透，然后再使用KDE Connect实现了所有设备的互联（<br>是的，看似极为深奥的技术本质都是很简单的（x</p>
+<h2 id="实现步骤"><a href="#实现步骤" class="headerlink" title="实现步骤"></a>实现步骤</h2><h3 id="1-安装Tailscale"><a href="#1-安装Tailscale" class="headerlink" title="1. 安装Tailscale"></a>1. 安装Tailscale</h3><pre><code>这一步看起来很简单，但是实际上可能会遇到很多问题。
+首先访问[Tailscale官网](https://tailscale.com/)，注册一个账号。我是选择github登陆的，你使用对你来说方便的账号即可。
+然后根据你的设备选择对应的安装方式，他的新手教程很详细的。
+注意：所有设备都要完成这一步。如果你想把打印机或者电视机也加入到你的互联方案中，并且你确实没有办法在上面安装apk或执行shell脚本，那你最好有一台网内设备可以常开（推荐是刷了openwrt的路由器）。
+如果你更考虑安全性的话，你可以配置好Tailscale的tailnet Lock，但是所有加入网络的设备都要有认证配对。
+还有tailscale是以来在NAT环境下穿透的，所以你的路由器要支持UPnP，或者起码是Easy NAT; 对于Hard NAT,你要么有台公网服务器常开配置中转，要么依赖tailscale的relay服务器，这样会有一定的延迟，毕竟人服务器都不在国内。
+（你可以在你的路由器或者你公司的机器上配置出口，这样当你需要以家庭ip/公司ip访问某些站点，或者需要在不安全的热点上访问HTTP站点的话，就可以使用Tailscale的出口服务。因为流量加密，所以也很安全。）
+Zerotier固然也可以，但是它不会主动穿透NAT，而且中转速度超慢，还限制10台设备；所以你要么自己配置中转，要么依赖它的relay服务器，这样会有一定的延迟，毕竟人服务器都不在国内。
+如果你是Root高级用户，并且使用Magisk或者KernelSU的话，你可以使用[Tailscale的Magisk模块](https://github.com/anasfanani/Magisk-Tailscaled/releases &quot;将前往 Github.com&quot;)，这样你就可以几乎无感的使用Tailscale了。
+
+- 配置完Tailscale后，记得在管理面板上打开TailDrop，这样你就可以实现传文件的功能了，当然kde connect的传文件也很不错，如果你用linux的话，那还是选择kde connect吧。
+</code></pre>
+<h3 id="2-安装KDE-Connect"><a href="#2-安装KDE-Connect" class="headerlink" title="2. 安装KDE Connect"></a>2. 安装KDE Connect</h3><p>   这点我想不用多说了，软件在<a target="_blank" rel="noopener" href="https://kdeconnect.kde.org/">官网（Windows端）</a>,<a target="_blank" rel="noopener" href="https://f-droid.org/packages/org.kde.kdeconnect_tp/">F-Droid（安卓端）</a>&#x2F;<a target="_blank" rel="noopener" href="https://appgallery.cloud.huawei.com/ag/n/app/C104724723">华为应用商店</a>&#x2F;<a target="_blank" rel="noopener" href="https://play.google.com/store/apps/details?id=org.kde.kdeconnect_tp" title="您所在的国家和地区可能无法访问此链接。">Google Play 商店</a>,<a target="_blank" rel="noopener" href="https://apps.apple.com/app/kde-connect/id1580245991">App Store（iOS）</a>或<a target="_blank" rel="noopener" href="https://openrepos.net/content/r1tschy/sailfish-connect">OpenRepos（Salifish）</a>上有。<br>   Windows上也可以配置Kde Connect主机，但是功能没有在Linux &amp; KDE Plasma上全。大概就是远程指令用不了，其他没啥损失。<br>   因为Tailscale的虚拟局域网网段不在你的路由器的DHCP分配范围内，也不在常规的内网网段内，所以你的设备可能会有两个ip，一个是局域网ip，一个是Tailscale的ip。这时候你要在KDE Connect的设置里面手动添加你的Tailscale ip，这样你就可以在外网访问到你的设备了。<br>   <img src="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/4@1080x2340.webp" alt="图片"><br>   你可以在Tailscale客户端的设置里面配置DNS，这样你就可以通过设备名访问你的设备;也可以用ip来配置，ip列表在Tailscale 客户端上有的。也可以在Tailscale admin网页上查询。<br>   总之KDE Connect真的是非常的全能，除了在电脑上接电话它几乎把所有必要的功能都做了。</p>
+<h3 id="3-配置SSH（可选）"><a href="#3-配置SSH（可选）" class="headerlink" title="3. 配置SSH（可选）"></a>3. 配置SSH（可选）</h3><p>   配置SSH的教程很多，你在你的Linux电脑上配置好SSH服务，就可以在远程办公的时候用VSCode的Remote SSH插件，或者用Termux的SSH客户端，或者用其他SSH客户端访问你的设备了。<br>   如果你是Windows电脑，那就打开你电脑的远程桌面服务（RDP），手机上安装RDP 客户端（windows笔记本不需要配置），接入Tailscale就可以远程了。<br>   Linux电脑上就安装xrdp或krfb（超卡，不知道哪里的问题），手机上安装VNC客户端，接入Tailscale就可以远程了。</p>
+<h3 id="4-配置SFTP（可选）或syncthing（可选）"><a href="#4-配置SFTP（可选）或syncthing（可选）" class="headerlink" title="4. 配置SFTP（可选）或syncthing（可选）"></a>4. 配置SFTP（可选）或syncthing（可选）</h3><p>   如果你想在远程访问你的文件，那么你可以配置SFTP，或者用syncthing同步你的文件。<br>   SFTP的配置教程很多，你可以在你的Linux电脑上配置好SFTP服务，然后用你的手机上的文件管理器访问你的文件。<br>   syncthing的配置教程也很多，你可以在你的Linux电脑上配置好syncthing服务，然后用你的手机上的syncthing客户端同步你的文件。<br>   （syncthing我就没配置成功过，所以不过多指点了）</p>
+<h2 id="怎么使用"><a href="#怎么使用" class="headerlink" title="怎么使用"></a>怎么使用</h2><ol>
+<li>控制媒体设备<ul>
+<li>打开手机的通知访问权限<br>就好了（x</li>
+</ul>
+</li>
+<li>异地访问设备文件<ul>
+<li>这个就更简单了，电脑可以直接在托盘图标上右键，选择远程文件访问，然后在电脑上就可以访问手机的文件了。<br><img src="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/1@454x493.webp" alt="图片"></li>
+<li>手机访问电脑的话可能就还得依赖SCP。</li>
+</ul>
+</li>
+<li>远程桌面<br>这个前面提得很清楚了，不过体验不好，不推荐。</li>
+<li>通知同步<br> 这个就更简单了，打开手机的通知访问权限，在kde里面把广播设备通知打开就好了（x<br> 部分手机需要打开验证码读取权限</li>
+<li>手机当鼠标键盘<br>如果kde connect授过权的话应该开箱即用的</li>
+<li>剪贴板同步<br>电脑会自动同步到手机上。手机下拉通知栏，选择发送剪贴板，就可以发送到所有设备<br> <img src="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/7@1080x2340.webp" alt="图片"></li>
+<li>远程锁屏&#x2F;关机&#x2F;快捷执行指令<br>这个需要Linux &amp; KDE Plasma的kde connect主机，然后在手机上就可以远程执行指令了。<br>还可以把快捷方式放到设备管理器（小米设备的在控制中心，叫智能生活）<br><img src="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/2@370x800.webp" alt="图片"></li>
+<li>浏览器投放<br>手机选择共享网页，在电脑上就可以看到了。<br><img src="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/5@1080x2340.webp" alt="图片"><br>电脑要安装浏览器插件<a target="_blank" rel="noopener" href="https://community.kde.org/Plasma/Browser_Integration">KDE Plasma浏览器集成</a></li>
+<li>互联打印<br>把打印机ip添加上<br>理论可行，但是我没有打印机，所以没测试过。</li>
+<li>类AirDrop<br>电脑上右键文件，选择发送到…，然后选择手机就好了。<br>手机上共享就找到了。<br><img src="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/6@1080x2340.webp" alt="图片"></li>
+</ol>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这个方案的优点是几乎无感知的实现了类似鸿蒙宣传的的完全互联方案，缺点是只能限制在你自己的设备，而且有一定的延迟。<br>屏幕共享和远程控制还是不是很完善，等我研究一段时间。</p>
+
+      
+      <blockquote>
+        
+          <strong>此页内容遵循<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank" rel="license noopener noreferrer" style="display:inline-block;"> 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1" alt=""></a></strong><br>
+        
+        <strong>本文链接：</strong><br><a href="http://blog.stevezmt.top/2024/12/03/real-harmony-connect-all/">http://blog.stevezmt.top/2024/12/03/real-harmony-connect-all/</a>
+      </blockquote>
+    </div>
+    <footer class="mdui-card-actions">
+      
+        <a class="mdui-ripple article_categories-link" href="/categories/%E6%8A%98%E8%85%BE/">折腾</a>
+      
+      
+        <a class="mdui-ripple article_tags-link" href="/tags/KDE/" rel="tag">KDE</a><a class="mdui-ripple article_tags-link" href="/tags/Root/" rel="tag">Root</a><a class="mdui-ripple article_tags-link" href="/tags/%E4%BA%92%E8%81%94/" rel="tag">互联</a><a class="mdui-ripple article_tags-link" href="/tags/%E5%AE%89%E5%8D%93/" rel="tag">安卓</a><a class="mdui-ripple article_tags-link" href="/tags/%E5%BC%80%E6%BA%90/" rel="tag">开源</a>
+      
+    </footer>
+    
+  </article>
+  
+<script src="//cdn.bootcdn.net/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+  <script>$("#main article .mdui-card-content img.fancybox").on("click",function(e){$.fancybox.open({src:$(this).attr("src")});});</script>
+
+
+  <nav id="paginator">
+    
+    <div class="spacer"></div>
+    
+      <a rel="next" class="extend next" href="/2024/12/01/talk-about-x-ai/">
+        <span class="mdui-p-x-3" mdui-tooltip="{content: '关于 x.ai 的一些看法'}">下一篇</span>
+        <button aria-label="next" class="mdui-btn mdui-btn-raised mdui-btn-icon mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">arrow_forward</i></button>
+      </a>
+    
+  </nav>
+
+
+  <div id="comment" class="mdui-m-t-5">
+    <div id="gitalk-container"></div>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'Ov23li2IcxCrL109at0U',
+    clientSecret: '6b1433f474c96a5c5a997a1de53739f6f939470a',
+    repo: 'articles',
+    owner: 'stevezmtstudios',
+    admin: ['stevezmtstudios'],
+    id: '325e6742-aa8e-c5b1-d7c0-209cbc05d31a' || location.pathname,
+    distractionFreeMode: false
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  </div>
+
+
+
+  <div style="position: fixed !important; right: 16px; top: 30%;">
+    <button class="mdui-fab mdui-fab-mini mdui-ripple" mdui-menu="{target: '#toc'}"><i class="mdui-icon material-icons">toc</i></button>
+    <ul class="mdui-menu" id="toc">
+      <li class="mdui-menu-item" disabled><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E4%BD%93%E6%95%88%E6%9E%9C"><span class="toc-text">总体效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-text">实现原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="toc-text">实现步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85Tailscale"><span class="toc-text">1. 安装Tailscale</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85KDE-Connect"><span class="toc-text">2. 安装KDE Connect</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%85%8D%E7%BD%AESSH%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="toc-text">3. 配置SSH（可选）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E9%85%8D%E7%BD%AESFTP%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89%E6%88%96syncthing%EF%BC%88%E5%8F%AF%E9%80%89%EF%BC%89"><span class="toc-text">4. 配置SFTP（可选）或syncthing（可选）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E4%BD%BF%E7%94%A8"><span class="toc-text">怎么使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-text">结语</span></a></li></ol></li>
+    </ul>
+  </div>
+
+
+</main>
+  <footer id="footer" class="mdui-m-t-5 mdui-p-y-3 mdui-color-theme">
+  <div class="mdui-p-y-0 mdui-text-center">
+    
+    
+    
+    
+    
+    
+    
+      <a href="https://github.com/stevezmtstudios/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100"><i class="mdui-icon iconfont">&#xe7ab;</i></a>
+    
+    
+    
+      <a href="https://www.zhihu.com/people/zhang-xian-sheng-70-9" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100"><i class="mdui-icon iconfont">&#xe6c0;</i></a>
+    
+    
+    
+      <a href="tencent://message/?uin=3579946866&Menu=yes" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100"><i class="mdui-icon iconfont">&#xe651;</i></a>
+    
+    
+  </div>
+  <div class="mdui-p-y-1 mdui-text-center">
+    Copyright &copy; 2024 - 2024 Steve ZMT<br>
+    由 <a href="https://hexo.io/" target="_blank" class="mdui-text-color-theme-accent">Hexo</a> 强力驱动 | <a href="https://icp.gov.moe/?keyword=20240571" target="_blank" class="mdui-text-color-theme-accent">萌ICP备20240571号</a>
+    <br>
+      <span id="busuanzi_container_site_pv" style="display: none;"><i class="iconfont">&#xe7fd;</i> <span id="busuanzi_value_site_pv"></span></span> &nbsp;&nbsp;
+      <span id="busuanzi_container_site_uv" style="display: none;"><i class="iconfont">&#xe601;</i> <span id="busuanzi_value_site_uv"></span></span>
+    
+  </div>
+</footer>
+
+  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">arrow_upward</i></button>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+<script src="/js/mdui.js"></script>
+<script src="/js/script.js"></script>
+
+  
+<script src="/custom.js"></script>
+
+</body>
+</html>
