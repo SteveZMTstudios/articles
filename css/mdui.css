@@ -203,6 +203,7 @@ button,
 [type="reset"],
 [type="submit"] {
   -webkit-appearance: button;
+  appearance: button;
 }
 
 /**
@@ -297,6 +298,7 @@ textarea {
 
 [type="search"] {
   -webkit-appearance: textfield; /* 1 */
+  appearance: textfield; /* 1 */
   outline-offset: -2px; /* 2 */
 }
 
@@ -11606,14 +11608,17 @@ select.mdui-select[multiple] option:last-child {
 }
 .mdui-list-item-one-line {
   -webkit-line-clamp: 1;
+  line-clamp: 1;
   height: 20px;
 }
 .mdui-list-item-two-line {
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   height: 40px;
 }
 .mdui-list-item-three-line {
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   height: 60px;
 }
 /* 列表项内的元素间添加间距 */
