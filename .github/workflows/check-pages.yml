@@ -1,0 +1,70 @@
+name: Build Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  check-merge-target:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Block gh-pages merges
+        if: github.base_ref == 'gh-pages'
+        run: |
+          echo "##################################################"
+          echo "不允许直接合并到 gh-pages 分支!!!"
+          exit 1
+
+  build:
+    needs: check-merge-target
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: |
+          npm install 
+          npm install -g hexo
+          npm ci
+          
+      - name: Install theme dependencies  
+        run: |
+          cd themes/default
+          npm install
+          cd ../..
+
+      - name: Clean 
+        run: npx hexo clean
+
+      - name: Build check
+        run: |
+          npx hexo generate --debug
+          
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: public
+          path: public/
+
+  validate-html:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: public
+          path: public/
+          
+      - name: Install tidy
+        run: sudo apt-get install tidy -y
+        
+      - name: Check HTML files
+        run: |
+          find public -name "*.html" -exec tidy -e {} \;
