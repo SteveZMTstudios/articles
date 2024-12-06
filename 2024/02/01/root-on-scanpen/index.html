@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="renderer" content="webkit">
+
+  
+  <title>玩飞一台翻译词典笔（进阶-获取root） | 老史尬侃 - Steve ZMT &#39;s Blog</title>
+
+  <link rel="shortcut icon" href="/images/favicon.png">
+  <link rel="alternate" href="/atom.xml" title="老史尬侃 - Steve ZMT 's Blog" type="application/atom+xml">
+  <meta name="description" content="此页面最初由我自己发布在酷安  #你永远不知道酷友在用什么刷酷安##翻译笔# #Root# 基于adb、wwr、mtkclient、SP flash tool、短接，以实现解锁bl并且刷入magisk的方案。仅支持可拆卸的，基于联发科芯片的杂牌词典笔，不过方案思路大致一致，有道讯飞等使用定制Linux的词典笔无效（，请自行在GitHub搜索penmod）。 如果你连开发者选项都没打开或者没有体验">
+<meta property="og:type" content="article">
+<meta property="og:title" content="玩飞一台翻译词典笔（进阶-获取root）">
+<meta property="og:url" content="https://blog.stevezmt.top/2024/02/01/root-on-scanpen/index.html">
+<meta property="og:site_name" content="老史尬侃 - Steve ZMT &#39;s Blog">
+<meta property="og:description" content="此页面最初由我自己发布在酷安  #你永远不知道酷友在用什么刷酷安##翻译笔# #Root# 基于adb、wwr、mtkclient、SP flash tool、短接，以实现解锁bl并且刷入magisk的方案。仅支持可拆卸的，基于联发科芯片的杂牌词典笔，不过方案思路大致一致，有道讯飞等使用定制Linux的词典笔无效（，请自行在GitHub搜索penmod）。 如果你连开发者选项都没打开或者没有体验">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/1@720x1569.webp">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/2@720x540.webp">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/3@720x1560.webp">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/4@720x481.webp">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/5@720x482.webp">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/6@720x569.webp">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/7@720x236.webp">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/8@720x483.webp">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/9@720x960.webp">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/10@720x483.webp">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/11@720x1569.webp">
+<meta property="article:published_time" content="2024-02-01T06:55:00.000Z">
+<meta property="article:modified_time" content="2024-12-06T04:19:26.011Z">
+<meta property="article:author" content="Steve ZMT">
+<meta property="article:tag" content="root">
+<meta property="article:tag" content="安卓">
+<meta property="article:tag" content="单词笔">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/1@720x1569.webp">
+
+  <meta name="keywords" content=",root,安卓,单词笔">
+  <meta name="format-detection" content="telephone=no,email=no">
+  <meta name="theme-color" content="#448AFF">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="老史尬侃 - Steve ZMT &#39;s Blog">
+  <meta name="msapplication-starturl" content="https://blog.stevezmt.top/2024/02/01/root-on-scanpen/">
+  <meta name="msapplication-navbutton-color" content="#448AFF">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="老史尬侃 - Steve ZMT &#39;s Blog">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="apple-touch-icon" href="/images/favicon.png">
+
+  
+    <link rel="canonical" href="https://blog.stevezmt.top/2024/02/01/root-on-scanpen/">
+  
+
+  
+  
+
+
+  
+  
+
+  
+<link rel="stylesheet" href="/css/mdui.css">
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/custom.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+<!--
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create','G-T404DHJEEZ','auto');ga('send','pageview');
+</script>
+-->
+
+<!-- Google tag (gtag.js) -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T404DHJEEZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T404DHJEEZ');
+</script>
+
+
+<body class="mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-blue">
+  <script>var a=localStorage.getItem("mdui-theme-layout-dark");if(a){document.getElementsByTagName("body")[0].className+=" mdui-theme-layout-dark"};</script>
+  <script>if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches){document.getElementsByTagName("body")[0].className+=" mdui-theme-layout-dark"};</script>
+  <script>var a=localStorage.getItem("mdui-drawer-close");if(!a){document.getElementsByTagName("body")[0].className+=" mdui-drawer-body-left"};</script>
+  <header id="header" class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide mdui-appbar-inset">
+  <div class="mdui-toolbar mdui-color-theme">
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="mdui-icon material-icons">menu</i></a>
+    <a href="/" class="mdui-typo-headline">老史尬侃 - Steve ZMT &#39;s Blog</a>
+    <div class="mdui-toolbar-spacer"></div>
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: '搜索'}"><i class="mdui-icon material-icons">search</i></a>
+    <a href="/atom.xml" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'RSS'}"><i class="mdui-icon material-icons">rss_feed</i></a>
+  </div>
+</header>
+<div class="mdui-dialog" id="search">
+  
+    <div class="search-form">
+      <input type="search" class="search-form-input" placeholder="搜索...">
+    </div>
+    <div class="search-result" data-resource="/search.xml"></div>
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer mdui-drawer-full-height">
+  <script>var a=localStorage.getItem("mdui-drawer-close");if(a){document.getElementById("sidebar").className+=" mdui-drawer-close"};</script>
+  <div class="mdui-grid-tile">
+    <img src="/images/banner.png" style="height: 160px;">
+    <img src="/images/avatar.jpg@128x128.webp" class="avatar-animation" style="position: absolute; top: 10%; left: 24px; width: 64px; height: 64px; border: 2px solid #fff; border-radius: 50%;">
+    <div class="mdui-grid-tile-actions">
+      <div class="mdui-grid-tile-text">
+        <div class="mdui-grid-tile-title">Steve ZMT</div>
+        <div class="mdui-grid-tile-subtitle"><i class="mdui-icon material-icons">art_track</i>又名“史蒂夫ZMT”的树洞。</div>
+      </div>
+      
+        <div class="mdui-grid-tile-buttons">
+          <a href="mailto:admin@stevezmt.top" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'admin@stevezmt.top'}"><i class="mdui-icon material-icons">email</i></a>
+        </div>
+      
+    </div>
+  </div>
+
+  <div class="mdui-list" mdui-collapse="{accordion: true}">
+    <a href="/" class="mdui-list-item mdui-ripple">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">home</i>
+      <div class="mdui-list-item-content">主页</div>
+    </a>
+    <div class="mdui-collapse-item">
+      <script>var a=localStorage.getItem("mdui-collapse-item-0");if(a){document.getElementsByClassName("mdui-collapse-item")[0].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-deep-orange">archive</i>
+        <div class="mdui-list-item-content">归档</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/archives/2024/12/">十二月 2024<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/03/">三月 2024<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/02/">二月 2024<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2023/10/">十月 2023<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/1970/01/">一月 1970<span class="mdui-ripple sidebar_archives-count">1</span></a>
+        
+      </div>
+    </div>
+    <div class="mdui-collapse-item">
+      <script>var a=localStorage.getItem("mdui-collapse-item-1");if(a){document.getElementsByClassName("mdui-collapse-item")[1].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-green">class</i>
+        <div class="mdui-list-item-content">分类</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/categories/Markdown/">Markdown<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/Markdown/%E6%B5%8B%E8%AF%95/">测试<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E6%8A%80%E6%9C%AF/%E7%9E%8E%E8%81%8A/">瞎聊<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E6%8A%98%E8%85%BE/">折腾<span class="mdui-ripple sidebar_archives-count">4</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E6%8A%98%E8%85%BE/%E7%94%B5%E5%AD%90%E5%9E%83%E5%9C%BE/">电子垃圾<span class="mdui-ripple sidebar_archives-count">3</span></a>
+        
+      </div>
+    </div>
+    <div class="mdui-collapse-item">
+      <script>var a=localStorage.getItem("mdui-collapse-item-2");if(a){document.getElementsByClassName("mdui-collapse-item")[2].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown">bookmark</i>
+        <div class="mdui-list-item-content">标签</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/tags/AI/" rel="tag">AI<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/KDE/" rel="tag">KDE<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/Markdown/" rel="tag">Markdown<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/openai/" rel="tag">openai<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/root/" rel="tag">root<span class="mdui-ripple sidebar_archives-count">4</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/xposed/" rel="tag">xposed<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E4%BA%92%E8%81%94/" rel="tag">互联<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%8D%95%E8%AF%8D%E7%AC%94/" rel="tag">单词笔<span class="mdui-ripple sidebar_archives-count">3</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%AE%89%E5%8D%93/" rel="tag">安卓<span class="mdui-ripple sidebar_archives-count">4</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%BC%80%E6%BA%90/" rel="tag">开源<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E6%B5%8B%E8%AF%95/" rel="tag">测试<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E7%99%BE%E5%BA%A6/" rel="tag">百度<span class="mdui-ripple sidebar_archives-count">1</span></a>
+        
+      </div>
+    </div>
+    <a href="/about" class="mdui-list-item mdui-ripple">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-purple">person</i>
+      <div class="mdui-list-item-content">关于</div>
+    </a>
+  </div>
+
+  <div class="mdui-divider"></div>
+
+  <div class="mdui-list" mdui-collapse="{accordion: true}">
+    
+      <a href="/timeline" class="mdui-list-item mdui-ripple">时间轴</a>
+    
+      <a href="/tagcloud" class="mdui-list-item mdui-ripple">标签云</a>
+    
+      <a href="/gallery" class="mdui-list-item mdui-ripple">相册</a>
+    
+    <div class="mdui-collapse-item">
+      <script>var a=localStorage.getItem("mdui-collapse-item-3");if(a){document.getElementsByClassName("mdui-collapse-item")[3].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <div class="mdui-list-item-content">友情链接</div>
+        <i class="mdui-list-item-icon mdui-icon material-icons">link</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+          <a href="https://stevezmt.top/" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">史蒂夫ZMT 主页</a>
+        
+          <a href="https://blog.canyie.top/" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">残页的小博客</a>
+        
+          <a href="https://blog.listder.xyz/" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">Listder&#39;s Blog</a>
+        
+          <a href="https://lar.moe/" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">花と詩</a>
+        
+        
+      </div>
+    </div>
+  </div>
+</aside>
+
+  <main id="main" class="mdui-m-t-5 fadeIn animated">
+  
+<link rel="stylesheet" href="//cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
+
+  <style>#main article .mdui-card-content .center-block{display:block!important;margin-right:auto!important;margin-left:auto!important}</style>
+  <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
+  <article class="mdui-card mdui-m-b-5">
+    <header class="mdui-card-media">
+      <img src="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/thumb@1105x497.webp" style="max-height: 240px; width: 100%; object-fit: cover;">
+      <div class="mdui-card-media-covered">
+        <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;">玩飞一台翻译词典笔（进阶-获取root）</h1></div>
+          <div class="mdui-card-primary-subtitle"><i class="iconfont">&#xe697;</i> 2024-02-01 / <i class="iconfont">&#xe601;</i> Steve ZMT &nbsp;&nbsp; <span id="busuanzi_container_page_pv" style="display: none;"><i class="iconfont">&#xe7fd;</i> <span id="busuanzi_value_page_pv"></span></span></div>
+        </div>
+      </div>
+      <div class="mdui-card-menu">
+        
+          <button class="mdui-btn mdui-btn-icon mdui-text-color-white" mdui-menu="{target: '#qrcode', align: 'right'}"><i class="mdui-icon material-icons">devices</i></button>
+          <ul class="mdui-menu" id="qrcode">
+            
+              <li class="mdui-menu-item"><a class="mdui-text-center mdui-ripple">发送到手机</a></li>
+            
+            <li class="mdui-menu-item" disabled>
+              
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACbElEQVR42u3aQXLDMAgF0Nz/0u0BOlY+YClu5nnVcWNbTwvBAK+fr75eeHh4eHh4eHh4D+O94uvvU1d3rv67flvyVLQ2PDw8vCO8N0dtcbkJ+AqWPPVmbXh4eHgHeVeLXv9m/fv1svLwk38LDw8P75m8hJEk4pNtxcPDw/smXl4+yAMMHh4e3jN5yRGfFGHzkNArYWysteDh4eHFvOpRfvLvo/09PDw8vIBXHmlqpdfVVPtjM2V4eHh4Aa/a3MrLBOuEOy80VDcCDw8Pbzfv6pN56WF9fxIe8jt4eHh4J3m9JlbviM8Lu5MxVjw8PLzdvEmDqlqqqA4N3DA6gIeHh7eBl5cbkuCRlyeShDt5WxT38PDw8G7lVT88aYnlQwm9jcDDw8M7yauO108+X22b5duBh4eHd5KXB4OkwFodOJhvKx4eHt4TeL1DOT/6q6l2ITjh4eHhbeY109biINSkGJG3zfDw8PBO8novnRRhe8HphpkyPDw8vDEvb3RNhrGSoJJvKB4eHt4TeNU2WN6+qt6vPouHh4d3ntdbSm87kmCQjx2Uy7h4eHh4t/LuKqQmC2oe9zkeDw8P7zivOjKVH+JVXjNs4OHh4R3kVQ/iddiopub59WbleHh4eJt5vUZXuSl1a1JeGLrCw8PD28CrHscJOE/Q87HX0UwZHh4e3gZetYTaa2VVR2B7AQkPDw/vJG/S1O+1viYDXnh4eHj/i5ew7x1LHRUj8PDw8B7Aqy6iN3qVBwM8PDy8T/GSYkS1SVYNDOugsr2Mi4eHh7ehAZY3pSbhZFTmwMPDw9vM+74LDw8PDw8PDw/vAdcv/vvOSqrzh2wAAAAASUVORK5CYII=">
+              
+            </li>
+          </ul>
+        
+        
+          <button class="mdui-btn mdui-btn-icon mdui-text-color-white" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="mdui-icon material-icons">share</i></button>
+          <ul class="mdui-menu" id="share_menu">
+            <li class="mdui-menu-item">
+              <a href="https://service.weibo.com/share/share.php?appkey=&title=玩飞一台翻译词典笔（进阶-获取root）&url=https://blog.stevezmt.top/2024/02/01/root-on-scanpen/&pic=https://blog.stevezmt.top/images/favicon.png&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="https://twitter.com/intent/tweet?text=玩飞一台翻译词典笔（进阶-获取root）&url=https://blog.stevezmt.top/2024/02/01/root-on-scanpen/&via=Steve ZMT" target="_blank" class="mdui-ripple">分享到 Twitter</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="https://www.facebook.com/sharer/sharer.php?u=https://blog.stevezmt.top/2024/02/01/root-on-scanpen/" target="_blank" class="mdui-ripple">分享到 Facebook</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="https://plus.google.com/share?url=https://blog.stevezmt.top/2024/02/01/root-on-scanpen/" target="_blank" class="mdui-ripple">分享到 Google+</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.stevezmt.top/2024/02/01/root-on-scanpen/&title=玩飞一台翻译词典笔（进阶-获取root）" target="_blank" class="mdui-ripple">分享到 LinkedIn</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="https://connect.qq.com/widget/shareqq/index.html?site=老史尬侃 - Steve ZMT &#39;s Blog&title=玩飞一台翻译词典笔（进阶-获取root）&pics=https://blog.stevezmt.top/images/favicon.png&url=https://blog.stevezmt.top/2024/02/01/root-on-scanpen/" target="_blank" class="mdui-ripple">分享到 QQ</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="https://telegram.me/share/url?url=https://blog.stevezmt.top/2024/02/01/root-on-scanpen/&text=玩飞一台翻译词典笔（进阶-获取root）" target="_blank" class="mdui-ripple">分享到 Telegram</a>
+            </li>
+          </ul>
+        
+      </div>
+    </header>
+    <div class="mdui-card-content mdui-typo">
+      <blockquote>
+<p>此页面最初由我自己发布在<a target="_blank" rel="noopener" href="https://www.coolapk.com/feed/49767646?shareKey=YWNkMzBmNTU4NmY3NjU1ODhiY2Y~&shareUid=22536770&shareFrom=com.coolapk.market_13.3.6">酷安</a></p>
+</blockquote>
+<p>#你永远不知道酷友在用什么刷酷安#<br>#翻译笔# #Root# 基于adb、wwr、mtkclient、SP flash tool、短接，以实现解锁bl并且刷入magisk的方案。仅支持可拆卸的，基于联发科芯片的杂牌词典笔，不过方案思路大致一致，有道讯飞等使用定制Linux的词典笔无效（，请自行在GitHub搜索penmod）。</p>
+<p>如果你连开发者选项都没打开或者没有体验过你的设备潜能，请先参阅这篇文章：</p>
+<p>[链接]@史蒂夫ZMT的图文…</p>
+<p>由于本文大量依赖于电脑操作，所以本文将同步发布在我的网站和社交账号上。你可以使用搜索引擎搜“史蒂夫ZMT工作室”，选择第一个搜索结果（哔哩哔哩或咕咕咕咕）；或者在浏览器地址栏访问si1vr.github.io，选择未满18岁，在新帖子里面找这篇文章。<br>（我们不承担您因好奇而导致rickroll的责任。）</p>
+<p>重要：阅读完帖子再操作！</p>
+<p>声明：这些操作可能摧毁你的设备或是使你的设备变砖，即使您按照这些操作完全按步骤执行，也有可能会因为是soc不同，或晚上刷机而导致砌砖。我们无法对您的操作提供任何担保和负责。可能需要焊接操作，如果你不了解，请找人帮忙。亲自焊接请务必注意安全，小心烫伤，完成后焊笔务必断电。</p>
+<h2 id="0x00-———准备工作———"><a href="#0x00-———准备工作———" class="headerlink" title="0x00.———准备工作———"></a>0x00.———准备工作———</h2><p>你需要：</p>
+<p>拆机工具<br>灵巧的手（如果你缺乏睡眠而手抖，请先睡一觉（、<br>内热电焊笔、<br>细导线、<br>锡焊料、<br>松香、<br>高温海绵、<br>铁架台、<br>热熔胶枪）<br>（如果-你的设备有两个音量键，或者-你打算找别人焊接，或者-你确认你的设备是廉价安卓设备且不需要使用fastboot刷写(意味着您只能使用SP flash tool)则忽略焊接工具）、<br>数据线（最好是手机原装的、质量好点的）、<br>电脑（已经配置好adb，Windows 10+）、<br>清醒的大脑（如果你感觉头晕，请先睡一觉）、<br>良好的螺丝刀，<br>纸盒，<br>可以上酷安的手机。</p>
+<p>准备好：<br>电脑安装MTK驱动并重启安装完毕，如果遇到无法正确配置驱动的情况或者设备管理器已识别但是黄色感叹号的，那么打开Windows 更新，选择可选更新，安装来自Mediatek Inc.的驱动，完成后重启。</p>
+<p>完成以上准备后，继续下一步。</p>
+<p>如果你不要解锁，<a href="#0x03%EF%BC%9A%E6%8F%90%E5%8F%96%E5%88%86%E5%8C%BA-%E8%B7%B3%E8%87%B3%E6%AD%A4%E5%A4%84-%E2%AC%85%EF%B8%8F">直接从0x03开始看⤵️</a></p>
+<h2 id="0x01-焊接音量线（有音量键，或不需要解锁的可跳过）"><a href="#0x01-焊接音量线（有音量键，或不需要解锁的可跳过）" class="headerlink" title="0x01.&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;焊接音量线（有音量键，或不需要解锁的可跳过）&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;"></a>0x01.&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;焊接音量线（有音量键，或不需要解锁的可跳过）&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</h2><p>拆开设备，这里以从屏幕处拆开为例：<br>1.用指甲把屏幕四周的胶分离开，但是只留一条缝<br>2.小心地抬起屏幕，把排线夹抠出来<br>3.去除固定的3颗螺丝，并把摄像头夹取出，放到小纸盒里面省得丢<br>4.在主板中下部有2个卡扣，小心地用小一字螺丝刀卡出<br>5.小心地把摄像头从底板槽中取出<br>6.小心地把主板抬起，拔下喇叭接线<br>7.把按键塑料块放到小纸盒里面<br>8.查看主板背面，拔电池，预热焊笔</p>
+<p><img src="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/1@720x1569.webp" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>从上到下1－6，1 4音量下、24音量上</p>
+<p>9.先在焊笔上涂一层焊锡，然后固定导线，使得导线拨了皮的铜丝末端对准焊板<br>10.先焊笔预热焊盘，然后焊锡接触到焊板和导线之间，当焊锡融化后立刻移除焊锡，再移除焊笔<br>用橡皮泥固定主板和导线，使得导线铜丝刚好在触点上，左手焊笔右手焊锡，先焊笔接触预热，再放上焊锡，熔化后先拿开焊锡，再拿开焊笔<br>如果连焊或者焊错位，不要直接拔导线！要用焊笔融化焊锡然后移除导线<br>11.完成后把屏幕排线扣回去，开机，测试音量线短接后机子有无反应。0x05：你要知道的一些事情<br>设备不能用音量键重启到fastboot，因此你只能用mtk bypass工具启动到fastboot<br>方法：关机或拔电池，bypass工具选reboot fastboot ,插上电脑</p>
+<p><img src="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/2@720x540.webp" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"></p>
+<h2 id="0x02-解锁bootloader"><a href="#0x02-解锁bootloader" class="headerlink" title="0x02.&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;解锁bootloader&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;"></a>0x02.&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;解锁bootloader&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</h2><p>（只要设备不是安卓4及更旧的系统就有bl锁，可能读不出来，但就是有，因为你打fastboot oem unlock会没反应）<br>(经过试验,联发科部分廉价设备如mt6580等无需解锁，可直接使用SP Flash tool刷写，无需特地解锁，但是仍然存在校验完全的设备，请谨慎判断。)</p>
+<p>设备开机 (安卓6+设备需要开发者选项打开OEM解锁) ，电脑下载打开秋之盒atmb.top，运行右下角CMD命令行，在弹出黑窗口里输入adb reboot bootloader<br>以后类似的命令都是打在这里</p>
+<p>（或者拔电池强行重启，用bypass重启到fastboot）<br>词典笔屏幕亮起后，输入fastboot oem unlock<br>不管设备屏幕有无任何反应 (非裁切屏可以显示解锁提示) ，短接音量上，也就是24焊点，此时终端窗口应有反应，并且报告成功</p>
+<p><img src="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/3@720x1560.webp" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>解锁时窗口</p>
+<p>然后打fastboot reboot，此时设备会清除所有数据</p>
+<h2 id="0x03：提取分区-跳至此处-⬅️"><a href="#0x03：提取分区-跳至此处-⬅️" class="headerlink" title="0x03：提取分区 (跳至此处) ⬅️"></a>0x03：提取分区 (跳至此处) ⬅️</h2><p>一共有2个方案</p>
+<h3 id="1-wwr-sp-readback方案"><a href="#1-wwr-sp-readback方案" class="headerlink" title="1.wwr+sp readback方案"></a>1.wwr+sp readback方案</h3><p>特点：不需要焊音量键，但是提取的不一定完整，甚至可能就boot能用</p>
+<p>此部分教程参考自<a target="_blank" rel="noopener" href="https://www.coolapk.com/u/%E5%8F%AF%E6%B3%BAKoCleo">@可泺KoCleo</a> 和rozetkin @ 4PDA ，非常感谢他们的帮助，原文可以访问他的个人主页，有图<br>（我现在用的酷安和手机太旧放个链接极为费劲）<br>电脑上准备好wwr（下载链接在文末）和bypass tool <a target="_blank" rel="noopener" href="https://stevezmt.top/sharepoint/">这里</a><br>先打开，等待120秒</p>
+<p>这期间下载SP flash tool、bypass tool和mtk驱动<br>完成安装<br>单词笔关机，电脑下载解压安装bypass tool，选择第一个选项，将单词笔连接到电脑，记录mt打头的编号。</p>
+<p>回到wwr，选择auto mode，点开1.generating empty scatter file<br>选取刚刚读到的设备代号。</p>
+<p>保存生成的scatter到一个目录<br>打开sp flashtool，保留wwr最小化或后台运行<br>(如果语言不对，左上角File里面选取Options，把English改成中文就行)<br>点开下载，在下面的第二个框里面选取刚刚创建的txt文本</p>
+<p><img src="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/4@720x481.webp" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>应该只有一行，不是像我的这么多</p>
+<p>再打开内存测试选项卡<br>只勾选RAM测试，其他都不要勾</p>
+<p><img src="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/5@720x482.webp" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>其他都不要勾选!!!</p>
+<p>点开始，设备关机，按中键或重插数据线，很快就读出一堆参数</p>
+<p><img src="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/6@720x569.webp" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>图源4pda，这里图都来自4pda</p>
+<p>把这串复制到记事本上，不用保存<br>我们不关心0x0的地址，只需要4个值（其实是3个）</p>
+<p><img src="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/7@720x236.webp" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>手机做图烦死，这张也是搬的</p>
+<p>然后点开回读选项卡<br>选择添加<br>双击新建的条目，选择rom_0保存位置（这是保存preloader）<br>区域选EMMC_BOOT_1，长度是你复制的第一个值</p>
+<p><img src="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/8@720x483.webp" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>就改动第一个选单，和底下的长度</p>
+<p>然后单词笔插电脑上，按下中键或短暂的短路电池，或者把电池拔下再插上,此时底部进度条应该开始在跑，很快出现了一个绿圈或者一个大勾✔️。</p>
+<p><img src="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/9@720x960.webp" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>这就是那个中键（los图片编辑真烂）</p>
+<p>在回读里面添加一个条目，双击选择保存位置（保存出来的文件是完整的emmc数据无压缩，你需要存在比你单词笔总大小大的电脑磁盘上），区域选EMMC_USER，长度就是你记录在记事本下来的值，最底下的很大</p>
+<p><img src="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/10@720x483.webp" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>取消勾选刚刚的rom_0<br>确保数据线，单词笔和主机连接稳定后，点开“回读”，再次按下单词笔的中键&#x2F;拔插数据线&#x2F;拔电池当进度条开始缓慢的移动时回读就已开始。<br>然后翻翻酷安，尽量不要动电脑，不要让电脑睡眠，不要锁屏，等待进度条跑完出现绿圈或大勾<br>再切回wwr，选择3.start autopilot，勾选第四个框，在右边选你的soc（如mt6582）<br>然后点start the process<br>在弹出的窗口里选择rom_0文件，也就是机器底层。<br>等进度条跑完后选择第一个build a clean firmware<br>选择你要保存固件的位置，然后软件开始疯狂输出（真），当出现done时弹出的文件夹应该已经有了你要的分区文件<br>⚠️ 注意! 尤其是mt6582用户<br>如果提示框出现了一大串information的绿色段落，大意是提取的固件不完整的，且你之前的操作都是按此帖说明来的；那很抱歉，你需要接受无法使用spflashtool刷写的事实，因为scatter不准确。不要使用任何来源的scatter刷写所有任何分区，无论来自adb或是preloader！如果你没解锁但是需要root，这下不得不解锁了，因为只能用fastboot刷写boot。提取的system.img是不能刷写的（大概？）所以你还需要保存好ROM_0和ROM_1。</p>
+<h3 id="2-mtkclient方案（未测试）"><a href="#2-mtkclient方案（未测试）" class="headerlink" title="2.mtkclient方案（未测试）"></a>2.mtkclient方案（未测试）</h3><p>特点：部分mbr分区设备不能用，可以提全部分区但是一定要焊接音量线</p>
+<p>（以下流程是根据我自己以前玩机总结的方案）<br>首先还是bypass找找自己设备soc型号<br>如果它很旧，那么你需要准备一个u盘（要么为空，要么已经做好了ventoy引导）然后用rufus（查看链接<a target="_blank" rel="noopener" href="https://stevezmt.top/sharepoint/">这里</a> rufus.ie）烧录链接里面的查看链接<a target="_blank" rel="noopener" href="https://stevezmt.top/sharepoint/">这里</a>镜像（ventoy就直接拷进去）<br>[ Windows用户可以参考查看链接<a target="_blank" rel="noopener" href="https://stevezmt.top/sharepoint/">这里</a>（在手机上打开即可）里面的readme文档配置Python环境或者自行搜索配置mtkclient，然后下载查看链接就行，解压出来后在地址栏里面输cmd，键入python mtk_gui或者直接双击mtk_gui.bat打开主界面]<br>[livecd用户引导完成后就直接双击mtkclient进主界面，参考文档也是上面那个链接]<br>按住音量上下键，连接数据线，音量上下键不放，直到mtkclient窗口开始转圈，等待出现一堆选项，把你要的分区全部提出来，顺便你还可以备份下分区表</p>
+<p>上面这些文件可以在<a target="_blank" rel="noopener" href="https://stevezmt.top/sharepoint/">这里</a>获得。</p>
+<h2 id="0x04-安装magisk"><a href="#0x04-安装magisk" class="headerlink" title="0x04.安装magisk"></a>0x04.安装magisk</h2><p>1.github下载magisk23000版本，将安装包安装到单词笔上<br>（不管你想不想更新，都先用这个版本，它最低确保android5能运行。）<br>2.把刚提的boot.img用mtp或adb推到手机上<br>3.打开magisk，点安装，不勾选avb dm-verity以及其他任何选项<br>然后下一步，选择刚刚推送的boot.img,等待完成后用mtp或者adb pull出来保存在电脑上的任意位置。<br>4.打开mtk bypass，选择reboot fastboot选项，然后再次按下中键&#x2F;关机插入&#x2F;拔电池，在之前的终端里输fastboot flash boot [空格键]，然后不急着按回车，把刚刚提出来的magisk-patched_xxxxx.img拖动到命令窗口里面，再敲回车，直到出现OKAY字样，然后fastboot reboot，你就获得了root权限。<br>（如果你没解锁，并且不是mt6582机型设备，那么打开SP flash tool,导入原来的scatter,只勾选boot分区，双击后面路径选你的magisk_patched_xxxxx.img，选择方式为下载Download，然后开始下载，设备关机插入，等待红条和黄条跑完就行。）</p>
+<p><img src="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/11@720x1569.webp" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"></p>
+<h2 id="0x05：你要知道的一些事情"><a href="#0x05：你要知道的一些事情" class="headerlink" title="0x05：你要知道的一些事情"></a>0x05：你要知道的一些事情</h2><p>设备不能用音量键重启到fastboot，因此你只能用mtk bypass工具启动到fastboot<br>方法：关机或拔电池，bypass工具选reboot fastboot ,插上电脑</p>
+<p>你要保护好你的原始boot映像和提取的ROM_0,ROM_1</p>
+<p>如果你是用wwr方案提的分区，那要格外保存好ROM_0和ROM_1<br>应用程序不是总能安装到sd卡。<br>不要乱动开机动画，这机器删了开机动画就不开机，过度精简了属于是</p>
+<p>我只在周末能回复消息。</p>
+<h2 id="0x06：附录"><a href="#0x06：附录" class="headerlink" title="0x06：附录"></a>0x06：附录</h2><p>上面这些文件可以在<a target="_blank" rel="noopener" href="https://stevezmt.top/sharepoint/">这里</a>获得。</p>
+<p>酷安更新帖子有次数限制，因此有些补充消息发在评论里面，可以在评论里“楼主”筛选里面查看。<br>md又涨价了</p>
+
+      
+      <blockquote>
+        
+          <strong>此页内容遵循<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank" rel="license noopener noreferrer" style="display:inline-block;"> 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1" alt=""></a></strong><br>
+        
+        <strong>本文链接：</strong><br><a href="https://blog.stevezmt.top/2024/02/01/root-on-scanpen/">https://blog.stevezmt.top/2024/02/01/root-on-scanpen/</a>
+      </blockquote>
+    </div>
+    <footer class="mdui-card-actions">
+      
+        <a class="mdui-ripple article_categories-link" href="/categories/%E6%8A%98%E8%85%BE/">折腾</a><a class="mdui-ripple article_categories-link" href="/categories/%E6%8A%98%E8%85%BE/%E7%94%B5%E5%AD%90%E5%9E%83%E5%9C%BE/">电子垃圾</a>
+      
+      
+        <a class="mdui-ripple article_tags-link" href="/tags/root/" rel="tag">root</a><a class="mdui-ripple article_tags-link" href="/tags/%E5%8D%95%E8%AF%8D%E7%AC%94/" rel="tag">单词笔</a><a class="mdui-ripple article_tags-link" href="/tags/%E5%AE%89%E5%8D%93/" rel="tag">安卓</a>
+      
+    </footer>
+    
+  </article>
+  
+<script src="//cdn.bootcdn.net/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="//cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+  <script>$("#main article .mdui-card-content img.fancybox").on("click",function(e){$.fancybox.open({src:$(this).attr("src")});});</script>
+
+
+  <nav id="paginator">
+    
+      <a rel="prev" class="extend prev" href="/2024/03/22/hide-your-scanpen/">
+        <button aria-label="prev" class="mdui-btn mdui-btn-raised mdui-btn-icon mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">arrow_back</i></button>
+        <span class="mdui-p-x-3" mdui-tooltip="{content: '如何在学校安全的玩翻译笔'}">上一篇</span>
+      </a>
+    
+    <div class="spacer"></div>
+    
+      <a rel="next" class="extend next" href="/2023/10/01/play-on-scanpen/">
+        <span class="mdui-p-x-3" mdui-tooltip="{content: '玩飞一台翻译词典笔（非root方案）'}">下一篇</span>
+        <button aria-label="next" class="mdui-btn mdui-btn-raised mdui-btn-icon mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">arrow_forward</i></button>
+      </a>
+    
+  </nav>
+
+
+  <div id="comment" class="mdui-m-t-5">
+    <div id="gitalk-container"></div>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'Ov23li2IcxCrL109at0U',
+    clientSecret: '6b1433f474c96a5c5a997a1de53739f6f939470a',
+    repo: 'articles',
+    owner: 'stevezmtstudios',
+    admin: ['stevezmtstudios'],
+    id: 'c31453b5-5ddc-5c17-0fde-aa938c3a99f3' || location.pathname,
+    distractionFreeMode: false
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  </div>
+
+
+
+  <div style="position: fixed !important; right: 16px; top: 30%;">
+    <button class="mdui-fab mdui-fab-mini mdui-ripple" mdui-menu="{target: '#toc'}"><i class="mdui-icon material-icons">toc</i></button>
+    <ul class="mdui-menu" id="toc">
+      <li class="mdui-menu-item" disabled><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-%E2%80%94%E2%80%94%E2%80%94%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C%E2%80%94%E2%80%94%E2%80%94"><span class="toc-text">0x00.———准备工作———</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-%E7%84%8A%E6%8E%A5%E9%9F%B3%E9%87%8F%E7%BA%BF%EF%BC%88%E6%9C%89%E9%9F%B3%E9%87%8F%E9%94%AE%EF%BC%8C%E6%88%96%E4%B8%8D%E9%9C%80%E8%A6%81%E8%A7%A3%E9%94%81%E7%9A%84%E5%8F%AF%E8%B7%B3%E8%BF%87%EF%BC%89"><span class="toc-text">0x01.&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;焊接音量线（有音量键，或不需要解锁的可跳过）&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-%E8%A7%A3%E9%94%81bootloader"><span class="toc-text">0x02.&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;解锁bootloader&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03%EF%BC%9A%E6%8F%90%E5%8F%96%E5%88%86%E5%8C%BA-%E8%B7%B3%E8%87%B3%E6%AD%A4%E5%A4%84-%E2%AC%85%EF%B8%8F"><span class="toc-text">0x03：提取分区 (跳至此处) ⬅️</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-wwr-sp-readback%E6%96%B9%E6%A1%88"><span class="toc-text">1.wwr+sp readback方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-mtkclient%E6%96%B9%E6%A1%88%EF%BC%88%E6%9C%AA%E6%B5%8B%E8%AF%95%EF%BC%89"><span class="toc-text">2.mtkclient方案（未测试）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x04-%E5%AE%89%E8%A3%85magisk"><span class="toc-text">0x04.安装magisk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x05%EF%BC%9A%E4%BD%A0%E8%A6%81%E7%9F%A5%E9%81%93%E7%9A%84%E4%B8%80%E4%BA%9B%E4%BA%8B%E6%83%85"><span class="toc-text">0x05：你要知道的一些事情</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x06%EF%BC%9A%E9%99%84%E5%BD%95"><span class="toc-text">0x06：附录</span></a></li></ol></li>
+    </ul>
+  </div>
+
+
+</main>
+  <footer id="footer" class="mdui-m-t-5 mdui-p-y-3 mdui-color-theme">
+  <div class="mdui-p-y-0 mdui-text-center">
+    
+    
+    
+    
+    
+    
+    
+      <a href="https://github.com/stevezmtstudios/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100"><i class="mdui-icon iconfont">&#xe7ab;</i></a>
+    
+    
+      <a href="https://steamcommunity.com/id/stevezmt/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100"><svg t="1733311031811" class="mdui-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7249" width="24" height="24" style="vertical-align: -0.125em; display: inline-flex; align-items: center; justify-content: center;"><path d="M511.104 0C242.261333 0 21.802667 207.36 0.938667 470.912l274.432 113.408a144.512 144.512 0 0 1 81.578666-25.173333c2.688 0 5.333333 0.170667 8.021334 0.256l122.069333-176.725334V380.16a193.194667 193.194667 0 0 1 193.024-193.024c106.410667 0 193.024 86.656 193.024 193.152s-86.613333 193.066667-193.024 193.066667h-4.48l-173.909333 124.202666c0 2.218667 0.170667 4.48 0.170666 6.784a144.725333 144.725333 0 0 1-144.64 144.896 145.578667 145.578667 0 0 1-142.122666-116.352L18.602667 651.52C79.445333 866.432 276.736 1024 511.104 1024c282.752 0 511.957333-229.248 511.957333-512S793.813333 0 511.104 0zM321.706667 776.96l-62.848-26.026667c11.178667 23.168 30.464 42.624 56.064 53.333334a108.842667 108.842667 0 0 0 142.378666-141.824 108.672 108.672 0 0 0-138.88-60.288l64.981334 26.88a80.128 80.128 0 0 1-61.653334 147.925333H321.706667z m487.04-396.928a128.810667 128.810667 0 0 0-128.64-128.64 128.64 128.64 0 1 0 128.64 128.64z m-224.981334-0.213333a96.597333 96.597333 0 1 1 193.322667 0 96.725333 96.725333 0 0 1-96.682667 96.64 96.597333 96.597333 0 0 1-96.64-96.64z" fill="#82b1ff" p-id="7250"></path></svg></a>
+    
+    
+    
+      <a href="https://www.zhihu.com/people/zhang-xian-sheng-70-9" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100"><i class="mdui-icon iconfont">&#xe6c0;</i></a>
+    
+    
+    
+      <a href="https://space.bilibili.com/474130186" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100"><svg t="1733305965708" class="mdui-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5876" width="24" height="24" style="vertical-align: -0.125em; display: inline-flex; align-items: center; justify-content: center;"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="5877" fill="currentColor"></path></svg></a>
+
+    
+    
+      <a href="tencent://message/?uin=3579946866&Menu=yes" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100"><i class="mdui-icon iconfont">&#xe651;</i></a>
+    
+    
+    
+      <a href="https://stevezmt.top/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100"><svg t="1733313144945" class="mdui-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3527" width="24" height="24" style="vertical-align: -0.125em; display: inline-flex; align-items: center; justify-content: center;"><path d="M593.94368 715.648a10.688 10.688 0 0 0-14.976 0L424.21568 870.4c-71.68 71.68-192.576 79.232-271.68 0-79.232-79.232-71.616-200 0-271.616l154.752-154.752a10.688 10.688 0 0 0 0-15.04l-52.992-52.992a10.688 10.688 0 0 0-15.04 0L84.50368 530.688a287.872 287.872 0 0 0 0 407.488 288 288 0 0 0 407.488 0l154.752-154.752a10.688 10.688 0 0 0 0-15.04l-52.736-52.736z m344.384-631.168a288.256 288.256 0 0 1 0 407.616l-154.752 154.752a10.688 10.688 0 0 1-15.04 0l-52.992-52.992a10.688 10.688 0 0 1 0-15.104l154.752-154.688c71.68-71.68 79.232-192.448 0-271.68-79.104-79.232-200-71.68-271.68 0L443.92768 307.2a10.688 10.688 0 0 1-15.04 0l-52.864-52.864a10.688 10.688 0 0 1 0-15.04l154.88-154.752a287.872 287.872 0 0 1 407.424 0z m-296.32 240.896l52.672 52.736a10.688 10.688 0 0 1 0 15.04l-301.504 301.44a10.688 10.688 0 0 1-15.04 0l-52.736-52.672a10.688 10.688 0 0 1 0-15.04l301.632-301.504a10.688 10.688 0 0 1 15.04 0z" fill="currentColor" p-id="3528"></path></svg></a>
+    
+  </div>
+  <div class="mdui-p-y-1 mdui-text-center">
+    Copyright &copy; 2024 - 2024 Steve ZMT<br>
+    由 <a href="https://hexo.io/" target="_blank" class="mdui-text-color-theme-accent">Hexo</a> 强力驱动 | <a href="https://icp.gov.moe/?keyword=20240571" target="_blank" class="mdui-text-color-theme-accent">萌ICP备20240571号</a>
+    <br>
+      <span id="busuanzi_container_site_pv" style="display: none;"><i class="iconfont">&#xe7fd;</i> <span id="busuanzi_value_site_pv"></span></span> &nbsp;&nbsp;
+      <span id="busuanzi_container_site_uv" style="display: none;"><i class="iconfont">&#xe601;</i> <span id="busuanzi_value_site_uv"></span></span>
+    
+  </div>
+</footer>
+
+  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons">arrow_upward</i></button>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+<script src="/js/mdui.js"></script>
+<script src="/js/script.js"></script>
+
+  
+<script src="/custom.js"></script>
+
+</body>
+</html>
