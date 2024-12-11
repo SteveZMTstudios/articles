@@ -8,6 +8,15 @@ Main分支 构建状态：<a href='https://github.com/SteveZMTstudios/articles/a
 
 博客主题和框架修改自[聂明照的博客](https://github.com/niemingzhao/niemingzhao.github.io)和[Meadow](https://garybear.cn/hexo-theme-meadow/#/README)。
 
+// TODO
+当前dev目标:
+- [ ] 配置完成多语言支持
+  - [ ]引入插件
+  - [ ]配置插件
+  - [ ]配置主题
+  - [ ]配置文章
+
+
 ---
 
 注: 不建议采用main分支下的theme文件。虽然我添加了一些对博客来说有利的更改，但是我不保证它们都是按规范编写的。<br>
