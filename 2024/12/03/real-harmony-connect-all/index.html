@@ -26,7 +26,7 @@
 <meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/4_compressed.jpg">
 <meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/5_compressed.jpg">
 <meta property="article:published_time" content="2024-12-03T12:15:22.000Z">
-<meta property="article:modified_time" content="2024-12-10T11:23:23.756Z">
+<meta property="article:modified_time" content="2024-12-11T12:44:01.853Z">
 <meta property="article:author" content="Steve ZMT">
 <meta property="article:tag" content="root">
 <meta property="article:tag" content="安卓">
@@ -115,8 +115,8 @@
   <aside id="sidebar" class="mdui-drawer mdui-drawer-full-height">
   <script>var a=localStorage.getItem("mdui-drawer-close");if(a){document.getElementById("sidebar").className+=" mdui-drawer-close"};</script>
   <div class="mdui-grid-tile">
-    <img src="/images/banner.png" style="height: 160px;">
-    <img src="/images/avatar.jpg@128x128.jpg" class="avatar-animation" style="position: absolute; top: 10%; left: 24px; width: 64px; height: 64px; border: 2px solid #fff; border-radius: 50%;">
+    <img src="./images/loading.gif" data-original="/images/banner.png" style="height: 160px;">
+    <img src="./images/loading.gif" data-original="/images/avatar.jpg@128x128.jpg" class="avatar-animation" style="position: absolute; top: 10%; left: 24px; width: 64px; height: 64px; border: 2px solid #fff; border-radius: 50%;">
     <div class="mdui-grid-tile-actions">
       <div class="mdui-grid-tile-text">
         <div class="mdui-grid-tile-title">Steve ZMT</div>
@@ -220,7 +220,7 @@
   <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
   <article class="mdui-card mdui-m-b-5">
     <header class="mdui-card-media">
-      <img src="https://mirror.blog.stevezmt.top/images/random/material-7.png" style="max-height: 240px; width: 100%; object-fit: cover;">
+      <img src="./images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/random/material-17.png" style="max-height: 240px; width: 100%; object-fit: cover;">
       <div class="mdui-card-media-covered">
         <div class="mdui-card-primary">
             <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;">几乎超越鸿蒙的完全互联方案</h1></div>
@@ -288,7 +288,7 @@ Zerotier固然也可以，但是它不会主动穿透NAT，而且中转速度超
 
 - 配置完Tailscale后，记得在管理面板上打开TailDrop，这样你就可以实现传文件的功能了，当然kde connect的传文件也很不错，如果你用linux的话，那还是选择kde connect吧。
 </code></pre>
-<h3 id="2-安装KDE-Connect"><a href="#2-安装KDE-Connect" class="headerlink" title="2. 安装KDE Connect"></a>2. 安装KDE Connect</h3><p>   这点我想不用多说了，软件在<a target="_blank" rel="noopener" href="https://kdeconnect.kde.org/">官网（Windows端）</a>,<a target="_blank" rel="noopener" href="https://f-droid.org/packages/org.kde.kdeconnect_tp/">F-Droid（安卓端）</a>&#x2F;<a target="_blank" rel="noopener" href="https://appgallery.cloud.huawei.com/ag/n/app/C104724723">华为应用商店</a>&#x2F;<a target="_blank" rel="noopener" href="https://play.google.com/store/apps/details?id=org.kde.kdeconnect_tp" title="您所在的国家和地区可能无法访问此链接。">Google Play 商店</a>,<a target="_blank" rel="noopener" href="https://apps.apple.com/app/kde-connect/id1580245991">App Store（iOS）</a>或<a target="_blank" rel="noopener" href="https://openrepos.net/content/r1tschy/sailfish-connect">OpenRepos（Salifish）</a>上有。<br>   Windows上也可以配置Kde Connect主机，但是功能没有在Linux &amp; KDE Plasma上全。大概就是远程指令用不了，其他没啥损失。<br>   因为Tailscale的虚拟局域网网段不在你的路由器的DHCP分配范围内，也不在常规的内网网段内，所以你的设备可能会有两个ip，一个是局域网ip，一个是Tailscale的ip。这时候你要在KDE Connect的设置里面手动添加你的Tailscale ip，这样你就可以在外网访问到你的设备了。<br>   <img src="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/2_compressed.jpg" alt="图片"><br>   你可以在Tailscale客户端的设置里面配置DNS，这样你就可以通过设备名访问你的设备;也可以用ip来配置，ip列表在Tailscale 客户端上有的。也可以在Tailscale admin网页上查询。<br>   总之KDE Connect真的是非常的全能，除了在电脑上接电话它几乎把所有必要的功能都做了。</p>
+<h3 id="2-安装KDE-Connect"><a href="#2-安装KDE-Connect" class="headerlink" title="2. 安装KDE Connect"></a>2. 安装KDE Connect</h3><p>   这点我想不用多说了，软件在<a target="_blank" rel="noopener" href="https://kdeconnect.kde.org/">官网（Windows端）</a>,<a target="_blank" rel="noopener" href="https://f-droid.org/packages/org.kde.kdeconnect_tp/">F-Droid（安卓端）</a>&#x2F;<a target="_blank" rel="noopener" href="https://appgallery.cloud.huawei.com/ag/n/app/C104724723">华为应用商店</a>&#x2F;<a target="_blank" rel="noopener" href="https://play.google.com/store/apps/details?id=org.kde.kdeconnect_tp" title="您所在的国家和地区可能无法访问此链接。">Google Play 商店</a>,<a target="_blank" rel="noopener" href="https://apps.apple.com/app/kde-connect/id1580245991">App Store（iOS）</a>或<a target="_blank" rel="noopener" href="https://openrepos.net/content/r1tschy/sailfish-connect">OpenRepos（Salifish）</a>上有。<br>   Windows上也可以配置Kde Connect主机，但是功能没有在Linux &amp; KDE Plasma上全。大概就是远程指令用不了，其他没啥损失。<br>   因为Tailscale的虚拟局域网网段不在你的路由器的DHCP分配范围内，也不在常规的内网网段内，所以你的设备可能会有两个ip，一个是局域网ip，一个是Tailscale的ip。这时候你要在KDE Connect的设置里面手动添加你的Tailscale ip，这样你就可以在外网访问到你的设备了。<br>   <img src="./images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/2_compressed.jpg" alt="图片"><br>   你可以在Tailscale客户端的设置里面配置DNS，这样你就可以通过设备名访问你的设备;也可以用ip来配置，ip列表在Tailscale 客户端上有的。也可以在Tailscale admin网页上查询。<br>   总之KDE Connect真的是非常的全能，除了在电脑上接电话它几乎把所有必要的功能都做了。</p>
 <h3 id="3-配置SSH（可选）"><a href="#3-配置SSH（可选）" class="headerlink" title="3. 配置SSH（可选）"></a>3. 配置SSH（可选）</h3><p>   配置SSH的教程很多，你在你的Linux电脑上配置好SSH服务，就可以在远程办公的时候用VSCode的Remote SSH插件，或者用Termux的SSH客户端，或者用其他SSH客户端访问你的设备了。<br>   如果你是Windows电脑，那就打开你电脑的远程桌面服务（RDP），手机上安装RDP 客户端（windows笔记本不需要配置），接入Tailscale就可以远程了。<br>   Linux电脑上就安装xrdp或krfb（超卡，不知道哪里的问题），手机上安装VNC客户端，接入Tailscale就可以远程了。</p>
 <h3 id="4-配置SFTP（可选）或syncthing（可选）"><a href="#4-配置SFTP（可选）或syncthing（可选）" class="headerlink" title="4. 配置SFTP（可选）或syncthing（可选）"></a>4. 配置SFTP（可选）或syncthing（可选）</h3><p>   如果你想在远程访问你的文件，那么你可以配置SFTP，或者用syncthing同步你的文件。<br>   SFTP的配置教程很多，你可以在你的Linux电脑上配置好SFTP服务，然后用你的手机上的文件管理器访问你的文件。<br>   syncthing的配置教程也很多，你可以在你的Linux电脑上配置好syncthing服务，然后用你的手机上的syncthing客户端同步你的文件。<br>   （syncthing我就没配置成功过，所以不过多指点了）</p>
 <h2 id="怎么使用"><a href="#怎么使用" class="headerlink" title="怎么使用"></a>怎么使用</h2><ol>
@@ -297,25 +297,25 @@ Zerotier固然也可以，但是它不会主动穿透NAT，而且中转速度超
 </ul>
 </li>
 <li>异地访问设备文件<ul>
-<li>这个就更简单了，电脑可以直接在托盘图标上右键，选择远程文件访问，然后在电脑上就可以访问手机的文件了。<br><img src="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/7_compressed.jpg" alt="图片"></li>
+<li>这个就更简单了，电脑可以直接在托盘图标上右键，选择远程文件访问，然后在电脑上就可以访问手机的文件了。<br><img src="./images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/7_compressed.jpg" alt="图片"></li>
 <li>手机访问电脑的话可能就还得依赖SCP。</li>
 </ul>
 </li>
 <li>远程桌面<br>这个前面提得很清楚了，不过体验不好，不推荐。</li>
 <li>通知同步<br> 这个就更简单了，打开手机的通知访问权限，在kde里面把广播设备通知打开就好了（x<br> 部分手机需要打开验证码读取权限</li>
 <li>手机当鼠标键盘<br>如果kde connect授过权的话应该开箱即用的</li>
-<li>剪贴板同步<br>电脑会自动同步到手机上。手机下拉通知栏，选择发送剪贴板，就可以发送到所有设备<br> <img src="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/6_compressed.jpg" alt="图片"></li>
-<li>远程锁屏&#x2F;关机&#x2F;快捷执行指令<br>这个需要Linux &amp; KDE Plasma的kde connect主机，然后在手机上就可以远程执行指令了。<br>还可以把快捷方式放到设备管理器（小米设备的在控制中心，叫智能生活）<br><img src="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/1_compressed.jpg" alt="图片"></li>
-<li>浏览器投放<br>手机选择共享网页，在电脑上就可以看到了。<br><img src="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/4_compressed.jpg" alt="图片"><br>电脑要安装浏览器插件<a target="_blank" rel="noopener" href="https://community.kde.org/Plasma/Browser_Integration">KDE Plasma浏览器集成</a></li>
+<li>剪贴板同步<br>电脑会自动同步到手机上。手机下拉通知栏，选择发送剪贴板，就可以发送到所有设备<br> <img src="./images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/6_compressed.jpg" alt="图片"></li>
+<li>远程锁屏&#x2F;关机&#x2F;快捷执行指令<br>这个需要Linux &amp; KDE Plasma的kde connect主机，然后在手机上就可以远程执行指令了。<br>还可以把快捷方式放到设备管理器（小米设备的在控制中心，叫智能生活）<br><img src="./images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/1_compressed.jpg" alt="图片"></li>
+<li>浏览器投放<br>手机选择共享网页，在电脑上就可以看到了。<br><img src="./images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/4_compressed.jpg" alt="图片"><br>电脑要安装浏览器插件<a target="_blank" rel="noopener" href="https://community.kde.org/Plasma/Browser_Integration">KDE Plasma浏览器集成</a></li>
 <li>互联打印<br>把打印机ip添加上<br>理论可行，但是我没有打印机，所以没测试过。</li>
-<li>类AirDrop<br>电脑上右键文件，选择发送到…，然后选择手机就好了。<br>手机上共享就找到了。<br><img src="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/5_compressed.jpg" alt="图片"></li>
+<li>类AirDrop<br>电脑上右键文件，选择发送到…，然后选择手机就好了。<br>手机上共享就找到了。<br><img src="./images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/5_compressed.jpg" alt="图片"></li>
 </ol>
 <h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这个方案的优点是几乎无感知的实现了类似鸿蒙宣传的的完全互联方案，缺点是只能限制在你自己的设备，而且有一定的延迟。<br>屏幕共享和远程控制还是不是很完善，等我研究一段时间。</p>
 
       
       <blockquote>
         
-          <strong>此页内容遵循<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank" rel="license noopener noreferrer" style="display:inline-block;"> 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1" alt=""></a></strong><br>
+          <strong>此页内容遵循<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank" rel="license noopener noreferrer" style="display:inline-block;"> 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="./images/loading.gif" data-original="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="./images/loading.gif" data-original="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="./images/loading.gif" data-original="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="./images/loading.gif" data-original="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1" alt=""></a></strong><br>
         
         <strong>本文链接：</strong><br><a href="https://blog.stevezmt.top/2024/12/03/real-harmony-connect-all/">https://blog.stevezmt.top/2024/12/03/real-harmony-connect-all/</a>
       </blockquote>
@@ -429,5 +429,18 @@ Zerotier固然也可以，但是它不会主动穿透NAT，而且中转速度超
   
 <script src="/custom.js"></script>
 
-</body>
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: false,
+                preloadRatio: 3,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
 </html>
