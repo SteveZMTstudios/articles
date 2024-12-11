@@ -1,10 +1,10 @@
 博客地址：[blog.stevezmt.top](https://blog.stevezmt.top)
 
-构建状态：<a href='https://github.com/SteveZMTstudios/articles/actions/workflows/hexo-deploy.yml'><img src='https://github.com/SteveZMTstudios/articles/actions/workflows/hexo-deploy.yml/badge.svg'></a> <a href='https://github.com/SteveZMTstudios/articles/actions/workflows/pages/pages-build-deployment'><img src='https://github.com/SteveZMTstudios/articles/actions/workflows/pages/pages-build-deployment/badge.svg'></a>
+Main分支 构建状态：<a href='https://github.com/SteveZMTstudios/articles/actions/workflows/hexo-deploy.yml'><img src='https://github.com/SteveZMTstudios/articles/actions/workflows/hexo-deploy.yml/badge.svg'></a> <a href='https://github.com/SteveZMTstudios/articles/actions/workflows/pages/pages-build-deployment'><img src='https://github.com/SteveZMTstudios/articles/actions/workflows/pages/pages-build-deployment/badge.svg'></a>
 
-[![打开 页面创建器](https://img.shields.io/badge/%E9%A1%B5%E9%9D%A2%E5%88%9B%E5%BB%BA%E5%99%A8-%E5%BC%80%E5%A7%8B-green)](https://blog.stevezmt.top/new)
+不稳定分支，仅用作本地实验。
 
-尚在进一步开发，部分功能可能无法使用或不可用。
+该分支页面无法稳定渲染，甚至可能无法显示。
 
 博客主题和框架修改自[聂明照的博客](https://github.com/niemingzhao/niemingzhao.github.io)和[Meadow](https://garybear.cn/hexo-theme-meadow/#/README)。
 
