@@ -12,15 +12,15 @@
 
   <link rel="shortcut icon" href="/images/favicon.png">
   <link rel="alternate" href="/atom.xml" title="老史尬侃 - Steve ZMT 's Blog" type="application/atom+xml">
-  <meta name="description" content="function replaceText() {     const params &#x3D; new URLSearchParams(window.location.search);     const goto &#x3D; params.get(&#39;goto&#39;);     document.getElementById(&quot;showlnk&quot;).innerText &#x3D; goto; }  window.onlo">
+  <meta name="description" content="function replaceText() {     const params &#x3D; new URLSearchParams(window.location.search);     const goto &#x3D; params.get(&#39;goto&#39;);     document.getElementById(&quot;showlnk&quot;).innerText &#x3D; goto; }  function che">
 <meta property="og:type" content="website">
 <meta property="og:title" content="即将跳转">
 <meta property="og:url" content="https://blog.stevezmt.top/redirect/index.html">
 <meta property="og:site_name" content="老史尬侃 - Steve ZMT &#39;s Blog">
-<meta property="og:description" content="function replaceText() {     const params &#x3D; new URLSearchParams(window.location.search);     const goto &#x3D; params.get(&#39;goto&#39;);     document.getElementById(&quot;showlnk&quot;).innerText &#x3D; goto; }  window.onlo">
+<meta property="og:description" content="function replaceText() {     const params &#x3D; new URLSearchParams(window.location.search);     const goto &#x3D; params.get(&#39;goto&#39;);     document.getElementById(&quot;showlnk&quot;).innerText &#x3D; goto; }  function che">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="1970-01-01T00:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-15T09:27:44.360Z">
+<meta property="article:modified_time" content="2024-12-15T10:09:51.219Z">
 <meta property="article:author" content="Steve ZMT">
 <meta property="article:tag" content="blog">
 <meta property="article:tag" content="博客">
@@ -230,7 +230,7 @@
   <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
   <article class="mdui-card mdui-m-b-5">
     <header class="mdui-card-media">
-      <img src="https://mirror.blog.stevezmt.top/images/random/material-11.png" style="max-height: 240px; width: 100%; object-fit: cover;">
+      <img src="https://mirror.blog.stevezmt.top/images/random/material-9.png" style="max-height: 240px; width: 100%; object-fit: cover;">
       <div class="mdui-card-media-covered">
         <div class="mdui-card-primary">
             <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;">即将跳转</h1></div>
@@ -282,29 +282,56 @@
     <div class="mdui-card-content mdui-typo">
       <script>
 
-
 function replaceText() {
     const params = new URLSearchParams(window.location.search);
     const goto = params.get('goto');
     document.getElementById("showlnk").innerText = goto;
 }
 
-window.onload = function() {
+function checkHttps(url) {
+  const httpsUrl = url.replace(/^http:/, 'https:');
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 5000); // 5秒超时
+
+  return fetch(httpsUrl, {
+    method: 'HEAD',
+    signal: controller.signal,
+    mode: 'no-cors'
+  })
+    .then(response => {
+      clearTimeout(timeoutId);
+      return 'HTTPS 安全连接';
+    })
+    .catch(error => {
+      clearTimeout(timeoutId);
+      if (error.name === 'AbortError') {
+        return 'failed';  // 修改返回值以区分超时情况
+      }
+      return '普通连接';
+    });
+}
+
+window.onload = async function() {
   const params = new URLSearchParams(window.location.search);
   const goto = params.get('goto');
 
   if (goto) {
     try {
       const url = new URL(goto);
-      const protocol = url.protocol === 'https' ? ' 安全连接' : 'HTTP 普通连接';
- 
+      const protocol = await checkHttps(goto);
+      
+      // 根据不同的连接状态显示不同的图标
+      const thirdIcon = protocol === 'failed' ? 
+        '<svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24"><path fill="#eab308" d="M13.82 14H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2c0 .5-.04 1-.1 1.46c.6-.5 1.32-.89 2.1-1.14V12c0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2v.18c.7.17 1.35.45 1.95.82c.05-.32.05-.66.05-1c0-5.5-4.5-10-10-10C6.47 2 2 6.5 2 12s4.5 10 10 10c.34 0 .68 0 1-.05c-.41-.66-.71-1.4-.87-2.2c-.04.07-.08.14-.13.21c-.83-1.2-1.5-2.53-1.91-3.96h2.41c.31-.75.76-1.42 1.32-2m5.1-6h-2.95a15.7 15.7 0 0 0-1.38-3.56c1.84.63 3.37 1.9 4.33 3.56M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2zm.82 2H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m10.5 6C16 14 14 16 14 18.5s2 4.5 4.5 4.5s4.5-2 4.5-4.5s-2-4.5-4.5-4.5m0 7.5c-1.66 0-3-1.34-3-3c0-.56.15-1.08.42-1.5L20 21.08c-.42.27-.94.42-1.5.42m2.58-1.5L17 15.92c.42-.27.94-.42 1.5-.42c1.66 0 3 1.34 3 3c0 .56-.15 1.08-.42 1.5"/></svg>' :
+        '<svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24"><path fill="#0284c7" d="M16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2m-5.15 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56M14.34 14H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2M12 19.96c-.83-1.2-1.5-2.53-1.91-3.96h3.82c-.41 1.43-1.08 2.76-1.91 3.96M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m-2.92 8H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16m-.82-2C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M18.92 8h-2.95a15.7 15.7 0 0 0-1.38-3.56c1.84.63 3.37 1.9 4.33 3.56M12 2C6.47 2 2 6.5 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg>';
+      
       document.getElementById('target-info').innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2M7.07 18.28c.43-.9 3.05-1.78 4.93-1.78s4.5.88 4.93 1.78A7.9 7.9 0 0 1 12 20c-1.86 0-3.57-.64-4.93-1.72m11.29-1.45c-1.43-1.74-4.9-2.33-6.36-2.33s-4.93.59-6.36 2.33A7.93 7.93 0 0 1 4 12c0-4.41 3.59-8 8-8s8 3.59 8 8c0 1.82-.62 3.5-1.64 4.83M12 6c-1.94 0-3.5 1.56-3.5 3.5S10.06 13 12 13s3.5-1.56 3.5-3.5S13.94 6 12 6m0 5a1.5 1.5 0 0 1-1.5-1.5A1.5 1.5 0 0 1 12 8a1.5 1.5 0 0 1 1.5 1.5A1.5 1.5 0 0 1 12 11"/></svg>
         <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24"><path fill="currentColor" d="M4 11v2h12l-5.5 5.5l1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5L16 11z"/></svg>
-        <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24"><path fill="#0284c7" d="M16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2m-5.15 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56M14.34 14H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2M12 19.96c-.83-1.2-1.5-2.53-1.91-3.96h3.82c-.41 1.43-1.08 2.76-1.91 3.96M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m-2.92 8H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16m-.82-2C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M18.92 8h-2.95a15.7 15.7 0 0 0-1.38-3.56c1.84.63 3.37 1.9 4.33 3.56M12 2C6.47 2 2 6.5 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg>
+        ${thirdIcon}
         <p>您即将访问以下网站：</p>
         <p><span id="showlnk" style="cursor: pointer; text-decoration: underline; font-weight: bold;" onclick="replaceText()">${url.hostname}</span></p>
-        <p>连接类型：${protocol}</p>
+        <p>连接类型：${protocol === 'failed' ? '连接超时，可能无法打开页面。' : protocol}</p>
         <p>您将要访问的链接不属于老史尬侃或 stevezmt.top ，请注意您的账号和财产安全。</p>
 
         <div class="mdui-btn-group">
