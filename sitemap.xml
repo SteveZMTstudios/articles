@@ -47,7 +47,7 @@
   </url>
   
   <url>
-    <loc>https://blog.stevezmt.top/tagcloud/index.html</loc>
+    <loc>https://blog.stevezmt.top/new/index.html</loc>
     
     <lastmod>2024-12-11</lastmod>
     
@@ -65,7 +65,7 @@
   </url>
   
   <url>
-    <loc>https://blog.stevezmt.top/new/index.html</loc>
+    <loc>https://blog.stevezmt.top/tagcloud/index.html</loc>
     
     <lastmod>2024-12-11</lastmod>
     
@@ -83,7 +83,7 @@
   </url>
   
   <url>
-    <loc>https://blog.stevezmt.top/2024/02/01/root-on-scanpen/</loc>
+    <loc>https://blog.stevezmt.top/2024/12/01/talk-about-x-ai/</loc>
     
     <lastmod>2024-12-11</lastmod>
     
@@ -92,7 +92,7 @@
   </url>
   
   <url>
-    <loc>https://blog.stevezmt.top/2024/12/01/talk-about-x-ai/</loc>
+    <loc>https://blog.stevezmt.top/2024/02/01/root-on-scanpen/</loc>
     
     <lastmod>2024-12-11</lastmod>
     
@@ -135,6 +135,13 @@
   </url>
   
   <url>
+    <loc>https://blog.stevezmt.top/tags/xposed/</loc>
+    <lastmod>2024-12-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.stevezmt.top/tags/%E5%AE%89%E5%8D%93/</loc>
     <lastmod>2024-12-15</lastmod>
     <changefreq>weekly</changefreq>
@@ -170,13 +177,6 @@
   </url>
   
   <url>
-    <loc>https://blog.stevezmt.top/tags/xposed/</loc>
-    <lastmod>2024-12-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.stevezmt.top/tags/AI/</loc>
     <lastmod>2024-12-15</lastmod>
     <changefreq>weekly</changefreq>
@@ -200,14 +200,14 @@
   </url>
   
   <url>
-    <loc>https://blog.stevezmt.top/categories/%E6%8A%98%E8%85%BE/%E7%94%B5%E5%AD%90%E5%9E%83%E5%9C%BE/</loc>
+    <loc>https://blog.stevezmt.top/categories/%E6%8A%80%E6%9C%AF/</loc>
     <lastmod>2024-12-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://blog.stevezmt.top/categories/%E6%8A%80%E6%9C%AF/</loc>
+    <loc>https://blog.stevezmt.top/categories/%E6%8A%98%E8%85%BE/%E7%94%B5%E5%AD%90%E5%9E%83%E5%9C%BE/</loc>
     <lastmod>2024-12-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
