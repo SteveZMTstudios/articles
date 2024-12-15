@@ -202,7 +202,25 @@
   </div>
 </aside>
 
-  <main id="main" class="mdui-m-t-5 fadeIn animated">
+  <main id="main" class="mdui-m-t-5 fadeIn animated"><script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 获取所有文章内容中的链接
+    const links = document.querySelectorAll('.mdui-card-content a');
+    
+    links.forEach(link => {
+      const href = link.getAttribute('href');
+      // 检查链接是否为外部链接(不是blog.stevezmt.top或mirror.blog.stevezmt.top)
+      if (href && href.startsWith('http') && 
+          !href.includes('blog.stevezmt.top') && 
+          !href.includes('mirror.blog.stevezmt.top')) {
+        // 重定向到redirect页面
+        link.href = `/redirect?goto=${encodeURIComponent(href)}`;
+      }
+    });
+  });
+  </script>
+
+
   
 <link rel="stylesheet" href="//cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css">
 
@@ -210,7 +228,7 @@
   <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
   <article class="mdui-card mdui-m-b-5">
     <header class="mdui-card-media">
-      <img src="https://mirror.blog.stevezmt.top/images/random/material-3.png" style="max-height: 240px; width: 100%; object-fit: cover;">
+      <img src="https://mirror.blog.stevezmt.top/images/random/material-9.png" style="max-height: 240px; width: 100%; object-fit: cover;">
       <div class="mdui-card-media-covered">
         <div class="mdui-card-primary">
             <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;">关于 x.ai 的一些看法</h1></div>
