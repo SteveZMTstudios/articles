@@ -1,5 +1,5 @@
-https://blog.stevezmt.top/friends/index.html
 https://blog.stevezmt.top/redirect/index.html
+https://blog.stevezmt.top/friends/index.html
 https://blog.stevezmt.top/about/index.html
 https://blog.stevezmt.top/404.html
 https://blog.stevezmt.top/timeline/index.html
