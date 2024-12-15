@@ -19,17 +19,17 @@
 <meta property="og:site_name" content="老史尬侃 - Steve ZMT &#39;s Blog">
 <meta property="og:description" content="此页面最初由我自己发布在酷安  #你永远不知道酷友在用什么刷酷安##翻译笔# #Root# 基于adb、wwr、mtkclient、SP flash tool、短接，以实现解锁bl并且刷入magisk的方案。仅支持可拆卸的，基于联发科芯片的杂牌词典笔，不过方案思路大致一致，有道讯飞等使用定制Linux的词典笔无效（，请自行在GitHub搜索penmod）。 如果你连开发者选项都没打开或者没有体验">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://blog.stevezmt.top/2024/02/01/root-on-scanpen/images/loading.gif">
-<meta property="og:image" content="https://blog.stevezmt.top/2024/02/01/root-on-scanpen/images/loading.gif">
-<meta property="og:image" content="https://blog.stevezmt.top/2024/02/01/root-on-scanpen/images/loading.gif">
-<meta property="og:image" content="https://blog.stevezmt.top/2024/02/01/root-on-scanpen/images/loading.gif">
-<meta property="og:image" content="https://blog.stevezmt.top/2024/02/01/root-on-scanpen/images/loading.gif">
-<meta property="og:image" content="https://blog.stevezmt.top/2024/02/01/root-on-scanpen/images/loading.gif">
-<meta property="og:image" content="https://blog.stevezmt.top/2024/02/01/root-on-scanpen/images/loading.gif">
-<meta property="og:image" content="https://blog.stevezmt.top/2024/02/01/root-on-scanpen/images/loading.gif">
-<meta property="og:image" content="https://blog.stevezmt.top/2024/02/01/root-on-scanpen/images/loading.gif">
-<meta property="og:image" content="https://blog.stevezmt.top/2024/02/01/root-on-scanpen/images/loading.gif">
-<meta property="og:image" content="https://blog.stevezmt.top/2024/02/01/root-on-scanpen/images/loading.gif">
+<meta property="og:image" content="https://blog.stevezmt.top/images/loading.gif">
+<meta property="og:image" content="https://blog.stevezmt.top/images/loading.gif">
+<meta property="og:image" content="https://blog.stevezmt.top/images/loading.gif">
+<meta property="og:image" content="https://blog.stevezmt.top/images/loading.gif">
+<meta property="og:image" content="https://blog.stevezmt.top/images/loading.gif">
+<meta property="og:image" content="https://blog.stevezmt.top/images/loading.gif">
+<meta property="og:image" content="https://blog.stevezmt.top/images/loading.gif">
+<meta property="og:image" content="https://blog.stevezmt.top/images/loading.gif">
+<meta property="og:image" content="https://blog.stevezmt.top/images/loading.gif">
+<meta property="og:image" content="https://blog.stevezmt.top/images/loading.gif">
+<meta property="og:image" content="https://blog.stevezmt.top/images/loading.gif">
 <meta property="article:published_time" content="2024-02-01T06:55:00.000Z">
 <meta property="article:modified_time" content="2024-12-11T12:44:01.853Z">
 <meta property="article:author" content="Steve ZMT">
@@ -37,7 +37,7 @@
 <meta property="article:tag" content="安卓">
 <meta property="article:tag" content="单词笔">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog.stevezmt.top/2024/02/01/root-on-scanpen/images/loading.gif">
+<meta name="twitter:image" content="https://blog.stevezmt.top/images/loading.gif">
 
   <meta name="keywords" content=",root,安卓,单词笔">
   <meta name="format-detection" content="telephone=no,email=no">
@@ -305,13 +305,13 @@
 <p>完成以上准备后，继续下一步。</p>
 <p>如果你不要解锁，<a href="#0x03%EF%BC%9A%E6%8F%90%E5%8F%96%E5%88%86%E5%8C%BA-%E8%B7%B3%E8%87%B3%E6%AD%A4%E5%A4%84-%E2%AC%85%EF%B8%8F">直接从0x03开始看⤵️</a></p>
 <h2 id="0x01-焊接音量线（有音量键，或不需要解锁的可跳过）"><a href="#0x01-焊接音量线（有音量键，或不需要解锁的可跳过）" class="headerlink" title="0x01.焊接音量线（有音量键，或不需要解锁的可跳过）"></a>0x01.焊接音量线（有音量键，或不需要解锁的可跳过）</h2><p>拆开设备，这里以从屏幕处拆开为例：<br>1.用指甲把屏幕四周的胶分离开，但是只留一条缝<br>2.小心地抬起屏幕，把排线夹抠出来<br>3.去除固定的3颗螺丝，并把摄像头夹取出，放到小纸盒里面省得丢<br>4.在主板中下部有2个卡扣，小心地用小一字螺丝刀卡出<br>5.小心地把摄像头从底板槽中取出<br>6.小心地把主板抬起，拔下喇叭接线<br>7.把按键塑料块放到小纸盒里面<br>8.查看主板背面，拔电池，预热焊笔</p>
-<p><img src="./images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/1_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>从上到下1－6，1 4音量下、24音量上</p>
+<p><img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/1_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>从上到下1－6，1 4音量下、24音量上</p>
 <p>9.先在焊笔上涂一层焊锡，然后固定导线，使得导线拨了皮的铜丝末端对准焊板<br>10.先焊笔预热焊盘，然后焊锡接触到焊板和导线之间，当焊锡融化后立刻移除焊锡，再移除焊笔<br>用橡皮泥固定主板和导线，使得导线铜丝刚好在触点上，左手焊笔右手焊锡，先焊笔接触预热，再放上焊锡，熔化后先拿开焊锡，再拿开焊笔<br>如果连焊或者焊错位，不要直接拔导线！要用焊笔融化焊锡然后移除导线<br>11.完成后把屏幕排线扣回去，开机，测试音量线短接后机子有无反应。0x05：你要知道的一些事情<br>设备不能用音量键重启到fastboot，因此你只能用mtk bypass工具启动到fastboot<br>方法：关机或拔电池，bypass工具选reboot fastboot ,插上电脑</p>
-<p><img src="./images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/2_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"></p>
+<p><img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/2_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"></p>
 <h2 id="0x02-解锁bootloader"><a href="#0x02-解锁bootloader" class="headerlink" title="0x02.&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;解锁bootloader&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;"></a>0x02.&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;解锁bootloader&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</h2><p>（只要设备不是安卓4及更旧的系统就有bl锁，可能读不出来，但就是有，因为你打fastboot oem unlock会没反应）<br>(经过试验,联发科部分廉价设备如mt6580等无需解锁，可直接使用SP Flash tool刷写，无需特地解锁，但是仍然存在校验完全的设备，请谨慎判断。)</p>
 <p>设备开机 (安卓6+设备需要开发者选项打开OEM解锁) ，电脑下载打开秋之盒atmb.top，运行右下角CMD命令行，在弹出黑窗口里输入adb reboot bootloader<br>以后类似的命令都是打在这里</p>
 <p>（或者拔电池强行重启，用bypass重启到fastboot）<br>词典笔屏幕亮起后，输入fastboot oem unlock<br>不管设备屏幕有无任何反应 (非裁切屏可以显示解锁提示) ，短接音量上，也就是24焊点，此时终端窗口应有反应，并且报告成功</p>
-<p><img src="./images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/3_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>解锁时窗口</p>
+<p><img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/3_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>解锁时窗口</p>
 <p>然后打fastboot reboot，此时设备会清除所有数据</p>
 <h2 id="0x03：提取分区-跳至此处-⬅️"><a href="#0x03：提取分区-跳至此处-⬅️" class="headerlink" title="0x03：提取分区 (跳至此处) ⬅️"></a>0x03：提取分区 (跳至此处) ⬅️</h2><p>一共有2个方案</p>
 <h3 id="1-wwr-sp-readback方案"><a href="#1-wwr-sp-readback方案" class="headerlink" title="1.wwr+sp readback方案"></a>1.wwr+sp readback方案</h3><p>特点：不需要焊音量键，但是提取的不一定完整，甚至可能就boot能用</p>
@@ -319,24 +319,24 @@
 <p>这期间下载SP flash tool、bypass tool和mtk驱动<br>完成安装<br>单词笔关机，电脑下载解压安装bypass tool，选择第一个选项，将单词笔连接到电脑，记录mt打头的编号。</p>
 <p>回到wwr，选择auto mode，点开1.generating empty scatter file<br>选取刚刚读到的设备代号。</p>
 <p>保存生成的scatter到一个目录<br>打开sp flashtool，保留wwr最小化或后台运行<br>(如果语言不对，左上角File里面选取Options，把English改成中文就行)<br>点开下载，在下面的第二个框里面选取刚刚创建的txt文本</p>
-<p><img src="./images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/4_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>应该只有一行，不是像我的这么多</p>
+<p><img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/4_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>应该只有一行，不是像我的这么多</p>
 <p>再打开内存测试选项卡<br>只勾选RAM测试，其他都不要勾</p>
-<p><img src="./images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/5_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>其他都不要勾选!!!</p>
+<p><img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/5_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>其他都不要勾选!!!</p>
 <p>点开始，设备关机，按中键或重插数据线，很快就读出一堆参数</p>
-<p><img src="./images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/6_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>图源4pda，这里图都来自4pda</p>
+<p><img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/6_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>图源4pda，这里图都来自4pda</p>
 <p>把这串复制到记事本上，不用保存<br>我们不关心0x0的地址，只需要4个值（其实是3个）</p>
-<p><img src="./images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/7_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>手机做图烦死，这张也是搬的</p>
+<p><img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/7_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>手机做图烦死，这张也是搬的</p>
 <p>然后点开回读选项卡<br>选择添加<br>双击新建的条目，选择rom_0保存位置（这是保存preloader）<br>区域选EMMC_BOOT_1，长度是你复制的第一个值</p>
-<p><img src="./images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/8_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>就改动第一个选单，和底下的长度</p>
+<p><img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/8_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>就改动第一个选单，和底下的长度</p>
 <p>然后单词笔插电脑上，按下中键或短暂的短路电池，或者把电池拔下再插上,此时底部进度条应该开始在跑，很快出现了一个绿圈或者一个大勾✔️。</p>
-<p><img src="./images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/9_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>这就是那个中键（los图片编辑真烂）</p>
+<p><img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/9_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>这就是那个中键（los图片编辑真烂）</p>
 <p>在回读里面添加一个条目，双击选择保存位置（保存出来的文件是完整的emmc数据无压缩，你需要存在比你单词笔总大小大的电脑磁盘上），区域选EMMC_USER，长度就是你记录在记事本下来的值，最底下的很大</p>
-<p><img src="./images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/10_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>取消勾选刚刚的rom_0<br>确保数据线，单词笔和主机连接稳定后，点开“回读”，再次按下单词笔的中键&#x2F;拔插数据线&#x2F;拔电池当进度条开始缓慢的移动时回读就已开始。<br>然后翻翻酷安，尽量不要动电脑，不要让电脑睡眠，不要锁屏，等待进度条跑完出现绿圈或大勾<br>再切回wwr，选择3.start autopilot，勾选第四个框，在右边选你的soc（如mt6582）<br>然后点start the process<br>在弹出的窗口里选择rom_0文件，也就是机器底层。<br>等进度条跑完后选择第一个build a clean firmware<br>选择你要保存固件的位置，然后软件开始疯狂输出（真），当出现done时弹出的文件夹应该已经有了你要的分区文件<br>⚠️ 注意! 尤其是mt6582用户<br>如果提示框出现了一大串information的绿色段落，大意是提取的固件不完整的，且你之前的操作都是按此帖说明来的；那很抱歉，你需要接受无法使用spflashtool刷写的事实，因为scatter不准确。不要使用任何来源的scatter刷写所有任何分区，无论来自adb或是preloader！如果你没解锁但是需要root，这下不得不解锁了，因为只能用fastboot刷写boot。提取的system.img是不能刷写的（大概？）所以你还需要保存好ROM_0和ROM_1。</p>
+<p><img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/10_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"><br>取消勾选刚刚的rom_0<br>确保数据线，单词笔和主机连接稳定后，点开“回读”，再次按下单词笔的中键&#x2F;拔插数据线&#x2F;拔电池当进度条开始缓慢的移动时回读就已开始。<br>然后翻翻酷安，尽量不要动电脑，不要让电脑睡眠，不要锁屏，等待进度条跑完出现绿圈或大勾<br>再切回wwr，选择3.start autopilot，勾选第四个框，在右边选你的soc（如mt6582）<br>然后点start the process<br>在弹出的窗口里选择rom_0文件，也就是机器底层。<br>等进度条跑完后选择第一个build a clean firmware<br>选择你要保存固件的位置，然后软件开始疯狂输出（真），当出现done时弹出的文件夹应该已经有了你要的分区文件<br>⚠️ 注意! 尤其是mt6582用户<br>如果提示框出现了一大串information的绿色段落，大意是提取的固件不完整的，且你之前的操作都是按此帖说明来的；那很抱歉，你需要接受无法使用spflashtool刷写的事实，因为scatter不准确。不要使用任何来源的scatter刷写所有任何分区，无论来自adb或是preloader！如果你没解锁但是需要root，这下不得不解锁了，因为只能用fastboot刷写boot。提取的system.img是不能刷写的（大概？）所以你还需要保存好ROM_0和ROM_1。</p>
 <h3 id="2-mtkclient方案（未测试）"><a href="#2-mtkclient方案（未测试）" class="headerlink" title="2.mtkclient方案（未测试）"></a>2.mtkclient方案（未测试）</h3><p>特点：部分mbr分区设备不能用，可以提全部分区但是一定要焊接音量线</p>
 <p>（以下流程是根据我自己以前玩机总结的方案）<br>首先还是bypass找找自己设备soc型号<br>如果它很旧，那么你需要准备一个u盘（要么为空，要么已经做好了ventoy引导）然后用rufus（查看链接<a target="_blank" rel="noopener" href="https://stevezmt.top/sharepoint/">这里</a> rufus.ie）烧录链接里面的查看链接<a target="_blank" rel="noopener" href="https://stevezmt.top/sharepoint/">这里</a>镜像（ventoy就直接拷进去）<br>[ Windows用户可以参考查看链接<a target="_blank" rel="noopener" href="https://stevezmt.top/sharepoint/">这里</a>（在手机上打开即可）里面的readme文档配置Python环境或者自行搜索配置mtkclient，然后下载查看链接就行，解压出来后在地址栏里面输cmd，键入python mtk_gui或者直接双击mtk_gui.bat打开主界面]<br>[livecd用户引导完成后就直接双击mtkclient进主界面，参考文档也是上面那个链接]<br>按住音量上下键，连接数据线，音量上下键不放，直到mtkclient窗口开始转圈，等待出现一堆选项，把你要的分区全部提出来，顺便你还可以备份下分区表</p>
 <p>上面这些文件可以在<a target="_blank" rel="noopener" href="https://stevezmt.top/sharepoint/">这里</a>获得。</p>
 <h2 id="0x04-安装magisk"><a href="#0x04-安装magisk" class="headerlink" title="0x04.安装magisk"></a>0x04.安装magisk</h2><p>1.github下载magisk23000版本，将安装包安装到单词笔上<br>（不管你想不想更新，都先用这个版本，它最低确保android5能运行。）<br>2.把刚提的boot.img用mtp或adb推到手机上<br>3.打开magisk，点安装，不勾选avb dm-verity以及其他任何选项<br>然后下一步，选择刚刚推送的boot.img,等待完成后用mtp或者adb pull出来保存在电脑上的任意位置。<br>4.打开mtk bypass，选择reboot fastboot选项，然后再次按下中键&#x2F;关机插入&#x2F;拔电池，在之前的终端里输fastboot flash boot [空格键]，然后不急着按回车，把刚刚提出来的magisk-patched_xxxxx.img拖动到命令窗口里面，再敲回车，直到出现OKAY字样，然后fastboot reboot，你就获得了root权限。<br>（如果你没解锁，并且不是mt6582机型设备，那么打开SP flash tool,导入原来的scatter,只勾选boot分区，双击后面路径选你的magisk_patched_xxxxx.img，选择方式为下载Download，然后开始下载，设备关机插入，等待红条和黄条跑完就行。）</p>
-<p><img src="./images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/11_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"></p>
+<p><img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/11_compressed.jpg" alt="加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top"></p>
 <h2 id="0x05：你要知道的一些事情"><a href="#0x05：你要知道的一些事情" class="headerlink" title="0x05：你要知道的一些事情"></a>0x05：你要知道的一些事情</h2><p>设备不能用音量键重启到fastboot，因此你只能用mtk bypass工具启动到fastboot<br>方法：关机或拔电池，bypass工具选reboot fastboot ,插上电脑</p>
 <p>你要保护好你的原始boot映像和提取的ROM_0,ROM_1</p>
 <p>如果你是用wwr方案提的分区，那要格外保存好ROM_0和ROM_1<br>应用程序不是总能安装到sd卡。<br>不要乱动开机动画，这机器删了开机动画就不开机，过度精简了属于是</p>
