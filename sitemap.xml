@@ -47,15 +47,6 @@
   </url>
   
   <url>
-    <loc>https://blog.stevezmt.top/new/index.html</loc>
-    
-    <lastmod>2024-12-11</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.stevezmt.top/tagcloud/index.html</loc>
     
     <lastmod>2024-12-11</lastmod>
@@ -66,6 +57,15 @@
   
   <url>
     <loc>https://blog.stevezmt.top/tags/index.html</loc>
+    
+    <lastmod>2024-12-11</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.stevezmt.top/new/index.html</loc>
     
     <lastmod>2024-12-11</lastmod>
     
@@ -135,13 +135,6 @@
   </url>
   
   <url>
-    <loc>https://blog.stevezmt.top/tags/xposed/</loc>
-    <lastmod>2024-12-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.stevezmt.top/tags/%E5%AE%89%E5%8D%93/</loc>
     <lastmod>2024-12-15</lastmod>
     <changefreq>weekly</changefreq>
@@ -171,6 +164,13 @@
   
   <url>
     <loc>https://blog.stevezmt.top/tags/KDE/</loc>
+    <lastmod>2024-12-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.stevezmt.top/tags/xposed/</loc>
     <lastmod>2024-12-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
