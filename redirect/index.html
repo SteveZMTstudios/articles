@@ -21,7 +21,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog.stevezmt.top/redirect/images/loading.gif">
 <meta property="article:published_time" content="1970-01-01T00:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-15T08:05:37.500Z">
+<meta property="article:modified_time" content="2024-12-15T08:33:17.073Z">
 <meta property="article:author" content="Steve ZMT">
 <meta property="article:tag" content="blog">
 <meta property="article:tag" content="博客">
@@ -232,7 +232,7 @@
   <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
   <article class="mdui-card mdui-m-b-5">
     <header class="mdui-card-media">
-      <img src="https://mirror.blog.stevezmt.top/images/random/material-7.png" style="max-height: 240px; width: 100%; object-fit: cover;">
+      <img src="https://mirror.blog.stevezmt.top/images/random/material-14.png" style="max-height: 240px; width: 100%; object-fit: cover;">
       <div class="mdui-card-media-covered">
         <div class="mdui-card-primary">
             <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;">即将跳转</h1></div>
@@ -295,10 +295,11 @@ window.onload = function() {
       const protocol = url.protocol === 'https' ? ' 安全连接' : 'HTTP 普通连接';
  
       document.getElementById('target-info').innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24"><path fill="currentColor" d="M12 19.2c-2.5 0-4.71-1.28-6-3.2c.03-2 4-3.1 6-3.1s5.97 1.1 6 3.1a7.23 7.23 0 0 1-6 3.2M12 5a3 3 0 0 1 3 3a3 3 0 0 1-3 3a3 3 0 0 1-3-3a3 3 0 0 1 3-3m0-3A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10c0-5.53-4.5-10-10-10"/></svg>
         <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 24 24"><path fill="currentColor" d="M4 11v2h12l-5.5 5.5l1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5L16 11z"/></svg>
-        <img src="./images/loading.gif" data-original="${url.origin}/favicon.ico" onerror="this.outerHTML='<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'3em\' height=\'3em\' viewBox=\'0 0 24 24\'><path fill=\'currentColor\' d=\'M4 11v2h12l-5.5 5.5l1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5L16 11z\'/></svg>'" style="width: 3em; height: 3em;">
+        <img src="./images/loading.gif" data-original="${url.origin}/favicon.ico" onerror="this.outerHTML='<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="3em" viewBox="0 0 24 24"><path fill="#0284c7" d="M16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2m-5.15 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 0 1-4.33 3.56M14.34 14H9.66c-.1-.66-.16-1.32-.16-2s.06-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2M12 19.96c-.83-1.2-1.5-2.53-1.91-3.96h3.82c-.41 1.43-1.08 2.76-1.91 3.96M8 8H5.08A7.92 7.92 0 0 1 9.4 4.44C8.8 5.55 8.35 6.75 8 8m-2.92 8H8c.35 1.25.8 2.45 1.4 3.56A8 8 0 0 1 5.08 16m-.82-2C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2M12 4.03c.83 1.2 1.5 2.54 1.91 3.97h-3.82c.41-1.43 1.08-2.77 1.91-3.97M18.92 8h-2.95a15.7 15.7 0 0 0-1.38-3.56c1.84.63 3.37 1.9 4.33 3.56M12 2C6.47 2 2 6.5 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg>'>
         <p>您即将访问以下网站：</p>
-        <p><strong>${url.hostname}</strong></p>
+        <p><span style="cursor: pointer; text-decoration: underline;" onclick="navigator.clipboard.writeText('${goto}').then(() => alert('原始链接已复制到剪贴板！'))">${url.hostname}</span></p>
         <p>连接类型：${protocol}</p>
         <div class="mdui-btn-group">
             <button onclick="window.location.href='${goto}'" class="mdui-btn mdui-btn-dense mdui-color-theme-accent mdui-ripple">继续访问</button> &nbsp;
