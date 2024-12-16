@@ -203,48 +203,56 @@
   <article class="mdui-card mdui-m-b-5">
     <div class="mdui-card-content mdui-typo mdui-ripple" id="notice-container">
       <i class="mdui-icon material-icons mdui-text-color-deep-orange">announcement</i> 
-      <!--ywqdgfdcfgvbjhnmhgfvcgbjhmk,mnjhbv;'wg[;-=t645u]['l786;t;,l4qegm;l vbby r5 utuyf t-->
+      <!--“宇宙小机器人是什么玩意”-->
       
         <span id="random-notice"></span>
         <script>
           document.addEventListener('DOMContentLoaded', function() {
-            const notices = "该站点尚在建设中。遇到问题请留言反馈！,????!!!!!??!?!?!??!?!?!!!!,我是一个懒人，所以这个站点可能会很久才更新一次。,这个博客基本上所有的精力都花在刀把上了...,“宇宙小机器人是什么玩意”,// TODO,我很可爱请给我钱qwq,console.log('Hello World!'),战神起跳，战神睡觉,喵！,ywqdgfdcfgvbjhnmhgfvcgbjhmk,mnjhbv;'wg[;-=t645u]['l786;t;,l4qegm;l vbby r5 utuyf t,歪比巴卜,冷知识———阿嚏！,🥵...热知识...,神要是公然去跟人作对，那是任何人都难以对付的。 ——《荷马史诗》,1 2 4 8 16 32 64 128 256 512 1024 2048 4096 8192 16384 32768 65536...,站长闲着无聊搓了一个页面创建器（位于/new），真的得叫他找个班上了...,其实404页面有个地方能点，用鼠标晃晃就能找到（,不要试图以php为url结尾访问本站。本站没有使用任何php页面。,致一位勤劳的俄罗斯黑客：本博客真的没有使用WordPress...,本站点不支持IE浏览器。（真的吗？）,::泼出去的水，我连盆都不要（,::师傅，教我分身术吧。”“首先，你要有把电锯。。。”（,::“你是一个很好奇的人”“为什么这么说？”“你看你又问了”,::小明一出生就没有手，原来是注册账号时忘记领新手礼包（,::人类每天都盖被子睡觉，所以人类是被子植物。,::人往高处走，水往低处流，人的80%是水，所以大部分人就算到了高处也还是下流的（x,::奶牛的英文是cow，所以牛奶的英文是woc（,::大英博物馆发生严重盗窃案，负责人发文哭诉同行内卷。,“我的法力不比如来佛差，你是怎么逃出我的手掌心的?”耶稣不解地问孙悟空（,你这辈子就是被咕咕华害了。".split(',');
+            const notices = ["该站点尚在建设中。遇到问题请留言<a target='_blank' href='https://github.com'>反馈</a>！","????!!!!!??!?!?!??!?!?!!!!","我是一个懒人，所以这个站点可能会很久才更新一次。","这个博客基本上所有的精力都花在刀把上了...","“宇宙小机器人是什么玩意”","// TODO","我很可爱请<a target='_blank' href='https://space.bilibili.com/474130186'>给我钱</a>qwq","console.log('Hello World!')","战神起跳，战神睡觉","喵！","ywqdgfdcfgvbjhnmhgfvcgbjhmkmnjhbv;'wg[;-=t645u]['l786;t;l4qegm;l vbby r5 utuyf t","歪比巴卜","冷知识———阿嚏！","🥵...热知识...","神要是公然去跟人作对，那是任何人都难以对付的。 ——《荷马史诗》","1 2 4 8 16 32 64 128 256 512 1024 2048 4096 8192 16384 32768 65536...","站长闲着无聊搓了一个<a target='_blank' href='/new'>页面创建器</a>，真的得叫他找个班上了...","其实404页面有个地方能点，用鼠标晃晃就能找到（","不要试图以php为url结尾访问本站。本站没有使用任何php页面。","致一位勤劳的俄罗斯黑客：本博客真的没有使用WordPress...","本站点不支持IE浏览器。（真的吗？）","::泼出去的水，我连盆都不要（","::师傅，教我分身术吧。”“首先，你要有把电锯。。。”（","::“你是一个很好奇的人”“为什么这么说？”“你看你又问了”","::小明一出生就没有手，原来是注册账号时忘记领新手礼包（","::人类每天都盖被子睡觉，所以人类是被子植物。","::人往高处走，水往低处流，人的80%是水，所以大部分人就算到了高处也还是下流的（x","::奶牛的英文是cow，所以牛奶的英文是woc（","::大英博物馆发生严重盗窃案，负责人发文哭诉同行内卷。","“我的法力不比如来佛差，你是怎么逃出我的手掌心的?”耶稣不解地问孙悟空（","你这辈子就是被咕咕华害了。"];
             let typing = false;
             let typingTimeout;
     
-            function typeWriter(text, element, speed, callback) {
-              let i = 0;
+            function typeWriter(html, element, speed, callback) {
+              const tempDiv = document.createElement('div');
+              tempDiv.innerHTML = html;
+              const nodes = Array.from(tempDiv.childNodes);
+              let currentNode = 0;
+              let currentChar = 0;
               typing = true;
+
               function type() {
                 if (!typing) return;
-                if (i < text.length) {
-                  element.innerHTML += text.charAt(i);
-                  i++;
-                  typingTimeout = setTimeout(type, speed);
-                } else {
+                
+                if (currentNode >= nodes.length) {
                   typing = false;
                   if (callback) callback();
+                  return;
                 }
+
+                const node = nodes[currentNode];
+                if (node.nodeType === Node.TEXT_NODE) {
+                  if (currentChar < node.length) {
+                    element.innerHTML += node.textContent[currentChar];
+                    currentChar++;
+                  } else {
+                    currentChar = 0;
+                    currentNode++;
+                  }
+                } else {
+                  element.innerHTML += node.outerHTML;
+                  currentNode++;
+                }
+                
+                typingTimeout = setTimeout(type, speed);
               }
+              
+              element.innerHTML = '';
               type();
             }
     
             function deleteWriter(element, speed, callback) {
-              let text = element.innerHTML;
-              let i = text.length;
-              typing = true;
-              function erase() {
-                if (!typing) return;
-                if (i > 0) {
-                  element.innerHTML = text.substring(0, i - 1);
-                  i--;
-                  typingTimeout = setTimeout(erase, speed);
-                } else {
-                  typing = false;
-                  if (callback) callback();
-                }
-              }
-              erase();
+              element.innerHTML = '';
+              if (callback) callback();
             }
     
             function displayRandomNotice() {
@@ -274,7 +282,7 @@
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2024/12/03/real-harmony-connect-all/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/random/material-4.png" style="max-height: 240px; width: 100%; object-fit: cover;">
+        <img src="/images/random/material-11.png" style="max-height: 240px; width: 100%; object-fit: cover;">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">几乎超越鸿蒙的完全互联方案</div>
@@ -306,7 +314,7 @@
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2024/12/01/talk-about-x-ai/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/random/material-15.png" style="max-height: 240px; width: 100%; object-fit: cover;">
+        <img src="/images/random/material-4.png" style="max-height: 240px; width: 100%; object-fit: cover;">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">关于 x.ai 的一些看法</div>
