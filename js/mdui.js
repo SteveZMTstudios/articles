@@ -3163,7 +3163,7 @@
       return ("<" + tag + " class=\"mdui-table-cell-checkbox\">" +
           '<label class="mdui-checkbox">' +
           '<input type="checkbox"/>' +
-          '<i class="mdui-checkbox-icon"></i>' +
+          '<i class="mdui-checkbox-icon" translate="no"></i>' +
           '</label>' +
           "</" + tag + ">");
   };
