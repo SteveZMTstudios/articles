@@ -6,7 +6,7 @@
   <link href="https://blog.stevezmt.top/atom.xml" rel="self"/>
   
   <link href="https://blog.stevezmt.top/"/>
-  <updated>2024-12-19T13:13:48.262Z</updated>
+  <updated>2024-12-21T10:04:10.323Z</updated>
   <id>https://blog.stevezmt.top/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>主题复刻指南</title>
+    <link href="https://blog.stevezmt.top/2024/12/21/fork-this-theme/"/>
+    <id>https://blog.stevezmt.top/2024/12/21/fork-this-theme/</id>
+    <published>2024-12-21T09:54:54.000Z</published>
+    <updated>2024-12-21T10:04:10.323Z</updated>
+    
+    <content type="html"><![CDATA[<p>这里提供了一种方式，可以让你快速复刻这个主题，这样你就能够把它做成你的博客了。</p><span id="more"></span><h2 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1. 准备工作"></a>1. 准备工作</h2><p>建议你先看看<a href="https://blog-preview.stevezmt.top/">复刻模板效果</a>，看看是否符合你的需求和喜好。</p><p>首先，你要有一个<a href="https://cloud.tencent.com/developer/article/1487508">Github账户</a>，并且电脑已经配置了<a href="https://git-scm.com/">Git环境</a>和<a href="https://nodejs.org/en/download/">npm包管理器</a>。</p><h3 id="Git环境配置"><a href="#Git环境配置" class="headerlink" title="Git环境配置"></a>Git环境配置</h3><p>1、访问git官方地址，下载对应的安装包，进行安装（简单的点击下一步）。</p><p>2、安装好之后，鼠标右键可以看到：Git Bash Here，点击后打开了。</p><p>3、输入：git –version</p><p>4、如果出现版本号，说明安装成功。</p><h3 id="npm包管理器配置"><a href="#npm包管理器配置" class="headerlink" title="npm包管理器配置"></a>npm包管理器配置</h3><p>1、访问nodejs官方地址，下载对应的安装包，进行安装（简单的点击下一步）。</p><p>2、安装好之后，配置环境变量，并在终端里面输入：node -v 和 npm -v</p><p>3、如果出现版本号，说明安装成功。</p><h3 id="Github账户"><a href="#Github账户" class="headerlink" title="Github账户"></a>Github账户</h3><p>1、访问Github官网，注册一个账户。</p><p>2、创建一个仓库，名字格式为：<code>&lt;你的用户名&gt;.github.io</code>。<br>比如我的github账户叫史蒂夫ZMT工作室，首页地址是<code>github.com/stevezmtstudios</code>，那么我创建的仓库名字就是<code>stevezmtstudios.github.io</code>。</p><h4 id="SSH配置"><a href="#SSH配置" class="headerlink" title="SSH配置"></a>SSH配置</h4><h2 id="2-复刻主题"><a href="#2-复刻主题" class="headerlink" title="2. 复刻主题"></a>2. 复刻主题</h2><p>先介绍一下hexo的基本操作：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hexo new <span class="string">&quot;postName&quot;</span> <span class="comment">#新建文章</span></span><br><span class="line">hexo new page <span class="string">&quot;pageName&quot;</span> <span class="comment">#新建页面</span></span><br><span class="line">hexo generate <span class="comment">#生成静态页面至public目录</span></span><br><span class="line">hexo server <span class="comment">#开启预览访问端口（默认端口4000，&#x27;ctrl + c&#x27;关闭server）</span></span><br><span class="line">hexo deploy <span class="comment">#部署到GitHub</span></span><br><span class="line">hexo <span class="built_in">help</span>  <span class="comment"># 查看帮助</span></span><br><span class="line">hexo version  <span class="comment">#查看Hexo的版本</span></span><br></pre></td></tr></table></figure><p>对应的缩写，比如：<br>hexo n &#x3D;&#x3D; hexo new<br>hexo g &#x3D;&#x3D; hexo generate</p><ol><li>打开终端，输入：<code>git clone https://github.com/SteveZMTstudios/article-preview.git</code>，将我的博客框架下载到本地。</li><li>把source文件夹里面除CNAME文件以外的的内容全部一并删掉。<br>当然如果你选择不删也可以，只是要在页面内注明： <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">本页面继承自[<span class="string">SteveZMTstudios</span>](<span class="link">https://blog.stevezmt.com</span>)的博客页面。</span><br><span class="line">基于CC BY-NC-SA 4.0协议转载。</span><br></pre></td></tr></table></figure></li><li>修改CNAME文件中的链接到你的域名，或者删掉这个文件，用<code>&lt;你的用户名&gt;.github.io</code>作为主页。</li><li>把你的仓库克隆到本地，输入：<code>git clone &lt;你的仓库地址&gt;</code>。</li><li>把article-preview文件夹里面的内容全部复制到你的仓库里面。</li><li>检查_config.yml和_config.default.yml文件，修改里面的内容，比如网站名字、作者、头像等。</li><li>打开终端，输入：<code>npm install &amp;&amp; npm install -S hexo-helper-qrcode hexo-generator-search</code>，安装依赖。</li><li>输入：<code>hexo clean</code>，清除缓存。</li><li>输入：<code>hexo g</code>，生成静态文件，检查是否有报错。如果有的话，根据报错信息进行修改，或者<a href="https://github.com/SteveZMTstudios/article-preview/issues">提issue</a>让我知道咋回事。</li><li>输入：<code>hexo s</code>，启动本地服务，访问查看效果。<blockquote><p>你也可以输入<code>npm run look</code>,直接完成部署和预览。<br>访问http:&#x2F;&#x2F;<a href="http://localhost:4000/">localhost:4000</a>查看效果。</p></blockquote></li></ol><h2 id="3-部署到Github"><a href="#3-部署到Github" class="headerlink" title="3. 部署到Github"></a>3. 部署到Github</h2><ol><li>上载仓库文件，输入：<code>git add .</code>，添加所有文件，输入：<code>git commit &amp;&amp; git push</code>，提交文件。</li><li>打开终端，输入：<code>hexo d</code>，部署到Github。</li><li>访问<code>&lt;你的用户名&gt;.github.io</code>，查看效果。一般需要一会,但是如果你的页面一直提示<code>There isn&#39;t a GitHub Pages site here</code>,那么你需要检查一下你的仓库设置，确保你的仓库名字是<code>&lt;你的用户名&gt;.github.io</code>，以及是否在仓库的<code>Settings</code>里面开启了<code>GitHub Pages</code>，deploy分支是否设为了gh-pages。</li><li>勤用搜索，遇到问题先自己解决，解决不了再<a href="https://github.com/SteveZMTstudios/article-preview/issues">提issue</a>。</li></ol><h2 id="鸣谢和引用"><a href="#鸣谢和引用" class="headerlink" title="鸣谢和引用"></a>鸣谢和引用</h2><ul><li><a href="https://github.com/niemingzhao">niemingzhao</a>以及他的博客框架。</li><li><a href="https://zhuanlan.zhihu.com/p/392994381">李运辰</a>的知乎专栏。</li><li><a href="https://hexo.io/zh-cn/">hexo</a>的官方文档。</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;这里提供了一种方式，可以让你快速复刻这个主题，这样你就能够把它做成你的博客了。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="折腾" scheme="https://blog.stevezmt.top/categories/%E6%8A%98%E8%85%BE/"/>
+    
+    
+    <category term="开源" scheme="https://blog.stevezmt.top/tags/%E5%BC%80%E6%BA%90/"/>
+    
+    <category term="hexo" scheme="https://blog.stevezmt.top/tags/hexo/"/>
+    
+    <category term="博客" scheme="https://blog.stevezmt.top/tags/%E5%8D%9A%E5%AE%A2/"/>
+    
+  </entry>
   
   <entry>
     <title>几乎超越鸿蒙的完全互联方案</title>
