@@ -20,7 +20,7 @@
 <meta property="og:description" content="这里提供了一种方式，可以让你快速复刻这个主题，这样你就能够把它做成你的博客了。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-12-21T09:54:54.000Z">
-<meta property="article:modified_time" content="2024-12-24T12:15:58.636Z">
+<meta property="article:modified_time" content="2024-12-28T04:11:17.806Z">
 <meta property="article:author" content="Steve ZMT">
 <meta property="article:tag" content="开源">
 <meta property="article:tag" content="hexo">
@@ -85,7 +85,186 @@
 
 <body class="mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-blue">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script>var a=localStorage.getItem("mdui-theme-layout-dark");if(a){document.getElementsByTagName("body")[0].className+=" mdui-theme-layout-dark"};</script>
+  <script>
+    function triggerEvents() {
+      document.dispatchEvent(new Event('DOMContentLoaded'));
+      document.dispatchEvent(new Event('readystatechange'));
+      window.dispatchEvent(new Event('load'));
+      window.dispatchEvent(new Event('scroll'));
+      window.dispatchEvent(new Event('resize'));
+      window.dispatchEvent(new Event('orientationchange'));
+      window.dispatchEvent(new Event('focus'));
+      document.hasFocus() && document.activeElement && document.activeElement.focus();
+    }
+
+    function handleDrawer() {
+      try {
+        const drawer = document.querySelector('.mdui-drawer');
+        if (drawer) {
+          const $ = mdui.$;
+          const inst = new mdui.Drawer(drawer);
+          const isMobile = window.innerWidth < 1024;
+          const isForceClose = localStorage.getItem('mdui-drawer-close');
+          if (isMobile || isForceClose) {
+            inst.close();
+            $('.mdui-overlay.mdui-overlay-show').remove();
+            $('body').css('overflow', 'auto');
+          }
+        }
+      } catch (err) {
+        console.warn('处理抽屉导航失败:', err);
+        alert('处理抽屉导航失败，请刷新页面');
+      }
+    }
+
+    function reinitializeNoticeSystem() {
+      if (localStorage.getItem('notice-system-initialized') === 'true') {
+        const noticeElement = document.getElementById('random-notice');
+        if (noticeElement && (window.location.pathname === '/' || window.location.pathname === '/index.html')) {
+          console.log('Reinitializing notice system');
+          window.initNoticeSystem();
+        }
+      }
+      if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+        if (typeof window.initNoticeSystem === 'function') {
+          window.initNoticeSystem();
+        }
+      }
+    }
+
+    function simulatePageRefresh() {
+      window.scrollTo(0, 0);
+      triggerEvents();
+      handleDrawer();
+      window.dispatchEvent(new Event('page:updated'));
+      if (typeof window.initNoticeSystem === 'function') {
+        window.initNoticeSystem();
+      }
+      reinitializeNoticeSystem();
+      console.log('Page type:', window.location.pathname);
+      console.log('Notice system status:', window.noticeSystemInitialized);
+    }
+
+    function showLoading() {
+      let progressBar = document.querySelector('.loading-progress');
+      if (!progressBar) {
+        progressBar = document.createElement('div');
+        progressBar.className = 'mdui-progress loading-progress';
+        const inner = document.createElement('div');
+        inner.className = 'mdui-progress-indeterminate';
+        progressBar.appendChild(inner);
+        document.body.insertBefore(progressBar, document.body.firstChild);
+      }
+      progressBar.style.display = 'block';
+    }
+
+    function hideLoading() {
+      const progressBar = document.querySelector('.loading-progress');
+      if (progressBar) {
+        progressBar.style.display = 'none';
+      }
+    }
+
+    function handleAjaxError(errorType, link, href) {
+      console.error(`页面加载失败: ${errorType}`);
+      mdui.snackbar({
+        message: `页面加载失败，(${errorType})`,
+        timeout: 1500,
+        onClose: function() {
+          window.location.href = href;
+        }
+      });
+    }
+
+    function handleAjaxSuccess(response, href, targetHash) {
+      try {
+        const $response = $(response);
+        const $newContent = $response.find('#main');
+        const $mainContent = $newContent.length ? $newContent : $response.filter('#main');
+        if (!$mainContent.length) {
+          console.error('无法找到内容区域，响应内容:', response);
+          throw new Error('无法找到目标内容');
+        }
+        $('#main').html($mainContent.html());
+        history.pushState({}, '', href);
+        document.title = $response.filter('title').text() || document.title;
+        simulatePageRefresh();
+        if (targetHash) {
+          const target = $(targetHash);
+          if (target.length) {
+            $('html, body').animate({
+              scrollTop: target.offset().top - 60
+            }, 300);
+          }
+        }
+        hideLoading();
+      } catch (err) {
+        handleAjaxError('switch_error', null, href);
+      }
+    }
+
+    function handleLinkClick(e, link, href, hashIndex, currentPath, targetPath) {
+      if (hashIndex === 0 || currentPath === targetPath) {
+        return true;
+      }
+      if (link.find('.mdui-icon.material-icons').text() === 'search' || !href || typeof href !== 'string' || href.startsWith('javascript:')) {
+        return true;
+      }
+      if (link.prop('host') === window.location.host && !link.attr('target') && link.attr('target') !== '_blank' && !e.ctrlKey && !e.shiftKey && !e.metaKey) {
+        e.preventDefault();
+        showLoading();
+        const targetUrl = hashIndex > -1 ? href.substring(0, hashIndex) : href;
+        const targetHash = hashIndex > -1 ? href.substring(hashIndex) : '';
+        $.ajax({
+          url: targetUrl,
+          method: 'GET',
+          dataType: 'html',
+          success: function(response) {
+            handleAjaxSuccess(response, href, targetHash);
+          },
+          error: function(xhr, status, error) {
+            handleAjaxError('ajax_error', link, href);
+          }
+        });
+      }
+    }
+
+    $(document).on('click', 'a', function(e) {
+      const link = $(this);
+      const href = link.attr('href');
+      const hashIndex = href ? href.indexOf('#') : -1;
+      const currentPath = window.location.pathname;
+      const targetPath = new URL(href, window.location.origin).pathname;
+      handleLinkClick(e, link, href, hashIndex, currentPath, targetPath);
+    });
+
+    window.onpopstate = function() {
+      showLoading();
+      const link = $(location);
+      const href = location.href;
+      const hashIndex = href ? href.indexOf('#') : -1;
+      const currentPath = window.location.pathname;
+      const targetPath = new URL(href, window.location.origin).pathname;
+      if (hashIndex === 0 || currentPath === targetPath) {
+        return true;
+      }
+      if (link.find('.mdui-icon.material-icons').text() === 'search' || !href || typeof href !== 'string' || href.startsWith('javascript:') || href.includes('javascript:') || href.includes('#')) {
+        console.log('跳过链接:', href);
+        return false;
+      }
+      $.ajax({
+        url: location.href,
+        method: 'GET',
+        dataType: 'html',
+        success: function(response) {
+          handleAjaxSuccess(response, href, null);
+        },
+        error: function(xhr, status, error) {
+          handleAjaxError('br_ajax_error', link, href);
+        }
+      });
+    };
+  </script>
   <script>if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches){document.getElementsByTagName("body")[0].className+=" mdui-theme-layout-dark"};</script>
   <script>var a=localStorage.getItem("mdui-drawer-close");if(!a){document.getElementsByTagName("body")[0].className+=" mdui-drawer-body-left"};</script>
   <header id="header" class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide mdui-appbar-inset">
@@ -93,28 +272,29 @@
     <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="mdui-icon material-icons" translate="no">menu</i></a>
     <a href="/" class="mdui-typo-headline">老史尬侃 - Steve ZMT &#39;s Blog</a>
     <div class="mdui-toolbar-spacer"></div>
+    
     <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: '搜索'}"><i class="mdui-icon material-icons" translate="no">search</i></a>
     <!-- Open RSS Feed --><!--
     <a href="/atom.xml" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'RSS'}"><i class="mdui-icon material-icons" translate="no">rss_feed</i></a> -->
     <!-- Copy RSS Feed To Clipboard -->
     
-      <a href="javascript:void(0);" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'RSS'}" onclick="copyToClipboard('https://blog.stevezmt.top/atom.xml')">
+      <a href="javascript:void(0);" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'RSS'}" onclick="copyRssToClipboard('https://blog.stevezmt.top/atom.xml')">
         <i class="mdui-icon material-icons" translate="no">rss_feed</i>
       </a>
       <script>
-        function copyToClipboard(text) {
+        function copyRssToClipboard(text) {
           navigator.clipboard.writeText(text).then(function() {
             mdui.snackbar({
               message: '已将RSS订阅链接复制到剪贴板!',
               position: 'right-top',
               buttonText: '好',
-              onClick: function() {
-                console.log('RSS订阅链接已复制到剪贴板!');
-                close();
-              }
             });
           }, function(err) {
             console.error('Could not copy text: ', err);
+            mdu.snackbar({
+              message: '复制RSS订阅链接失败!',
+              position: 'right-top',
+            });
           });
         }
       </script>
@@ -141,11 +321,40 @@
         <div class="mdui-grid-tile-title">Steve ZMT</div>
         <div class="mdui-grid-tile-subtitle"><i class="mdui-icon material-icons" translate="no">art_track</i>又名“史蒂夫ZMT”的树洞。</div>
       </div>
+      <!--
       
         <div class="mdui-grid-tile-buttons">
           <a href="mailto:admin@stevezmt.top" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'admin@stevezmt.top'}"><i class="mdui-icon material-icons" translate="no">email</i></a>
         </div>
+       
+      -->
       
+        <div class="mdui-grid-tile-buttons">
+          <a href="javascript:void(0);" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'admin@stevezmt.top'}" onclick="copyEmailToClipboard('admin@stevezmt.top')">
+            <i class="mdui-icon material-icons" translate="no">email</i>
+          </a>
+        </div>
+        <script>
+          function copyEmailToClipboard(email) {
+            navigator.clipboard.writeText(email).then(function() {
+              mdui.snackbar({
+                message: '已将邮箱地址复制到剪贴板!',
+                position: 'left-top',
+                buttonText: '写邮件',
+                onButtonClick: function(){
+                  window.location.href = 'mailto:' + 'admin@stevezmt.top';
+                }
+              });
+            }, function(err) {
+              console.error('Could not copy text: ', err);
+              mdui.snackbar({
+                message: '复制邮箱地址失败!',
+                position: 'right-top',
+              });
+            });
+          }
+        </script>
+
     </div>
   </div>
 
@@ -251,7 +460,7 @@
   <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
   <article class="mdui-card mdui-m-b-5">
     <header class="mdui-card-media">
-      <img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/random/material-14.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+      <img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/random/material-8.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
       <div class="mdui-card-media-covered">
         <div class="mdui-card-primary">
             <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;">主题复刻指南</h1></div>
@@ -276,6 +485,19 @@
           <button class="mdui-btn mdui-btn-icon mdui-text-color-white" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="mdui-icon material-icons" translate="no">share</i></button>
           <ul class="mdui-menu" id="share_menu">
             <li class="mdui-menu-item">
+              <a href="javascript:void(0);" class="mdui-ripple" onclick="copyToClipboard('https://blog.stevezmt.top/2024/12/21/fork-this-theme/');">复制链接</a>
+            </li>
+
+            <script>
+              function copyToClipboard(text) {
+                navigator.clipboard.writeText(text).then(function() {
+                  mdui.snackbar({message: '已复制链接!', position: 'top', buttonText: '好'});
+                }, function(err) {
+                  console.error('Could not copy text: ', err);
+                });
+              }
+            </script>
+            <li class="mdui-menu-item">
               <a href="https://service.weibo.com/share/share.php?appkey=&title=主题复刻指南&url=https://blog.stevezmt.top/2024/12/21/fork-this-theme/&pic=https://blog.stevezmt.top/images/favicon.png&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
             </li>
             <li class="mdui-menu-item">
@@ -296,6 +518,25 @@
             <li class="mdui-menu-item">
               <a href="https://telegram.me/share/url?url=https://blog.stevezmt.top/2024/12/21/fork-this-theme/&text=主题复刻指南" target="_blank" class="mdui-ripple">分享到 Telegram</a>
             </li>
+            <li class="mdui-menu-item">
+              <a href="javascript:void(0);" class="mdui-ripple" onclick="sharePageviaSystem();">更多分享选项</a>
+            </li>
+
+            <script>
+              function sharePageviaSystem() {
+                if (navigator.share) {
+                  navigator.share({
+                    title: '主题复刻指南',
+                    text: '这里提供了一种方式，可以让你快速复刻这个主题，这样你就能够把它做成你的博客了。',
+                    url: 'https://blog.stevezmt.top/2024/12/21/fork-this-theme/'
+                  }).then(() => {
+                    mdui.snackbar({message: '感谢分享！', position: 'top'});
+                  }).catch(console.error);
+                } else {
+                  mdui.snackbar({message: '您的浏览器不支持此方式。', position: 'top', buttonText: '好吧'});
+                }
+              }
+            </script>
           </ul>
         
       </div>
