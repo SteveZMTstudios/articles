@@ -6,7 +6,7 @@
   <link href="https://blog.stevezmt.top/atom.xml" rel="self"/>
   
   <link href="https://blog.stevezmt.top/"/>
-  <updated>2024-12-28T04:11:17.806Z</updated>
+  <updated>2025-01-01T06:34:23.046Z</updated>
   <id>https://blog.stevezmt.top/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2025 新年快乐</title>
+    <link href="https://blog.stevezmt.top/2025/01/01/2025-new-year/"/>
+    <id>https://blog.stevezmt.top/2025/01/01/2025-new-year/</id>
+    <published>2025-01-01T04:27:24.000Z</published>
+    <updated>2025-01-01T06:34:23.046Z</updated>
+    
+    <content type="html"><![CDATA[<p>2025 新年快乐</p><p>Happy new year 2025!</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;2025 新年快乐&lt;/p&gt;
+&lt;p&gt;Happy new year 2025!&lt;/p&gt;
+</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>主题复刻指南</title>
@@ -129,11 +151,11 @@
     
     <category term="root" scheme="https://blog.stevezmt.top/tags/root/"/>
     
+    <category term="xposed" scheme="https://blog.stevezmt.top/tags/xposed/"/>
+    
     <category term="安卓" scheme="https://blog.stevezmt.top/tags/%E5%AE%89%E5%8D%93/"/>
     
     <category term="单词笔" scheme="https://blog.stevezmt.top/tags/%E5%8D%95%E8%AF%8D%E7%AC%94/"/>
-    
-    <category term="xposed" scheme="https://blog.stevezmt.top/tags/xposed/"/>
     
   </entry>
   

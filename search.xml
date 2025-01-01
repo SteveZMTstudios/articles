@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>2025 新年快乐</title>
+      <link href="/2025/01/01/2025-new-year/"/>
+      <url>/2025/01/01/2025-new-year/</url>
+      
+        <content type="html"><![CDATA[<p>2025 新年快乐</p><p>Happy new year 2025!</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>主题复刻指南</title>
       <link href="/2024/12/21/fork-this-theme/"/>
       <url>/2024/12/21/fork-this-theme/</url>
@@ -115,11 +128,11 @@
             
             <tag> root </tag>
             
+            <tag> xposed </tag>
+            
             <tag> 安卓 </tag>
             
             <tag> 单词笔 </tag>
-            
-            <tag> xposed </tag>
             
         </tags>
       
