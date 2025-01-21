@@ -6,7 +6,7 @@
   <link href="https://blog.stevezmt.top/atom.xml" rel="self"/>
   
   <link href="https://blog.stevezmt.top/"/>
-  <updated>2025-01-01T06:34:23.046Z</updated>
+  <updated>2025-01-21T04:14:59.050Z</updated>
   <id>https://blog.stevezmt.top/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>临时服务中断</title>
+    <link href="https://blog.stevezmt.top/2025/01/20/20250120-apex-area-serverdown/"/>
+    <id>https://blog.stevezmt.top/2025/01/20/20250120-apex-area-serverdown/</id>
+    <published>2025-01-20T07:11:29.000Z</published>
+    <updated>2025-01-21T04:14:59.050Z</updated>
+    
+    <content type="html"><![CDATA[<p>🛑灾难性终止<br>网站域 stevezmt.top 和 <a href="http://www.stevezmt.top/">www.stevezmt.top</a> 因签名未能提交导致暂时性停止运营。</p><span id="more"></span><p>同样的， Phigros-history (PhiHistoryLib)项目也暂时无法使用。</p><p>我们正在努力解决这一问题。</p><p>其他域 如 blog.stevezmt.top 暂时未探测到问题。</p><p>20250120 15:11:29</p><hr><p>经历了大约3个小时的修复，我们已经成功解决了这一问题。<br>所有网域均已恢复正常运行，所有服务均已恢复上线。</p><p>20250120 19:16:32</p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;🛑灾难性终止&lt;br&gt;网站域 stevezmt.top 和 &lt;a href=&quot;http://www.stevezmt.top/&quot;&gt;www.stevezmt.top&lt;/a&gt; 因签名未能提交导致暂时性停止运营。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="折腾" scheme="https://blog.stevezmt.top/categories/%E6%8A%98%E8%85%BE/"/>
+    
+    
+    <category term="故障" scheme="https://blog.stevezmt.top/tags/%E6%95%85%E9%9A%9C/"/>
+    
+    <category term="意外" scheme="https://blog.stevezmt.top/tags/%E6%84%8F%E5%A4%96/"/>
+    
+  </entry>
   
   <entry>
     <title>2025 新年快乐</title>
