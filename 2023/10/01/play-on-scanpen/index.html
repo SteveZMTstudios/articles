@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <!-- <meta http-equiv="Cache-Control" content="no-siteapp"> -->
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <meta name="renderer" content="webkit">
 
@@ -112,12 +112,19 @@
           const $ = mdui.$;
           const inst = new mdui.Drawer(drawer);
           const isMobile = window.innerWidth < 1024;
+          const menuButtonnw = document.querySelector('.mdui-btn-icon');
+          if (menuButtonnw && inst.getState() === 'opened') {
+            menuButtonnw.click();
+          }
           const isForceClose = localStorage.getItem('mdui-drawer-close');
+          /**
           if (isMobile || isForceClose) {
             inst.close();
             $('.mdui-overlay.mdui-overlay-show').remove();
             $('body').css('overflow', 'auto');
+            
           }
+            */
         }
       } catch (err) {
         console.warn('处理抽屉导航失败:', err);

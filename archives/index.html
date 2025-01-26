@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <!-- <meta http-equiv="Cache-Control" content="no-siteapp"> -->
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <meta name="renderer" content="webkit">
 
@@ -104,12 +104,19 @@
           const $ = mdui.$;
           const inst = new mdui.Drawer(drawer);
           const isMobile = window.innerWidth < 1024;
+          const menuButtonnw = document.querySelector('.mdui-btn-icon');
+          if (menuButtonnw && inst.getState() === 'opened') {
+            menuButtonnw.click();
+          }
           const isForceClose = localStorage.getItem('mdui-drawer-close');
+          /**
           if (isMobile || isForceClose) {
             inst.close();
             $('.mdui-overlay.mdui-overlay-show').remove();
             $('body').css('overflow', 'auto');
+            
           }
+            */
         }
       } catch (err) {
         console.warn('处理抽屉导航失败:', err);
@@ -449,7 +456,7 @@
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2025/01/20/20250120-apex-area-serverdown/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-10.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-1.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">临时服务中断</div>
@@ -480,7 +487,7 @@
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2025/01/01/2025-new-year/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-15.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-7.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">2025 新年快乐</div>
@@ -509,7 +516,7 @@ Happy new year 2025!
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2024/12/21/fork-this-theme/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-13.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-19.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">主题复刻指南</div>
@@ -540,7 +547,7 @@ Happy new year 2025!
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2024/12/03/real-harmony-connect-all/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-9.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-5.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">几乎超越鸿蒙的完全互联方案</div>
@@ -572,7 +579,7 @@ Happy new year 2025!
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2024/12/01/talk-about-x-ai/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-7.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-13.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">关于 x.ai 的一些看法</div>
