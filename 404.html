@@ -109,7 +109,7 @@
           const inst = new mdui.Drawer(drawer);
           const isMobile = window.innerWidth < 1024;
           const menuButtonnw = document.querySelector('.mdui-btn-icon');
-          if (menuButtonnw && inst.getState() === 'opened') {
+          if (menuButtonnw && inst.getState() === 'opened' && isMobile) {
             menuButtonnw.click();
           }
           const isForceClose = localStorage.getItem('mdui-drawer-close');

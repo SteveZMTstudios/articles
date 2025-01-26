@@ -106,7 +106,7 @@
           const inst = new mdui.Drawer(drawer);
           const isMobile = window.innerWidth < 1024;
           const menuButtonnw = document.querySelector('.mdui-btn-icon');
-          if (menuButtonnw && inst.getState() === 'opened') {
+          if (menuButtonnw && inst.getState() === 'opened' && isMobile) {
             menuButtonnw.click();
           }
           const isForceClose = localStorage.getItem('mdui-drawer-close');
@@ -468,7 +468,7 @@
   <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
   <article class="mdui-card mdui-m-b-5">
     <header class="mdui-card-media">
-      <img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/random/material-11.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+      <img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/random/material-6.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
       <div class="mdui-card-media-covered">
         <div class="mdui-card-primary">
             <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;">关于 x.ai 的一些看法</h1></div>
