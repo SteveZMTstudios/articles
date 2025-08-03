@@ -84,6 +84,9 @@
 
 
 <body class="mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-blue">
+  
+  <script>window.BUSUANZI_SRC = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';</script>
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
     function triggerEvents() {
@@ -217,11 +220,18 @@
         history.pushState({}, '', href);
         document.title = $response.filter('title').text() || document.title;
         simulatePageRefresh();
-        // busuanzi 重新加载
-        if (window.BUSUANZI_RESET) {
-          window.BUSUANZI_RESET();
-        } else if (window.Busuanzi && window.Busuanzi.fetch) {
-          window.Busuanzi.fetch();
+        // busuanzi 重新加载（强制重新插入脚本）
+        var busuanziScriptSelector = 'script[src*="busuanzi"]';
+        var oldBusuanzi = document.querySelector(busuanziScriptSelector);
+        if (oldBusuanzi) {
+          oldBusuanzi.parentNode.removeChild(oldBusuanzi);
+        }
+        // 重新插入 busuanzi 脚本
+        if (window.BUSUANZI_SRC) {
+          var script = document.createElement('script');
+          script.src = window.BUSUANZI_SRC;
+          script.defer = true;
+          document.body.appendChild(script);
         }
         // gitalk 重新加载（如果有）
         if (typeof Gitalk === 'function' && document.getElementById('gitalk-container')) {
@@ -482,7 +492,7 @@
   <article class="mdui-card mdui-m-b-5">
     <div class="mdui-card-content mdui-typo mdui-ripple" id="notice-container">
       <i class="mdui-icon material-icons mdui-text-color-deep-orange" translate="no">announcement</i> 
-      <!--医生说:“吃点好的。”于是我把我在工作群的回复都吃了（-->
+      <!--老臣年迈，无法跪谢皇恩，只好新臣代谢（-->
       
         <span id="random-notice"></span>
         <script>
@@ -621,7 +631,7 @@
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2025/01/20/20250120-apex-area-serverdown/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-3.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-17.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">临时服务中断</div>
@@ -652,7 +662,7 @@
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2025/01/01/2025-new-year/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-6.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-14.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">2025 新年快乐</div>
@@ -681,7 +691,7 @@ Happy new year 2025!
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2024/12/21/fork-this-theme/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-6.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-18.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">主题复刻指南</div>
@@ -712,7 +722,7 @@ Happy new year 2025!
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2024/12/03/real-harmony-connect-all/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-12.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-14.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">几乎超越鸿蒙的完全互联方案</div>
@@ -744,7 +754,7 @@ Happy new year 2025!
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2024/12/01/talk-about-x-ai/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-1.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-17.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">关于 x.ai 的一些看法</div>
