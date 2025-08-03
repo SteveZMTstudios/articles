@@ -167,7 +167,8 @@
         message: `页面加载失败，(${errorType})`,
         timeout: 1500,
         onClose: function() {
-          window.location.href = href;
+          // window.location.href = href;
+          window.location.reload();
         }
       });
     }
@@ -316,6 +317,7 @@
             handleAjaxSuccess(response, href, targetHash);
           },
           error: function(xhr, status, error) {
+            window.location.reload();
             handleAjaxError('ajax_error', link, href);
           }
         });
