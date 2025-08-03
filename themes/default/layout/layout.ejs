@@ -2,6 +2,9 @@
 <html lang="<%= page.lang %>">
 <%- partial('_partial/head') %>
 <body class="mdui-appbar-with-toolbar mdui-theme-primary-<%= theme.theme_color.primary || 'indigo' %> mdui-theme-accent-<%= theme.theme_color.accent || 'pink' %>">
+  <% if (theme.comment && theme.comment.use === 'gitalk' && theme.comment.gitalk_js) { %>
+  <script>window.GITALK_SRC = '<%- theme.comment.gitalk_js %>';</script>
+  <% } %>
   <% if (theme.busuanzi.site || theme.busuanzi.page) { %>
   <script>window.BUSUANZI_SRC = '<%- theme.busuanzi.busuanzi_js %>';</script>
   <% } %>
@@ -113,29 +116,29 @@
           console.error('无法找到内容区域，响应内容:', response);
           throw new Error('无法找到目标内容');
         }
+        // 1. 移除 #main 内的 gitalk 脚本，防止重复插入
+        $('#main script[src*="gitalk"]').remove();
+        // 2. 插入新内容
         $('#main').html($mainContent.html());
-        // 重新执行 #main 内的 script 标签
+        // 3. 重新执行 #main 内的内联 script 标签（不处理外部src）
         $('#main script').each(function() {
-          const oldScript = this;
-          const newScript = document.createElement('script');
-          if (oldScript.src) {
-            newScript.src = oldScript.src;
-            newScript.async = oldScript.async;
-            newScript.defer = oldScript.defer;
-          } else {
+          if (!this.src) {
+            const oldScript = this;
+            const newScript = document.createElement('script');
             newScript.text = oldScript.text || oldScript.innerHTML;
+            if (oldScript.type) newScript.type = oldScript.type;
+            Array.from(oldScript.attributes).forEach(attr => {
+              if (attr.name !== 'type') {
+                newScript.setAttribute(attr.name, attr.value);
+              }
+            });
+            oldScript.parentNode.replaceChild(newScript, oldScript);
           }
-          // 复制 type 属性
-          if (oldScript.type) newScript.type = oldScript.type;
-          // 复制其他属性
-          Array.from(oldScript.attributes).forEach(attr => {
-            if (!['src','type','async','defer'].includes(attr.name)) {
-              newScript.setAttribute(attr.name, attr.value);
-            }
-          });
-          oldScript.parentNode.replaceChild(newScript, oldScript);
         });
-        history.pushState({}, '', href);
+        // 4. 只在用户点击时 pushState，popstate 不再 pushState
+        if (!window._popstate_handling) {
+          history.pushState({}, '', href);
+        }
         document.title = $response.filter('title').text() || document.title;
         simulatePageRefresh();
         // busuanzi 重新加载（强制重新插入脚本）
@@ -144,7 +147,6 @@
         if (oldBusuanzi) {
           oldBusuanzi.parentNode.removeChild(oldBusuanzi);
         }
-        // 重新插入 busuanzi 脚本
         if (window.BUSUANZI_SRC) {
           var script = document.createElement('script');
           script.src = window.BUSUANZI_SRC;
@@ -152,12 +154,23 @@
           document.body.appendChild(script);
         }
         // gitalk 重新加载（如果有）
-        if (typeof Gitalk === 'function' && document.getElementById('gitalk-container')) {
-          try {
-            var gitalkConfig = window.gitalkConfig || {};
-            var gitalk = new Gitalk(gitalkConfig);
-            gitalk.render('gitalk-container');
-          } catch(e) {console.warn('Gitalk reload failed:', e);}
+        var gitalkContainer = document.getElementById('gitalk-container');
+        if (gitalkContainer) {
+          function renderGitalk() {
+            try {
+              var gitalkConfig = window.gitalkConfig || {};
+              var gitalk = new Gitalk(gitalkConfig);
+              gitalk.render('gitalk-container');
+            } catch(e) {console.warn('Gitalk reload failed:', e);}
+          }
+          if (typeof Gitalk === 'function') {
+            setTimeout(renderGitalk, 100); // 延迟，确保脚本已加载
+          } else if (window.GITALK_SRC && !document.querySelector('script[src="'+window.GITALK_SRC+'"]')) {
+            var gtScript = document.createElement('script');
+            gtScript.src = window.GITALK_SRC;
+            gtScript.onload = renderGitalk;
+            document.body.appendChild(gtScript);
+          }
         }
         if (targetHash) {
           const target = $(targetHash);
@@ -210,27 +223,19 @@
 
     window.onpopstate = function() {
       showLoading();
-      const link = $(location);
-      const href = location.href;
-      const hashIndex = href ? href.indexOf('#') : -1;
-      const currentPath = window.location.pathname;
-      const targetPath = new URL(href, window.location.origin).pathname;
-      if (hashIndex === 0 || currentPath === targetPath) {
-        return true;
-      }
-      if (link.find('.mdui-icon.material-icons').text() === 'search' || !href || typeof href !== 'string' || href.startsWith('javascript:') || href.includes('javascript:') || href.includes('#')) {
-        console.log('跳过链接:', href);
-        return false;
-      }
+      window._popstate_handling = true;
+      var href = location.href;
       $.ajax({
-        url: location.href,
+        url: href,
         method: 'GET',
         dataType: 'html',
         success: function(response) {
           handleAjaxSuccess(response, href, null);
+          window._popstate_handling = false;
         },
         error: function(xhr, status, error) {
-          handleAjaxError('br_ajax_error', link, href);
+          handleAjaxError('br_ajax_error', $(location), href);
+          window._popstate_handling = false;
         }
       });
     };
