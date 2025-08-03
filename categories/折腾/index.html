@@ -90,6 +90,7 @@
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
+    // 触发常用事件，兼容 PJAX/AJAX 页面切换
     function triggerEvents() {
       document.dispatchEvent(new Event('DOMContentLoaded'));
       document.dispatchEvent(new Event('readystatechange'));
@@ -99,6 +100,71 @@
       window.dispatchEvent(new Event('orientationchange'));
       window.dispatchEvent(new Event('focus'));
       document.hasFocus() && document.activeElement && document.activeElement.focus();
+    // ...existing code...
+
+    // 重新初始化 random-notice 和 Gitalk
+    function reinitPageComponents() {
+      // 重新初始化 random-notice
+      if (typeof window.initNoticeSystem === 'function') {
+        try {
+          window.initNoticeSystem();
+        } catch (e) {
+          console.warn('NoticeSystem reinit error:', e);
+        }
+      }
+      // 重新初始化 Gitalk
+      if (window.GITALK_SRC && document.getElementById('gitalk-container')) {
+        if (typeof Gitalk === 'undefined') {
+          var script = document.createElement('script');
+          script.src = window.GITALK_SRC;
+          script.onload = function() {
+            setTimeout(initGitalk, 100);
+          };
+          document.body.appendChild(script);
+        } else {
+          setTimeout(initGitalk, 100);
+        }
+      }
+    }
+
+    // 修正 Gitalk 初始化，防止 repo/owner 取 undefined
+    function initGitalk() {
+      if (!window.Gitalk) return;
+      var el = document.getElementById('gitalk-container');
+      if (!el) return;
+      // 取 theme.comment 配置
+      var config = window.GITALK_CONFIG || {};
+      if (!config.repo || !config.owner) {
+        if (window.theme && window.theme.comment) {
+          config = Object.assign({}, window.theme.comment);
+        }
+      }
+      if (!config.repo || !config.owner) {
+        el.innerHTML = '<div style="color:red">Gitalk 配置错误: repo/owner 未设置</div>';
+        return;
+      }
+      // 防止重复渲染
+      el.innerHTML = '';
+      var gitalk = new Gitalk(config);
+      gitalk.render('gitalk-container');
+      // 更新全局配置，保证一致性
+      window.GITALK_CONFIG = config;
+    }
+
+    // 监听页面切换（如 PJAX/AJAX），重新初始化页面组件
+    document.addEventListener('page:updated', function() {
+      setTimeout(function() {
+        triggerEvents();
+        reinitPageComponents();
+      }, 50);
+    });
+
+    // 首次页面加载
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        reinitPageComponents();
+      }, 50);
+    });
     }
 
     function handleDrawer() {
@@ -238,17 +304,38 @@
         if (gitalkContainer) {
           function renderGitalk() {
             try {
-              var gitalkConfig = window.gitalkConfig || {};
-              var gitalk = new Gitalk(gitalkConfig);
+              // 使用与 initGitalk 一致的配置获取逻辑
+              var config = window.GITALK_CONFIG || {};
+              if (!config.repo || !config.owner) {
+                if (window.theme && window.theme.comment) {
+                  config = Object.assign({}, window.theme.comment);
+                }
+              }
+              if (!config.repo || !config.owner) {
+                gitalkContainer.innerHTML = '<div style="color:red">Gitalk 配置错误: repo/owner 未设置</div>';
+                return;
+              }
+              // 防止重复渲染
+              gitalkContainer.innerHTML = '';
+              var gitalk = new Gitalk(config);
               gitalk.render('gitalk-container');
-            } catch(e) {console.warn('Gitalk reload failed:', e);}
+            } catch(e) {
+              console.warn('Gitalk reload failed:', e);
+            }
           }
           if (typeof Gitalk === 'function') {
             setTimeout(renderGitalk, 100); // 延迟，确保脚本已加载
           } else if (window.GITALK_SRC && !document.querySelector('script[src="'+window.GITALK_SRC+'"]')) {
             var gtScript = document.createElement('script');
             gtScript.src = window.GITALK_SRC;
-            gtScript.onload = renderGitalk;
+            gtScript.onload = function() {
+              // 确保 Gitalk 加载后再调用 renderGitalk
+              if (typeof Gitalk === 'function') {
+                renderGitalk();
+              } else {
+                console.warn('Gitalk script loaded but Gitalk not defined');
+              }
+            };
             document.body.appendChild(gtScript);
           }
         }
@@ -504,7 +591,7 @@
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2025/01/20/20250120-apex-area-serverdown/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-19.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-12.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">临时服务中断</div>
@@ -535,7 +622,7 @@
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2024/12/21/fork-this-theme/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-14.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-5.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">主题复刻指南</div>
@@ -566,7 +653,7 @@
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2024/12/03/real-harmony-connect-all/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-19.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-7.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">几乎超越鸿蒙的完全互联方案</div>
