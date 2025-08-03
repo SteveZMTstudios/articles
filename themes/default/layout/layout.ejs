@@ -4,6 +4,14 @@
 <body class="mdui-appbar-with-toolbar mdui-theme-primary-<%= theme.theme_color.primary || 'indigo' %> mdui-theme-accent-<%= theme.theme_color.accent || 'pink' %>">
   <% if (theme.comment && theme.comment.use === 'gitalk' && theme.comment.gitalk_js) { %>
   <script>window.GITALK_SRC = '<%- theme.comment.gitalk_js %>';</script>
+  <script>
+    // 首次页面加载时就插入 Gitalk 脚本，确保全局可用
+    if (window.GITALK_SRC && !document.querySelector('script[src="' + window.GITALK_SRC + '"]')) {
+      var gtScript = document.createElement('script');
+      gtScript.src = window.GITALK_SRC;
+      document.body.appendChild(gtScript);
+    }
+  </script>
   <% } %>
   <% if (theme.busuanzi.site || theme.busuanzi.page) { %>
   <script>window.BUSUANZI_SRC = '<%- theme.busuanzi.busuanzi_js %>';</script>
@@ -49,17 +57,18 @@
     }
 
     function reinitializeNoticeSystem() {
-      if (localStorage.getItem('notice-system-initialized') === 'true') {
-        const noticeElement = document.getElementById('random-notice');
-        if (noticeElement && (window.location.pathname === '/' || window.location.pathname === '/index.html')) {
-          console.log('Reinitializing notice system');
-          window.initNoticeSystem();
-        }
-      }
+      // 防止重复初始化
       if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+        if (window.noticeSystemInitializing) return;
+        window.noticeSystemInitializing = true;
+        if (typeof window.destroyNoticeSystem === 'function') {
+          window.destroyNoticeSystem();
+        }
         if (typeof window.initNoticeSystem === 'function') {
           window.initNoticeSystem();
+          window.noticeSystemInitialized = true;
         }
+        setTimeout(function() { window.noticeSystemInitializing = false; }, 500);
       }
     }
 
@@ -159,17 +168,40 @@
           function renderGitalk() {
             try {
               var gitalkConfig = window.gitalkConfig || {};
-              var gitalk = new Gitalk(gitalkConfig);
-              gitalk.render('gitalk-container');
-            } catch(e) {console.warn('Gitalk reload failed:', e);}
+              if (typeof Gitalk === 'function') {
+                var gitalk = new Gitalk(gitalkConfig);
+                gitalk.render('gitalk-container');
+              } else {
+                setTimeout(renderGitalk, 100);
+              }
+            } catch(e) {
+              if (e && e.message && /Gitalk is not defined/.test(e.message) && window.GITALK_SRC) {
+                var gtScript = document.querySelector('script[src="'+window.GITALK_SRC+'"]');
+                if (!gtScript) {
+                  gtScript = document.createElement('script');
+                  gtScript.src = window.GITALK_SRC;
+                  gtScript.onload = renderGitalk;
+                  document.body.appendChild(gtScript);
+                } else {
+                  gtScript.addEventListener('load', renderGitalk);
+                }
+              } else {
+                console.warn('Gitalk reload failed:', e);
+              }
+            }
           }
           if (typeof Gitalk === 'function') {
-            setTimeout(renderGitalk, 100); // 延迟，确保脚本已加载
-          } else if (window.GITALK_SRC && !document.querySelector('script[src="'+window.GITALK_SRC+'"]')) {
-            var gtScript = document.createElement('script');
-            gtScript.src = window.GITALK_SRC;
-            gtScript.onload = renderGitalk;
-            document.body.appendChild(gtScript);
+            setTimeout(renderGitalk, 100);
+          } else if (window.GITALK_SRC) {
+            var gtScript = document.querySelector('script[src="'+window.GITALK_SRC+'"]');
+            if (!gtScript) {
+              gtScript = document.createElement('script');
+              gtScript.src = window.GITALK_SRC;
+              gtScript.onload = renderGitalk;
+              document.body.appendChild(gtScript);
+            } else {
+              gtScript.addEventListener('load', renderGitalk);
+            }
           }
         }
         if (targetHash) {

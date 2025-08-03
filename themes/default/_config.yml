@@ -51,10 +51,10 @@ footer_text:
 license:
 
 gallery:
-  fancybox_css: //cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css
-  fancybox_js: //cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js
-  jquery_js: //cdn.bootcdn.net/ajax/libs/jquery/3.3.1/jquery.min.js
-  lazyload_js: //cdn.bootcdn.net/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js
+  fancybox_css: //gcore.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css
+  fancybox_js: //gcore.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js
+  jquery_js: //ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js
+  lazyload_js: //gcore.jsdelivr.net/npm/jquery-lazyload@1.9.7/jquery.lazyload.min.js
 busuanzi:
   site: false
   page: false

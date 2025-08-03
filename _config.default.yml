@@ -5,6 +5,7 @@ theme_color:
 notice: 
   - "该站点尚在建设中。遇到问题请<a target='_blank' href='https://github.com/SteveZMTstudios/articles/issues/new/choose'>反馈给我们</a>！"
   - "????!!!!!??!?!?!??!?!?!!!!"
+  - "请将 busuanzi.ibruce.info 添加到您的 uBlock Origin 例外列表中！"
   - "我是一个懒人，所以这个站点可能会很久才更新一次。"
   - "这个博客基本上所有的精力都花在刀把上了..."
   - "“宇宙小机器人是什么玩意”"
@@ -113,10 +114,10 @@ footer_text: '| <a href="https://icp.gov.moe/?keyword=20240571" target="_blank" 
 license: 此页内容遵循<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank" rel="license noopener noreferrer" style="display:inline-block;"> 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1" alt=""></a>
 
 gallery:
-  fancybox_css: //cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css
-  fancybox_js: //cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js
-  jquery_js: //cdn.bootcdn.net/ajax/libs/jquery/3.3.1/jquery.min.js
-  lazyload_js: //cdn.bootcdn.net/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js
+  fancybox_css: //gcore.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css
+  fancybox_js: //gcore.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js
+  jquery_js: //ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js
+  lazyload_js: //gcore.jsdelivr.net/npm/jquery-lazyload@1.9.7/jquery.lazyload.min.js
 busuanzi:
   site: true
   page: true
