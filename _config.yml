@@ -147,8 +147,8 @@ markdown:
       divClass: checkbox
       idPrefix: checkbox
     markdown-it-texmath:
-      katexCssSrc: //cdn.jsdelivr.net/npm/katex/dist/katex.min.css
-      texmathCssSrc: //cdn.jsdelivr.net/npm/markdown-it-texmath/css/texmath.min.css
+      katexCssSrc: //gcore.jsdelivr.net/npm/katex/dist/katex.min.css
+      texmathCssSrc: //gcore.jsdelivr.net/npm/markdown-it-texmath/css/texmath.min.css
       texmathDelimiters: dollars
       throwOnError: false
       errorColor: "#cc0000"
@@ -158,12 +158,12 @@ math:
   enabled: true
   engine: mathjax ##可选渲染引擎：mathjax、katex
   mathjax:
-    cdn: https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+    cdn: https://gcore.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
     mhchem: true
   katex:
-    cdn_css: https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css
-    cdn_js: https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js
-    auto_render: https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js
+    cdn_css: https://gcore.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css
+    cdn_js: https://gcore.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js
+    auto_render: https://gcore.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js
 
 # mermaid 
 mermaid:

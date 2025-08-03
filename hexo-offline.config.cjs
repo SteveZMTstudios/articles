@@ -1,8 +1,16 @@
 // offline config passed to workbox-build.
 module.exports = {
     // 禁用预缓存，改为按需加载
-    // globPatterns: ['**/*.{css,eot,gif,html,ijmap,js,png,svg,ttf,woff,woff2,xml}'],
-    //                    ^ok ^ok ^ok ^ok  ^ok   ^ok  ^ok ^ok^ok ^ok ^ok ^ok  ^ok  ^ok   ^ok
+    // 建议预缓存首页、主要入口页面、核心 CSS/JS、站点 logo/favicon、manifest、PWA 相关文件等
+    globPatterns: [
+      'index.html',
+      '404.html',
+      '**/index.html',
+      '**/manifest*.json',
+      '**/favicon.*',
+      '**/logo*.*',
+      '**/*.{css,js}',
+    ],
 
     // 使用 `find . -type f -name '*.*' | sed 's|.*\.||' | sort | uniq | paste -sd '|'` 捕获
     
