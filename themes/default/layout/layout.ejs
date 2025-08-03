@@ -191,23 +191,13 @@
         $('#main script[src*="gitalk"]').remove();
         // 2. 插入新内容
         $('#main').html($mainContent.html());
-        // 3. 重新执行 #main 内所有无 src 的 script（包括外链重定向、toc、分享等）
-        $('#main script').each(function() {
-          if (!this.src) {
-            const oldScript = this;
-            const newScript = document.createElement('script');
-            // 兼容 type、async、defer 等属性
-            if (oldScript.type) newScript.type = oldScript.type;
-            if (oldScript.async) newScript.async = true;
-            if (oldScript.defer) newScript.defer = true;
-            Array.from(oldScript.attributes).forEach(attr => {
-              if (!['type','async','defer'].includes(attr.name)) {
-                newScript.setAttribute(attr.name, attr.value);
-              }
-            });
-            newScript.text = oldScript.text || oldScript.innerHTML;
-            oldScript.parentNode.replaceChild(newScript, oldScript);
-          }
+        // 3. 只重载带 data-pjax 的脚本（兼容所有属性和内容，推荐写法）
+        document.querySelectorAll('#main script[data-pjax]').forEach(item => {
+          const newScript = document.createElement('script');
+          Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+          const content = item.text || item.textContent || item.innerHTML || '';
+          if (content) newScript.appendChild(document.createTextNode(content));
+          item.parentNode.replaceChild(newScript, item);
         });
         // 3.1 重新提取并赋值 window.GITALK_CONFIG（兼容 Github Pages）
         var newGitalkConfigScript = $mainContent.find('script').filter(function() {
@@ -293,7 +283,9 @@
         }
         hideLoading();
       } catch (err) {
+        window.location.reload(); // Github Pages Problem
         handleAjaxError('switch_error', null, href);
+
       }
     }
 
@@ -317,7 +309,6 @@
             handleAjaxSuccess(response, href, targetHash);
           },
           error: function(xhr, status, error) {
-            window.location.reload();
             handleAjaxError('ajax_error', link, href);
           }
         });
@@ -359,7 +350,7 @@
   <main id="main" class="mdui-m-t-5 fadeIn animated"><%- body %></main>
   <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
   <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons" translate="no">arrow_upward</i></button>
-  <% if (theme.busuanzi.site || theme.busuanzi.page) { %><script defer src="<%- theme.busuanzi.busuanzi_js %>"></script><% } %>
+  <% if (theme.busuanzi.site || theme.busuanzi.page) { %><script data-pjax defer src="<%- theme.busuanzi.busuanzi_js %>"></script><% } %>
   <%- js(['js/mdui', 'js/script']) %>
   <%- js('custom') %>
 </body>

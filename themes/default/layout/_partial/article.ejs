@@ -1,4 +1,4 @@
-<script> // Redirect external links
+<script data-pjax> // Redirect external links
   document.addEventListener('DOMContentLoaded', function() {
     const links = document.querySelectorAll('.mdui-card-content a');
     
@@ -28,7 +28,7 @@
     <% }) %>
   </article>
   <%- js([theme.gallery.jquery_js, theme.gallery.lazyload_js, theme.gallery.fancybox_js]) %>
-  <script>$("#main article img.lazyload").lazyload({effect:"fadeIn"});</script>
+  <script data-pjax>$("#main article img.lazyload").lazyload({effect:"fadeIn"});</script>
 <% } else if (page.timeline && site.posts.length) { %>
   <style>
     #timeline{max-width:750px;margin:0 auto;padding:0 8px}
@@ -103,7 +103,7 @@
               <a href="javascript:void(0);" class="mdui-ripple" onclick="copyToClipboard('<%- page.permalink %>');"><%= __('share.copy_link') %></a>
             </li>
 
-            <script>
+            <script data-pjax>
               function copyToClipboard(text) {
                 navigator.clipboard.writeText(text).then(function() {
                   mdui.snackbar({message: '已复制链接!', position: 'top', buttonText: '好'});
@@ -137,7 +137,7 @@
               <a href="javascript:void(0);" class="mdui-ripple" onclick="sharePageviaSystem();"><%= __('share.system') %></a>
             </li>
 
-            <script>
+            <script data-pjax>
               function sharePageviaSystem() {
                 if (navigator.share) {
                   navigator.share({
@@ -203,7 +203,7 @@
     <% } %>
   </article>
   <%- js([theme.gallery.jquery_js, theme.gallery.fancybox_js]) %>
-  <script>$("#main article .mdui-card-content img.fancybox").on("click",function(e){$.fancybox.open({src:$(this).attr("src")});});</script>
+  <script data-pjax>$("#main article .mdui-card-content img.fancybox").on("click",function(e){$.fancybox.open({src:$(this).attr("src")});});</script>
 <% } %>
 <% if (page.prev || page.next) { %>
   <nav id="paginator">

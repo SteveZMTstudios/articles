@@ -12,7 +12,7 @@
       <a href="javascript:void(0);" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: '<%= __('rss_feed') %>'}" onclick="copyRssToClipboard('<%- config.url %><%- url_for(theme.rss) %>')">
         <i class="mdui-icon material-icons" translate="no">rss_feed</i>
       </a>
-      <script>
+      <script data-pjax>
         function copyRssToClipboard(text) {
           navigator.clipboard.writeText(text).then(function() {
             mdui.snackbar({

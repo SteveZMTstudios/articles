@@ -13,7 +13,7 @@ qrcode:
 thislink: false
 ---
 
-<script>
+<script data-pjax>
 
 function replaceText() {
     const params = new URLSearchParams(window.location.search);

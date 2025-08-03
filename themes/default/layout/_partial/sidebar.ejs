@@ -1,5 +1,5 @@
 <aside id="sidebar" class="mdui-drawer mdui-drawer-full-height">
-  <script>var a=localStorage.getItem("mdui-drawer-close");if(a){document.getElementById("sidebar").className+=" mdui-drawer-close"};</script>
+  <script data-pjax>var a=localStorage.getItem("mdui-drawer-close");if(a){document.getElementById("sidebar").className+=" mdui-drawer-close"};</script>
   <div class="mdui-grid-tile">
     <% if (theme.banner) { %><img no-lazy src="<%- url_for(theme.banner) %>" style="height: 160px;"><% } %>
     <% if (theme.avatar) { %><img no-lazy src="<%- url_for(theme.avatar) %>" class="avatar-animation" alt="Avatar" style="position: absolute; top: 10%; left: 24px; width: 64px; height: 64px; border: 2px solid #fff; border-radius: 50%;"><% } %>
@@ -21,7 +21,7 @@
             <i class="mdui-icon material-icons" translate="no">email</i>
           </a>
         </div>
-        <script>
+        <script data-pjax>
           function copyEmailToClipboard(email) {
             navigator.clipboard.writeText(email).then(function() {
               mdui.snackbar({
@@ -51,7 +51,7 @@
       <div class="mdui-list-item-content"><%= __('home') %></div>
     </a>
     <div class="mdui-collapse-item">
-      <script>var a=localStorage.getItem("mdui-collapse-item-0");if(a){document.getElementsByClassName("mdui-collapse-item")[0].className+=" mdui-collapse-item-open"};</script>
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-0");if(a){document.getElementsByClassName("mdui-collapse-item")[0].className+=" mdui-collapse-item-open"};</script>
       <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
         <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-deep-orange" translate="no">archive</i>
         <div class="mdui-list-item-content"><%= __('archive') %></div>
@@ -66,7 +66,7 @@
       </div>
     </div>
     <div class="mdui-collapse-item">
-      <script>var a=localStorage.getItem("mdui-collapse-item-1");if(a){document.getElementsByClassName("mdui-collapse-item")[1].className+=" mdui-collapse-item-open"};</script>
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-1");if(a){document.getElementsByClassName("mdui-collapse-item")[1].className+=" mdui-collapse-item-open"};</script>
       <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
         <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-green" translate="no">class</i>
         <div class="mdui-list-item-content"><%= __('category') %></div>
@@ -81,7 +81,7 @@
       </div>
     </div>
     <div class="mdui-collapse-item">
-      <script>var a=localStorage.getItem("mdui-collapse-item-2");if(a){document.getElementsByClassName("mdui-collapse-item")[2].className+=" mdui-collapse-item-open"};</script>
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-2");if(a){document.getElementsByClassName("mdui-collapse-item")[2].className+=" mdui-collapse-item-open"};</script>
       <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
         <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown" translate="no">bookmark</i>
         <div class="mdui-list-item-content"><%= __('tag') %></div>
@@ -108,7 +108,7 @@
       <a href="<%- url_for(theme.pages[i].link) %>" class="mdui-list-item mdui-ripple"><%= theme.pages[i].name %></a>
     <% } %>
     <div class="mdui-collapse-item">
-      <script>var a=localStorage.getItem("mdui-collapse-item-3");if(a){document.getElementsByClassName("mdui-collapse-item")[3].className+=" mdui-collapse-item-open"};</script>
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-3");if(a){document.getElementsByClassName("mdui-collapse-item")[3].className+=" mdui-collapse-item-open"};</script>
       <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
         <div class="mdui-list-item-content"><%= __('links') %></div>
         <i class="mdui-list-item-icon mdui-icon material-icons" translate="no">link</i>

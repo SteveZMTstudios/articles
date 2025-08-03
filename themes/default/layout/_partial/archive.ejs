@@ -5,7 +5,7 @@
       <!--<%- Array.isArray(theme.notice) ? theme.notice[Math.floor(Math.random() * theme.notice.length)] : theme.notice %>-->
       <% if (Array.isArray(theme.notice)) { %>
         <span id="random-notice"></span>
-        <script>
+        <script data-pjax>
           (function() {
             // 通知系统状态管理
             const NoticeSystem = {
