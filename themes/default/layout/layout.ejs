@@ -2,6 +2,9 @@
 <html lang="<%= page.lang %>">
 <%- partial('_partial/head') %>
 <body class="mdui-appbar-with-toolbar mdui-theme-primary-<%= theme.theme_color.primary || 'indigo' %> mdui-theme-accent-<%= theme.theme_color.accent || 'pink' %>">
+  <% if (theme.busuanzi.site || theme.busuanzi.page) { %>
+  <script>window.BUSUANZI_SRC = '<%- theme.busuanzi.busuanzi_js %>';</script>
+  <% } %>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
     function triggerEvents() {
@@ -135,11 +138,18 @@
         history.pushState({}, '', href);
         document.title = $response.filter('title').text() || document.title;
         simulatePageRefresh();
-        // busuanzi 重新加载
-        if (window.BUSUANZI_RESET) {
-          window.BUSUANZI_RESET();
-        } else if (window.Busuanzi && window.Busuanzi.fetch) {
-          window.Busuanzi.fetch();
+        // busuanzi 重新加载（强制重新插入脚本）
+        var busuanziScriptSelector = 'script[src*="busuanzi"]';
+        var oldBusuanzi = document.querySelector(busuanziScriptSelector);
+        if (oldBusuanzi) {
+          oldBusuanzi.parentNode.removeChild(oldBusuanzi);
+        }
+        // 重新插入 busuanzi 脚本
+        if (window.BUSUANZI_SRC) {
+          var script = document.createElement('script');
+          script.src = window.BUSUANZI_SRC;
+          script.defer = true;
+          document.body.appendChild(script);
         }
         // gitalk 重新加载（如果有）
         if (typeof Gitalk === 'function' && document.getElementById('gitalk-container')) {
