@@ -28,15 +28,15 @@
 <meta property="article:published_time" content="2024-12-03T12:15:22.000Z">
 <meta property="article:modified_time" content="2025-08-01T03:05:23.237Z">
 <meta property="article:author" content="Steve ZMT">
+<meta property="article:tag" content="开源">
 <meta property="article:tag" content="root">
 <meta property="article:tag" content="安卓">
-<meta property="article:tag" content="开源">
 <meta property="article:tag" content="互联">
 <meta property="article:tag" content="KDE">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/2_compressed.jpg">
 
-  <meta name="keywords" content=",root,安卓,开源,互联,KDE">
+  <meta name="keywords" content=",开源,root,安卓,互联,KDE">
   <meta name="format-detection" content="telephone=no,email=no">
   <meta name="theme-color" content="#448AFF">
 
@@ -71,7 +71,7 @@
 
 <meta name="generator" content="Hexo 7.3.0"></head>
 <!--
-<script>
+<script data-pjax>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -82,8 +82,8 @@
 
 <!-- Google tag (gtag.js) -->
 
-<script defer src="https://www.googletagmanager.com/gtag/js?id=G-T404DHJEEZ"></script>
-<script>
+<script data-pjax defer src="https://www.googletagmanager.com/gtag/js?id=G-T404DHJEEZ"></script>
+<script data-pjax>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
@@ -280,23 +280,13 @@
         $('#main script[src*="gitalk"]').remove();
         // 2. 插入新内容
         $('#main').html($mainContent.html());
-        // 3. 重新执行 #main 内所有无 src 的 script（包括外链重定向、toc、分享等）
-        $('#main script').each(function() {
-          if (!this.src) {
-            const oldScript = this;
-            const newScript = document.createElement('script');
-            // 兼容 type、async、defer 等属性
-            if (oldScript.type) newScript.type = oldScript.type;
-            if (oldScript.async) newScript.async = true;
-            if (oldScript.defer) newScript.defer = true;
-            Array.from(oldScript.attributes).forEach(attr => {
-              if (!['type','async','defer'].includes(attr.name)) {
-                newScript.setAttribute(attr.name, attr.value);
-              }
-            });
-            newScript.text = oldScript.text || oldScript.innerHTML;
-            oldScript.parentNode.replaceChild(newScript, oldScript);
-          }
+        // 3. 只重载带 data-pjax 的脚本（兼容所有属性和内容，推荐写法）
+        document.querySelectorAll('#main script[data-pjax]').forEach(item => {
+          const newScript = document.createElement('script');
+          Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+          const content = item.text || item.textContent || item.innerHTML || '';
+          if (content) newScript.appendChild(document.createTextNode(content));
+          item.parentNode.replaceChild(newScript, item);
         });
         // 3.1 重新提取并赋值 window.GITALK_CONFIG（兼容 Github Pages）
         var newGitalkConfigScript = $mainContent.find('script').filter(function() {
@@ -382,7 +372,9 @@
         }
         hideLoading();
       } catch (err) {
+        window.location.reload(); // Github Pages Problem
         handleAjaxError('switch_error', null, href);
+
       }
     }
 
@@ -406,7 +398,6 @@
             handleAjaxSuccess(response, href, targetHash);
           },
           error: function(xhr, status, error) {
-            window.location.reload();
             handleAjaxError('ajax_error', link, href);
           }
         });
@@ -457,7 +448,7 @@
       <a href="javascript:void(0);" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'RSS'}" onclick="copyRssToClipboard('https://blog.stevezmt.top/atom.xml')">
         <i class="mdui-icon material-icons" translate="no">rss_feed</i>
       </a>
-      <script>
+      <script data-pjax>
         function copyRssToClipboard(text) {
           navigator.clipboard.writeText(text).then(function() {
             mdui.snackbar({
@@ -488,7 +479,7 @@
 </div>
 
   <aside id="sidebar" class="mdui-drawer mdui-drawer-full-height">
-  <script>var a=localStorage.getItem("mdui-drawer-close");if(a){document.getElementById("sidebar").className+=" mdui-drawer-close"};</script>
+  <script data-pjax>var a=localStorage.getItem("mdui-drawer-close");if(a){document.getElementById("sidebar").className+=" mdui-drawer-close"};</script>
   <div class="mdui-grid-tile">
     <img no-lazy src="/images/banner.png" style="height: 160px;">
     <img no-lazy src="/images/avatar.jpg@128x128.jpg" class="avatar-animation" alt="Avatar" style="position: absolute; top: 10%; left: 24px; width: 64px; height: 64px; border: 2px solid #fff; border-radius: 50%;">
@@ -510,7 +501,7 @@
             <i class="mdui-icon material-icons" translate="no">email</i>
           </a>
         </div>
-        <script>
+        <script data-pjax>
           function copyEmailToClipboard(email) {
             navigator.clipboard.writeText(email).then(function() {
               mdui.snackbar({
@@ -540,7 +531,7 @@
       <div class="mdui-list-item-content">主页</div>
     </a>
     <div class="mdui-collapse-item">
-      <script>var a=localStorage.getItem("mdui-collapse-item-0");if(a){document.getElementsByClassName("mdui-collapse-item")[0].className+=" mdui-collapse-item-open"};</script>
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-0");if(a){document.getElementsByClassName("mdui-collapse-item")[0].className+=" mdui-collapse-item-open"};</script>
       <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
         <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-deep-orange" translate="no">archive</i>
         <div class="mdui-list-item-content">归档</div>
@@ -553,7 +544,7 @@
       </div>
     </div>
     <div class="mdui-collapse-item">
-      <script>var a=localStorage.getItem("mdui-collapse-item-1");if(a){document.getElementsByClassName("mdui-collapse-item")[1].className+=" mdui-collapse-item-open"};</script>
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-1");if(a){document.getElementsByClassName("mdui-collapse-item")[1].className+=" mdui-collapse-item-open"};</script>
       <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
         <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-green" translate="no">class</i>
         <div class="mdui-list-item-content">分类</div>
@@ -566,7 +557,7 @@
       </div>
     </div>
     <div class="mdui-collapse-item">
-      <script>var a=localStorage.getItem("mdui-collapse-item-2");if(a){document.getElementsByClassName("mdui-collapse-item")[2].className+=" mdui-collapse-item-open"};</script>
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-2");if(a){document.getElementsByClassName("mdui-collapse-item")[2].className+=" mdui-collapse-item-open"};</script>
       <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
         <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown" translate="no">bookmark</i>
         <div class="mdui-list-item-content">标签</div>
@@ -595,7 +586,7 @@
       <a href="/friends" class="mdui-list-item mdui-ripple">友情链接</a>
     
     <div class="mdui-collapse-item">
-      <script>var a=localStorage.getItem("mdui-collapse-item-3");if(a){document.getElementsByClassName("mdui-collapse-item")[3].className+=" mdui-collapse-item-open"};</script>
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-3");if(a){document.getElementsByClassName("mdui-collapse-item")[3].className+=" mdui-collapse-item-open"};</script>
       <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
         <div class="mdui-list-item-content">其他链接</div>
         <i class="mdui-list-item-icon mdui-icon material-icons" translate="no">link</i>
@@ -612,7 +603,7 @@
   </div>
 </aside>
 
-  <main id="main" class="mdui-m-t-5 fadeIn animated"><script> // Redirect external links
+  <main id="main" class="mdui-m-t-5 fadeIn animated"><script data-pjax> // Redirect external links
   document.addEventListener('DOMContentLoaded', function() {
     const links = document.querySelectorAll('.mdui-card-content a');
     
@@ -636,7 +627,7 @@
   <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
   <article class="mdui-card mdui-m-b-5">
     <header class="mdui-card-media">
-      <img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/random/material-16.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+      <img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/random/material-1.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
       <div class="mdui-card-media-covered">
         <div class="mdui-card-primary">
             <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;">几乎超越鸿蒙的完全互联方案</h1></div>
@@ -664,7 +655,7 @@
               <a href="javascript:void(0);" class="mdui-ripple" onclick="copyToClipboard('https://blog.stevezmt.top/2024/12/03/real-harmony-connect-all/');">复制链接</a>
             </li>
 
-            <script>
+            <script data-pjax>
               function copyToClipboard(text) {
                 navigator.clipboard.writeText(text).then(function() {
                   mdui.snackbar({message: '已复制链接!', position: 'top', buttonText: '好'});
@@ -698,7 +689,7 @@
               <a href="javascript:void(0);" class="mdui-ripple" onclick="sharePageviaSystem();">更多分享选项</a>
             </li>
 
-            <script>
+            <script data-pjax>
               function sharePageviaSystem() {
                 if (navigator.share) {
                   navigator.share({
@@ -812,7 +803,7 @@
 <script src="//ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"></script>
 <script src="//gcore.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 
-  <script>$("#main article .mdui-card-content img.fancybox").on("click",function(e){$.fancybox.open({src:$(this).attr("src")});});</script>
+  <script data-pjax>$("#main article .mdui-card-content img.fancybox").on("click",function(e){$.fancybox.open({src:$(this).attr("src")});});</script>
 
 
   <nav id="paginator">
@@ -907,7 +898,7 @@
 </footer>
 
   <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons" translate="no">arrow_upward</i></button>
-  <script defer src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script data-pjax defer src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   
 <script src="/js/mdui.js"></script>
 <script src="/js/script.js"></script>
