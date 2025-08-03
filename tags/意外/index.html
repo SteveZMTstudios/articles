@@ -247,7 +247,8 @@
         message: `页面加载失败，(${errorType})`,
         timeout: 1500,
         onClose: function() {
-          window.location.href = href;
+          // window.location.href = href;
+          window.location.reload();
         }
       });
     }
@@ -396,6 +397,7 @@
             handleAjaxSuccess(response, href, targetHash);
           },
           error: function(xhr, status, error) {
+            window.location.reload();
             handleAjaxError('ajax_error', link, href);
           }
         });
@@ -614,7 +616,7 @@
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2025/01/20/20250120-apex-area-serverdown/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-5.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-7.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">临时服务中断</div>
