@@ -2,7 +2,8 @@
 <link rel="stylesheet" href="//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
 <script src="//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
 <script>
-  var gitalk = new Gitalk({
+  // 保存配置到全局变量，供AJAX页面切换时使用
+  window.GITALK_CONFIG = {
     clientID: '<%= theme.comment.gitalk_client_id %>',
     clientSecret: '<%= theme.comment.gitalk_client_secret %>',
     repo: '<%= theme.comment.gitalk_repo %>',
@@ -10,6 +11,8 @@
     admin: ['<%= theme.comment.gitalk_owner %>'],
     id: '<%= page[theme.comment.gitalk_sid_type] %>' || location.pathname,
     distractionFreeMode: false
-  });
+  };
+  
+  var gitalk = new Gitalk(window.GITALK_CONFIG);
   gitalk.render('gitalk-container');
 </script>
