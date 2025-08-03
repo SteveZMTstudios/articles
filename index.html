@@ -129,18 +129,17 @@
     }
 
     function reinitializeNoticeSystem() {
-      // 防止重复初始化
-      if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-        if (window.noticeSystemInitializing) return;
-        window.noticeSystemInitializing = true;
-        if (typeof window.destroyNoticeSystem === 'function') {
-          window.destroyNoticeSystem();
+      if (localStorage.getItem('notice-system-initialized') === 'true') {
+        const noticeElement = document.getElementById('random-notice');
+        if (noticeElement && (window.location.pathname === '/' || window.location.pathname === '/index.html')) {
+          console.log('Reinitializing notice system');
+          window.initNoticeSystem();
         }
+      }
+      if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
         if (typeof window.initNoticeSystem === 'function') {
           window.initNoticeSystem();
-          window.noticeSystemInitialized = true;
         }
-        setTimeout(function() { window.noticeSystemInitializing = false; }, 500);
       }
     }
 
@@ -240,40 +239,17 @@
           function renderGitalk() {
             try {
               var gitalkConfig = window.gitalkConfig || {};
-              if (typeof Gitalk === 'function') {
-                var gitalk = new Gitalk(gitalkConfig);
-                gitalk.render('gitalk-container');
-              } else {
-                setTimeout(renderGitalk, 100);
-              }
-            } catch(e) {
-              if (e && e.message && /Gitalk is not defined/.test(e.message) && window.GITALK_SRC) {
-                var gtScript = document.querySelector('script[src="'+window.GITALK_SRC+'"]');
-                if (!gtScript) {
-                  gtScript = document.createElement('script');
-                  gtScript.src = window.GITALK_SRC;
-                  gtScript.onload = renderGitalk;
-                  document.body.appendChild(gtScript);
-                } else {
-                  gtScript.addEventListener('load', renderGitalk);
-                }
-              } else {
-                console.warn('Gitalk reload failed:', e);
-              }
-            }
+              var gitalk = new Gitalk(gitalkConfig);
+              gitalk.render('gitalk-container');
+            } catch(e) {console.warn('Gitalk reload failed:', e);}
           }
           if (typeof Gitalk === 'function') {
-            setTimeout(renderGitalk, 100);
-          } else if (window.GITALK_SRC) {
-            var gtScript = document.querySelector('script[src="'+window.GITALK_SRC+'"]');
-            if (!gtScript) {
-              gtScript = document.createElement('script');
-              gtScript.src = window.GITALK_SRC;
-              gtScript.onload = renderGitalk;
-              document.body.appendChild(gtScript);
-            } else {
-              gtScript.addEventListener('load', renderGitalk);
-            }
+            setTimeout(renderGitalk, 100); // 延迟，确保脚本已加载
+          } else if (window.GITALK_SRC && !document.querySelector('script[src="'+window.GITALK_SRC+'"]')) {
+            var gtScript = document.createElement('script');
+            gtScript.src = window.GITALK_SRC;
+            gtScript.onload = renderGitalk;
+            document.body.appendChild(gtScript);
           }
         }
         if (targetHash) {
@@ -519,7 +495,7 @@
   <article class="mdui-card mdui-m-b-5">
     <div class="mdui-card-content mdui-typo mdui-ripple" id="notice-container">
       <i class="mdui-icon material-icons mdui-text-color-deep-orange" translate="no">announcement</i> 
-      <!--“变形金刚寂寞了会上网约车吗？”-->
+      <!--王老汉找人拼命，现在两人共用一条命（-->
       
         <span id="random-notice"></span>
         <script>
@@ -658,7 +634,7 @@
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2025/01/20/20250120-apex-area-serverdown/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-19.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-16.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">临时服务中断</div>
@@ -689,7 +665,7 @@
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2025/01/01/2025-new-year/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-4.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-7.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">2025 新年快乐</div>
@@ -718,7 +694,7 @@ Happy new year 2025!
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2024/12/21/fork-this-theme/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-5.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-13.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">主题复刻指南</div>
@@ -749,7 +725,7 @@ Happy new year 2025!
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2024/12/03/real-harmony-connect-all/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-9.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-5.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">几乎超越鸿蒙的完全互联方案</div>
@@ -781,7 +757,7 @@ Happy new year 2025!
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2024/12/01/talk-about-x-ai/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.gif" data-original="/images/random/material-5.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.gif" data-original="/images/random/material-12.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">关于 x.ai 的一些看法</div>

@@ -137,18 +137,17 @@
     }
 
     function reinitializeNoticeSystem() {
-      // 防止重复初始化
-      if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-        if (window.noticeSystemInitializing) return;
-        window.noticeSystemInitializing = true;
-        if (typeof window.destroyNoticeSystem === 'function') {
-          window.destroyNoticeSystem();
+      if (localStorage.getItem('notice-system-initialized') === 'true') {
+        const noticeElement = document.getElementById('random-notice');
+        if (noticeElement && (window.location.pathname === '/' || window.location.pathname === '/index.html')) {
+          console.log('Reinitializing notice system');
+          window.initNoticeSystem();
         }
+      }
+      if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
         if (typeof window.initNoticeSystem === 'function') {
           window.initNoticeSystem();
-          window.noticeSystemInitialized = true;
         }
-        setTimeout(function() { window.noticeSystemInitializing = false; }, 500);
       }
     }
 
@@ -248,40 +247,17 @@
           function renderGitalk() {
             try {
               var gitalkConfig = window.gitalkConfig || {};
-              if (typeof Gitalk === 'function') {
-                var gitalk = new Gitalk(gitalkConfig);
-                gitalk.render('gitalk-container');
-              } else {
-                setTimeout(renderGitalk, 100);
-              }
-            } catch(e) {
-              if (e && e.message && /Gitalk is not defined/.test(e.message) && window.GITALK_SRC) {
-                var gtScript = document.querySelector('script[src="'+window.GITALK_SRC+'"]');
-                if (!gtScript) {
-                  gtScript = document.createElement('script');
-                  gtScript.src = window.GITALK_SRC;
-                  gtScript.onload = renderGitalk;
-                  document.body.appendChild(gtScript);
-                } else {
-                  gtScript.addEventListener('load', renderGitalk);
-                }
-              } else {
-                console.warn('Gitalk reload failed:', e);
-              }
-            }
+              var gitalk = new Gitalk(gitalkConfig);
+              gitalk.render('gitalk-container');
+            } catch(e) {console.warn('Gitalk reload failed:', e);}
           }
           if (typeof Gitalk === 'function') {
-            setTimeout(renderGitalk, 100);
-          } else if (window.GITALK_SRC) {
-            var gtScript = document.querySelector('script[src="'+window.GITALK_SRC+'"]');
-            if (!gtScript) {
-              gtScript = document.createElement('script');
-              gtScript.src = window.GITALK_SRC;
-              gtScript.onload = renderGitalk;
-              document.body.appendChild(gtScript);
-            } else {
-              gtScript.addEventListener('load', renderGitalk);
-            }
+            setTimeout(renderGitalk, 100); // 延迟，确保脚本已加载
+          } else if (window.GITALK_SRC && !document.querySelector('script[src="'+window.GITALK_SRC+'"]')) {
+            var gtScript = document.createElement('script');
+            gtScript.src = window.GITALK_SRC;
+            gtScript.onload = renderGitalk;
+            document.body.appendChild(gtScript);
           }
         }
         if (targetHash) {
