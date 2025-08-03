@@ -20,7 +20,6 @@
       window.dispatchEvent(new Event('orientationchange'));
       window.dispatchEvent(new Event('focus'));
       document.hasFocus() && document.activeElement && document.activeElement.focus();
-    // ...existing code...
 
     // 重新初始化 random-notice 和 Gitalk
     function reinitPageComponents() {
@@ -191,18 +190,21 @@
         $('#main script[src*="gitalk"]').remove();
         // 2. 插入新内容
         $('#main').html($mainContent.html());
-        // 3. 重新执行 #main 内的内联 script 标签（不处理外部src）
+        // 3. 重新执行 #main 内所有无 src 的 script（包括外链重定向、toc、分享等）
         $('#main script').each(function() {
           if (!this.src) {
             const oldScript = this;
             const newScript = document.createElement('script');
-            newScript.text = oldScript.text || oldScript.innerHTML;
+            // 兼容 type、async、defer 等属性
             if (oldScript.type) newScript.type = oldScript.type;
+            if (oldScript.async) newScript.async = true;
+            if (oldScript.defer) newScript.defer = true;
             Array.from(oldScript.attributes).forEach(attr => {
-              if (attr.name !== 'type') {
+              if (!['type','async','defer'].includes(attr.name)) {
                 newScript.setAttribute(attr.name, attr.value);
               }
             });
+            newScript.text = oldScript.text || oldScript.innerHTML;
             oldScript.parentNode.replaceChild(newScript, oldScript);
           }
         });
@@ -216,6 +218,7 @@
         // 3.2 重新执行 Google Tag/统计等外部脚本（如有）
         $mainContent.find('script[src]').each(function() {
           var src = this.getAttribute('src');
+          // 只插入未加载过的外部脚本，兼容 Google Tag/统计
           if (src && !document.querySelector('script[src="'+src+'"]')) {
             var extScript = document.createElement('script');
             extScript.src = src;

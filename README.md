@@ -1,6 +1,7 @@
 博客地址：[blog.stevezmt.top](https://blog.stevezmt.top)
 
-构建状态：<a href='https://github.com/SteveZMTstudios/articles/actions/workflows/hexo-deploy.yml'><img src='https://github.com/SteveZMTstudios/articles/actions/workflows/hexo-deploy.yml/badge.svg' alt='Failed to load Hexo-deploy status'></a> <br> <a href='https://github.com/SteveZMTstudios/articles/actions/workflows/pages/pages-build-deployment'><img src='https://github.com/SteveZMTstudios/articles/actions/workflows/pages/pages-build-deployment/badge.svg'></a>
+构建状态：<a href='https://github.com/SteveZMTstudios/articles/actions/workflows/hexo-deploy.yml'><img src='https://github.com/SteveZMTstudios/articles/actions/workflows/hexo-deploy.yml/badge.svg' alt='Failed to load Hexo-deploy status'></a> <br> <a href='https://github.com/SteveZMTstudios/articles/actions/workflows/static.yml'><img src='https://github.com/SteveZMTstudios/articles/actions/workflows/static.yml/badge.svg'></a> <br>
+</a>
 
 构建检查：
 `main`:[![Build Check](https://github.com/SteveZMTstudios/articles/actions/workflows/check-pages.yml/badge.svg?branch=main)](https://github.com/SteveZMTstudios/articles/actions/workflows/check-pages.yml)<br>
