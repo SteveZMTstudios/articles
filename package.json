@@ -7,7 +7,7 @@
     "clean": "hexo clean",
     "deploy": "hexo deploy",
     "server": "hexo server",
-    "look": "hexo g; hexo s"
+    "look": "hexo generate && hexo server"
   },
   "hexo": {
     "version": "7.3.0"

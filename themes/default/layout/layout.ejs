@@ -111,9 +111,44 @@
           throw new Error('无法找到目标内容');
         }
         $('#main').html($mainContent.html());
+        // 重新执行 #main 内的 script 标签
+        $('#main script').each(function() {
+          const oldScript = this;
+          const newScript = document.createElement('script');
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+            newScript.async = oldScript.async;
+            newScript.defer = oldScript.defer;
+          } else {
+            newScript.text = oldScript.text || oldScript.innerHTML;
+          }
+          // 复制 type 属性
+          if (oldScript.type) newScript.type = oldScript.type;
+          // 复制其他属性
+          Array.from(oldScript.attributes).forEach(attr => {
+            if (!['src','type','async','defer'].includes(attr.name)) {
+              newScript.setAttribute(attr.name, attr.value);
+            }
+          });
+          oldScript.parentNode.replaceChild(newScript, oldScript);
+        });
         history.pushState({}, '', href);
         document.title = $response.filter('title').text() || document.title;
         simulatePageRefresh();
+        // busuanzi 重新加载
+        if (window.BUSUANZI_RESET) {
+          window.BUSUANZI_RESET();
+        } else if (window.Busuanzi && window.Busuanzi.fetch) {
+          window.Busuanzi.fetch();
+        }
+        // gitalk 重新加载（如果有）
+        if (typeof Gitalk === 'function' && document.getElementById('gitalk-container')) {
+          try {
+            var gitalkConfig = window.gitalkConfig || {};
+            var gitalk = new Gitalk(gitalkConfig);
+            gitalk.render('gitalk-container');
+          } catch(e) {console.warn('Gitalk reload failed:', e);}
+        }
         if (targetHash) {
           const target = $(targetHash);
           if (target.length) {

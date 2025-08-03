@@ -1,17 +1,19 @@
 // offline config passed to workbox-build.
 module.exports = {
-    globPatterns: ['**/*.{css,eot,gif,html,ijmap,js,png,svg,ttf,woff,woff2,xml}'],
+    // 禁用预缓存，改为按需加载
+    // globPatterns: ['**/*.{css,eot,gif,html,ijmap,js,png,svg,ttf,woff,woff2,xml}'],
     //                    ^ok ^ok ^ok ^ok  ^ok   ^ok  ^ok ^ok^ok ^ok ^ok ^ok  ^ok  ^ok   ^ok
 
     // 使用 `find . -type f -name '*.*' | sed 's|.*\.||' | sort | uniq | paste -sd '|'` 捕获
     
-    // 静态文件合集，如果你的站点使用了例如 webp 格式的文件，请将文件类型添加进去。
+    // 注释掉静态文件预缓存，改为运行时按需缓存
     globDirectory: 'public',
     swDest: 'public/service-worker.js',
     maximumFileSizeToCacheInBytes: 10485760, // 缓存的最大文件大小，以字节为单位。
     skipWaiting: true,
     clientsClaim: true,
-    runtimeCaching: [ // 如果你需要加载 CDN 资源，请配置该选项，如果没有，可以不配置。
+    // 按需加载配置：只在用户访问时才缓存资源，而不是预先缓存整个网站
+    runtimeCaching: [ // 运行时缓存策略，资源会在首次访问时被缓存
       // CDNs - should be CacheFirst, since they should be used specific versions so should not change
       
       // {
@@ -22,27 +24,27 @@ module.exports = {
       {
         urlPattern: /.*\.html$/,
         /**
-         * 按需修改使用策略
-         * StaleWhileRevalidate: 使用缓存的内容尽快响应请求（如果可用），如果未缓存，则回退到网络请求。然后，网络请求用于更新缓存。
-         * CacheFirst: 缓存优先策略，优先获取缓存中的资源，如果缓存中没有相关资源，那么就发起网络请求。
-         * NetworkFirst: 尝试从网络获取最新请求，如果请求成功，将响应放入缓存中。如果网络无法返回响应，则将使用缓存响应。
-         * NetworkOnly: 只使用网络请求获取的资源
-         * CacheOnly: 只使用缓存中的资源
+         * 按需缓存策略说明：
+         * NetworkFirst: 优先从网络获取最新内容，网络失败时使用缓存，适合页面内容
+         * StaleWhileRevalidate: 快速返回缓存内容，同时在后台更新，用户体验好
+         * CacheFirst: 优先使用缓存，适合不经常变化的静态资源
          */
-        handler: 'StaleWhileRevalidate',
+        handler: 'NetworkFirst', // 改为NetworkFirst，确保页面内容是最新的
         options: {
           cacheName: 'html-cache',
           cacheableResponse: { statuses: [0, 200] },
-          expiration: { maxAgeSeconds: 86400 * 1 } // 1d
+          expiration: { maxAgeSeconds: 86400 * 1 }, // 1d
+          networkTimeoutSeconds: 3 // 网络超时3秒后使用缓存
         }
       },
       {
         urlPattern: /\/$/, // 匹配所有以 / 结尾的 URL
-        handler: 'StaleWhileRevalidate', // 使用 StaleWhileRevalidate 策略
+        handler: 'NetworkFirst', // 首页等重要页面优先获取最新内容
         options: {
           cacheName: 'slash-cache', // 缓存名称
           cacheableResponse: { statuses: [0, 200] }, // 可缓存的响应状态码
-          expiration: { maxAgeSeconds: 86400 * 1 } // 缓存有效期为1天
+          expiration: { maxAgeSeconds: 86400 * 1 }, // 缓存有效期为1天
+          networkTimeoutSeconds: 3 // 网络超时后使用缓存
         }
       },
       {
@@ -65,10 +67,14 @@ module.exports = {
       },
       {
         urlPattern: /.*\.(png|gif|webp|ico|svg|cur|woff|ijmap|ttf|eot|woff2?)$/,
-        handler: 'CacheFirst',
+        handler: 'CacheFirst', // 静态资源优先使用缓存
         options: {
           cacheName: 'media-cache',
-          cacheableResponse: { statuses: [0, 200] }
+          cacheableResponse: { statuses: [0, 200] },
+          expiration: { 
+            maxAgeSeconds: 86400 * 30, // 30天
+            maxEntries: 100 // 限制缓存条目数量，避免缓存过多
+          }
         }
       },
       {
@@ -81,10 +87,14 @@ module.exports = {
       },
       {
         urlPattern: /^https:\/\/(cdn\.staticfile\.org|unpkg\.com|cdn\.bootcdn\.net|cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net|cdn-city\.livere\.com)\/.*/,
-        handler: 'CacheFirst',
+        handler: 'CacheFirst', // CDN资源优先使用缓存
         options: {
           cacheName: 'cdn-cache',
-          cacheableResponse: { statuses: [0, 200] }
+          cacheableResponse: { statuses: [0, 200] },
+          expiration: { 
+            maxAgeSeconds: 86400 * 30, // 30天
+            maxEntries: 50 // 限制CDN缓存条目数量
+          }
         }
       }
     ]
