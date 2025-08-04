@@ -10,77 +10,28 @@
   <% } %>
   <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.6.0.min.js"></script>
   <script>
-    // 页面组件初始化管理器
-    window.PageManager = {
-      // 存储需要重新初始化的组件
-      components: [],
-      
-      // 注册组件
-      register: function(name, initFn, cleanupFn) {
-        this.components.push({ name, initFn, cleanupFn });
-      },
-      
-      // 清理所有组件
-      cleanup: function() {
-        this.components.forEach(component => {
-          if (component.cleanupFn) {
-            try {
-              component.cleanupFn();
-            } catch (e) {
-              console.warn(`Component ${component.name} cleanup error:`, e);
-            }
-          }
-        });
-      },
-      
-      // 重新初始化所有组件
-      reinit: function() {
-        this.components.forEach(component => {
-          try {
-            component.initFn();
-          } catch (e) {
-            console.warn(`Component ${component.name} init error:`, e);
-          }
-        });
-      }
-    };
-
-    // 触发 DOM 事件
+    // 触发常用事件，兼容 PJAX/AJAX 页面切换
     function triggerEvents() {
-      const events = ['DOMContentLoaded', 'readystatechange'];
-      events.forEach(eventType => {
-        document.dispatchEvent(new Event(eventType));
-      });
-      
-      const windowEvents = ['load', 'scroll', 'resize'];
-      windowEvents.forEach(eventType => {
-        window.dispatchEvent(new Event(eventType));
-      });
-    }
+      document.dispatchEvent(new Event('DOMContentLoaded'));
+      document.dispatchEvent(new Event('readystatechange'));
+      window.dispatchEvent(new Event('load'));
+      window.dispatchEvent(new Event('scroll'));
+      window.dispatchEvent(new Event('resize'));
+      window.dispatchEvent(new Event('orientationchange'));
+      window.dispatchEvent(new Event('focus'));
+      document.hasFocus() && document.activeElement && document.activeElement.focus();
 
-    // Gitalk 初始化
-    function initGitalk() {
-      if (!window.Gitalk) return;
-      var el = document.getElementById('gitalk-container');
-      if (!el) return;
-      
-      var config = window.GITALK_CONFIG || {};
-      if (!config.repo || !config.owner) {
-        el.innerHTML = '<div style="color:red">Gitalk 配置错误: repo/owner 未设置</div>';
-        return;
+    // 重新初始化 random-notice 和 Gitalk
+    function reinitPageComponents() {
+      // 重新初始化 random-notice
+      if (typeof window.initNoticeSystem === 'function') {
+        try {
+          window.initNoticeSystem();
+        } catch (e) {
+          console.warn('NoticeSystem reinit error:', e);
+        }
       }
-      
-      el.innerHTML = '';
-      var gitalk = new Gitalk(config);
-      gitalk.render('gitalk-container');
-    }
-
-    // 注册核心组件
-    if (typeof window.initNoticeSystem === 'function') {
-      window.PageManager.register('notice', window.initNoticeSystem);
-    }
-    
-    window.PageManager.register('gitalk', function() {
+      // 重新初始化 Gitalk
       if (window.GITALK_SRC && document.getElementById('gitalk-container')) {
         if (typeof Gitalk === 'undefined') {
           var script = document.createElement('script');
@@ -93,35 +44,112 @@
           setTimeout(initGitalk, 100);
         }
       }
-    });
+    }
 
-    // 监听页面更新事件
+    // 修正 Gitalk 初始化，防止 repo/owner 取 undefined
+    function initGitalk() {
+      if (!window.Gitalk) return;
+      var el = document.getElementById('gitalk-container');
+      if (!el) return;
+      // 取 theme.comment 配置
+      var config = window.GITALK_CONFIG || {};
+      if (!config.repo || !config.owner) {
+        if (window.theme && window.theme.comment) {
+          config = Object.assign({}, window.theme.comment);
+        }
+      }
+      if (!config.repo || !config.owner) {
+        el.innerHTML = '<div style="color:red">Gitalk 配置错误: repo/owner 未设置</div>';
+        return;
+      }
+      // 防止重复渲染
+      el.innerHTML = '';
+      var gitalk = new Gitalk(config);
+      gitalk.render('gitalk-container');
+      // 更新全局配置，保证一致性
+      window.GITALK_CONFIG = config;
+    }
+
+    // 监听页面切换（如 PJAX/AJAX），重新初始化页面组件
     document.addEventListener('page:updated', function() {
       setTimeout(function() {
         triggerEvents();
-        window.PageManager.reinit();
+        reinitPageComponents();
       }, 50);
     });
 
     // 首次页面加载
     window.addEventListener('load', function() {
       setTimeout(function() {
-        window.PageManager.reinit();
+        reinitPageComponents();
       }, 50);
     });
+    }
 
-    // PJAX 链接处理
+    function handleDrawer() {
+      try {
+        const drawer = document.querySelector('.mdui-drawer');
+        if (drawer) {
+          const $ = mdui.$;
+          const inst = new mdui.Drawer(drawer);
+          const isMobile = window.innerWidth < 1024;
+          const menuButtonnw = document.querySelector('.mdui-btn-icon');
+          if (menuButtonnw && inst.getState() === 'opened' && isMobile) {
+            menuButtonnw.click();
+          }
+          const isForceClose = localStorage.getItem('mdui-drawer-close');
+          /**
+          if (isMobile || isForceClose) {
+            inst.close();
+            $('.mdui-overlay.mdui-overlay-show').remove();
+            $('body').css('overflow', 'auto');
+            
+          }
+            */
+        }
+      } catch (err) {
+        console.warn('处理抽屉导航失败:', err);
+        alert('处理抽屉导航失败，请刷新页面');
+      }
+    }
+
+    function reinitializeNoticeSystem() {
+      if (localStorage.getItem('notice-system-initialized') === 'true') {
+        const noticeElement = document.getElementById('random-notice');
+        if (noticeElement && (window.location.pathname === '/' || window.location.pathname === '/index.html')) {
+          console.log('Reinitializing notice system');
+          window.initNoticeSystem();
+        }
+      }
+      if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+        if (typeof window.initNoticeSystem === 'function') {
+          window.initNoticeSystem();
+        }
+      }
+    }
+
+    function simulatePageRefresh() {
+      window.scrollTo(0, 0);
+      triggerEvents();
+      handleDrawer();
+      window.dispatchEvent(new Event('page:updated'));
+      if (typeof window.initNoticeSystem === 'function') {
+        window.initNoticeSystem();
+      }
+      reinitializeNoticeSystem();
+      console.log('Page type:', window.location.pathname);
+      console.log('Notice system status:', window.noticeSystemInitialized);
+    }
 
     function showLoading() {
       let progressBar = document.querySelector('.loading-progress');
       if (!progressBar) {
         progressBar = document.createElement('div');
         progressBar.className = 'mdui-progress loading-progress';
-        progressBar.style.cssText = 'position:fixed;top:0;left:0;width:100%;z-index:9999;';
         const inner = document.createElement('div');
         inner.className = 'mdui-progress-indeterminate';
         progressBar.appendChild(inner);
-        document.body.appendChild(progressBar);
+        document.body.insertBefore(progressBar, document.body.firstChild);
       }
       progressBar.style.display = 'block';
     }
@@ -133,11 +161,16 @@
       }
     }
 
-    function handleAjaxError(errorType, href) {
+    function handleAjaxError(errorType, link, href) {
       console.error(`页面加载失败: ${errorType}`);
-      hideLoading();
-      // 直接跳转，不要使用 reload
-      window.location.href = href;
+      mdui.snackbar({
+        message: `页面加载失败，(${errorType})`,
+        timeout: 1500,
+        onClose: function() {
+          // window.location.href = href;
+          window.location.reload();
+        }
+      });
     }
 
     function handleAjaxSuccess(response, href, targetHash) {
@@ -145,18 +178,20 @@
         const $response = $(response);
         const $newContent = $response.find('#main');
         const $mainContent = $newContent.length ? $newContent : $response.filter('#main');
-        
+        // Github Pages主页特殊处理：找不到内容时直接整页刷新
         if (!$mainContent.length) {
+          if (href.endsWith('/') || href.endsWith('/index.html')) {
+            window.location.href = href;
+            return;
+          }
+          console.error('无法找到内容区域，响应内容:', response);
           throw new Error('无法找到目标内容');
         }
-
-        // 清理旧组件
-        window.PageManager.cleanup();
-
-        // 替换内容
+        // 1. 移除 #main 内的 gitalk 脚本，防止重复插入
+        $('#main script[src*="gitalk"]').remove();
+        // 2. 插入新内容
         $('#main').html($mainContent.html());
-        
-        // 重新执行页面脚本
+        // 3. 只重载带 data-pjax 的脚本（兼容所有属性和内容，推荐写法）
         document.querySelectorAll('#main script[data-pjax]').forEach(item => {
           const newScript = document.createElement('script');
           Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
@@ -164,45 +199,93 @@
           if (content) newScript.appendChild(document.createTextNode(content));
           item.parentNode.replaceChild(newScript, item);
         });
-        
-        // 提取 Gitalk 配置
+        // 3.1 重新提取并赋值 window.GITALK_CONFIG（兼容 Github Pages）
         var newGitalkConfigScript = $mainContent.find('script').filter(function() {
           return this.textContent && this.textContent.includes('window.GITALK_CONFIG');
         });
         if (newGitalkConfigScript.length) {
-          try { 
-            eval(newGitalkConfigScript.text()); 
-          } catch(e) {
-            console.warn('GITALK_CONFIG eval error', e);
-          }
+          try { eval(newGitalkConfigScript.text()); } catch(e) {console.warn('GITALK_CONFIG eval error', e);}
         }
-        
-        // 更新浏览器状态
+        // 3.2 重新执行 Google Tag/统计等外部脚本（如有）
+        $mainContent.find('script[src]').each(function() {
+          var src = this.getAttribute('src');
+          // 只插入未加载过的外部脚本，兼容 Google Tag/统计
+          if (src && !document.querySelector('script[src="'+src+'"]')) {
+            var extScript = document.createElement('script');
+            extScript.src = src;
+            if (this.defer) extScript.defer = true;
+            if (this.async) extScript.async = true;
+            document.body.appendChild(extScript);
+          }
+        });
+        // 4. 只在用户点击时 pushState，popstate 不再 pushState
         if (!window._popstate_handling) {
           history.pushState({}, '', href);
         }
         document.title = $response.filter('title').text() || document.title;
-        
-        // 重新初始化页面组件
-        triggerEvents();
-        document.dispatchEvent(new Event('page:updated'));
-        
-        // 处理锚点跳转
-        if (targetHash) {
-          setTimeout(() => {
-            const target = document.querySelector(targetHash);
-            if (target) {
-              target.scrollIntoView({ behavior: 'smooth' });
-            }
-          }, 100);
-        } else {
-          window.scrollTo(0, 0);
+        simulatePageRefresh();
+        // busuanzi 重新加载（强制重新插入脚本）
+        var busuanziScriptSelector = 'script[src*="busuanzi"]';
+        var oldBusuanzi = document.querySelector(busuanziScriptSelector);
+        if (oldBusuanzi) {
+          oldBusuanzi.parentNode.removeChild(oldBusuanzi);
         }
-        
+        if (window.BUSUANZI_SRC) {
+          var script = document.createElement('script');
+          script.src = window.BUSUANZI_SRC;
+          script.defer = true;
+          document.body.appendChild(script);
+        }
+        // gitalk 重新加载（如果有）
+        var gitalkContainer = document.getElementById('gitalk-container');
+        if (gitalkContainer) {
+          function renderGitalk() {
+            try {
+              var config = window.GITALK_CONFIG || {};
+              if (!config.repo || !config.owner) {
+                if (window.theme && window.theme.comment) {
+                  config = Object.assign({}, window.theme.comment);
+                }
+              }
+              if (!config.repo || !config.owner) {
+                gitalkContainer.innerHTML = '<div style="color:red">Gitalk 配置错误: repo/owner 未设置</div>';
+                return;
+              }
+              gitalkContainer.innerHTML = '';
+              var gitalk = new Gitalk(config);
+              gitalk.render('gitalk-container');
+            } catch(e) {
+              console.warn('Gitalk reload failed:', e);
+            }
+          }
+          if (typeof Gitalk === 'function') {
+            setTimeout(renderGitalk, 100);
+          } else if (window.GITALK_SRC && !document.querySelector('script[src="'+window.GITALK_SRC+'"]')) {
+            var gtScript = document.createElement('script');
+            gtScript.src = window.GITALK_SRC;
+            gtScript.onload = function() {
+              if (typeof Gitalk === 'function') {
+                renderGitalk();
+              } else {
+                console.warn('Gitalk script loaded but Gitalk not defined');
+              }
+            };
+            document.body.appendChild(gtScript);
+          }
+        }
+        if (targetHash) {
+          const target = $(targetHash);
+          if (target.length) {
+            $('html, body').animate({
+              scrollTop: target.offset().top - 60
+            }, 300);
+          }
+        }
         hideLoading();
       } catch (err) {
-        console.error('页面切换失败:', err);
-        handleAjaxError('content_error', href);
+        window.location.reload(); // Github Pages Problem
+        handleAjaxError('switch_error', null, href);
+
       }
     }
 
@@ -217,42 +300,16 @@
         e.preventDefault();
         showLoading();
         const targetUrl = hashIndex > -1 ? href.substring(0, hashIndex) : href;
-    function handleLinkClick(e, link, href, hashIndex, currentPath, targetPath) {
-      // 处理锚点链接
-      if (hashIndex === 0 || currentPath === targetPath) {
-        return true;
-      }
-      
-      // 排除特殊链接
-      if (link.find('.mdui-icon.material-icons').text() === 'search' || 
-          !href || 
-          typeof href !== 'string' || 
-          href.startsWith('javascript:')) {
-        return true;
-      }
-      
-      // 只处理同域链接
-      if (link.prop('host') === window.location.host && 
-          !link.attr('target') && 
-          link.attr('target') !== '_blank' && 
-          !e.ctrlKey && !e.shiftKey && !e.metaKey) {
-        
-        e.preventDefault();
-        showLoading();
-        
-        const targetUrl = hashIndex > -1 ? href.substring(0, hashIndex) : href;
         const targetHash = hashIndex > -1 ? href.substring(hashIndex) : '';
-        
         $.ajax({
           url: targetUrl,
           method: 'GET',
           dataType: 'html',
-          timeout: 10000,
           success: function(response) {
             handleAjaxSuccess(response, href, targetHash);
           },
           error: function(xhr, status, error) {
-            handleAjaxError('network_error', href);
+            handleAjaxError('ajax_error', link, href);
           }
         });
       }
@@ -261,39 +318,27 @@
     $(document).on('click', 'a', function(e) {
       const link = $(this);
       const href = link.attr('href');
-      
-      // 检查 href 是否存在
-      if (!href) return;
-      
-      const hashIndex = href.indexOf('#');
+      const hashIndex = href ? href.indexOf('#') : -1;
       const currentPath = window.location.pathname;
-      
-      try {
-        const targetPath = new URL(href, window.location.origin).pathname;
-        handleLinkClick(e, link, href, hashIndex, currentPath, targetPath);
-      } catch (err) {
-        // URL 解析失败，让浏览器正常处理
-        console.warn('URL 解析失败:', href, err);
-      }
+      const targetPath = new URL(href, window.location.origin).pathname;
+      handleLinkClick(e, link, href, hashIndex, currentPath, targetPath);
     });
 
     window.onpopstate = function() {
       showLoading();
       window._popstate_handling = true;
       var href = location.href;
-      
       $.ajax({
         url: href,
         method: 'GET',
         dataType: 'html',
-        timeout: 10000,
         success: function(response) {
           handleAjaxSuccess(response, href, null);
           window._popstate_handling = false;
         },
         error: function(xhr, status, error) {
+          handleAjaxError('br_ajax_error', $(location), href);
           window._popstate_handling = false;
-          handleAjaxError('popstate_error', href);
         }
       });
     };

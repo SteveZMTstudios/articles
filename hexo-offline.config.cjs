@@ -17,7 +17,7 @@ module.exports = {
     // 注释掉静态文件预缓存，改为运行时按需缓存
     globDirectory: 'public',
     swDest: 'public/service-worker.js',
-    maximumFileSizeToCacheInBytes: 10485760, // 缓存的最大文件大小，以字节为单位。
+    maximumFileSizeToCacheInBytes: 52428800, // 缓存的最大文件大小，以字节为单位。50MB
     skipWaiting: true,
     clientsClaim: true,
     // 按需加载配置：只在用户访问时才缓存资源，而不是预先缓存整个网站
@@ -80,7 +80,7 @@ module.exports = {
           cacheName: 'media-cache',
           cacheableResponse: { statuses: [0, 200] },
           expiration: { 
-            maxAgeSeconds: 86400 * 30, // 30天
+            maxAgeSeconds: 86400 * 7, // 7天
             maxEntries: 100 // 限制缓存条目数量，避免缓存过多
           }
         }
@@ -100,7 +100,7 @@ module.exports = {
           cacheName: 'cdn-cache',
           cacheableResponse: { statuses: [0, 200] },
           expiration: { 
-            maxAgeSeconds: 86400 * 30, // 30天
+            maxAgeSeconds: 86400 * 7, // 7天
             maxEntries: 50 // 限制CDN缓存条目数量
           }
         }

@@ -1,30 +1,18 @@
-<script data-pjax>
-// 重定向外部链接
-function redirectExternalLinks() {
-  const links = document.querySelectorAll('.mdui-card-content a');
-  
-  links.forEach(link => {
-    const href = link.getAttribute('href');
-    if (href && href.startsWith('http') && 
-        !href.includes('blog.stevezmt.top') && 
-        !href.includes('stevezmt.top') && 
-        !href.includes('localhost')) {
-      link.href = `/redirect?goto=${encodeURIComponent(href)}`;
-    }
+<script data-pjax> // Redirect external links
+  document.addEventListener('DOMContentLoaded', function() {
+    const links = document.querySelectorAll('.mdui-card-content a');
+    
+    links.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('http') && 
+          !href.includes('blog.stevezmt.top') && 
+          !href.includes('stevezmt.top') && 
+          !href.includes('localhost')) {
+        link.href = `/redirect?goto=${encodeURIComponent(href)}`;
+      }
+    });
   });
-}
-
-// 立即执行
-redirectExternalLinks();
-
-// 注册到页面管理器中，确保 PJAX 后重新执行
-if (window.PageManager) {
-  window.PageManager.register('external-links', redirectExternalLinks);
-}
-
-// 兼容性：如果页面管理器还未加载，监听 DOM 事件
-document.addEventListener('DOMContentLoaded', redirectExternalLinks);
-</script>
+  </script>
 
 <% if (page.photos && page.photos.length) { %>
   <%- css(theme.gallery.fancybox_css) %>
