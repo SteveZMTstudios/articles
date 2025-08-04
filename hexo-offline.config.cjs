@@ -9,7 +9,7 @@ module.exports = {
       '**/manifest*.json',
       '**/favicon.*',
       '**/logo*.*',
-      '**/*.{css,js}',
+      '**/*.{css,js,png}',
     ],
 
     // 使用 `find . -type f -name '*.*' | sed 's|.*\.||' | sort | uniq | paste -sd '|'` 捕获
@@ -37,22 +37,22 @@ module.exports = {
          * StaleWhileRevalidate: 快速返回缓存内容，同时在后台更新，用户体验好
          * CacheFirst: 优先使用缓存，适合不经常变化的静态资源
          */
-        handler: 'NetworkFirst', // 改为NetworkFirst，确保页面内容是最新的
+        handler: 'StaleWhileRevalidate', // 改为StaleWhileRevalidate，确保页面内容是最新的
         options: {
           cacheName: 'html-cache',
           cacheableResponse: { statuses: [0, 200] },
           expiration: { maxAgeSeconds: 86400 * 1 }, // 1d
-          networkTimeoutSeconds: 3 // 网络超时3秒后使用缓存
+          // networkTimeoutSeconds: 3 // 网络超时3秒后使用缓存
         }
       },
       {
         urlPattern: /\/$/, // 匹配所有以 / 结尾的 URL
-        handler: 'NetworkFirst', // 首页等重要页面优先获取最新内容
+        handler: 'StaleWhileRevalidate', // 首页和目录页使用 StaleWhileRevalidate 策略
         options: {
           cacheName: 'slash-cache', // 缓存名称
           cacheableResponse: { statuses: [0, 200] }, // 可缓存的响应状态码
           expiration: { maxAgeSeconds: 86400 * 1 }, // 缓存有效期为1天
-          networkTimeoutSeconds: 3 // 网络超时后使用缓存
+          // networkTimeoutSeconds: 3 // 网络超时后使用缓存
         }
       },
       {
@@ -94,7 +94,7 @@ module.exports = {
         }
       },
       {
-        urlPattern: /^https:\/\/(cdn\.staticfile\.org|unpkg\.com|cdn\.bootcdn\.net|cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net|cdn-city\.livere\.com)\/.*/,
+        urlPattern: /^https:\/\/(cdn\.staticfile\.org|unpkg\.com|cdn\.bootcdn\.net|cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net|busuanzi\.ibruce\.info|ajax\.aspnetcdn\.com|gcore\.jsdelivr\.net|cdn-city\.livere\.com)\/.*/,
         handler: 'CacheFirst', // CDN资源优先使用缓存
         options: {
           cacheName: 'cdn-cache',
