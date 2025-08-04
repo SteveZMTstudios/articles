@@ -226,7 +226,7 @@
         // Github Pages主页特殊处理：找不到内容时直接整页刷新
         if (!$mainContent.length) {
           if (href.endsWith('/') || href.endsWith('/index.html')) {
-            window.location.href = href;
+            window.location.reload();
             return;
           }
           console.error('无法找到内容区域，响应内容:', response);
