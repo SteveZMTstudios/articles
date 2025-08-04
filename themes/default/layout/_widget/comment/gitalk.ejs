@@ -1,6 +1,11 @@
+<script>
+  if (!window.GITALK_SRC) {
+    window.GITALK_SRC = '<%= theme.comment.gitalk_js || "//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js" %>';
+  }
+</script>
 <div id="gitalk-container"></div>
 <link rel="stylesheet" href="//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-<script src="//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script data-pjax src="//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
 <script>
   // 保存配置到全局变量，供AJAX页面切换时使用
   window.GITALK_CONFIG = {
@@ -13,6 +18,28 @@
     distractionFreeMode: false
   };
   
-  var gitalk = new Gitalk(window.GITALK_CONFIG);
-  gitalk.render('gitalk-container');
+  try {
+    if (typeof Gitalk === 'undefined') {
+      if (window.GITALK_SRC) {
+        var script = document.createElement('script');
+        script.src = window.GITALK_SRC;
+        script.onload = function() {
+          try {
+            var gitalk = new Gitalk(window.GITALK_CONFIG);
+            gitalk.render('gitalk-container');
+          } catch (e) {
+            document.getElementById('gitalk-container').innerHTML = '<div style="color:red">Gitalk 加载失败</div>';
+          }
+        };
+        document.body.appendChild(script);
+      } else {
+        document.getElementById('gitalk-container').innerHTML = '<div style="color:red">Gitalk 未定义且无脚本地址</div>';
+      }
+    } else {
+      var gitalk = new Gitalk(window.GITALK_CONFIG);
+      gitalk.render('gitalk-container');
+    }
+  } catch (e) {
+    document.getElementById('gitalk-container').innerHTML = '<div style="color:red">Gitalk 初始化异常</div>';
+  }
 </script>

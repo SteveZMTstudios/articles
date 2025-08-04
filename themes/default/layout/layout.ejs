@@ -128,6 +128,46 @@
       }
     }
 
+    // 修复 mdui-dialog 在 PJAX 环境中的问题
+    function fixMduiDialogs() {
+      // 处理所有带 mdui-dialog 属性的元素
+      document.querySelectorAll('[mdui-dialog]').forEach(function(el) {
+        var dialogTarget = el.getAttribute('mdui-dialog');
+        // 解析属性值，获取目标对话框ID
+        var dialogId = '';
+        try {
+          // 可能是 {target: '#xxx'} 格式
+          var match = /target\s*:\s*['"]#?([^'"]+)['"]/i.exec(dialogTarget);
+          if (match && match[1]) {
+            dialogId = match[1];
+          } 
+          // 也可能直接是 #xxx 格式
+          else if (dialogTarget.startsWith('#')) {
+            dialogId = dialogTarget.substring(1);
+          }
+        } catch(e) {}
+        
+        if (!dialogId) return;
+        
+        // 移除原有的点击事件监听器并重新绑定
+        el.removeEventListener('click', handleDialogClick);
+        el.addEventListener('click', handleDialogClick);
+        
+        function handleDialogClick(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var dialog = document.getElementById(dialogId);
+          if (dialog && window.mdui && mdui.Dialog) {
+            var inst = new mdui.Dialog(dialog, {
+              history: false  // 不修改浏览器历史记录
+            });
+            inst.open();
+          }
+          return false;
+        }
+      });
+    }
+
     function simulatePageRefresh() {
       window.scrollTo(0, 0);
       triggerEvents();
@@ -137,11 +177,15 @@
         window.initNoticeSystem();
       }
       reinitializeNoticeSystem();
+      // 修复对话框
+      setTimeout(fixMduiDialogs, 100);
       console.log('Page type:', window.location.pathname);
       console.log('Notice system status:', window.noticeSystemInitialized);
     }
 
+    // Material Design 2 刷新指示器
     function showLoading() {
+      if (window.showMaterialRefresh) window.showMaterialRefresh();
       let progressBar = document.querySelector('.loading-progress');
       if (!progressBar) {
         progressBar = document.createElement('div');
@@ -155,6 +199,7 @@
     }
 
     function hideLoading() {
+      if (window.hideMaterialRefresh) window.hideMaterialRefresh();
       const progressBar = document.querySelector('.loading-progress');
       if (progressBar) {
         progressBar.style.display = 'none';
@@ -318,6 +363,17 @@
     $(document).on('click', 'a', function(e) {
       const link = $(this);
       const href = link.attr('href');
+      // 修复 mdui-dialog hash 跳转导致弹窗错位
+      if (href && href.startsWith('#mdui-dialog')) {
+        e.preventDefault();
+        var dialogId = href.replace('#', '');
+        var dialog = document.getElementById(dialogId);
+        if (dialog && window.mdui && mdui.Dialog) {
+          var inst = new mdui.Dialog(dialog);
+          inst.open();
+        }
+        return false;
+      }
       const hashIndex = href ? href.indexOf('#') : -1;
       const currentPath = window.location.pathname;
       const targetPath = new URL(href, window.location.origin).pathname;
