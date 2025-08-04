@@ -33,13 +33,13 @@
 <meta property="article:published_time" content="2024-02-01T06:55:00.000Z">
 <meta property="article:modified_time" content="2025-08-01T03:05:23.237Z">
 <meta property="article:author" content="Steve ZMT">
-<meta property="article:tag" content="安卓">
 <meta property="article:tag" content="root">
+<meta property="article:tag" content="安卓">
 <meta property="article:tag" content="单词笔">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/1_compressed.jpg">
 
-  <meta name="keywords" content=",安卓,root,单词笔">
+  <meta name="keywords" content=",root,安卓,单词笔">
   <meta name="format-detection" content="telephone=no,email=no">
   <meta name="theme-color" content="#448AFF">
 
@@ -318,7 +318,7 @@
         // Github Pages主页特殊处理：找不到内容时直接整页刷新
         if (!$mainContent.length) {
           if (href.endsWith('/') || href.endsWith('/index.html')) {
-            window.location.href = href;
+            window.location.reload();
             return;
           }
           console.error('无法找到内容区域，响应内容:', response);

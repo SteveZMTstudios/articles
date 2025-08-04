@@ -313,7 +313,7 @@
         // Github Pages主页特殊处理：找不到内容时直接整页刷新
         if (!$mainContent.length) {
           if (href.endsWith('/') || href.endsWith('/index.html')) {
-            window.location.href = href;
+            window.location.reload();
             return;
           }
           console.error('无法找到内容区域，响应内容:', response);
@@ -724,7 +724,7 @@
   <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
   <article class="mdui-card mdui-m-b-5">
     <header class="mdui-card-media">
-      <img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/random/material-16.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+      <img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/random/material-1.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
       <div class="mdui-card-media-covered">
         <div class="mdui-card-primary">
             <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;">创建页面</h1></div>
