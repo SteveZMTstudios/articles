@@ -1,13 +1,14 @@
 {
   "name": "hexo-site",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "build": "hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
     "server": "hexo server",
-    "look": "hexo generate && hexo server"
+    "look": "hexo generate && hexo server",
+    "test": "hexo clean && hexo generate && hexo server --drafts --watch"
   },
   "hexo": {
     "version": "7.3.0"
@@ -31,7 +32,6 @@
     "hexo-renderer-marked": "^7.0.1",
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0",
-    "hexo-theme-landscape": "^1.1.0",
     "mdui": "^2.1.4",
     "qiniu": "^7.14.0",
     "qrcode": "^1.5.4"

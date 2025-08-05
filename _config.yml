@@ -176,7 +176,7 @@ mermaid:
 service_worker:
   maximumFileSizeToCacheInBytes: 5242880
   staticFileGlobs:
-  - public/**/*.{css,eot,gif,html,ijmap,js,png,svg,ttf,webp,woff,woff2,xml}
+  - public/**/*.{css,html,js,png,svg,ttf,webp,woff,woff2,xml}
   stripPrefix: public
   verbose: true
 
