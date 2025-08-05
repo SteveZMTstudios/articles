@@ -17,6 +17,8 @@ https://blog.stevezmt.top/2023/10/01/play-on-scanpen/
 https://blog.stevezmt.top/2025/01/01/2025-new-year/
 https://blog.stevezmt.top/2025/01/20/20250120-apex-area-serverdown/
 https://blog.stevezmt.top/
+https://blog.stevezmt.top/tags/%E6%95%85%E9%9A%9C/
+https://blog.stevezmt.top/tags/%E6%84%8F%E5%A4%96/
 https://blog.stevezmt.top/tags/%E5%BC%80%E6%BA%90/
 https://blog.stevezmt.top/tags/hexo/
 https://blog.stevezmt.top/tags/%E5%8D%9A%E5%AE%A2/
@@ -24,8 +26,6 @@ https://blog.stevezmt.top/tags/root/
 https://blog.stevezmt.top/tags/xposed/
 https://blog.stevezmt.top/tags/%E5%AE%89%E5%8D%93/
 https://blog.stevezmt.top/tags/%E5%8D%95%E8%AF%8D%E7%AC%94/
-https://blog.stevezmt.top/tags/%E6%95%85%E9%9A%9C/
-https://blog.stevezmt.top/tags/%E6%84%8F%E5%A4%96/
 https://blog.stevezmt.top/tags/%E4%BA%92%E8%81%94/
 https://blog.stevezmt.top/tags/KDE/
 https://blog.stevezmt.top/tags/AI/
