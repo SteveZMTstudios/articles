@@ -19,15 +19,15 @@
 <meta property="og:site_name" content="老史尬侃 - Steve ZMT &#39;s Blog">
 <meta property="og:description" content="大约在2025年8月20日，所有用户反馈无法访问海外站点，经过排查发现是由于https端口被阻塞所致。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/posts/https-port-443-blocked/1_compressed.jpg">
-<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/posts/https-port-443-blocked/2_compressed.jpg">
-<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/posts/https-port-443-blocked/3_compressed.jpg">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/https-port-443-blocked/1_compressed.jpg">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/https-port-443-blocked/2_compressed.jpg">
+<meta property="og:image" content="https://mirror.blog.stevezmt.top/images/blog/https-port-443-blocked/3_compressed.jpg">
 <meta property="article:published_time" content="2025-08-20T11:14:44.000Z">
-<meta property="article:modified_time" content="2025-08-20T12:51:15.569Z">
+<meta property="article:modified_time" content="2025-08-20T13:12:29.307Z">
 <meta property="article:author" content="Steve ZMT">
 <meta property="article:tag" content="故障">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://mirror.blog.stevezmt.top/images/posts/https-port-443-blocked/1_compressed.jpg">
+<meta name="twitter:image" content="https://mirror.blog.stevezmt.top/images/blog/https-port-443-blocked/1_compressed.jpg">
 
   <meta name="keywords" content=",故障">
   <meta name="format-detection" content="telephone=no,email=no">
@@ -719,7 +719,7 @@
   <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
   <article class="mdui-card mdui-m-b-5">
     <header class="mdui-card-media">
-      <img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/posts/https-port-443-blocked/thunbnail_compressed.jpg" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+      <img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/https-port-443-blocked/thunbnail_compressed.jpg" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
       <div class="mdui-card-media-covered">
         <div class="mdui-card-primary">
             <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;">近期关于海外站点https无法访问的情况</h1></div>
@@ -807,15 +807,15 @@
 <p>这次阻塞经过排查发现所有连接到海外站点的IPv4地址到443端口均无法访问，包括微软Microsoft、苹果Apple、Cloudflare等在国内有备案或本来应该能访问的海外企业站点均被阻断。<br>目前没有通报发现有金融，商业等关键服务因为这将近一个小时的阻断受到干扰。<br>所有的阻断均为TCP RST包阻断，常规GFW防火墙套路。  </p>
 <p>有海外网友表示连接到国内的流量也发生了异常。  </p>
 <p>阻断发生的确切时间尚不可知，不过网络故障检测系统downdetector 在 UTC+8 12:15 AM时就回报开始出现连接失败的问题。<br>本站大约在1:50 AM后恢复正常连接。  </p>
-<p><img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/posts/https-port-443-blocked/1_compressed.jpg" alt="downdetector的截图">  </p>
+<p><img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/https-port-443-blocked/1_compressed.jpg" alt="downdetector的截图">  </p>
 <p>毫不意外的，本站的ipv4流量也理所当然的沦陷了（itdog在部分地区有v6连接，故通）  </p>
-<p><img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/posts/https-port-443-blocked/2_compressed.jpg" alt="itdog全红截图">  </p>
+<p><img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/https-port-443-blocked/2_compressed.jpg" alt="itdog全红截图">  </p>
 <p>关于流传的阴谋论说法，个人以为不大可能。所谓“拔线测试”不会只针对HTTPS连接，更不会放过已经比较普及的IPv6，个人猜测只是因为规则错误配置或者新找了个临时工乱搞导致的。<br>尚未看到有官方通报这一情况，虽然要说也算是P0级别的故障，但因为发生在深夜，倒也没有造成很大的影响，不过相关微博和b站视频在发布此类内容后均已被下架（稿件失效）。<del>不让提吗？</del>  </p>
 <blockquote>
 <p>HSTS 受害者（bushi<br><del>被服务警报吵醒什么的</del></p>
 </blockquote>
-<p>最惨的也不过是在半夜重装系统的网友。。。<br><img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/posts/https-port-443-blocked/3_compressed.jpg" alt="聊天记录"></p>
-<p>如果该文章侵犯了任何人的权益或者需要移除，请通过电子邮件联络：<a href="mailto:&#109;&#101;&#x40;&#x73;&#116;&#101;&#118;&#x65;&#x7a;&#x6d;&#116;&#x2e;&#116;&#111;&#x70;">me@stevezmt.top</a>，我将尽快处理。</p>
+<p>最惨的也不过是在半夜重装系统的网友。。。<br><img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/blog/https-port-443-blocked/3_compressed.jpg" alt="聊天记录"></p>
+<p>如果该文章侵犯了任何人的权益或者需要移除，请通过电子邮件联络：<a href="mailto:&#x6d;&#101;&#x40;&#115;&#116;&#101;&#118;&#x65;&#x7a;&#109;&#x74;&#x2e;&#116;&#111;&#x70;">me@stevezmt.top</a>，我将尽快处理。</p>
 
       
         <div class="mdui-m-y-2 mdui-text-center">
