@@ -33,13 +33,13 @@
         };
         document.body.appendChild(script);
       } else {
-        document.getElementById('gitalk-container').innerHTML = '<div style="color:red">Gitalk 未定义且无脚本地址</div>';
+        document.getElementById('gitalk-container').innerHTML = '<div style="color:red">Gitalk评论区加载时出现问题，请刷新页面。</div>';
       }
     } else {
       var gitalk = new Gitalk(window.GITALK_CONFIG);
       gitalk.render('gitalk-container');
     }
   } catch (e) {
-    document.getElementById('gitalk-container').innerHTML = '<div style="color:red">Gitalk 初始化异常</div>';
+    document.getElementById('gitalk-container').innerHTML = '<div style="color:red">Gitalk 初始化异常，请<a href="https://github.com/SteveZMTstudios/articles/issues/40">发送反馈</a>。</div>';
   }
 </script>

@@ -73,16 +73,21 @@ def update_md_files(md_dir, img_dir):
                             content = re.sub(re.escape(img_file), compressed_jpg, content)
 
                 with open(md_path, 'w', encoding='utf-8') as f:
-                    print(f"-  |-Saving {md_path} ...")
+                    print(f"-  |- Saving {md_path} ...")
                     f.write(content)
                     
                 print(f"- Updated {md_path}.")
     print("- Markdown Update Completed!")
 
 def main():
-    source_images_dir = 'source/images'
-    target_images_dir = 'source/images'
-    md_files_dir = 'source/_posts'
+    if os.name == 'nt':  # Windows
+        source_images_dir = 'source\\images\\blog'
+        target_images_dir = 'source\\images\\blog'
+        md_files_dir = 'source\\_posts'
+    else:
+        source_images_dir = 'source/images/blog'
+        target_images_dir = 'source/images/blog'
+        md_files_dir = 'source/_posts'
 
     img_mappings = {}
     for old_path, new_path in convert_images_to_jpg(source_images_dir, target_images_dir):
