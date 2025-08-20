@@ -15,7 +15,7 @@ donate: true # 默认启用打赏，[False|True]
 toc: true # 启用目录，[False|True]
 comments: true # 启用评论 [False|True]
 # license: # 设为 false 关闭版权声明或输入自定义版权声明 [false|<license:string>]
-thumbnail: https://mirror.blog.stevezmt.top/images/posts/https-port-443-blocked/thunbnail_compressed.jpg
+thumbnail: https://mirror.blog.stevezmt.top/images/blog/https-port-443-blocked/thunbnail_compressed.jpg
 # excerpt: # 摘要，默认为文章的前120个字符（在archive.ejs:147更改）
 # count: false # 默认启用阅读量统计，[False|True]
 # lang:  # 默认使用简体中文，[en|zh-cn]
@@ -35,11 +35,11 @@ thumbnail: https://mirror.blog.stevezmt.top/images/posts/https-port-443-blocked/
 阻断发生的确切时间尚不可知，不过网络故障检测系统downdetector 在 UTC+8 12:15 AM时就回报开始出现连接失败的问题。  
 本站大约在1:50 AM后恢复正常连接。  
 
-![downdetector的截图](https://mirror.blog.stevezmt.top/images/posts/https-port-443-blocked/1_compressed.jpg)  
+![downdetector的截图](https://mirror.blog.stevezmt.top/images/blog/https-port-443-blocked/1_compressed.jpg)  
 
 毫不意外的，本站的ipv4流量也理所当然的沦陷了（itdog在部分地区有v6连接，故通）  
 
-![itdog全红截图](https://mirror.blog.stevezmt.top/images/posts/https-port-443-blocked/2_compressed.jpg)  
+![itdog全红截图](https://mirror.blog.stevezmt.top/images/blog/https-port-443-blocked/2_compressed.jpg)  
 
 关于流传的阴谋论说法，个人以为不大可能。所谓“拔线测试”不会只针对HTTPS连接，更不会放过已经比较普及的IPv6，个人猜测只是因为规则错误配置或者新找了个临时工乱搞导致的。  
 尚未看到有官方通报这一情况，虽然要说也算是P0级别的故障，但因为发生在深夜，倒也没有造成很大的影响，不过相关微博和b站视频在发布此类内容后均已被下架（稿件失效）。~~不让提吗？~~  
@@ -48,7 +48,7 @@ thumbnail: https://mirror.blog.stevezmt.top/images/posts/https-port-443-blocked/
 > ~~被服务警报吵醒什么的~~
 
 最惨的也不过是在半夜重装系统的网友。。。
-![聊天记录](https://mirror.blog.stevezmt.top/images/posts/https-port-443-blocked/3_compressed.jpg)
+![聊天记录](https://mirror.blog.stevezmt.top/images/blog/https-port-443-blocked/3_compressed.jpg)
 
 如果该文章侵犯了任何人的权益或者需要移除，请通过电子邮件联络：[me@stevezmt.top](mailto:me@stevezmt.top)，我将尽快处理。
 
