@@ -8,13 +8,41 @@
 <script data-pjax src="//stevezmt.top/sharepoint/js/3rd-party/gitalk-cn.min.js"></script>
 <script>
   // 保存配置到全局变量，供AJAX页面切换时使用
+  // 规范化 Gitalk id，确保 PJAX/完整刷新一致：仅保留 pathname，去掉域名、查询、hash、尾部 index.html 与多余斜杠
+  function __normalizeGitalkId(raw) {
+    try {
+      if (!raw) raw = location.pathname;
+      // 处理完整 URL
+      if (/^https?:\/\//i.test(raw)) {
+        var u = new URL(raw, window.location.origin);
+        raw = u.pathname || '/';
+      }
+      // 统一解码
+      try { raw = decodeURI(raw); } catch (e) {}
+      // 去掉尾部 index.html
+      raw = raw.replace(/index\.html$/i, '');
+      // 确保以 '/" 开头
+      if (raw && raw.charAt(0) !== '/') raw = '/' + raw;
+      // 去掉末尾 '/'
+      if (raw.length > 1 && raw.endsWith('/')) raw = raw.slice(0, -1);
+      return raw || '/';
+    } catch (e) {
+      return (window.location && window.location.pathname) || '/';
+    }
+  }
+
   window.GITALK_CONFIG = {
     clientID: '<%= theme.comment.gitalk_client_id %>',
     clientSecret: '<%= theme.comment.gitalk_client_secret %>',
     repo: '<%= theme.comment.gitalk_repo %>',
     owner: '<%= theme.comment.gitalk_owner %>',
     admin: ['<%= theme.comment.gitalk_owner %>'],
-    id: '<%= page[theme.comment.gitalk_sid_type] %>' || location.pathname,
+    // 使用构建期提供的 id；若不存在则回退到运行期的 pathname，再统一规范化
+    id: (function() {
+      var preset = '<%= page[theme.comment.gitalk_sid_type] %>';
+      if (!preset || preset === 'undefined' || preset === 'null') preset = '';
+      return __normalizeGitalkId(preset || (window.location && window.location.pathname));
+    })(),
     distractionFreeMode: false
   };
   
@@ -25,6 +53,8 @@
         script.src = window.GITALK_SRC;
         script.onload = function() {
           try {
+            // 双保险：确保 id 稳定
+            try { window.GITALK_CONFIG.id = __normalizeGitalkId(window.GITALK_CONFIG.id); } catch(e) {}
             var gitalk = new Gitalk(window.GITALK_CONFIG);
             gitalk.render('gitalk-container');
           } catch (e) {
@@ -36,6 +66,7 @@
         document.getElementById('gitalk-container').innerHTML = '<div style="color:red">Gitalk评论区加载时出现问题，请刷新页面。</div>';
       }
     } else {
+      try { window.GITALK_CONFIG.id = __normalizeGitalkId(window.GITALK_CONFIG.id); } catch(e) {}
       var gitalk = new Gitalk(window.GITALK_CONFIG);
       gitalk.render('gitalk-container');
     }

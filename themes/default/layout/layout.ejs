@@ -10,6 +10,24 @@
   <% } %>
   <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.6.0.min.js"></script>
   <script>
+    // 统一规范化 Gitalk id：仅保留 pathname，去掉域名、查询、hash、尾部 index.html 与多余斜杠
+    function __normalizeGitalkId(raw) {
+      try {
+        if (!raw) raw = location.pathname;
+        if (/^https?:\/\//i.test(raw)) {
+          var u = new URL(raw, window.location.origin);
+          raw = u.pathname || '/';
+        }
+        try { raw = decodeURI(raw); } catch (e) {}
+        raw = raw.replace(/index\.html$/i, '');
+        if (raw && raw.charAt(0) !== '/') raw = '/' + raw;
+        if (raw.length > 1 && raw.endsWith('/')) raw = raw.slice(0, -1);
+        return raw || '/';
+      } catch (e) {
+        return (window.location && window.location.pathname) || '/';
+      }
+    }
+
     // 触发常用事件，兼容 PJAX/AJAX 页面切换
     function triggerEvents() {
       document.dispatchEvent(new Event('DOMContentLoaded'));
@@ -58,6 +76,10 @@
           config = Object.assign({}, window.theme.comment);
         }
       }
+      // 统一并兜底 id，避免使用完整 href 导致每次访问生成新 Issue
+      try {
+        config.id = __normalizeGitalkId(config.id || (window.location && window.location.pathname));
+      } catch (e) {}
       if (!config.repo || !config.owner) {
         el.innerHTML = '<div style="color:red">Gitalk 配置错误: repo/owner 未设置</div>';
         return;
@@ -249,8 +271,15 @@
           return this.textContent && this.textContent.includes('window.GITALK_CONFIG');
         });
         if (newGitalkConfigScript.length) {
-          try { eval(newGitalkConfigScript.text()); } catch(e) {console.warn('GITALK_CONFIG eval error', e);}
+          try { eval(newGitalkConfigScript.text()); } catch(e) {console.warn('GITALK_CONFIG eval error', e);}        
         }
+        // 3.1.1 使用目标链接归一化 id，防止因 eval 时机导致取到了旧 pathname
+        try {
+          if (window.GITALK_CONFIG) {
+            var __targetPath = new URL(href, window.location.origin).pathname;
+            window.GITALK_CONFIG.id = __normalizeGitalkId(window.GITALK_CONFIG.id || __targetPath);
+          }
+        } catch(e) { console.warn('Normalize Gitalk id failed', e); }
         // 3.2 重新执行 Google Tag/统计等外部脚本（如有）
         $mainContent.find('script[src]').each(function() {
           var src = this.getAttribute('src');
@@ -284,7 +313,7 @@
         // gitalk 重新加载（如果有）
         var gitalkContainer = document.getElementById('gitalk-container');
         if (gitalkContainer) {
-          function renderGitalk() {
+      function renderGitalk() {
             try {
               var config = window.GITALK_CONFIG || {};
               if (!config.repo || !config.owner) {
@@ -292,6 +321,8 @@
                   config = Object.assign({}, window.theme.comment);
                 }
               }
+        // 渲染前再次规范化 id
+        try { config.id = __normalizeGitalkId(config.id || (window.location && window.location.pathname)); } catch(e) {}
               if (!config.repo || !config.owner) {
                 gitalkContainer.innerHTML = '<div style="color:red">Gitalk 配置错误: repo/owner 未设置</div>';
                 return;
