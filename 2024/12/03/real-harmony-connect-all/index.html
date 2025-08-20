@@ -117,7 +117,7 @@
       }
     }
 
-    // 触发常用事件，兼容 PJAX/AJAX 页面切换
+  // 触发常用事件，兼容 PJAX/AJAX 页面切换
     function triggerEvents() {
       document.dispatchEvent(new Event('DOMContentLoaded'));
       document.dispatchEvent(new Event('readystatechange'));
@@ -127,6 +127,7 @@
       window.dispatchEvent(new Event('orientationchange'));
       window.dispatchEvent(new Event('focus'));
       document.hasFocus() && document.activeElement && document.activeElement.focus();
+  }
 
     // 重新初始化 random-notice 和 Gitalk
     function reinitPageComponents() {
@@ -362,7 +363,7 @@
         if (newGitalkConfigScript.length) {
           try { eval(newGitalkConfigScript.text()); } catch(e) {console.warn('GITALK_CONFIG eval error', e);}        
         }
-        // 3.1.1 使用目标链接归一化 id，防止因 eval 时机导致取到了旧 pathname
+  // 3.1.1 使用目标链接归一化 id，防止因 eval 时机导致取到了旧 pathname
         try {
           if (window.GITALK_CONFIG) {
             var __targetPath = new URL(href, window.location.origin).pathname;
@@ -399,45 +400,7 @@
           script.defer = true;
           document.body.appendChild(script);
         }
-        // gitalk 重新加载（如果有）
-        var gitalkContainer = document.getElementById('gitalk-container');
-        if (gitalkContainer) {
-      function renderGitalk() {
-            try {
-              var config = window.GITALK_CONFIG || {};
-              if (!config.repo || !config.owner) {
-                if (window.theme && window.theme.comment) {
-                  config = Object.assign({}, window.theme.comment);
-                }
-              }
-        // 渲染前再次规范化 id
-        try { config.id = __normalizeGitalkId(config.id || (window.location && window.location.pathname)); } catch(e) {}
-              if (!config.repo || !config.owner) {
-                gitalkContainer.innerHTML = '<div style="color:red">Gitalk 配置错误: repo/owner 未设置</div>';
-                return;
-              }
-              gitalkContainer.innerHTML = '';
-              var gitalk = new Gitalk(config);
-              gitalk.render('gitalk-container');
-            } catch(e) {
-              console.warn('Gitalk reload failed:', e);
-            }
-          }
-          if (typeof Gitalk === 'function') {
-            setTimeout(renderGitalk, 100);
-          } else if (window.GITALK_SRC && !document.querySelector('script[src="'+window.GITALK_SRC+'"]')) {
-            var gtScript = document.createElement('script');
-            gtScript.src = window.GITALK_SRC;
-            gtScript.onload = function() {
-              if (typeof Gitalk === 'function') {
-                renderGitalk();
-              } else {
-                console.warn('Gitalk script loaded but Gitalk not defined');
-              }
-            };
-            document.body.appendChild(gtScript);
-          }
-        }
+  // gitalk 重新加载由 reinitPageComponents -> initGitalk 统一处理，避免双重渲染
         if (targetHash) {
           const target = $(targetHash);
           if (target.length) {
@@ -757,7 +720,7 @@
   <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
   <article class="mdui-card mdui-m-b-5">
     <header class="mdui-card-media">
-      <img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/random/material-2.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+      <img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/random/material-4.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
       <div class="mdui-card-media-covered">
         <div class="mdui-card-primary">
             <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;">几乎超越鸿蒙的完全互联方案</h1></div>
@@ -975,13 +938,19 @@
       }
       // 统一解码
       try { raw = decodeURI(raw); } catch (e) {}
-      // 去掉尾部 index.html
-      raw = raw.replace(/index\.html$/i, '');
-      // 确保以 '/" 开头
-      if (raw && raw.charAt(0) !== '/') raw = '/' + raw;
-      // 去掉末尾 '/'
-      if (raw.length > 1 && raw.endsWith('/')) raw = raw.slice(0, -1);
-      return raw || '/';
+      // 如果像路径（包含/或以.html结尾），按路径规范化；否则视为稳定 id（如 uuid），不加斜线
+      var looksLikePath = /\//.test(raw) || /\.html?$/i.test(raw);
+      if (looksLikePath) {
+        // 去掉尾部 index.html
+        raw = raw.replace(/index\.html$/i, '');
+        // 确保以 '/' 开头
+        if (raw && raw.charAt(0) !== '/') raw = '/' + raw;
+        // 去掉末尾 '/'
+        if (raw.length > 1 && raw.endsWith('/')) raw = raw.slice(0, -1);
+        return raw || '/';
+      }
+      // 非路径 id 直接返回
+      return String(raw);
     } catch (e) {
       return (window.location && window.location.pathname) || '/';
     }
@@ -1001,34 +970,7 @@
     })(),
     distractionFreeMode: false
   };
-  
-  try {
-    if (typeof Gitalk === 'undefined') {
-      if (window.GITALK_SRC) {
-        var script = document.createElement('script');
-        script.src = window.GITALK_SRC;
-        script.onload = function() {
-          try {
-            // 双保险：确保 id 稳定
-            try { window.GITALK_CONFIG.id = __normalizeGitalkId(window.GITALK_CONFIG.id); } catch(e) {}
-            var gitalk = new Gitalk(window.GITALK_CONFIG);
-            gitalk.render('gitalk-container');
-          } catch (e) {
-            document.getElementById('gitalk-container').innerHTML = '<div style="color:red">Gitalk 加载失败</div>';
-          }
-        };
-        document.body.appendChild(script);
-      } else {
-        document.getElementById('gitalk-container').innerHTML = '<div style="color:red">Gitalk评论区加载时出现问题，请刷新页面。</div>';
-      }
-    } else {
-      try { window.GITALK_CONFIG.id = __normalizeGitalkId(window.GITALK_CONFIG.id); } catch(e) {}
-      var gitalk = new Gitalk(window.GITALK_CONFIG);
-      gitalk.render('gitalk-container');
-    }
-  } catch (e) {
-    document.getElementById('gitalk-container').innerHTML = '<div style="color:red">Gitalk 初始化异常，请<a target="_blank" rel="noopener" href="https://github.com/SteveZMTstudios/articles/issues/40">发送反馈</a>。</div>';
-  }
+  // 注意：渲染逻辑统一由 layout.ejs 的 initGitalk 负责，避免 PJAX 下重复初始化
 </script>
 
   </div>
