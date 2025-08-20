@@ -19,13 +19,19 @@
       }
       // 统一解码
       try { raw = decodeURI(raw); } catch (e) {}
-      // 去掉尾部 index.html
-      raw = raw.replace(/index\.html$/i, '');
-      // 确保以 '/" 开头
-      if (raw && raw.charAt(0) !== '/') raw = '/' + raw;
-      // 去掉末尾 '/'
-      if (raw.length > 1 && raw.endsWith('/')) raw = raw.slice(0, -1);
-      return raw || '/';
+      // 如果像路径（包含/或以.html结尾），按路径规范化；否则视为稳定 id（如 uuid），不加斜线
+      var looksLikePath = /\//.test(raw) || /\.html?$/i.test(raw);
+      if (looksLikePath) {
+        // 去掉尾部 index.html
+        raw = raw.replace(/index\.html$/i, '');
+        // 确保以 '/' 开头
+        if (raw && raw.charAt(0) !== '/') raw = '/' + raw;
+        // 去掉末尾 '/'
+        if (raw.length > 1 && raw.endsWith('/')) raw = raw.slice(0, -1);
+        return raw || '/';
+      }
+      // 非路径 id 直接返回
+      return String(raw);
     } catch (e) {
       return (window.location && window.location.pathname) || '/';
     }
@@ -45,32 +51,5 @@
     })(),
     distractionFreeMode: false
   };
-  
-  try {
-    if (typeof Gitalk === 'undefined') {
-      if (window.GITALK_SRC) {
-        var script = document.createElement('script');
-        script.src = window.GITALK_SRC;
-        script.onload = function() {
-          try {
-            // 双保险：确保 id 稳定
-            try { window.GITALK_CONFIG.id = __normalizeGitalkId(window.GITALK_CONFIG.id); } catch(e) {}
-            var gitalk = new Gitalk(window.GITALK_CONFIG);
-            gitalk.render('gitalk-container');
-          } catch (e) {
-            document.getElementById('gitalk-container').innerHTML = '<div style="color:red">Gitalk 加载失败</div>';
-          }
-        };
-        document.body.appendChild(script);
-      } else {
-        document.getElementById('gitalk-container').innerHTML = '<div style="color:red">Gitalk评论区加载时出现问题，请刷新页面。</div>';
-      }
-    } else {
-      try { window.GITALK_CONFIG.id = __normalizeGitalkId(window.GITALK_CONFIG.id); } catch(e) {}
-      var gitalk = new Gitalk(window.GITALK_CONFIG);
-      gitalk.render('gitalk-container');
-    }
-  } catch (e) {
-    document.getElementById('gitalk-container').innerHTML = '<div style="color:red">Gitalk 初始化异常，请<a href="https://github.com/SteveZMTstudios/articles/issues/40">发送反馈</a>。</div>';
-  }
+  // 注意：渲染逻辑统一由 layout.ejs 的 initGitalk 负责，避免 PJAX 下重复初始化
 </script>

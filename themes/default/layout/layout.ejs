@@ -28,7 +28,7 @@
       }
     }
 
-    // 触发常用事件，兼容 PJAX/AJAX 页面切换
+  // 触发常用事件，兼容 PJAX/AJAX 页面切换
     function triggerEvents() {
       document.dispatchEvent(new Event('DOMContentLoaded'));
       document.dispatchEvent(new Event('readystatechange'));
@@ -38,6 +38,7 @@
       window.dispatchEvent(new Event('orientationchange'));
       window.dispatchEvent(new Event('focus'));
       document.hasFocus() && document.activeElement && document.activeElement.focus();
+  }
 
     // 重新初始化 random-notice 和 Gitalk
     function reinitPageComponents() {
@@ -273,7 +274,7 @@
         if (newGitalkConfigScript.length) {
           try { eval(newGitalkConfigScript.text()); } catch(e) {console.warn('GITALK_CONFIG eval error', e);}        
         }
-        // 3.1.1 使用目标链接归一化 id，防止因 eval 时机导致取到了旧 pathname
+  // 3.1.1 使用目标链接归一化 id，防止因 eval 时机导致取到了旧 pathname
         try {
           if (window.GITALK_CONFIG) {
             var __targetPath = new URL(href, window.location.origin).pathname;
@@ -310,45 +311,7 @@
           script.defer = true;
           document.body.appendChild(script);
         }
-        // gitalk 重新加载（如果有）
-        var gitalkContainer = document.getElementById('gitalk-container');
-        if (gitalkContainer) {
-      function renderGitalk() {
-            try {
-              var config = window.GITALK_CONFIG || {};
-              if (!config.repo || !config.owner) {
-                if (window.theme && window.theme.comment) {
-                  config = Object.assign({}, window.theme.comment);
-                }
-              }
-        // 渲染前再次规范化 id
-        try { config.id = __normalizeGitalkId(config.id || (window.location && window.location.pathname)); } catch(e) {}
-              if (!config.repo || !config.owner) {
-                gitalkContainer.innerHTML = '<div style="color:red">Gitalk 配置错误: repo/owner 未设置</div>';
-                return;
-              }
-              gitalkContainer.innerHTML = '';
-              var gitalk = new Gitalk(config);
-              gitalk.render('gitalk-container');
-            } catch(e) {
-              console.warn('Gitalk reload failed:', e);
-            }
-          }
-          if (typeof Gitalk === 'function') {
-            setTimeout(renderGitalk, 100);
-          } else if (window.GITALK_SRC && !document.querySelector('script[src="'+window.GITALK_SRC+'"]')) {
-            var gtScript = document.createElement('script');
-            gtScript.src = window.GITALK_SRC;
-            gtScript.onload = function() {
-              if (typeof Gitalk === 'function') {
-                renderGitalk();
-              } else {
-                console.warn('Gitalk script loaded but Gitalk not defined');
-              }
-            };
-            document.body.appendChild(gtScript);
-          }
-        }
+  // gitalk 重新加载由 reinitPageComponents -> initGitalk 统一处理，避免双重渲染
         if (targetHash) {
           const target = $(targetHash);
           if (target.length) {
