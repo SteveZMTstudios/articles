@@ -158,6 +158,223 @@
     </header>
     <div class="mdui-card-content mdui-typo">
       <%- page.content %>
+      <script data-pjax>
+        (function(){
+          function attachCopyButtons(){
+            var blocks = document.querySelectorAll('.mdui-card-content figure.highlight, .mdui-card-content pre');
+            blocks.forEach(function(block){
+              // Skip pre inside figure.highlight (avoid duplicate)
+              if(block.matches('pre') && block.closest('figure.highlight')) return;
+              if(block.querySelector(':scope > .code-toolbar')) return; // already has
+              block.classList.add('codeblock-wrapper');
+              if(!block.style.position || block.style.position === 'static') block.style.position = 'relative';
+              if(block.matches('figure.highlight') && !block.querySelector('figcaption')) {
+                block.classList.add('codeblock-pad-top');
+              }
+              if(block.matches('pre') && !block.closest('figure.highlight')) {
+                block.classList.add('codeblock-pad-top');
+              }
+              // Wrap existing content (excluding any future toolbar)
+              if(!block.querySelector(':scope > .code-content-wrap')) {
+                var wrap = document.createElement('div');
+                wrap.className = 'code-content-wrap';
+                var toMove = [];
+                Array.from(block.childNodes).forEach(function(n){
+                  if(n.nodeType === 1 && (n.classList && (n.classList.contains('code-toolbar')))) return; // skip toolbar if exist
+                  toMove.push(n);
+                });
+                toMove.forEach(function(n){ wrap.appendChild(n); });
+                block.appendChild(wrap);
+                // set initial max-height for animation
+                requestAnimationFrame(function(){
+                  wrap.style.maxHeight = wrap.scrollHeight + 'px';
+                });
+              }
+              var toolbar = document.createElement('div');
+              toolbar.className = 'code-toolbar';
+              // Copy button
+              var copyBtn = document.createElement('button');
+              copyBtn.className = 'copy-btn mdui-btn mdui-ripple';
+              copyBtn.type='button';
+              copyBtn.setAttribute('aria-label','复制代码');
+              copyBtn.innerHTML = '<i class="mdui-icon material-icons" translate="no">content_copy<\/i>';
+              copyBtn.addEventListener('click', function(){ copyText(copyBtn); });
+              toolbar.appendChild(copyBtn);
+              // Collapse button
+              var collapseBtn = document.createElement('button');
+              collapseBtn.className = 'collapse-btn mdui-btn mdui-ripple';
+              collapseBtn.type='button';
+              collapseBtn.setAttribute('aria-label','折叠代码');
+              collapseBtn.innerHTML = '<i class="mdui-icon material-icons" translate="no">expand_less<\/i>';
+              collapseBtn.addEventListener('click', function(){ toggleCollapse(block, collapseBtn); });
+              toolbar.appendChild(collapseBtn);
+              // Language badge
+              var lang = detectLanguage(block) || 'Code';
+              var langSpan = document.createElement('span');
+              langSpan.className = 'code-lang-badge';
+              langSpan.textContent = lang;
+              toolbar.appendChild(langSpan);
+              block.appendChild(toolbar);
+            });
+          }
+
+          function detectLanguage(block){
+            try {
+              var cls = block.className || '';
+              var m = cls.match(/highlight\s+([a-zA-Z0-9_+-]+)/);
+              if(m && m[1]) return normalizeLang(m[1]);
+              var code = block.querySelector('code');
+              if(code){
+                for(var i=0;i<code.classList.length;i++){
+                  var c = code.classList[i];
+                  if(/^language-/.test(c)) return normalizeLang(c.replace(/^language-/,''));
+                  if(/^lang-/.test(c)) return normalizeLang(c.replace(/^lang-/,''));
+                }
+              }
+              return 'Code';
+            } catch(e){ return 'Code'; }
+          }
+
+          function normalizeLang(l){
+            l = l.toLowerCase();
+            var map = {js:'JavaScript',javascript:'JavaScript',ts:'TypeScript',py:'Python',py3:'Python',bash:'Bash',sh:'Shell',shell:'Shell',yml:'YAML',yaml:'YAML',md:'Markdown',markdown:'Markdown',json:'JSON',html:'HTML',css:'CSS',csharp:'C#',cs:'C#',cpp:'C++',c:'C',java:'Java',go:'Go',rust:'Rust'};
+            return map[l] || l.charAt(0).toUpperCase()+l.slice(1);
+          }
+
+          window.copyText = function(el){
+            if(!el) return;
+            var container = el.closest('figure.highlight, pre');
+            if(!container){ feedback(false, el); return; }
+            // Prefer code area excluding line numbers if present
+            var codeArea = container.querySelector('td.code') || container.querySelector('pre code') || container.querySelector('code') || container.querySelector('pre');
+            var text = codeArea ? codeArea.innerText : '';
+            if(!text.trim()) { feedback(false, el); return; }
+            var writeSucceeded = function(){ feedback(true, el); };
+            var writeFailed = function(err){ console.error('Copy failed', err); feedback(false, el); };
+            if(navigator.clipboard && navigator.clipboard.writeText){
+              navigator.clipboard.writeText(text).then(writeSucceeded, writeFailed);
+            } else {
+              try {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position='fixed';
+                ta.style.top='-1000px';
+                ta.style.opacity='0';
+                document.body.appendChild(ta);
+                ta.select();
+                var ok = document.execCommand('copy');
+                document.body.removeChild(ta);
+                ok?writeSucceeded():writeFailed();
+              } catch(e){ writeFailed(e); }
+            }
+          };
+
+          function feedback(success, el){
+            var icon = el.querySelector('i.mdui-icon');
+            if(success){
+              el.classList.add('copy-success');
+              if(icon) icon.textContent='check_circle';
+              if(window.mdui) mdui.snackbar({message:'代码已复制！',position:'bottom'});
+            } else {
+              el.classList.add('copy-fail');
+              if(icon) icon.textContent='warning';
+              if(window.mdui) mdui.snackbar({message:'复制失败！',position:'bottom'});
+            }
+            clearTimeout(el._copyTimer);
+            el._copyTimer = setTimeout(function(){
+              el.classList.remove('copy-success','copy-fail');
+              if(icon) icon.textContent='content_copy';
+            },3000);
+          }
+
+          function toggleCollapse(wrapper, btn){
+            if(!wrapper) return;
+            var content = wrapper.querySelector(':scope > .code-content-wrap');
+            if(!content){ // fallback old behavior
+              wrapper.classList.toggle('collapsed');
+              var icon = btn.querySelector('i.mdui-icon');
+              if(wrapper.classList.contains('collapsed')) btn.setAttribute('aria-label','展开代码'); else btn.setAttribute('aria-label','折叠代码');
+              return;
+            }
+            var isCurrentlyCollapsed = wrapper.classList.contains('collapsed');
+            var willCollapse = !isCurrentlyCollapsed; // toggling
+            wrapper.classList.toggle('collapsed', willCollapse);
+            btn.setAttribute('aria-label', willCollapse ? '展开代码' : '折叠代码');
+
+            // Ensure we start from an explicit pixel value for reliable animation
+            var startHeight = content.scrollHeight;
+            // If expanded and maxHeight cleared previously, set it to real height first
+            if(!willCollapse && (content.style.maxHeight === '0px')) {
+              // expanding from 0
+              content.style.maxHeight = '0px';
+              // double rAF to ensure transition
+              requestAnimationFrame(function(){
+                content.style.maxHeight = startHeight + 'px';
+              });
+            } else if(willCollapse) {
+              // collapse path: need to set from current measured height to 0
+              // If maxHeight is empty or 'none', set it to scrollHeight first
+              content.style.maxHeight = startHeight + 'px';
+              // Force reflow
+              void content.offsetWidth;
+              // Use rAF chain so browsers treat as transition
+              requestAnimationFrame(function(){
+                requestAnimationFrame(function(){
+                  content.style.maxHeight = '0px';
+                });
+              });
+            } else {
+              // just expanded and we want to keep explicit height for future collapse
+              content.style.maxHeight = startHeight + 'px';
+            }
+
+            content.removeEventListener('transitionend', content._collapseHandler || function(){});
+            content._collapseHandler = function(ev){
+              if(ev.propertyName !== 'max-height') return;
+              if(!wrapper.classList.contains('collapsed')){
+                // keep explicit height so future collapse animates from a number
+                content.style.maxHeight = content.scrollHeight + 'px';
+              }
+            };
+            content.addEventListener('transitionend', content._collapseHandler);
+          }
+
+          attachCopyButtons();
+          document.addEventListener('pjax:complete', attachCopyButtons);
+          document.addEventListener('pjax:success', attachCopyButtons);
+        })();
+      </script>
+      <style data-pjax>
+        /* Copy button base & layout */
+  .codeblock-wrapper { overflow: hidden; }
+  .codeblock-wrapper.codeblock-pad-top { padding-top: 36px; padding-bottom:16px; }
+  .codeblock-wrapper.collapsed { padding-bottom:8px; }
+  /* Toolbar */
+  .codeblock-wrapper .code-toolbar { position:absolute; top:6px; left:6px; display:flex; gap:8px; align-items:center; z-index:5; }
+  .codeblock-wrapper .code-toolbar button { background:transparent; border-radius:6px; min-width:36px; height:32px; line-height:32px; padding:0 8px; box-shadow:none; text-transform:none; font-size:18px; display:inline-flex; align-items:center; justify-content:center; color:#000; transition:background-color .25s ease, color .25s ease; }
+  .codeblock-wrapper .code-toolbar button i { font-size:20px; transition: transform .3s ease; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar button { color:#fff; }
+  .codeblock-wrapper .code-toolbar button:hover { background: rgba(0,0,0,0.06); }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar button:hover { background: rgba(255,255,255,0.12); }
+  .codeblock-wrapper .code-toolbar .copy-btn.copy-success { background: rgba(76,175,80,.3); color:#2e7d32; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .copy-btn.copy-success { background: rgba(76,175,80,.35); }
+  .codeblock-wrapper .code-toolbar .copy-btn.copy-fail { background: rgba(255,235,59,.45); color:#8d6e00; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .copy-btn.copy-fail { background: rgba(255,235,59,.55); }
+  .codeblock-wrapper .code-toolbar .collapse-btn i { transition: transform .3s ease; }
+  .codeblock-wrapper.collapsed .code-toolbar .collapse-btn i { transform: rotate(180deg); }
+  .codeblock-wrapper .code-toolbar .code-lang-badge { font-size:12px; line-height:1; padding:4px 8px; border-radius:6px; background:rgba(0,0,0,0.06); color:#000; user-select:none; cursor:default; opacity:.85; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .code-lang-badge { background:rgba(255,255,255,0.14); color:#fff; }
+  /* Animated content wrapper */
+  .codeblock-wrapper .code-content-wrap { overflow:auto; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
+  .codeblock-wrapper.collapsed .code-content-wrap { max-height:0 !important; padding-top:0 !important; padding-bottom:0 !important; }
+  /* Avoid hiding toolbar */
+  .codeblock-wrapper.collapsed > .code-toolbar { display:flex !important; }
+        .codeblock-wrapper .copy-btn.copy-success { background: rgba(76,175,80,.3); color:#2e7d32; }
+        .mdui-theme-layout-dark .codeblock-wrapper .copy-btn.copy-success { background: rgba(76,175,80,.35); }
+        .codeblock-wrapper .copy-btn.copy-fail { background: rgba(255,235,59,.45); color:#8d6e00; }
+        .mdui-theme-layout-dark .codeblock-wrapper .copy-btn.copy-fail { background: rgba(255,235,59,.55); }
+  /* Legacy compatibility removal of old selectors kept intentionally empty */
+      </style>
       <% if (is_post() && page.donate !== false && theme.donate && theme.donate.length) { %>
         <div class="mdui-m-y-2 mdui-text-center">
           <button class="mdui-fab mdui-color-deep-orange mdui-text-color-white mdui-ripple" mdui-dialog="{target: '#donate'}" mdui-tooltip="{content: '<%= __('donate') %>', position: 'top'}"><i class="mdui-icon material-icons" translate="no">thumb_up</i></button>
