@@ -8,6 +8,8 @@ module.exports = {
       '**/manifest*.json',
       '**/*.{css,js,svg,ttf,woff,woff2,eot}',
     ],
+    // 忽略所有查询参数，避免同源资源因参数不同重复缓存
+    ignoreURLParametersMatching: [/.*/],
 
     // 使用 `find . -type f -name '*.*' | sed 's|.*\.||' | sort | uniq | paste -sd '|'` 捕获
     
@@ -26,34 +28,34 @@ module.exports = {
       //   handler: 'StaleWhileRevalidate'
       // }
 
+      // {
+      //   urlPattern: /.*\.html$/,
+      //   /**
+      //    * 按需缓存策略说明：
+      //    * NetworkFirst: 优先从网络获取最新内容，网络失败时使用缓存，适合页面内容
+      //    * StaleWhileRevalidate: 快速返回缓存内容，同时在后台更新，用户体验好
+      //    * CacheFirst: 优先使用缓存，适合不经常变化的静态资源
+      //    */
+      //   handler: 'NetworkFirst', // 改为NetworkFirst，确保页面内容是最新的
+      //   options: {
+      //     cacheName: 'html-cache',
+      //     cacheableResponse: { statuses: [0, 200] },
+      //     expiration: { maxAgeSeconds: 86400 * 1 }, // 1d
+      //     networkTimeoutSeconds: 3 // 网络超时3秒后使用缓存
+      //   }
+      // },
+      // {
+      //   urlPattern: /\/$/, // 匹配所有以 / 结尾的 URL
+      //   handler: 'NetworkOnly', 
+      //   options: {
+      //     cacheName: 'slash-nocache', // 缓存名称
+      //     cacheableResponse: { statuses: [0, 200] }, // 可缓存的响应状态码
+      //     // expiration: { maxAgeSeconds: 86400 * 1 }, // 缓存有效期为1天
+      //     // networkTimeoutSeconds: 3 // 网络超时后使用缓存
+      //   }
+      // },
       {
-        urlPattern: /.*\.html$/,
-        /**
-         * 按需缓存策略说明：
-         * NetworkFirst: 优先从网络获取最新内容，网络失败时使用缓存，适合页面内容
-         * StaleWhileRevalidate: 快速返回缓存内容，同时在后台更新，用户体验好
-         * CacheFirst: 优先使用缓存，适合不经常变化的静态资源
-         */
-        handler: 'NetworkFirst', // 改为NetworkFirst，确保页面内容是最新的
-        options: {
-          cacheName: 'html-cache',
-          cacheableResponse: { statuses: [0, 200] },
-          expiration: { maxAgeSeconds: 86400 * 1 }, // 1d
-          networkTimeoutSeconds: 3 // 网络超时3秒后使用缓存
-        }
-      },
-      {
-        urlPattern: /\/$/, // 匹配所有以 / 结尾的 URL
-        handler: 'NetworkOnly', 
-        options: {
-          cacheName: 'slash-nocache', // 缓存名称
-          cacheableResponse: { statuses: [0, 200] }, // 可缓存的响应状态码
-          // expiration: { maxAgeSeconds: 86400 * 1 }, // 缓存有效期为1天
-          // networkTimeoutSeconds: 3 // 网络超时后使用缓存
-        }
-      },
-      {
-        urlPattern: /.*\.(css|js)$/,
+        urlPattern: /^\/.*\.(css|js)$/,
         handler: 'CacheFirst',
         options: {
           cacheName: 'css-js-cache',
@@ -98,7 +100,7 @@ module.exports = {
           cacheableResponse: { statuses: [0, 200] },
           expiration: { 
             maxAgeSeconds: 7200, // 2h
-            maxEntries: 50 // 限制CDN缓存条目数量
+            maxEntries: 2 // 限制CDN缓存条目数量
           }
         }
       }
