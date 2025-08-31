@@ -347,7 +347,7 @@
       <style data-pjax>
         /* Copy button base & layout */
   .codeblock-wrapper { overflow: hidden; }
-  .codeblock-wrapper.codeblock-pad-top { padding-top: 36px; padding-bottom:16px; }
+  .codeblock-wrapper.codeblock-pad-top { padding-top: 36px; padding-bottom:0px; }
   .codeblock-wrapper.collapsed { padding-bottom:8px; }
   /* Toolbar */
   .codeblock-wrapper .code-toolbar { position:absolute; top:6px; left:6px; display:flex; gap:8px; align-items:center; z-index:5; }
@@ -355,24 +355,24 @@
   .codeblock-wrapper .code-toolbar button i { font-size:20px; transition: transform .3s ease; }
   .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar button { color:#fff; }
   .codeblock-wrapper .code-toolbar button:hover { background: rgba(0,0,0,0.06); }
-  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar button:hover { background: rgba(255,255,255,0.12); }
-  .codeblock-wrapper .code-toolbar .copy-btn.copy-success { background: rgba(76,175,80,.3); color:#2e7d32; }
-  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .copy-btn.copy-success { background: rgba(76,175,80,.35); }
-  .codeblock-wrapper .code-toolbar .copy-btn.copy-fail { background: rgba(255,235,59,.45); color:#8d6e00; }
-  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .copy-btn.copy-fail { background: rgba(255,235,59,.55); }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar button:hover { background: #ffffff1f; }
+  .codeblock-wrapper .code-toolbar .copy-btn.copy-success { background: #4caf504d;  color: #5ac18fff; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .copy-btn.copy-success { background: #4caf5059; }
+  .codeblock-wrapper .code-toolbar .copy-btn.copy-fail { background: #ffeb3b73; color:#8d6e00; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .copy-btn.copy-fail { background: #ffeb3b8c; }
   .codeblock-wrapper .code-toolbar .collapse-btn i { transition: transform .3s ease; }
   .codeblock-wrapper.collapsed .code-toolbar .collapse-btn i { transform: rotate(180deg); }
   .codeblock-wrapper .code-toolbar .code-lang-badge { font-size:12px; line-height:1; padding:4px 8px; border-radius:6px; background:rgba(0,0,0,0.06); color:#000; user-select:none; cursor:default; opacity:.85; }
-  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .code-lang-badge { background:rgba(255,255,255,0.14); color:#fff; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .code-lang-badge { background:#ffffff24; color:#fff; }
   /* Animated content wrapper */
   .codeblock-wrapper .code-content-wrap { overflow:auto; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
   .codeblock-wrapper.collapsed .code-content-wrap { max-height:0 !important; padding-top:0 !important; padding-bottom:0 !important; }
   /* Avoid hiding toolbar */
   .codeblock-wrapper.collapsed > .code-toolbar { display:flex !important; }
-        .codeblock-wrapper .copy-btn.copy-success { background: rgba(76,175,80,.3); color:#2e7d32; }
-        .mdui-theme-layout-dark .codeblock-wrapper .copy-btn.copy-success { background: rgba(76,175,80,.35); }
-        .codeblock-wrapper .copy-btn.copy-fail { background: rgba(255,235,59,.45); color:#8d6e00; }
-        .mdui-theme-layout-dark .codeblock-wrapper .copy-btn.copy-fail { background: rgba(255,235,59,.55); }
+        .codeblock-wrapper .copy-btn.copy-success { background: #4caf504d; color:#2e7d32; }
+        .mdui-theme-layout-dark .codeblock-wrapper .copy-btn.copy-success { background: #4caf5059; }
+        .codeblock-wrapper .copy-btn.copy-fail { background: #ffeb3b73; color:#8d6e00; }
+        .mdui-theme-layout-dark .codeblock-wrapper .copy-btn.copy-fail { background: #ffeb3b8c; }
   /* Legacy compatibility removal of old selectors kept intentionally empty */
       </style>
       <% if (is_post() && page.donate !== false && theme.donate && theme.donate.length) { %>
@@ -447,7 +447,7 @@
 <% var toc = toc(page.content, {class: 'toc', list_number: false}) %>
 <% if (is_post() && page.toc && toc.length) { %>
   <div style="position: fixed !important; right: 16px; top: 30%;">
-    <button class="mdui-fab mdui-fab-mini mdui-ripple" mdui-menu="{target: '#toc'}"><i class="mdui-icon material-icons" translate="no">toc</i></button>
+    <button class="mdui-fab mdui-fab-mini mdui-ripple" style="background: #75757575" mdui-menu="{target: '#toc'}"><i class="mdui-icon material-icons" translate="no">toc</i></button>
     <ul class="mdui-menu" id="toc">
       <li class="mdui-menu-item" disabled><%- toc %></li>
     </ul>
