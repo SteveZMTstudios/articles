@@ -98,6 +98,8 @@
   
   <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.6.0.min.js"></script>
   <script>
+/* //console.log -> console.log */
+
     // 统一规范化 Gitalk id：仅保留 pathname，去掉域名、查询、hash、尾部 index.html 与多余斜杠
     function __normalizeGitalkId(raw) {
       try {
@@ -194,6 +196,8 @@
       setTimeout(function() {
         reinitPageComponents();
       }, 50);
+  // 记录当前 URL，供 popstate 判定使用
+  try { window._pjax_last_url = location.href; } catch(e) {}
     });
     
 
@@ -228,7 +232,7 @@
       if (localStorage.getItem('notice-system-initialized') === 'true') {
         const noticeElement = document.getElementById('random-notice');
         if (noticeElement && (window.location.pathname === '/' || window.location.pathname === '/index.html')) {
-          console.log('Reinitializing notice system');
+          //console.log('Reinitializing notice system');
           window.initNoticeSystem();
         }
       }
@@ -290,8 +294,8 @@
       reinitializeNoticeSystem();
       // 修复对话框
       setTimeout(fixMduiDialogs, 100);
-      console.log('Page type:', window.location.pathname);
-      console.log('Notice system status:', window.noticeSystemInitialized);
+      //console.log('Page type:', window.location.pathname);
+      //console.log('Notice system status:', window.noticeSystemInitialized);
     }
 
     // Material Design 2 刷新指示器
@@ -318,7 +322,7 @@
     }
 
     function handleAjaxError(errorType, link, href) {
-      console.error(`页面加载失败: ${errorType}`);
+  console.error(`页面加载失败: ${errorType}`, { href: href, link: link });
       mdui.snackbar({
         message: `页面加载失败，(${errorType})`,
         timeout: 1500,
@@ -331,11 +335,13 @@
 
     function handleAjaxSuccess(response, href, targetHash) {
       try {
+        //console.log('handleAjaxSuccess start', { href: href, targetHash: targetHash });
         const $response = $(response);
         const $newContent = $response.find('#main');
         const $mainContent = $newContent.length ? $newContent : $response.filter('#main');
         // Github Pages主页特殊处理：找不到内容时直接整页刷新
         if (!$mainContent.length) {
+          console.warn('handleAjaxSuccess: 未找到 #main 内容', { href: href, responseSample: response.slice? response.slice(0,200): undefined });
           if (href.endsWith('/') || href.endsWith('/index.html')) {
             window.location.reload();
             return;
@@ -384,6 +390,7 @@
         // 4. 只在用户点击时 pushState，popstate 不再 pushState
         if (!window._popstate_handling) {
           history.pushState({}, '', href);
+          try { window._pjax_last_url = href; } catch(e) {}
         }
         document.title = $response.filter('title').text() || document.title;
         simulatePageRefresh();
@@ -400,7 +407,7 @@
           document.body.appendChild(script);
         }
   // gitalk 重新加载由 reinitPageComponents -> initGitalk 统一处理，避免双重渲染
-        if (targetHash) {
+  if (targetHash) {
           const target = $(targetHash);
           if (target.length) {
             $('html, body').animate({
@@ -417,25 +424,52 @@
     }
 
     function handleLinkClick(e, link, href, hashIndex, currentPath, targetPath) {
-      if (hashIndex === 0 || currentPath === targetPath) {
-        return true;
+      //console.log('handleLinkClick', { href: href, hashIndex: hashIndex, currentPath: currentPath, targetPath: targetPath, linkClasses: link.attr('class') });
+      // 如果是纯 hash 链接（如 "#foo"）或目标路径与当前路径相同（忽略末尾斜杠），
+      // 则使用浏览器默认行为，避免触发 PJAX/AJAX 重载导致回到页首。
+      try {
+        var normalizePathname = function(p) {
+          if (!p) return '/';
+          p = String(p);
+          if (p.length > 1 && p.endsWith('/')) return p.slice(0, -1);
+          return p;
+        };
+        if (hashIndex === 0) {
+          // 纯锚点：停止后续同一事件的其他监听器，使用浏览器原生行为进行跳转/滚动
+          //console.log('handleLinkClick: pure hash - allow native', { href: href });
+          if (e && typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+          return true;
+        }
+        if (normalizePathname(currentPath) === normalizePathname(targetPath)) {
+          // 指向同一页面（忽略末尾斜杠）：停止后续监听器，保留原生定位
+          //console.log('handleLinkClick: same normalized path - allow native', { currentPath: currentPath, targetPath: targetPath });
+          if (e && typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+          return true;
+        }
+      } catch (err) {
+        // 出错时回退到原有逻辑
       }
       if (link.find('.mdui-icon.material-icons').text() === 'search' || !href || typeof href !== 'string' || href.startsWith('javascript:')) {
+        //console.log('handleLinkClick: ignored (search/invalid)', { href: href });
         return true;
       }
       if (link.prop('host') === window.location.host && !link.attr('target') && link.attr('target') !== '_blank' && !e.ctrlKey && !e.shiftKey && !e.metaKey) {
+        //console.log('handleLinkClick: intercepting for PJAX', { href: href });
         e.preventDefault();
         showLoading();
         const targetUrl = hashIndex > -1 ? href.substring(0, hashIndex) : href;
         const targetHash = hashIndex > -1 ? href.substring(hashIndex) : '';
+        //console.log('handleLinkClick: ajax target', { targetUrl: targetUrl, targetHash: targetHash });
         $.ajax({
           url: targetUrl,
           method: 'GET',
           dataType: 'html',
           success: function(response) {
+            //console.log('AJAX success callback for', href);
             handleAjaxSuccess(response, href, targetHash);
           },
           error: function(xhr, status, error) {
+            console.error('AJAX error', { status: status, error: error, href: href });
             handleAjaxError('ajax_error', link, href);
           }
         });
@@ -445,6 +479,7 @@
     $(document).on('click', 'a', function(e) {
       const link = $(this);
       const href = link.attr('href');
+  //console.log("document click a:", { href: href, classes: link.attr('class'), text: link.text() });
       // 修复 mdui-dialog hash 跳转导致弹窗错位
       if (href && href.startsWith('#mdui-dialog')) {
         e.preventDefault();
@@ -462,7 +497,61 @@
       handleLinkClick(e, link, href, hashIndex, currentPath, targetPath);
     });
 
-    window.onpopstate = function() {
+    window.onpopstate = function(event) {
+      //console.log('onpopstate triggered, location:', location.href, 'last_pjax:', window._pjax_last_url);
+      try {
+        var last = window._pjax_last_url || document.location.href;
+        var newPath = new URL(location.href, window.location.origin).pathname;
+        var lastPath = new URL(last, window.location.origin).pathname;
+        var newHash = new URL(location.href, window.location.origin).hash;
+        if (newPath === lastPath) {
+          //console.log('onpopstate: same pathname, only hash changed — skip AJAX', { newHash: newHash });
+          // 手动滚动到目标（某些情况下浏览器可能已滚动）
+          if (newHash) {
+            var resolveHashTarget = function(hash) {
+              try {
+                if (!hash) return null;
+                var raw = hash.charAt(0) === '#' ? hash.slice(1) : hash;
+                // 1) 尝试 decodeURIComponent -> getElementById
+                try {
+                  var decoded = decodeURIComponent(raw);
+                } catch (e) {
+                  decoded = raw;
+                }
+                if (decoded) {
+                  var byId = document.getElementById(decoded);
+                  if (byId) return byId;
+                }
+                // 2) 没有找到，用 CSS.escape 包裹整 querySelector
+                if (window.CSS && typeof window.CSS.escape === 'function') {
+                  try {
+                    var sel = '#' + CSS.escape(raw);
+                    var q = document.querySelector(sel);
+                    if (q) return q;
+                  } catch (e) {
+                    // ignore
+                  }
+                }
+                // 3) 直接干
+                try {
+                  return document.querySelector(hash);
+                } catch (e) {
+                  return null;
+                }
+              } catch (e) {
+                return null;
+              }
+            };
+            var target = resolveHashTarget(newHash);
+            if (target) {
+              setTimeout(function(){ target.scrollIntoView(); }, 10);
+            }
+          }
+          return;
+        }
+      } catch (e) { console.warn('onpopstate check failed', e); }
+
+      //console.log('onpopstate: performing PJAX fetch for', location.href);
       showLoading();
       window._popstate_handling = true;
       var href = location.href;
@@ -473,6 +562,7 @@
         success: function(response) {
           handleAjaxSuccess(response, href, null);
           window._popstate_handling = false;
+          try { window._pjax_last_url = href; } catch(e) {}
         },
         error: function(xhr, status, error) {
           handleAjaxError('br_ajax_error', $(location), href);
@@ -719,7 +809,7 @@
   <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
   <article class="mdui-card mdui-m-b-5">
     <header class="mdui-card-media">
-      <img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/random/material-14.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+      <img src="/images/loading.gif" data-original="https://mirror.blog.stevezmt.top/images/random/material-12.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
       <div class="mdui-card-media-covered">
         <div class="mdui-card-primary">
             <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;">Markdown 渲染测试</h1></div>
@@ -1039,7 +1129,7 @@
 <p>Typora now supports <a target="_blank" rel="noopener" href="http://jekyllrb.com/docs/frontmatter/">YAML Front Matter</a>. Input <code>---</code> at the top of the article and then press <code>Return</code> to introduce a metadata block. Alternatively, you can insert a metadata block from the top menu of Typora. 这里就不演示了哈，弄 Hexo 的喜闻乐见。</p>
 <p>支持有标题的 Link，试试鼠标停留在上面：<a target="_blank" rel="noopener" href="http://example.com/" title="Title">an example</a></p>
 <p>Typora allows you to insert URLs as links, wrapped by <code>&lt;</code>brackets<code>&gt;</code>.</p>
-<p><code>&lt;i@typora.io&gt;</code> becomes <a href="mailto:&#x69;&#64;&#x74;&#x79;&#x70;&#x6f;&#x72;&#x61;&#x2e;&#x69;&#111;">i@typora.io</a>.</p>
+<p><code>&lt;i@typora.io&gt;</code> becomes <a href="mailto:&#x69;&#x40;&#x74;&#121;&#112;&#x6f;&#114;&#97;&#x2e;&#105;&#111;">i@typora.io</a>.</p>
 <p>Typora will also automatically link standard URLs. e.g: <a target="_blank" rel="noopener" href="http://www.google.com/">www.google.com</a>. 就是没有任何标记也解析出地址了。</p>
 <p>Underline is powered by raw HTML.</p>
 <p>支持下划线：<code>&lt;u&gt;下划线&lt;/u&gt;</code> becomes <u>下划线</u>.</p>
@@ -1562,7 +1652,7 @@ content
       <style data-pjax>
         /* Copy button base & layout */
   .codeblock-wrapper { overflow: hidden; }
-  .codeblock-wrapper.codeblock-pad-top { padding-top: 36px; padding-bottom:16px; }
+  .codeblock-wrapper.codeblock-pad-top { padding-top: 36px; padding-bottom:0px; }
   .codeblock-wrapper.collapsed { padding-bottom:8px; }
   /* Toolbar */
   .codeblock-wrapper .code-toolbar { position:absolute; top:6px; left:6px; display:flex; gap:8px; align-items:center; z-index:5; }
@@ -1570,24 +1660,24 @@ content
   .codeblock-wrapper .code-toolbar button i { font-size:20px; transition: transform .3s ease; }
   .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar button { color:#fff; }
   .codeblock-wrapper .code-toolbar button:hover { background: rgba(0,0,0,0.06); }
-  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar button:hover { background: rgba(255,255,255,0.12); }
-  .codeblock-wrapper .code-toolbar .copy-btn.copy-success { background: rgba(76,175,80,.3); color:#2e7d32; }
-  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .copy-btn.copy-success { background: rgba(76,175,80,.35); }
-  .codeblock-wrapper .code-toolbar .copy-btn.copy-fail { background: rgba(255,235,59,.45); color:#8d6e00; }
-  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .copy-btn.copy-fail { background: rgba(255,235,59,.55); }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar button:hover { background: #ffffff1f; }
+  .codeblock-wrapper .code-toolbar .copy-btn.copy-success { background: #4caf504d;  color: #5ac18fff; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .copy-btn.copy-success { background: #4caf5059; }
+  .codeblock-wrapper .code-toolbar .copy-btn.copy-fail { background: #ffeb3b73; color:#8d6e00; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .copy-btn.copy-fail { background: #ffeb3b8c; }
   .codeblock-wrapper .code-toolbar .collapse-btn i { transition: transform .3s ease; }
   .codeblock-wrapper.collapsed .code-toolbar .collapse-btn i { transform: rotate(180deg); }
   .codeblock-wrapper .code-toolbar .code-lang-badge { font-size:12px; line-height:1; padding:4px 8px; border-radius:6px; background:rgba(0,0,0,0.06); color:#000; user-select:none; cursor:default; opacity:.85; }
-  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .code-lang-badge { background:rgba(255,255,255,0.14); color:#fff; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .code-lang-badge { background:#ffffff24; color:#fff; }
   /* Animated content wrapper */
   .codeblock-wrapper .code-content-wrap { overflow:auto; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
   .codeblock-wrapper.collapsed .code-content-wrap { max-height:0 !important; padding-top:0 !important; padding-bottom:0 !important; }
   /* Avoid hiding toolbar */
   .codeblock-wrapper.collapsed > .code-toolbar { display:flex !important; }
-        .codeblock-wrapper .copy-btn.copy-success { background: rgba(76,175,80,.3); color:#2e7d32; }
-        .mdui-theme-layout-dark .codeblock-wrapper .copy-btn.copy-success { background: rgba(76,175,80,.35); }
-        .codeblock-wrapper .copy-btn.copy-fail { background: rgba(255,235,59,.45); color:#8d6e00; }
-        .mdui-theme-layout-dark .codeblock-wrapper .copy-btn.copy-fail { background: rgba(255,235,59,.55); }
+        .codeblock-wrapper .copy-btn.copy-success { background: #4caf504d; color:#2e7d32; }
+        .mdui-theme-layout-dark .codeblock-wrapper .copy-btn.copy-success { background: #4caf5059; }
+        .codeblock-wrapper .copy-btn.copy-fail { background: #ffeb3b73; color:#8d6e00; }
+        .mdui-theme-layout-dark .codeblock-wrapper .copy-btn.copy-fail { background: #ffeb3b8c; }
   /* Legacy compatibility removal of old selectors kept intentionally empty */
       </style>
       
@@ -1723,7 +1813,7 @@ content
 
 
   <div style="position: fixed !important; right: 16px; top: 30%;">
-    <button class="mdui-fab mdui-fab-mini mdui-ripple" mdui-menu="{target: '#toc'}"><i class="mdui-icon material-icons" translate="no">toc</i></button>
+    <button class="mdui-fab mdui-fab-mini mdui-ripple" style="background: #75757575" mdui-menu="{target: '#toc'}"><i class="mdui-icon material-icons" translate="no">toc</i></button>
     <ul class="mdui-menu" id="toc">
       <li class="mdui-menu-item" disabled><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-text">文章使用方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Markdown-%E6%A0%87%E5%87%86"><span class="toc-text">Markdown 标准</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%EF%BC%88CommonMark%EF%BC%89"><span class="toc-text">基础（CommonMark）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E7%BA%A7%E6%A0%87%E9%A2%98%EF%BC%88%E7%B1%BB-Atx-%E5%BD%A2%E5%BC%8F%EF%BC%89"><span class="toc-text">一级标题（类 Atx 形式）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BA%A7%E6%A0%87%E9%A2%98%EF%BC%88%E7%B1%BB-Atx-%E5%BD%A2%E5%BC%8F%EF%BC%89"><span class="toc-text">二级标题（类 Atx 形式）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%BA%A7%E6%A0%87%E9%A2%98%EF%BC%88%E7%B1%BB-Atx-%E5%BD%A2%E5%BC%8F%EF%BC%89"><span class="toc-text">三级标题（类 Atx 形式）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E7%BA%A7%E6%A0%87%E9%A2%98%EF%BC%88%E7%B1%BB-Setext-%E5%BD%A2%E5%BC%8F%EF%BC%89"><span class="toc-text">一级标题（类 Setext 形式）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E7%BA%A7%E6%A0%87%E9%A2%98%EF%BC%88%E7%B1%BB-Setext-%E5%BD%A2%E5%BC%8F%EF%BC%89"><span class="toc-text">二级标题（类 Setext 形式）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#GitHub-Flavored-Markdown%EF%BC%88GFM%EF%BC%89"><span class="toc-text">GitHub Flavored Markdown（GFM）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A0%BC%E5%BC%8F%E8%AF%AD%E6%B3%95"><span class="toc-text">基本格式语法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%AF%E6%8C%81%E5%9B%9B%E7%BA%A7%E6%A0%87%E9%A2%98%EF%BC%88%E7%B1%BB-Atx-%E5%BD%A2%E5%BC%8F%EF%BC%8C%E4%BA%95%E5%8F%B7%E6%96%B9%E5%BC%8F%EF%BC%89"><span class="toc-text">支持四级标题（类 Atx 形式，井号方式）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%94%AF%E6%8C%81%E4%BA%94%E7%BA%A7%E6%A0%87%E9%A2%98%EF%BC%88%E7%B1%BB-Atx-%E5%BD%A2%E5%BC%8F%EF%BC%8C%E4%BA%95%E5%8F%B7%E6%96%B9%E5%BC%8F%EF%BC%89"><span class="toc-text">支持五级标题（类 Atx 形式，井号方式）</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%94%AF%E6%8C%81%E5%85%AD%E7%BA%A7%E6%A0%87%E9%A2%98%EF%BC%88%E7%B1%BB-Atx-%E5%BD%A2%E5%BC%8F%EF%BC%8C%E4%BA%95%E5%8F%B7%E6%96%B9%E5%BC%8F%EF%BC%89"><span class="toc-text">支持六级标题（类 Atx 形式，井号方式）</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7%E6%A0%BC%E5%BC%8F"><span class="toc-text">高级格式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E6%A0%BC"><span class="toc-text">表格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%98%E5%8F%A0%E9%83%A8%E5%88%86"><span class="toc-text">折叠部分</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#We-can-hide-anything-even-code"><span class="toc-text">We can hide anything, even code!</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%9D%97"><span class="toc-text">代码块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-text">数学表达式</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Typora"><span class="toc-text">Typora</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Obsidian-Flavored-Markdown%EF%BC%88OFM%EF%BC%89"><span class="toc-text">Obsidian Flavored Markdown（OFM）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Internal-links-%E5%86%85%E9%83%A8%E9%93%BE%E6%8E%A5"><span class="toc-text">Internal links 内部链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Comments-%E6%B3%A8%E9%87%8A"><span class="toc-text">Comments 注释</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E6%B3%A8-Callouts"><span class="toc-text">标注 Callouts</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-text">其他</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E8%A1%A8"><span class="toc-text">图表</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Microsoft-Learn"><span class="toc-text">Microsoft Learn</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%99%84%E5%BD%95"><span class="toc-text">附录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#HTML-%E6%94%AF%E6%8C%81%E6%83%85%E5%86%B5"><span class="toc-text">HTML 支持情况</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E8%88%AC%E6%A0%87%E7%AD%BE"><span class="toc-text">一般标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E4%BD%93%E3%80%81%E9%A2%9C%E8%89%B2%E5%92%8C%E5%A4%A7%E5%B0%8F"><span class="toc-text">字体、颜色和大小</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%98%E5%8F%A0%E6%AE%B5%E8%90%BD"><span class="toc-text">折叠段落</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E9%94%9A%E7%82%B9"><span class="toc-text">设置锚点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E6%A0%BC-1"><span class="toc-text">表格</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AE%B5%E9%A6%96%E7%BC%A9%E8%BF%9B"><span class="toc-text">段首缩进</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E6%AE%8A%E7%AC%A6%E5%8F%B7"><span class="toc-text">特殊符号</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Mermaid-%E5%9B%BE%E7%A4%BA%E4%BE%8B"><span class="toc-text">Mermaid 图示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="toc-text">流程图</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%AA%E5%90%91%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="toc-text">横向流程图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AB%96%E5%90%91%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="toc-text">竖向流程图</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UML-%E6%A0%87%E5%87%86%E6%97%B6%E5%BA%8F%E5%9B%BE"><span class="toc-text">UML 标准时序图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%98%E7%89%B9%E5%9B%BE"><span class="toc-text">甘特图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sequence-%E5%9B%BE%E7%A4%BA%E4%BE%8B"><span class="toc-text">sequence 图示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#UML-%E6%97%B6%E5%BA%8F%E5%9B%BE"><span class="toc-text">UML 时序图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UML-%E6%A0%87%E5%87%86%E6%97%B6%E5%BA%8F%E5%9B%BE%E5%A4%8D%E6%9D%82"><span class="toc-text">UML 标准时序图复杂</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#flow-%E5%9B%BE"><span class="toc-text">flow 图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E6%B5%81%E7%A8%8B%E5%9B%BE%EF%BC%88%E6%A8%AA%E5%90%91%EF%BC%89"><span class="toc-text">标准流程图（横向）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="toc-text">标准流程图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PlantUML-%E6%96%87%E6%9C%AC%E7%BB%98%E5%9B%BE"><span class="toc-text">PlantUML 文本绘图</span></a></li></ol></li></ol></li>
     </ul>

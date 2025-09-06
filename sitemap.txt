@@ -28,12 +28,12 @@ https://blog.stevezmt.top/tags/root/
 https://blog.stevezmt.top/tags/xposed/
 https://blog.stevezmt.top/tags/%E5%AE%89%E5%8D%93/
 https://blog.stevezmt.top/tags/%E5%8D%95%E8%AF%8D%E7%AC%94/
-https://blog.stevezmt.top/tags/%E4%BA%92%E8%81%94/
-https://blog.stevezmt.top/tags/KDE/
 https://blog.stevezmt.top/tags/AI/
 https://blog.stevezmt.top/tags/openai/
+https://blog.stevezmt.top/tags/%E4%BA%92%E8%81%94/
+https://blog.stevezmt.top/tags/KDE/
 https://blog.stevezmt.top/categories/%E6%8A%98%E8%85%BE/
-https://blog.stevezmt.top/categories/%E6%8A%98%E8%85%BE/%E7%94%B5%E5%AD%90%E5%9E%83%E5%9C%BE/
 https://blog.stevezmt.top/categories/%E7%9E%8E%E8%81%8A/
+https://blog.stevezmt.top/categories/%E6%8A%98%E8%85%BE/%E7%94%B5%E5%AD%90%E5%9E%83%E5%9C%BE/
 https://blog.stevezmt.top/categories/%E6%8A%80%E6%9C%AF/
 https://blog.stevezmt.top/categories/%E6%8A%80%E6%9C%AF/%E7%9E%8E%E8%81%8A/
