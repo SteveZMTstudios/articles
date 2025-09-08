@@ -346,9 +346,9 @@
       </script>
       <style data-pjax>
         /* Copy button base & layout */
-  .codeblock-wrapper { overflow: hidden; }
+  .codeblock-wrapper { overflow: hidden;transition: padding-bottom .35s cubic-bezier(.4,0,.2,1);}
   .codeblock-wrapper.codeblock-pad-top { padding-top: 36px; padding-bottom:0px; }
-  .codeblock-wrapper.collapsed { padding-bottom:8px; }
+  .codeblock-wrapper.collapsed { padding-bottom:8px;transition: padding-bottom .35s cubic-bezier(.4,0,.2,1);  }
   /* Toolbar */
   .codeblock-wrapper .code-toolbar { position:absolute; top:6px; left:6px; display:flex; gap:8px; align-items:center; z-index:5; }
   .codeblock-wrapper .code-toolbar button { background:transparent; border-radius:6px; min-width:36px; height:32px; line-height:32px; padding:0 8px; box-shadow:none; text-transform:none; font-size:18px; display:inline-flex; align-items:center; justify-content:center; color:#000; transition:background-color .25s ease, color .25s ease; }
