@@ -469,7 +469,7 @@ img.avatar-animation:hover {
 }
 
 #paginator .spacer:before {
-  content: '/';
+  content: '';
 }
 
 /* Comment Style */

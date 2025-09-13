@@ -437,19 +437,34 @@
     </ul>
   </div>
 <% } %>
-<div class="mdui-divider" style="margin-bottom: 19px"></div>
+<div class="mdui-divider" style="margin-bottom: 39px"></div>
 <% if (page.prev || page.next) { %>
   <nav id="paginator">
     <% if (page.prev) { %>
-      <a rel="prev" class="extend prev" href="<%- url_for(page.prev.path) %>">
-        <button aria-label="prev" class="mdui-btn mdui-btn-raised mdui-btn-icon mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons" translate="no">arrow_back</i></button>
-        <span class="mdui-p-x-3" mdui-tooltip="{content: '<%= page.prev.title %>'}"><%= __('prev') %></span>
+      <a rel="prev" class="extend prev" href="<%- url_for(page.prev.path) %>" style="display:flex;align-items:center;gap:12px;">
+        <button aria-label="prev" class="mdui-btn mdui-btn-raised mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons" translate="no">arrow_back</i></button>
+        <span style="display:flex;flex-direction:column;align-items:flex-start;">
+          <small class=" prev-title-responsive" style="font-size:12px;opacity:.7;">上一篇</small>
+          <span class=" prev-title-responsive" style="display:block;padding-right:0px;"><%= page.prev.title %></span>
+        </span>
       </a>
+      <style>
+        @media (max-width: 500px) {
+          .prev-title-responsive {
+            display: none !important;
+          }
+          
+        }
+      </style>
     <% } %>
     <div class="spacer"></div>
     <% if (page.next) { %>
-      <a rel="next" class="extend next" href="<%- url_for(page.next.path) %>">
-        <span class="mdui-p-x-3" mdui-tooltip="{content: '<%= page.next.title %>'}"><%= __('next') %></span>
+      <a rel="next" class="extend next" href="<%- url_for(page.next.path) %>" style="display:flex;align-items:center;gap:12px;">
+        <span style="display:flex;flex-direction:column;align-items:flex-end;text-align:right;">
+          <small style="font-size:12px;opacity:.7;">下一篇</small>
+          <span style="display:block;"><%= page.next.title %></span>
+        </span>
+
         <button aria-label="next" class="mdui-btn mdui-btn-raised mdui-btn-icon mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons" translate="no">arrow_forward</i></button>
       </a>
     <% } %>
