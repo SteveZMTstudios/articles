@@ -1297,3 +1297,111 @@ img.avatar-animation:hover {
     transition: none !important;
   }
 }
+
+/* Details/summary MDUI Material Animation */
+details {
+  background: rgba(33, 33, 33, 0.08); /* Material 深色风格 */
+  border-radius: 4px;
+  margin: 16px 0;
+  box-shadow: 0 1px 4px 0 rgba(60,60,60,0.04);
+  padding: 0 0 0 0;
+  transition: background 0.3s cubic-bezier(.4,0,.2,1);
+  overflow: hidden;
+}
+
+details[open] {
+  background: rgba(33, 33, 33, 0.13);
+}
+
+details summary {
+  list-style: none;
+  cursor: pointer;
+  outline: none;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #212121;
+  padding: 16px 24px 16px 40px;
+  position: relative;
+  user-select: none;
+  transition: background 0.2s cubic-bezier(.4,0,.2,1);
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
+
+details summary::before {
+  content: '\25B6'; /* ▶ */
+  display: inline-block;
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%) rotate(0deg);
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+  color: #757575;
+  font-size: 1.1em;
+}
+
+details[open] summary::before {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+details summary:active,
+details summary:focus {
+  background: rgba(123, 123, 123, 0.04);
+}
+
+details > *:not(summary) {
+  display: block;
+  box-sizing: border-box;
+  padding: 0 24px 16px 40px;
+  color: #444;
+}
+
+details .details-content {
+  /* 允许自定义内容容器 */
+}
+
+/* 动画：内容滑入滑出 */
+details[open] > .details-anim {
+  max-height: 1000px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: max-height 0.4s cubic-bezier(.4,0,.2,1), opacity 0.3s cubic-bezier(.4,0,.2,1), transform 0.4s cubic-bezier(.4,0,.2,1);
+}
+details:not([open]) > .details-anim {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-16px);
+  transition: max-height 0.3s cubic-bezier(.4,0,.2,1), opacity 0.2s cubic-bezier(.4,0,.2,1), transform 0.3s cubic-bezier(.4,0,.2,1);
+  overflow: hidden;
+}
+
+/* prefers-reduced-motion 兼容 */
+@media (prefers-reduced-motion: reduce) {
+  details[open] > .details-anim,
+  details:not([open]) > .details-anim {
+    transition: none !important;
+    transform: none !important;
+  }
+  details summary::before {
+    transition: none !important;
+  }
+}
+
+/* 暗色模式适配 */
+.mdui-theme-layout-dark details {
+  background: rgba(0, 0, 0, 0.08);
+}
+.mdui-theme-layout-dark details[open] {
+  background: rgba(0, 0, 0, 0.10);
+}
+.mdui-theme-layout-dark details summary {
+  color: #fff;
+}
+.mdui-theme-layout-dark details > *:not(summary) {
+  color: #eee;
+}
+.mdui-theme-layout-dark details summary::before {
+  color: #bdbdbd;
+}

@@ -85,7 +85,7 @@ module.exports = {
       //   }
       // },
       {
-        urlPattern: /.*\/(avatar|banner|favicon|grey|loading|material-\d+)\.(png|gif)$/,
+        urlPattern: /.*\/(avatar|banner|favicon|grey|loading|material-\d+)\.(png|gif|svg)$/,
         handler: 'CacheFirst',
         options: {
           cacheName: 'media-preset-cache',

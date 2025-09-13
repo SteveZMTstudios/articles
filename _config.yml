@@ -4,7 +4,8 @@
 
 # Site
 title: 老史尬侃 - Steve ZMT 's Blog
-subtitle: 又名“史蒂夫ZMT”的树洞。
+
+subtitle: 这家伙叽里咕噜说什么呢。
 description: 随笔、日志、技术分享、个人作品 Steve ZMT is soliloquize here.
 keywords: 
   - blog
@@ -106,7 +107,7 @@ theme: default
 lazyload:
   enable: true
   onlypost: false # optional
-  loadingImg: /images/loading.gif
+  loadingImg: /images/loading.svg
   isSPA: true # optional
   preloadRatio: 3 # optional, default is 1
 

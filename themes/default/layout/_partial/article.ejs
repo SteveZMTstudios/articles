@@ -422,6 +422,22 @@
   <%- js([theme.gallery.jquery_js, theme.gallery.fancybox_js]) %>
   <script data-pjax>$("#main article .mdui-card-content img.fancybox").on("click",function(e){$.fancybox.open({src:$(this).attr("src")});});</script>
 <% } %>
+
+<% if (page.comments && theme.comment.use) { %>
+  <div id="comment" class="mdui-m-t-5">
+    <%- partial('_widget/comment/' + theme.comment.use) %>
+  </div>
+<% } %>
+<% var toc = toc(page.content, {class: 'toc', list_number: false}) %>
+<% if (is_post() && page.toc && toc.length) { %>
+  <div style="position: fixed !important; right: 16px; top: 30%;">
+    <button class="mdui-fab mdui-fab-mini mdui-ripple" style="background: #75757575" mdui-menu="{target: '#toc'}"><i class="mdui-icon material-icons" translate="no">toc</i></button>
+    <ul class="mdui-menu" id="toc">
+      <li class="mdui-menu-item" disabled><%- toc %></li>
+    </ul>
+  </div>
+<% } %>
+<div class="mdui-divider" style="margin-bottom: 19px"></div>
 <% if (page.prev || page.next) { %>
   <nav id="paginator">
     <% if (page.prev) { %>
@@ -438,18 +454,4 @@
       </a>
     <% } %>
   </nav>
-<% } %>
-<% if (page.comments && theme.comment.use) { %>
-  <div id="comment" class="mdui-m-t-5">
-    <%- partial('_widget/comment/' + theme.comment.use) %>
-  </div>
-<% } %>
-<% var toc = toc(page.content, {class: 'toc', list_number: false}) %>
-<% if (is_post() && page.toc && toc.length) { %>
-  <div style="position: fixed !important; right: 16px; top: 30%;">
-    <button class="mdui-fab mdui-fab-mini mdui-ripple" style="background: #75757575" mdui-menu="{target: '#toc'}"><i class="mdui-icon material-icons" translate="no">toc</i></button>
-    <ul class="mdui-menu" id="toc">
-      <li class="mdui-menu-item" disabled><%- toc %></li>
-    </ul>
-  </div>
 <% } %>
