@@ -44,8 +44,15 @@
     <p>你也可以直接访问 <a href="/atom.xml">/atom.xml</a> 阅读原始订阅。</p>
   </noscript>
 
-  <script>
+  <script data-cfasync="false">
   // 最小兼容 XHR 获取 /atom.xml，兼容 ActiveXObject（IE6）
+
+  // 兼容性检测：IE11 及更早版本不支持 Function.prototype.bind
+  if (!Function.prototype.bind) {
+    var status = document.getElementById('status');
+    if (status) status.innerHTML = '您的浏览器不支持 Function.prototype.bind，无法加载内容。请升级浏览器或使用新版 Edge/Chrome/Firefox。';
+    throw new Error('Function.prototype.bind not supported');
+  }
 
   (function(){
     var status = document.getElementById('status');
