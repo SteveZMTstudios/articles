@@ -23,17 +23,14 @@
   <noscript>
     <p style="background:#ff9800;padding:6px;margin:0;">JavaScript 未启用。遗憾的是，您必须启用它才能访问内容。<br />你可以直接访问 <a href="/atom.xml">/atom.xml</a></p>
   </noscript>
-  <script> 
-var $buoop = {required:{e:79,f:133,o:111,s:9,c:131},insecure:true,unsupported:true,api:2025.09 }; 
-function $buo_f(){ 
- var e = document.createElement("script"); 
- e.src = "//browser-update.org/update.min.js"; 
- document.body.appendChild(e);
-};
-try {document.addEventListener("DOMContentLoaded", $buo_f,false)}
-catch(e){window.attachEvent("onload", $buo_f)}
-</script>
-  <script>
+ 
+  <script data-cfasync="false">
+  // 兼容性检测：确保 Function.prototype.bind 存在（避免在旧环境或被 Rocket Loader 干扰时抛错）
+  if (!Function.prototype.bind) {
+    var statusEl = document.getElementById('status');
+    if (statusEl) statusEl.innerHTML = '您的浏览器缺少关键功能（Function.prototype.bind），无法显示此页面。请升级浏览器或在页面顶部选择“仍然访问完整版”。';
+    throw new Error('Function.prototype.bind not supported');
+  }
   (function(){
     var status = document.getElementById('status');
     var article = document.getElementById('article');

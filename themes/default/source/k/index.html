@@ -43,18 +43,16 @@
     <p style="background:#ff9800;padding:6px;margin:0;">浏览器未启用 JavaScript。遗憾的是，你必须启用它才能查看文章列表和内容。</p>
     <p>你也可以直接访问 <a href="/atom.xml">/atom.xml</a> 阅读原始订阅。</p>
   </noscript>
-  <script> 
-var $buoop = {required:{e:79,f:133,o:111,s:9,c:131},insecure:true,unsupported:true,api:2025.09 }; 
-function $buo_f(){ 
- var e = document.createElement("script"); 
- e.src = "//browser-update.org/update.min.js"; 
- document.body.appendChild(e);
-};
-try {document.addEventListener("DOMContentLoaded", $buo_f,false)}
-catch(e){window.attachEvent("onload", $buo_f)}
-</script>
-  <script>
+
+  <script data-cfasync="false">
   // 最小兼容 XHR 获取 /atom.xml，兼容 ActiveXObject（IE6）
+
+  // 兼容性检测：IE11 及更早版本不支持 Function.prototype.bind
+  if (!Function.prototype.bind) {
+    var status = document.getElementById('status');
+    if (status) status.innerHTML = '您的浏览器不支持 Function.prototype.bind，无法加载内容。请升级浏览器或使用新版 Edge/Chrome/Firefox。';
+    throw new Error('Function.prototype.bind not supported');
+  }
 
   (function(){
     var status = document.getElementById('status');
