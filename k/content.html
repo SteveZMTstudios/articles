@@ -25,6 +25,12 @@
   </noscript>
  
   <script data-cfasync="false">
+  // 兼容性检测：确保 Function.prototype.bind 存在（避免在旧环境或被 Rocket Loader 干扰时抛错）
+  if (!Function.prototype.bind) {
+    var statusEl = document.getElementById('status');
+    if (statusEl) statusEl.innerHTML = '您的浏览器缺少关键功能（Function.prototype.bind），无法显示此页面。请升级浏览器或在页面顶部选择“仍然访问完整版”。';
+    throw new Error('Function.prototype.bind not supported');
+  }
   (function(){
     var status = document.getElementById('status');
     var article = document.getElementById('article');
