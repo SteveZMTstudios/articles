@@ -12,7 +12,7 @@ categories:
     - 折腾
     - 电子垃圾
     - 
-thumbnail: https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/thumb_compressed.jpg
+thumbnail: /images/blog/root-on-scanpen/thumb_compressed.jpg
 ---
 
 > 此页面最初由我自己发布在[酷安](https://www.coolapk.com/feed/49767646?shareKey=YWNkMzBmNTU4NmY3NjU1ODhiY2Y~&shareUid=22536770&shareFrom=com.coolapk.market_13.3.6)
@@ -69,7 +69,7 @@ thumbnail: https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/thumb_co
 7.把按键塑料块放到小纸盒里面
 8.查看主板背面，拔电池，预热焊笔
 
-![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/1_compressed.jpg)
+![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](/images/blog/root-on-scanpen/1_compressed.jpg)
 从上到下1－6，1 4音量下、24音量上
 
 9.先在焊笔上涂一层焊锡，然后固定导线，使得导线拨了皮的铜丝末端对准焊板
@@ -80,7 +80,7 @@ thumbnail: https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/thumb_co
 设备不能用音量键重启到fastboot，因此你只能用mtk bypass工具启动到fastboot
 方法：关机或拔电池，bypass工具选reboot fastboot ,插上电脑
 
-![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/2_compressed.jpg)
+![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](/images/blog/root-on-scanpen/2_compressed.jpg)
 
 ## 0x02.=====解锁bootloader=====
 （只要设备不是安卓4及更旧的系统就有bl锁，可能读不出来，但就是有，因为你打fastboot oem unlock会没反应）
@@ -93,7 +93,7 @@ thumbnail: https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/thumb_co
 词典笔屏幕亮起后，输入fastboot oem unlock
 不管设备屏幕有无任何反应 (非裁切屏可以显示解锁提示) ，短接音量上，也就是24焊点，此时终端窗口应有反应，并且报告成功
 
-![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/3_compressed.jpg)
+![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](/images/blog/root-on-scanpen/3_compressed.jpg)
 解锁时窗口
 
 然后打fastboot reboot，此时设备会清除所有数据
@@ -120,24 +120,24 @@ thumbnail: https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/thumb_co
 (如果语言不对，左上角File里面选取Options，把English改成中文就行)
 点开下载，在下面的第二个框里面选取刚刚创建的txt文本
 
-![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/4_compressed.jpg)
+![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](/images/blog/root-on-scanpen/4_compressed.jpg)
 应该只有一行，不是像我的这么多
 
 再打开内存测试选项卡
 只勾选RAM测试，其他都不要勾
 
-![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/5_compressed.jpg)
+![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](/images/blog/root-on-scanpen/5_compressed.jpg)
 其他都不要勾选!!!
 
 点开始，设备关机，按中键或重插数据线，很快就读出一堆参数
 
-![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/6_compressed.jpg)
+![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](/images/blog/root-on-scanpen/6_compressed.jpg)
 图源4pda，这里图都来自4pda
 
 把这串复制到记事本上，不用保存
 我们不关心0x0的地址，只需要4个值（其实是3个）
 
-![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/7_compressed.jpg)
+![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](/images/blog/root-on-scanpen/7_compressed.jpg)
 手机做图烦死，这张也是搬的
 
 然后点开回读选项卡
@@ -145,17 +145,17 @@ thumbnail: https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/thumb_co
 双击新建的条目，选择rom_0保存位置（这是保存preloader）
 区域选EMMC_BOOT_1，长度是你复制的第一个值
 
-![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/8_compressed.jpg)
+![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](/images/blog/root-on-scanpen/8_compressed.jpg)
 就改动第一个选单，和底下的长度
 
 然后单词笔插电脑上，按下中键或短暂的短路电池，或者把电池拔下再插上,此时底部进度条应该开始在跑，很快出现了一个绿圈或者一个大勾✔️。
 
-![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/9_compressed.jpg)
+![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](/images/blog/root-on-scanpen/9_compressed.jpg)
 这就是那个中键（los图片编辑真烂）
 
 在回读里面添加一个条目，双击选择保存位置（保存出来的文件是完整的emmc数据无压缩，你需要存在比你单词笔总大小大的电脑磁盘上），区域选EMMC_USER，长度就是你记录在记事本下来的值，最底下的很大
 
-![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/10_compressed.jpg)
+![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](/images/blog/root-on-scanpen/10_compressed.jpg)
 取消勾选刚刚的rom_0
 确保数据线，单词笔和主机连接稳定后，点开“回读”，再次按下单词笔的中键/拔插数据线/拔电池当进度条开始缓慢的移动时回读就已开始。
 然后翻翻酷安，尽量不要动电脑，不要让电脑睡眠，不要锁屏，等待进度条跑完出现绿圈或大勾
@@ -189,7 +189,7 @@ thumbnail: https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/thumb_co
 4.打开mtk bypass，选择reboot fastboot选项，然后再次按下中键/关机插入/拔电池，在之前的终端里输fastboot flash boot [空格键]，然后不急着按回车，把刚刚提出来的magisk-patched_xxxxx.img拖动到命令窗口里面，再敲回车，直到出现OKAY字样，然后fastboot reboot，你就获得了root权限。
 （如果你没解锁，并且不是mt6582机型设备，那么打开SP flash tool,导入原来的scatter,只勾选boot分区，双击后面路径选你的magisk_patched_xxxxx.img，选择方式为下载Download，然后开始下载，设备关机插入，等待红条和黄条跑完就行。）
 
-![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](https://mirror.blog.stevezmt.top/images/blog/root-on-scanpen/11_compressed.jpg)
+![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](/images/blog/root-on-scanpen/11_compressed.jpg)
 
 ## 0x05：你要知道的一些事情
 设备不能用音量键重启到fastboot，因此你只能用mtk bypass工具启动到fastboot

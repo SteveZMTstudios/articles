@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>老史尬侃 - 兼容模式 视图</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;background:#fff;color:#111;margin:0;padding:10px}
+    a{color:#06c}
+    #article{border:1px solid #ddd;padding:10px;background:#fff}
+    .meta{color:#666;font-size:12px;margin-bottom:8px}
+    .summary{color:#333;margin-top:6px;font-size:13px}
+    .categories{color:#666;margin-top:6px;font-size:12px}
+  </style>
+</head>
+<body>
+  <h3>老史尬侃 - 兼容模式 视图</h3>
+  <p><a href="/k/">← 返回文章列表</a></p>
+  <div id="status">正在加载文章…</div>
+  <div id="article"></div>
+
+  <noscript>
+    <p style="background:#ff9800;padding:6px;margin:0;">JavaScript 未启用。遗憾的是，您必须启用它才能访问内容。<br />你可以直接访问 <a href="/atom.xml">/atom.xml</a></p>
+  </noscript>
+  <script> 
+var $buoop = {required:{e:79,f:133,o:111,s:9,c:131},insecure:true,unsupported:true,api:2025.09 }; 
+function $buo_f(){ 
+ var e = document.createElement("script"); 
+ e.src = "//browser-update.org/update.min.js"; 
+ document.body.appendChild(e);
+};
+try {document.addEventListener("DOMContentLoaded", $buo_f,false)}
+catch(e){window.attachEvent("onload", $buo_f)}
+</script>
+  <script>
+  (function(){
+    var status = document.getElementById('status');
+    var article = document.getElementById('article');
+
+    function createXHR(){
+      if(window.XMLHttpRequest) return new XMLHttpRequest();
+      try { return new ActiveXObject('Msxml2.XMLHTTP'); } catch(e){}
+      try { return new ActiveXObject('Microsoft.XMLHTTP'); } catch(e){}
+      return null;
+    }
+
+    function parseQuery(){
+      var q = location.search || location.hash || '';
+      var raw = '';
+      if(q.indexOf('?')===0) raw = q.substring(1);
+      else if(q.indexOf('#')===0) raw = q.substring(1);
+      else raw = q;
+      var obj = {};
+      if(!raw) return obj;
+      // 如果是 key=value 形式
+      if(raw.indexOf('=')!==-1){
+        var parts = raw.split('&');
+        for(var i=0;i<parts.length;i++){
+          var p = parts[i]; if(!p) continue;
+          var kv = p.split('=');
+          var k = decodeURIComponent(kv[0]||'');
+          var v = decodeURIComponent(kv.slice(1).join('=')||'');
+          if(k) obj[k]=v;
+        }
+        return obj;
+      }
+      // 如果没有等号但看起来像路径（含斜杠），把它当作 href
+      try{
+        var decoded = decodeURIComponent(raw);
+        if(decoded.indexOf('/')!==-1){ obj.href = decoded; return obj; }
+      }catch(e){ /* ignore */ }
+      // 兜底：如果只有一个无键值的片段，把它作为 href
+      obj.href = raw;
+      return obj;
+    }
+
+    function parseXMLString(str){
+      if(window.DOMParser){
+        try{ return (new DOMParser()).parseFromString(str,'application/xml'); }catch(e){}
+      }
+      try{
+        var doc = new ActiveXObject('Microsoft.XMLDOM'); doc.async = false; doc.loadXML(str); return doc;
+      }catch(e){}
+      return null;
+    }
+
+    function getText(node){ if(!node) return ''; return node.textContent || node.text || ''; }
+    function getFirstChildByName(node,name){ if(!node) return null; var cs=node.childNodes; for(var i=0;i<cs.length;i++){ var n=cs[i]; if(n.nodeType===1 && (n.localName===name||n.nodeName===name)) return n; } return null; }
+    function safeInnerHTML(el, html){ try{ el.innerHTML = html; }catch(e){ while(el.firstChild) el.removeChild(el.firstChild); el.appendChild(document.createTextNode(html)); } }
+
+    function findEntryInDoc(doc, params){
+      var entries = doc.getElementsByTagName && doc.getElementsByTagName('entry');
+      if(!entries || entries.length===0){ var all=doc.getElementsByTagName('*'), tmp=[]; for(var i=0;i<all.length;i++){ if((all[i].localName||all[i].nodeName||'').toLowerCase()==='entry') tmp.push(all[i]); } entries = tmp; }
+      for(var i=0;i<entries.length;i++){
+        var e = entries[i];
+        var idn = getFirstChildByName(e,'id'); var linkn = getFirstChildByName(e,'link'); var titlen = getFirstChildByName(e,'title');
+        var id = getText(idn) || (linkn && (linkn.getAttribute && linkn.getAttribute('href')) || getText(linkn) || '');
+        var href = linkn && (linkn.getAttribute && linkn.getAttribute('href')) || getText(linkn) || '';
+        var title = getText(titlen)||'';
+        if(params.id && params.id===id) return e;
+        if(params.href && params.href===href) return e;
+        if(params.title && params.title===title) return e;
+        // 也支持部分匹配（安全性弱，做简单 contains）
+        try{ if(params.href && href && href.indexOf(params.href)!==-1) return e; }catch(e){}
+        try{ if(params.id && id && id.indexOf(params.id)!==-1) return e; }catch(e){}
+      }
+      return null;
+    }
+
+    function loadAtomAndRender(params){
+      var xhr = createXHR(); if(!xhr){ status.textContent='此浏览器不支持网络请求'; return; }
+      try{
+        xhr.open('GET','/atom.xml',true);
+        xhr.onreadystatechange = function(){ if(xhr.readyState===4){ if((xhr.status>=200&&xhr.status<300)||xhr.status===0){ var doc = xhr.responseXML; if(!doc||!doc.documentElement) doc = parseXMLString(xhr.responseText||xhr.response); if(doc){ var entry = findEntryInDoc(doc, params); if(entry) return renderEntry(entry); else return tryLoadHref(params); } else { status.textContent='解析 atom.xml 失败'; } } else status.textContent='加载 atom.xml 失败，HTTP：'+xhr.status; } };
+        xhr.send(null);
+      }catch(e){ status.textContent='请求 atom.xml 时出错'; }
+    }
+
+    function renderEntry(entry){
+      var title = getText(getFirstChildByName(entry,'title'))||'';
+      var published = getText(getFirstChildByName(entry,'published'))||getText(getFirstChildByName(entry,'updated'))||'';
+      var contentNode = getFirstChildByName(entry,'content');
+      var summaryNode = getFirstChildByName(entry,'summary');
+      var html = '';
+      try{ if(contentNode){ html = contentNode.textContent || (contentNode.firstChild && contentNode.firstChild.nodeValue) || ''; } }catch(e){}
+      var summaryText = '';
+      try{ if(summaryNode) summaryText = summaryNode.textContent || (summaryNode.firstChild && summaryNode.firstChild.nodeValue) || ''; }catch(e){}
+  // 不将 summary 当作正文直接填充；summary 仅作备用展示
+      // categories (取 category term)
+      var cats = [];
+      try{
+        var catNodes = entry.getElementsByTagName && entry.getElementsByTagName('category');
+        if(catNodes && catNodes.length>0){ for(var ci=0;ci<catNodes.length;ci++){ try{ var t = catNodes[ci].getAttribute && catNodes[ci].getAttribute('term') || catNodes[ci].textContent || ''; if(t) cats.push(t); }catch(e){} } }
+        else {
+          var allc = entry.getElementsByTagName('*');
+          for(var ac=0;ac<allc.length;ac++){ if((allc[ac].localName||allc[ac].nodeName||'').toLowerCase()==='category'){ var t2 = allc[ac].getAttribute && allc[ac].getAttribute('term') || allc[ac].textContent||''; if(t2) cats.push(t2); } }
+        }
+      }catch(e){}
+
+      var out = '<h2>' + (title||'（无标题）') + '</h2>';
+      if(cats.length) out += '<div class="categories">' + '分类：' + cats.join(', ') + '</div>';
+      out += '<div class="meta">' + (published||'') + '</div>';
+      // 不在这里直接插入 summary。显示正文（content）优先
+      if(html){
+        safeInnerHTML(article, out + html);
+      } else {
+        // 尝试加载外部页面
+        article.innerHTML = out + '<p>文章没有内嵌正文，尝试加载外部页面…</p>';
+        var linkn = getFirstChildByName(entry,'link');
+        var href = linkn && (linkn.getAttribute && linkn.getAttribute('href')) || getText(linkn) || '';
+        if(href){
+          // 如果外部加载失败，loadExternalAndShow 会追加错误提示；在那之后我们也可显示 summary 作为最后的回退
+          loadExternalAndShow(href);
+        } else {
+          if(summaryText) article.innerHTML = out + '<div class="summary">' + summaryText + '</div>';
+          else article.innerHTML = out + '<p>没有可用的正文。</p>';
+        }
+      }
+      status.style.display='none';
+    }
+
+    function loadExternalAndShow(href){
+      var xhr = createXHR(); if(!xhr){ article.innerHTML += '<p>此浏览器不支持加载外部页面，请打开：' + href + '</p>'; return; }
+      try{
+        xhr.open('GET', href, true);
+        xhr.onreadystatechange = function(){ if(xhr.readyState===4){ if((xhr.status>=200&&xhr.status<300)||xhr.status===0){ safeInnerHTML(article, (article.innerHTML||'') + xhr.responseText); status.style.display='none'; } else { article.innerHTML += '<p>远程页面加载失败，HTTP：'+xhr.status+'。请打开：'+href+'</p>'; } } };
+        xhr.send(null);
+      }catch(e){ article.innerHTML += '<p>加载外部页面时出错，请打开：' + href + '</p>'; }
+    }
+
+    function tryLoadHref(params){
+      if(params.href){ // 直接加载 href
+        article.innerHTML = '<p>未在 feed 中找到条目，尝试直接加载链接：' + params.href + '</p>';
+        loadExternalAndShow(params.href);
+      } else {
+        status.textContent = '未找到对应文章。';
+      }
+    }
+
+    // 解析 URL 参数并启动流程
+    var params = parseQuery();
+    if(!params || (!params.id && !params.href && !params.title)){
+      status.textContent = '未提供 id 或 href 参数。';
+    } else {
+      // 规范化 href：如果是相对路径或以年份开头的路径，补全为本站点的绝对 URL
+      if(params.href){
+        try{
+          var h = params.href;
+          // 如果以 / 开头，直接补全为 origin + href
+          if(h.indexOf('/')===0){ params.href = location.protocol + '//' + location.host + h; }
+          // 如果看起来像 2025/01/20/... 或没有协议但含年份/，补全前缀
+          else if(!/^https?:\/\//i.test(h) && /^\d{4}\/\d{2}\/\d{2}\//.test(h)){
+            params.href = location.protocol + '//' + location.host + '/' + h;
+          }
+        }catch(e){ /* ignore */ }
+      }
+      // 尝试从 atom 列表查找并渲染
+      loadAtomAndRender(params);
+    }
+
+  })();
+  </script>
+</body>
+</html>

@@ -38,7 +38,7 @@ tips：右上角可以将此页转为二维码在手机上查看。
 
 当你直接用浏览器去看上面的链接大概率只会看到一个大大的403
 
-![403 forbidden](https://mirror.blog.stevezmt.top/images/blog/coloros-realme-ota-download-guide/1_compressed.jpg)
+![403 forbidden](/images/blog/coloros-realme-ota-download-guide/1_compressed.jpg)
 
 所以你需要一些力气和手段，比如说：
 
@@ -51,7 +51,7 @@ curl/7.68.0
 ### 2.1 用 IDM/NDM 工具下载
 在IDM的下载设置里面，选择下载时使用的用户代理（UA），把上面的`curl/7.68.0`填进去，然后就可以导入链接下载而不至于招致403。
 
-![IDM设置](https://mirror.blog.stevezmt.top/images/blog/coloros-realme-ota-download-guide/2_compressed.jpg)
+![IDM设置](/images/blog/coloros-realme-ota-download-guide/2_compressed.jpg)
 
 如果你用的是NDM，设置方法类似。
 

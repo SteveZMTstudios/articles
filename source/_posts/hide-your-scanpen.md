@@ -13,7 +13,7 @@ tags:
 categories:
     - 折腾
     - 电子垃圾
-thumbnail: https://mirror.blog.stevezmt.top/images/blog/hide-your-scanpen/thumb_compressed.jpg
+thumbnail: /images/blog/hide-your-scanpen/thumb_compressed.jpg
 ---
 
 > 此页面最初由我自己发布在[酷安](https://www.coolapk.com/feed/54539836?shareKey=N2I4OGMyMGYyNDQ1Njc0OWQ1MWY~&shareUid=22536770&shareFrom=com.coolapk.market_14.5.3)
@@ -65,12 +65,12 @@ thumbnail: https://mirror.blog.stevezmt.top/images/blog/hide-your-scanpen/thumb_
 1.配置好xposed框架，xposed edge pro
 明确两点，尽量不用这里面的手势控制，手势控制我是用来解除伪装的
 
-![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](https://mirror.blog.stevezmt.top/images/blog/hide-your-scanpen/1_compressed.jpg)
+![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](/images/blog/hide-your-scanpen/1_compressed.jpg)
 手势控制能不用就不用
 
 2.打开 保存的多重动作 ，这玩意就像个函数，可以方便调用，这是我配置的伪装动作:
 
-![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](https://mirror.blog.stevezmt.top/images/blog/hide-your-scanpen/2_compressed.jpg)
+![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](/images/blog/hide-your-scanpen/2_compressed.jpg)
 当然你可以自由发挥
 
 关于那条shell命令，我是这么写的
@@ -85,7 +85,7 @@ task_id=$(dumpsys activity | grep DemoLauncher | grep -A2 '#'| cut -d ' '; -f 7 
 大框架完成，开始组装手和腿
 打开手势控制，选择一个自己没改过的按键配置(如音量双击)，这么写可以增加点击次数触发，防止误触
 
-![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](https://mirror.blog.stevezmt.top/images/blog/hide-your-scanpen/3_compressed.jpg)
+![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](/images/blog/hide-your-scanpen/3_compressed.jpg)
 从左到右依次是双击-多重动作-里面写上这些-如果-那么多重动作
 
 ```shell
@@ -97,7 +97,7 @@ am task lock stop
 至此触发机制就完成了，保险起见，可以加一个被动
 应用状态触发-假桌面-位于焦点-多重动作-照图
 
-![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](https://mirror.blog.stevezmt.top/images/blog/hide-your-scanpen/4_compressed.jpg)
+![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](/images/blog/hide-your-scanpen/4_compressed.jpg)
 多重动作，执行前面可以加个判断
 
 shell命令如下
@@ -120,7 +120,7 @@ cmd package set-home-activity <intent>
 
 更多触发器-启动完成-如果 照图
 
-![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](https://mirror.blog.stevezmt.top/images/blog/hide-your-scanpen/5_compressed.jpg)
+![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](/images/blog/hide-your-scanpen/5_compressed.jpg)
 "伪装"提换成你的多重动作,感叹号是 非
 
 至此保持完成，即使重启也不会停止假桌面固定
@@ -129,12 +129,12 @@ cmd package set-home-activity <intent>
 
 更多触发器-充电器插入-如果判断，照图
 
-![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](https://mirror.blog.stevezmt.top/images/blog/hide-your-scanpen/6_compressed.jpg)
+![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](/images/blog/hide-your-scanpen/6_compressed.jpg)
 变量和你自己的匹配，注意移除充电器的操作
 
 然后打开手势，自己设计一套复杂的手势，然后多重动作 照图
 
-![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](https://mirror.blog.stevezmt.top/images/blog/hide-your-scanpen/7_compressed.jpg)
+![加载图片时遇到问题，请尝试访问mirror.blog.stevezmt.top](/images/blog/hide-your-scanpen/7_compressed.jpg)
 至此解除完成。
 至此假桌面伪装完成。
 

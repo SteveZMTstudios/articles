@@ -63,7 +63,7 @@ Zerotier固然也可以，但是它不会主动穿透NAT，而且中转速度超
 这点我想不用多说了，软件在[官网（Windows端）](https://kdeconnect.kde.org/),[F-Droid（安卓端）](https://f-droid.org/packages/org.kde.kdeconnect_tp/)/[华为应用商店](https://appgallery.cloud.huawei.com/ag/n/app/C104724723)/[Google Play 商店](https://play.google.com/store/apps/details?id=org.kde.kdeconnect_tp "您所在的国家和地区可能无法访问此链接。"),[App Store（iOS）](https://apps.apple.com/app/kde-connect/id1580245991)或[OpenRepos（Salifish）](https://openrepos.net/content/r1tschy/sailfish-connect)上有。
 Windows上也可以配置Kde Connect主机，但是功能没有在Linux & KDE Plasma上全。大概就是远程指令用不了，其他没啥损失。
 因为Tailscale的虚拟局域网网段不在你的路由器的DHCP分配范围内，也不在常规的内网网段内，所以你的设备可能会有两个ip，一个是局域网ip，一个是Tailscale的ip。这时候你要在KDE Connect的设置里面手动添加你的Tailscale ip，这样你就可以在外网访问到你的设备了。
-![图片](https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/2_compressed.jpg)
+![图片](/images/blog/real-harmony-connect-all/2_compressed.jpg)
 你可以在Tailscale客户端的设置里面配置DNS，这样你就可以通过设备名访问你的设备;也可以用ip来配置，ip列表在Tailscale 客户端上有的。也可以在Tailscale admin网页上查询。
 总之KDE Connect真的是非常的全能，除了在电脑上接电话它几乎把所有必要的功能都做了。
 
@@ -85,7 +85,7 @@ syncthing的配置教程也很多，你可以在你的Linux电脑上配置好syn
   就好了（x
 2. 异地访问设备文件
     - 这个就更简单了，电脑可以直接在托盘图标上右键，选择远程文件访问，然后在电脑上就可以访问手机的文件了。
-   ![图片](https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/7_compressed.jpg)
+   ![图片](/images/blog/real-harmony-connect-all/7_compressed.jpg)
     - 手机访问电脑的话可能就还得依赖SCP。
 1. 远程桌面
    这个前面提得很清楚了，不过体验不好，不推荐。
@@ -96,14 +96,14 @@ syncthing的配置教程也很多，你可以在你的Linux电脑上配置好syn
    如果kde connect授过权的话应该开箱即用的
 4. 剪贴板同步
    电脑会自动同步到手机上。手机下拉通知栏，选择发送剪贴板，就可以发送到所有设备
-    ![图片](https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/6_compressed.jpg)
+    ![图片](/images/blog/real-harmony-connect-all/6_compressed.jpg)
 5. 远程锁屏/关机/快捷执行指令
    这个需要Linux & KDE Plasma的kde connect主机，然后在手机上就可以远程执行指令了。
    还可以把快捷方式放到设备管理器（小米设备的在控制中心，叫智能生活）
-   ![图片](https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/1_compressed.jpg)
+   ![图片](/images/blog/real-harmony-connect-all/1_compressed.jpg)
 6. 浏览器投放
    手机选择共享网页，在电脑上就可以看到了。
-   ![图片](https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/4_compressed.jpg)
+   ![图片](/images/blog/real-harmony-connect-all/4_compressed.jpg)
    电脑要安装浏览器插件[KDE Plasma浏览器集成](https://community.kde.org/Plasma/Browser_Integration)
 7.  互联打印
     把打印机ip添加上
@@ -111,7 +111,7 @@ syncthing的配置教程也很多，你可以在你的Linux电脑上配置好syn
 8.  类AirDrop
     电脑上右键文件，选择发送到...，然后选择手机就好了。
     手机上共享就找到了。
-    ![图片](https://mirror.blog.stevezmt.top/images/blog/real-harmony-connect-all/5_compressed.jpg)
+    ![图片](/images/blog/real-harmony-connect-all/5_compressed.jpg)
 
 ## 结语
 这个方案的优点是几乎无感知的实现了类似鸿蒙宣传的的完全互联方案，缺点是只能限制在你自己的设备，而且有一定的延迟。

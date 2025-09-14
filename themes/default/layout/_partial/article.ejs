@@ -21,7 +21,7 @@
       <div class="mdui-col">
         <div class="mdui-grid-tile mdui-hoverable">
           <a data-fancybox="gallery" href="<%- url_for(photo) %>">
-            <img src="https://mirror.blog.stevezmt.top/images/grey.png" class="lazyload" data-original="<%- url_for(photo) %>" style="height: 160px; border-radius: 2px;">
+            <img src="/images/grey.png" class="lazyload" data-original="<%- url_for(photo) %>" style="height: 160px; border-radius: 2px;">
           </a>
         </div>
       </div>
@@ -73,7 +73,7 @@
   <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
   <article class="mdui-card mdui-m-b-5">
     <header class="mdui-card-media">
-      <img src="<%- page.thumbnail || 'https://mirror.blog.stevezmt.top/images/random/material-' + (Math.round(Math.random() * 18) + 1) + '.png' %>" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+      <img src="<%- page.thumbnail || '/images/random/material-' + (Math.round(Math.random() * 18) + 1) + '.png' %>" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
       <div class="mdui-card-media-covered">
         <div class="mdui-card-primary">
             <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;"><%= page.title %></h1></div>
