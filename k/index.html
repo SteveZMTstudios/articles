@@ -26,7 +26,40 @@
 <body>
   <header>
     <h1>老史尬侃（兼容模式）</h1>
-    <p style="background:#ff9800;padding:6px;margin:0;">您的浏览器不支持现代特性，无法正确加载页面内容，已切换到兼容模式。</p>
+    <p id="compat-banner" style="background:#ff9800;padding:6px;margin:0;">您的浏览器不支持现代特性，无法正确加载页面内容，已切换到兼容模式。</p>
+    <script>
+    (function(){
+      // 更严格的现代浏览器判定：仅基于特性存在性，且要求所有关键新特性可用。
+      try{
+        var banner = document.getElementById('compat-banner');
+        if(!banner) return;
+
+        function hasArrayFind(){ try{ return typeof Array.prototype.find === 'function'; }catch(e){return false;} }
+        function hasQS(){ try{ return typeof document.querySelector === 'function'; }catch(e){return false;} }
+        function hasAE(){ try{ return typeof window.addEventListener === 'function'; }catch(e){return false;} }
+
+        var modernFeatures = {
+          Promise: (typeof Promise !== 'undefined' && typeof Promise.resolve === 'function'),
+          fetch: (typeof fetch === 'function'),
+          ObjectAssign: (typeof Object.assign === 'function'),
+          ArrayFind: hasArrayFind(),
+          querySelector: hasQS(),
+          addEventListener: hasAE(),
+          URLSearchParams: (typeof URLSearchParams === 'function')
+        };
+
+        // 要求所有特性都存在才视为现代浏览器
+        var allOk = true;
+        for(var k in modernFeatures){ if(!modernFeatures[k]){ allOk = false; break; } }
+        if(!allOk) return;
+
+        // 直接切换为绿色提示并跳回主站（不依赖运行时错误判断）
+        try{ banner.style.background = '#4CAF50'; banner.style.color = '#fff'; }catch(e){}
+        try{ banner.textContent = '您的浏览器支持访问更加先进的页面，即将跳转到主站...'; }catch(e){}
+        setTimeout(function(){ try{ location.replace('/'); }catch(e){} }, 500);
+      }catch(e){}
+    })();
+    </script>
     <p>部分博客内嵌脚本特性可能无法使用。</p>
     <p><a href="https://browser-update.org/update-browser.html">更新浏览器（推荐）</a>以获取最佳体验和页面优化。或<a href="/?persist_no_k=1">仍然访问完整版</a></p>
     <p><a href="/about/?persist_no_k=1">关于</a> | <a href="/friends/?persist_no_k=1">友链</a> | <a href="/timeline/?persist_no_k=1">时间线</a> | <a href="/atom.xml">RSS</a> | <a href="http://stevezmt.top">主站</a> <a href="https://key.stevezmt.top/">GPG密钥</a> | <a href="mailto:admin@stevezmt.top">电子邮件到 admin@stevezmt.top</a> </p>
