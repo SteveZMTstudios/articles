@@ -38,19 +38,19 @@ jobs:
       with:
         node-version: '22'  # 你可以根据需要修改 Node.js 版本
 
-    - name: Install dependencies
+    - name: Install dependencies (ci)
       run: |
-        npm install -g hexo
-        npm install
-        npm ci
-        npm install qiniu
-      
-    - name: Install Theme dependencies
-      run: |
-        cd themes/default
-        npm install
-        cd ../..
+        # Use npm ci to install exact versions from package-lock.json for reproducibility
+        npm ci || npm install
 
+    - name: Install Theme dependencies (if any)
+      run: |
+        # If the theme has its own package.json, install its deps. This is conditional and safe.
+        if [ -f themes/default/package.json ]; then
+          pushd themes/default
+          npm ci || npm install
+          popd
+        fi
 
     - name: Verify Theme Files
       run: |
@@ -58,14 +58,8 @@ jobs:
           echo "Theme layout files are missing"
           exit 1
         fi
-        
 
-    - name: Clean up
-      run: npx hexo clean
-
-    - name: Generate static files
-      run: npx hexo generate --force
-
-    - name: Deploy to GitHub Pages
+    - name: Clean, Build and Deploy (match local)
       run: |
-        npx hexo deploy
+        # Run the exact commands you use locally to ensure consistency
+        npm run clean && npm run build && npm run deploy
