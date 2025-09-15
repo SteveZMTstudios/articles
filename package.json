@@ -13,6 +13,12 @@
   "hexo": {
     "version": "7.3.0"
   },
+  "overrides": {
+    "sourcemap-codec": "npm:@jridgewell/sourcemap-codec@^1.5.0"
+  },
+  "resolutions": {
+    "sourcemap-codec": "^1.5.0"
+  },
   "dependencies": {
     "hexo": "^7.3.0",
     "hexo-algolia": "^1.3.2",
