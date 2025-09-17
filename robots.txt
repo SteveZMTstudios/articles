@@ -1,4 +1,4 @@
-User-agent: Mozilla/*
+User-agent: *
 Allow: /
 Allow: /archives/
 Allow: /categories/
