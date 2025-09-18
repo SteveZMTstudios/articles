@@ -1,23 +1,20 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- <meta http-equiv="Cache-Control" content="no-siteapp"> -->
+  
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <meta name="renderer" content="webkit">
-  <!-- 兼容模式与降级跳转逻辑：旧浏览器/大量加载错误/核心特性缺失时跳转至 /k -->
+  
 
   <script>
     (function() {
       try {
         var LOC = window.location;
         var path = LOC.pathname || '/';
-        // 已在兼容视图、或显式禁用、或含锚点仅滚动时不再处理
         if (path === '/k' || path.indexOf('/k/') === 0 || /[?&]compat=1/.test(LOC.search) || /[?&]nocompat=1/.test(LOC.search)) return;
 
-  // UA 识别常见爬虫：爬虫仅提示不跳转
   var ua = navigator.userAgent || '';
   var isBot = /Googlebot|Bingbot|Baiduspider|Bytespider|360Spider|Sogou|YandexBot|DuckDuckBot|Slurp|facebookexternalhit|Twitterbot|msnbot/i.test(ua);
-  // URL 参数 persist_no_k=1：当用户显式请求时，禁止自动跳转，仅显示兼容性提示 banner（与 noscript 样式一致）
   function getQueryParam(name) {
     try {
       if (window.URLSearchParams) {
@@ -25,7 +22,6 @@
         return sp.get(name);
       }
     } catch (e) {}
-    // 回退：手动解析查询字符串（兼容旧浏览器）
     try {
       var qs = (LOC.search || '').replace(/^\?/, '');
       var pairs = qs.split('&');
@@ -42,7 +38,6 @@
   }
   var persistNoK = getQueryParam('persist_no_k') === '1';
 
-        // 核心特性检测（改进）：收集缺失特性并按阈值/关键特性决定是否视为 legacy
         function lacks(feature) { return !feature; }
         var missingFeatures = [];
         if (lacks(window.Promise)) missingFeatures.push('Promise');
@@ -52,10 +47,6 @@
         if (lacks(document.querySelector)) missingFeatures.push('querySelector');
         if (lacks(window.addEventListener)) missingFeatures.push('addEventListener');
         if (lacks(window.IntersectionObserver)) missingFeatures.push('IntersectionObserver');
-        // 判定规则：
-        // - 若缺少关键性 API（Promise / querySelector / addEventListener），则认为 legacy；
-        // - 或者缺失特性数量达到阈值（2 个及以上）时认为 legacy；
-        // 这样可以避免仅缺少 IntersectionObserver（Chrome 46 常见）被误判。
         var legacyFeature = (
           missingFeatures.indexOf('Promise') !== -1 ||
           missingFeatures.indexOf('querySelector') !== -1 ||
@@ -63,11 +54,9 @@
           missingFeatures.length >= 2
         );
 
-  // 计数 JS 运行时错误与未处理的 Promise 拒绝（排除网络资源波动）
-  var errorLimit = 6; // 更灵敏的阈值：5 次运行时错误即认为环境不稳定
+  var errorLimit = 6; 
   var errorCount = 0;
   function scheduleRedirect(reason) {
-          // 首先为爬虫注入隐藏提示（始终注入，保持一致性）
           try {
             var note = document.createElement('div');
             note.style.cssText = 'display:none;';
@@ -75,10 +64,8 @@
             document.documentElement.appendChild(note);
           } catch (e) {}
 
-          // 如果已经展示过或已跳转，直接返回
           if (window.__compat_redirected) return;
 
-          // 展示 banner（如果尚未展示），无论后续是否跳转都应显示
           try {
             if (!window.__compat_banner_shown) {
               window.__compat_banner_shown = true;
@@ -95,15 +82,12 @@
           console.log('Is bot:', isBot);
           console.log('Persist no_k:', persistNoK);
           
-          // 0.5 秒后再决定是否跳转：若不是爬虫且用户没有 persist_no_k，则进行跳转
 
           setTimeout(function() {
             try {
               if (isBot || persistNoK) {
-                // 若为爬虫或用户显式要求 persist_no_k，保留 banner，不跳转
                 return;
               }
-              // 避免重复执行
               if (window.__compat_redirected) return; window.__compat_redirected = true;
               var target = '/k?compat=1&from=' + encodeURIComponent(path) + '&reason=' + encodeURIComponent(reason);
               try { window.stop && window.stop(); } catch(e){}
@@ -112,10 +96,8 @@
           }, 500);
         }
 
-        // 监听运行时错误（非资源错误）
         window.addEventListener('error', function(e) {
           try {
-            // ErrorEvent 且没有 target 或 target 不是资源元素，表示运行时 JS 错误
             var el = e && e.target;
             var isResource = el && el.tagName && (el.tagName === 'SCRIPT' || el.tagName === 'LINK' || el.tagName === 'IMG');
             if (!isResource) {
@@ -126,7 +108,6 @@
           } catch(err){}
         }, true);
 
-        // 监听未处理的 Promise 拒绝
         window.addEventListener('unhandledrejection', function(e) {
           try {
             errorCount++;
@@ -134,24 +115,21 @@
           } catch (err) {}
         });
 
-        // 如果主脚本长时间未加载（例如 mdui / script.js 失败）可以再设一个兜底定时器
         setTimeout(function() {
           if (!window.mdui && !window.__compat_redirected && (legacyFeature || errorCount > 0)) {
             scheduleRedirect('timeout_no_core_lib');
           }
         }, 20000);
 
-        // 仅使用特性检测与资源错误阈值来判断是否进入兼容视图，避免误伤正常现代浏览器（UA 检测已移除）
         if (legacyFeature) {
           scheduleRedirect('legacy_feature');
         }
       } catch (e) {
-        // 如果检测自身异常，不影响正常页面加载
       }
     })();
   </script>
   <noscript>
-    <!-- JS 被禁用：提示并跳转到兼容视图；为避免影响爬虫，可手动在 /k 页面提供 canonical 指回原始 URL -->
+    
     <meta http-equiv="refresh" content="2; url=/k?compat=1&noscript=1" />
     <div style="background:#ff9800;color:#000;padding:8px;font-size:13px;text-align:center;">灾难性错误：浏览器未启用Javascript，正在切换到 <a href="/k?compat=1&noscript=1">兼容性视图</a>...</div>
   </noscript>

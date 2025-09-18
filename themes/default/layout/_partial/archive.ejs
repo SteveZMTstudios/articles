@@ -2,12 +2,12 @@
   <article class="mdui-card mdui-m-b-5">
     <div class="mdui-card-content mdui-typo mdui-ripple" id="notice-container">
       <i class="mdui-icon material-icons mdui-text-color-deep-orange" translate="no">announcement</i> 
-      <!--<%- Array.isArray(theme.notice) ? theme.notice[Math.floor(Math.random() * theme.notice.length)] : theme.notice %>-->
+      
       <% if (Array.isArray(theme.notice)) { %>
         <span id="random-notice"></span>
         <script data-pjax>
           (function() {
-            // 通知系统状态管理
+
             const NoticeSystem = {
               get isInitialized() {
                 return localStorage.getItem('notice-system-initialized') === 'true';
@@ -20,7 +20,7 @@
               lastUsedNotice: -1
             };
           
-            // 初始化函数
+
             window.initNoticeSystem = function() {
               console.log('Initializing notice system...');
               
@@ -116,18 +116,18 @@
                 });
               }
 
-              // 事件监听器
+
               const container = document.getElementById('notice-container');
               if (container && !NoticeSystem.isInitialized) {
                 container.addEventListener('click', displayRandomNotice);
                 NoticeSystem.isInitialized = true;
               }
 
-              // 显示首条通知
+
               displayRandomNotice();
             };
           
-            // 初始化调用
+
             window.initNoticeSystem();
           })();
           </script>

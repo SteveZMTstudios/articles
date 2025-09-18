@@ -20,15 +20,15 @@
     var constructor = this.constructor;
     return this.then(
       function(value) {
-        // @ts-ignore
+
         return constructor.resolve(callback()).then(function() {
           return value;
         });
       },
       function(reason) {
-        // @ts-ignore
+
         return constructor.resolve(callback()).then(function() {
-          // @ts-ignore
+
           return constructor.reject(reason);
         });
       }
@@ -83,8 +83,8 @@
     });
   }
 
-  // Store setTimeout reference so promise-polyfill will be unaffected by
-  // other code modifying setTimeout (like sinon.useFakeTimers())
+
+
   var setTimeoutFunc = setTimeout;
 
   function isArray(x) {

@@ -12,7 +12,6 @@
   <script>
 /* //console.log -> console.log */
 
-    // 统一规范化 Gitalk id：仅保留 pathname，去掉域名、查询、hash、尾部 index.html 与多余斜杠
     function __normalizeGitalkId(raw) {
       try {
         if (!raw) raw = location.pathname;
@@ -30,7 +29,6 @@
       }
     }
 
-  // 触发常用事件，兼容 PJAX/AJAX 页面切换
     function triggerEvents() {
       document.dispatchEvent(new Event('DOMContentLoaded'));
       document.dispatchEvent(new Event('readystatechange'));
@@ -42,9 +40,7 @@
       document.hasFocus() && document.activeElement && document.activeElement.focus();
   }
 
-    // 重新初始化 random-notice 和 Gitalk
     function reinitPageComponents() {
-      // 重新初始化 random-notice
       if (typeof window.initNoticeSystem === 'function') {
         try {
           window.initNoticeSystem();
@@ -52,7 +48,6 @@
           console.warn('NoticeSystem reinit error:', e);
         }
       }
-      // 重新初始化 Gitalk
       if (window.GITALK_SRC && document.getElementById('gitalk-container')) {
         if (typeof Gitalk === 'undefined') {
           var script = document.createElement('script');
@@ -67,19 +62,16 @@
       }
     }
 
-    // 修正 Gitalk 初始化，防止 repo/owner 取 undefined
     function initGitalk() {
       if (!window.Gitalk) return;
       var el = document.getElementById('gitalk-container');
       if (!el) return;
-      // 取 theme.comment 配置
       var config = window.GITALK_CONFIG || {};
       if (!config.repo || !config.owner) {
         if (window.theme && window.theme.comment) {
           config = Object.assign({}, window.theme.comment);
         }
       }
-      // 统一并兜底 id，避免使用完整 href 导致每次访问生成新 Issue
       try {
         config.id = __normalizeGitalkId(config.id || (window.location && window.location.pathname));
       } catch (e) {}
@@ -87,15 +79,13 @@
         el.innerHTML = '<div style="color:red">Gitalk 配置错误: repo/owner 未设置</div>';
         return;
       }
-      // 防止重复渲染
       el.innerHTML = '';
       var gitalk = new Gitalk(config);
       gitalk.render('gitalk-container');
-      // 更新全局配置，保证一致性
       window.GITALK_CONFIG = config;
     }
 
-    // 监听页面切换（如 PJAX/AJAX），重新初始化页面组件
+
     document.addEventListener('page:updated', function() {
       setTimeout(function() {
         triggerEvents();
@@ -103,12 +93,12 @@
       }, 50);
     });
 
-    // 首次页面加载
+
     window.addEventListener('load', function() {
       setTimeout(function() {
         reinitPageComponents();
       }, 50);
-  // 记录当前 URL，供 popstate 判定使用
+
   try { window._pjax_last_url = location.href; } catch(e) {}
     });
     
@@ -155,20 +145,20 @@
       }
     }
 
-    // 修复 mdui-dialog 在 PJAX 环境中的问题
+
     function fixMduiDialogs() {
-      // 处理所有带 mdui-dialog 属性的元素
+
       document.querySelectorAll('[mdui-dialog]').forEach(function(el) {
         var dialogTarget = el.getAttribute('mdui-dialog');
-        // 解析属性值，获取目标对话框ID
+
         var dialogId = '';
         try {
-          // 可能是 {target: '#xxx'} 格式
+
           var match = /target\s*:\s*['"]#?([^'"]+)['"]/i.exec(dialogTarget);
           if (match && match[1]) {
             dialogId = match[1];
           } 
-          // 也可能直接是 #xxx 格式
+
           else if (dialogTarget.startsWith('#')) {
             dialogId = dialogTarget.substring(1);
           }
@@ -176,7 +166,7 @@
         
         if (!dialogId) return;
         
-        // 移除原有的点击事件监听器并重新绑定
+
         el.removeEventListener('click', handleDialogClick);
         el.addEventListener('click', handleDialogClick);
         
@@ -186,7 +176,7 @@
           var dialog = document.getElementById(dialogId);
           if (dialog && window.mdui && mdui.Dialog) {
             var inst = new mdui.Dialog(dialog, {
-              history: false  // 不修改浏览器历史记录
+              history: false
             });
             inst.open();
           }
@@ -204,13 +194,13 @@
         window.initNoticeSystem();
       }
       reinitializeNoticeSystem();
-      // 修复对话框
+
       setTimeout(fixMduiDialogs, 100);
       //console.log('Page type:', window.location.pathname);
       //console.log('Notice system status:', window.noticeSystemInitialized);
     }
 
-    // Material Design 2 刷新指示器
+
     function showLoading() {
       if (window.showMaterialRefresh) window.showMaterialRefresh();
       let progressBar = document.querySelector('.loading-progress');
@@ -239,7 +229,7 @@
         message: `页面加载失败，(${errorType})`,
         timeout: 1500,
         onClose: function() {
-          // window.location.href = href;
+
           window.location.reload();
         }
       });
@@ -251,7 +241,7 @@
         const $response = $(response);
         const $newContent = $response.find('#main');
         const $mainContent = $newContent.length ? $newContent : $response.filter('#main');
-        // Github Pages主页特殊处理：找不到内容时直接整页刷新
+
         if (!$mainContent.length) {
           console.warn('handleAjaxSuccess: 未找到 #main 内容', { href: href, responseSample: response.slice? response.slice(0,200): undefined });
           if (href.endsWith('/') || href.endsWith('/index.html')) {
@@ -261,11 +251,11 @@
           console.error('无法找到内容区域，响应内容:', response);
           throw new Error('无法找到目标内容');
         }
-        // 1. 移除 #main 内的 gitalk 脚本，防止重复插入
+
         $('#main script[src*="gitalk"]').remove();
-        // 2. 插入新内容
+
         $('#main').html($mainContent.html());
-        // 3. 只重载带 data-pjax 的脚本（兼容所有属性和内容，推荐写法）
+
         document.querySelectorAll('#main script[data-pjax]').forEach(item => {
           const newScript = document.createElement('script');
           Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
@@ -273,24 +263,24 @@
           if (content) newScript.appendChild(document.createTextNode(content));
           item.parentNode.replaceChild(newScript, item);
         });
-        // 3.1 重新提取并赋值 window.GITALK_CONFIG（兼容 Github Pages）
+
         var newGitalkConfigScript = $mainContent.find('script').filter(function() {
           return this.textContent && this.textContent.includes('window.GITALK_CONFIG');
         });
         if (newGitalkConfigScript.length) {
           try { eval(newGitalkConfigScript.text()); } catch(e) {console.warn('GITALK_CONFIG eval error', e);}        
         }
-  // 3.1.1 使用目标链接归一化 id，防止因 eval 时机导致取到了旧 pathname
+
         try {
           if (window.GITALK_CONFIG) {
             var __targetPath = new URL(href, window.location.origin).pathname;
             window.GITALK_CONFIG.id = __normalizeGitalkId(window.GITALK_CONFIG.id || __targetPath);
           }
         } catch(e) { console.warn('Normalize Gitalk id failed', e); }
-        // 3.2 重新执行 Google Tag/统计等外部脚本（如有）
+
         $mainContent.find('script[src]').each(function() {
           var src = this.getAttribute('src');
-          // 只插入未加载过的外部脚本，兼容 Google Tag/统计
+
           if (src && !document.querySelector('script[src="'+src+'"]')) {
             var extScript = document.createElement('script');
             extScript.src = src;
@@ -299,14 +289,14 @@
             document.body.appendChild(extScript);
           }
         });
-        // 4. 只在用户点击时 pushState，popstate 不再 pushState
+
         if (!window._popstate_handling) {
           history.pushState({}, '', href);
           try { window._pjax_last_url = href; } catch(e) {}
         }
         document.title = $response.filter('title').text() || document.title;
         simulatePageRefresh();
-        // busuanzi 重新加载（强制重新插入脚本）
+
         var busuanziScriptSelector = 'script[src*="busuanzi"]';
         var oldBusuanzi = document.querySelector(busuanziScriptSelector);
         if (oldBusuanzi) {
@@ -318,7 +308,7 @@
           script.defer = true;
           document.body.appendChild(script);
         }
-  // gitalk 重新加载由 reinitPageComponents -> initGitalk 统一处理，避免双重渲染
+
   if (targetHash) {
           const target = $(targetHash);
           if (target.length) {
@@ -329,7 +319,7 @@
         }
         hideLoading();
       } catch (err) {
-        window.location.reload(); // Github Pages Problem
+        window.location.reload();
         handleAjaxError('switch_error', null, href);
 
       }
@@ -337,8 +327,8 @@
 
     function handleLinkClick(e, link, href, hashIndex, currentPath, targetPath) {
       //console.log('handleLinkClick', { href: href, hashIndex: hashIndex, currentPath: currentPath, targetPath: targetPath, linkClasses: link.attr('class') });
-      // 如果是纯 hash 链接（如 "#foo"）或目标路径与当前路径相同（忽略末尾斜杠），
-      // 则使用浏览器默认行为，避免触发 PJAX/AJAX 重载导致回到页首。
+
+
       try {
         var normalizePathname = function(p) {
           if (!p) return '/';
@@ -347,19 +337,19 @@
           return p;
         };
         if (hashIndex === 0) {
-          // 纯锚点：停止后续同一事件的其他监听器，使用浏览器原生行为进行跳转/滚动
+
           //console.log('handleLinkClick: pure hash - allow native', { href: href });
           if (e && typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
           return true;
         }
         if (normalizePathname(currentPath) === normalizePathname(targetPath)) {
-          // 指向同一页面（忽略末尾斜杠）：停止后续监听器，保留原生定位
+
           //console.log('handleLinkClick: same normalized path - allow native', { currentPath: currentPath, targetPath: targetPath });
           if (e && typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
           return true;
         }
       } catch (err) {
-        // 出错时回退到原有逻辑
+
       }
       if (link.find('.mdui-icon.material-icons').text() === 'search' || !href || typeof href !== 'string' || href.startsWith('javascript:')) {
         //console.log('handleLinkClick: ignored (search/invalid)', { href: href });
@@ -392,7 +382,7 @@
       const link = $(this);
       const href = link.attr('href');
   //console.log("document click a:", { href: href, classes: link.attr('class'), text: link.text() });
-      // 修复 mdui-dialog hash 跳转导致弹窗错位
+
       if (href && href.startsWith('#mdui-dialog')) {
         e.preventDefault();
         var dialogId = href.replace('#', '');
@@ -418,13 +408,13 @@
         var newHash = new URL(location.href, window.location.origin).hash;
         if (newPath === lastPath) {
           //console.log('onpopstate: same pathname, only hash changed — skip AJAX', { newHash: newHash });
-          // 手动滚动到目标（某些情况下浏览器可能已滚动）
+
           if (newHash) {
             var resolveHashTarget = function(hash) {
               try {
                 if (!hash) return null;
                 var raw = hash.charAt(0) === '#' ? hash.slice(1) : hash;
-                // 1) 尝试 decodeURIComponent -> getElementById
+
                 try {
                   var decoded = decodeURIComponent(raw);
                 } catch (e) {
@@ -434,17 +424,17 @@
                   var byId = document.getElementById(decoded);
                   if (byId) return byId;
                 }
-                // 2) 没有找到，用 CSS.escape 包裹整 querySelector
+
                 if (window.CSS && typeof window.CSS.escape === 'function') {
                   try {
                     var sel = '#' + CSS.escape(raw);
                     var q = document.querySelector(sel);
                     if (q) return q;
                   } catch (e) {
-                    // ignore
+
                   }
                 }
-                // 3) 直接干
+
                 try {
                   return document.querySelector(hash);
                 } catch (e) {

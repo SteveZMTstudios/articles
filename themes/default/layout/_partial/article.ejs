@@ -1,4 +1,4 @@
-<script data-pjax> // Redirect external links
+<script data-pjax>
   document.addEventListener('DOMContentLoaded', function() {
     const links = document.querySelectorAll('.mdui-card-content a');
     
@@ -163,9 +163,9 @@
           function attachCopyButtons(){
             var blocks = document.querySelectorAll('.mdui-card-content figure.highlight, .mdui-card-content pre');
             blocks.forEach(function(block){
-              // Skip pre inside figure.highlight (avoid duplicate)
+
               if(block.matches('pre') && block.closest('figure.highlight')) return;
-              if(block.querySelector(':scope > .code-toolbar')) return; // already has
+              if(block.querySelector(':scope > .code-toolbar')) return;
               block.classList.add('codeblock-wrapper');
               if(!block.style.position || block.style.position === 'static') block.style.position = 'relative';
               if(block.matches('figure.highlight') && !block.querySelector('figcaption')) {
@@ -174,25 +174,25 @@
               if(block.matches('pre') && !block.closest('figure.highlight')) {
                 block.classList.add('codeblock-pad-top');
               }
-              // Wrap existing content (excluding any future toolbar)
+
               if(!block.querySelector(':scope > .code-content-wrap')) {
                 var wrap = document.createElement('div');
                 wrap.className = 'code-content-wrap';
                 var toMove = [];
                 Array.from(block.childNodes).forEach(function(n){
-                  if(n.nodeType === 1 && (n.classList && (n.classList.contains('code-toolbar')))) return; // skip toolbar if exist
+                  if(n.nodeType === 1 && (n.classList && (n.classList.contains('code-toolbar')))) return;
                   toMove.push(n);
                 });
                 toMove.forEach(function(n){ wrap.appendChild(n); });
                 block.appendChild(wrap);
-                // set initial max-height for animation
+
                 requestAnimationFrame(function(){
                   wrap.style.maxHeight = wrap.scrollHeight + 'px';
                 });
               }
               var toolbar = document.createElement('div');
               toolbar.className = 'code-toolbar';
-              // Copy button
+
               var copyBtn = document.createElement('button');
               copyBtn.className = 'copy-btn mdui-btn mdui-ripple';
               copyBtn.type='button';
@@ -200,7 +200,7 @@
               copyBtn.innerHTML = '<i class="mdui-icon material-icons" translate="no">content_copy<\/i>';
               copyBtn.addEventListener('click', function(){ copyText(copyBtn); });
               toolbar.appendChild(copyBtn);
-              // Collapse button
+
               var collapseBtn = document.createElement('button');
               collapseBtn.className = 'collapse-btn mdui-btn mdui-ripple';
               collapseBtn.type='button';
@@ -208,7 +208,7 @@
               collapseBtn.innerHTML = '<i class="mdui-icon material-icons" translate="no">expand_less<\/i>';
               collapseBtn.addEventListener('click', function(){ toggleCollapse(block, collapseBtn); });
               toolbar.appendChild(collapseBtn);
-              // Language badge
+
               var lang = detectLanguage(block) || 'Code';
               var langSpan = document.createElement('span');
               langSpan.className = 'code-lang-badge';
@@ -245,7 +245,7 @@
             if(!el) return;
             var container = el.closest('figure.highlight, pre');
             if(!container){ feedback(false, el); return; }
-            // Prefer code area excluding line numbers if present
+
             var codeArea = container.querySelector('td.code') || container.querySelector('pre code') || container.querySelector('code') || container.querySelector('pre');
             var text = codeArea ? codeArea.innerText : '';
             if(!text.trim()) { feedback(false, el); return; }
@@ -290,41 +290,41 @@
           function toggleCollapse(wrapper, btn){
             if(!wrapper) return;
             var content = wrapper.querySelector(':scope > .code-content-wrap');
-            if(!content){ // fallback old behavior
+            if(!content){
               wrapper.classList.toggle('collapsed');
               var icon = btn.querySelector('i.mdui-icon');
               if(wrapper.classList.contains('collapsed')) btn.setAttribute('aria-label','展开代码'); else btn.setAttribute('aria-label','折叠代码');
               return;
             }
             var isCurrentlyCollapsed = wrapper.classList.contains('collapsed');
-            var willCollapse = !isCurrentlyCollapsed; // toggling
+            var willCollapse = !isCurrentlyCollapsed;
             wrapper.classList.toggle('collapsed', willCollapse);
             btn.setAttribute('aria-label', willCollapse ? '展开代码' : '折叠代码');
 
-            // Ensure we start from an explicit pixel value for reliable animation
+
             var startHeight = content.scrollHeight;
-            // If expanded and maxHeight cleared previously, set it to real height first
+
             if(!willCollapse && (content.style.maxHeight === '0px')) {
-              // expanding from 0
+
               content.style.maxHeight = '0px';
-              // double rAF to ensure transition
+
               requestAnimationFrame(function(){
                 content.style.maxHeight = startHeight + 'px';
               });
             } else if(willCollapse) {
-              // collapse path: need to set from current measured height to 0
-              // If maxHeight is empty or 'none', set it to scrollHeight first
+
+
               content.style.maxHeight = startHeight + 'px';
-              // Force reflow
+
               void content.offsetWidth;
-              // Use rAF chain so browsers treat as transition
+
               requestAnimationFrame(function(){
                 requestAnimationFrame(function(){
                   content.style.maxHeight = '0px';
                 });
               });
             } else {
-              // just expanded and we want to keep explicit height for future collapse
+
               content.style.maxHeight = startHeight + 'px';
             }
 
@@ -332,7 +332,7 @@
             content._collapseHandler = function(ev){
               if(ev.propertyName !== 'max-height') return;
               if(!wrapper.classList.contains('collapsed')){
-                // keep explicit height so future collapse animates from a number
+
                 content.style.maxHeight = content.scrollHeight + 'px';
               }
             };

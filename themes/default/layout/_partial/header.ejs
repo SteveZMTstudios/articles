@@ -1,5 +1,5 @@
 <header id="header" class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide mdui-appbar-inset">
-  <!-- Material Design 2 刷新指示器 -->
+  
   <div id="material-refresh-indicator" style="position:fixed;top: 80px;left:0;width:100vw;z-index:2000;display:flex;justify-content:center;pointer-events:none;transition:transform 0.3s cubic-bezier(.4,0,.2,1),opacity 0.3s;transform:translateY(-48px);opacity:0;">
     <div style="background:#eee;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.12);padding:9px;display:flex;align-items:center;justify-content:center;">
       <div class="mdui-spinner" style="width:20px;height:20px;"></div>
@@ -40,7 +40,7 @@
 </header>
 <div class="mdui-dialog" id="search">
   <script data-pjax>
-    // 防止 search typing 多次执行
+
     (function() {
       var searchDialog = document.getElementById('search');
       if (!searchDialog) return;
@@ -50,15 +50,15 @@
         searchInput.addEventListener('input', function(e) {
           if (typingLock) return;
           typingLock = true;
-          setTimeout(function() { typingLock = false; }, 500); // 500ms 内只触发一次
+          setTimeout(function() { typingLock = false; }, 500);
         });
       }
-      // 监听弹窗关闭，重置 lock
+
       searchDialog.addEventListener('closed.mdui.dialog', function() {
         typingLock = false;
       });
     })();
-    // Material Design 2 刷新指示器控制
+
     window.showMaterialRefresh = function() {
       var el = document.getElementById('material-refresh-indicator');
       if (el) {
@@ -73,7 +73,7 @@
         el.style.opacity = '0';
       }
     };
-    // 页面初始化完成后隐藏
+
     document.addEventListener('DOMContentLoaded', function() { setTimeout(window.hideMaterialRefresh, 600); });
   </script>
   <% if (theme.search.use === 'plugin') { %>

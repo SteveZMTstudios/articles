@@ -25,7 +25,7 @@
   </noscript>
  
   <script data-cfasync="false">
-  // 兼容性检测：确保 Function.prototype.bind 存在（避免在旧环境或被 Rocket Loader 干扰时抛错）
+
   if (!Function.prototype.bind) {
     var statusEl = document.getElementById('status');
     if (statusEl) statusEl.innerHTML = '您的浏览器缺少关键功能（Function.prototype.bind），无法显示此页面。请升级浏览器或在页面顶部选择“仍然访问完整版”。';
@@ -50,7 +50,7 @@
       else raw = q;
       var obj = {};
       if(!raw) return obj;
-      // 如果是 key=value 形式
+
       if(raw.indexOf('=')!==-1){
         var parts = raw.split('&');
         for(var i=0;i<parts.length;i++){
@@ -62,12 +62,12 @@
         }
         return obj;
       }
-      // 如果没有等号但看起来像路径（含斜杠），把它当作 href
+
       try{
         var decoded = decodeURIComponent(raw);
         if(decoded.indexOf('/')!==-1){ obj.href = decoded; return obj; }
       }catch(e){ /* ignore */ }
-      // 兜底：如果只有一个无键值的片段，把它作为 href
+
       obj.href = raw;
       return obj;
     }
@@ -98,7 +98,7 @@
         if(params.id && params.id===id) return e;
         if(params.href && params.href===href) return e;
         if(params.title && params.title===title) return e;
-        // 也支持部分匹配（安全性弱，做简单 contains）
+
         try{ if(params.href && href && href.indexOf(params.href)!==-1) return e; }catch(e){}
         try{ if(params.id && id && id.indexOf(params.id)!==-1) return e; }catch(e){}
       }
@@ -123,8 +123,8 @@
       try{ if(contentNode){ html = contentNode.textContent || (contentNode.firstChild && contentNode.firstChild.nodeValue) || ''; } }catch(e){}
       var summaryText = '';
       try{ if(summaryNode) summaryText = summaryNode.textContent || (summaryNode.firstChild && summaryNode.firstChild.nodeValue) || ''; }catch(e){}
-  // 不将 summary 当作正文直接填充；summary 仅作备用展示
-      // categories (取 category term)
+
+
       var cats = [];
       try{
         var catNodes = entry.getElementsByTagName && entry.getElementsByTagName('category');
@@ -138,16 +138,16 @@
       var out = '<h2>' + (title||'（无标题）') + '</h2>';
       if(cats.length) out += '<div class="categories">' + '分类：' + cats.join(', ') + '</div>';
       out += '<div class="meta">' + (published||'') + '</div>';
-      // 不在这里直接插入 summary。显示正文（content）优先
+
       if(html){
         safeInnerHTML(article, out + html);
       } else {
-        // 尝试加载外部页面
+
         article.innerHTML = out + '<p>文章没有内嵌正文，尝试加载外部页面…</p>';
         var linkn = getFirstChildByName(entry,'link');
         var href = linkn && (linkn.getAttribute && linkn.getAttribute('href')) || getText(linkn) || '';
         if(href){
-          // 如果外部加载失败，loadExternalAndShow 会追加错误提示；在那之后我们也可显示 summary 作为最后的回退
+
           loadExternalAndShow(href);
         } else {
           if(summaryText) article.innerHTML = out + '<div class="summary">' + summaryText + '</div>';
@@ -167,7 +167,7 @@
     }
 
     function tryLoadHref(params){
-      if(params.href){ // 直接加载 href
+      if(params.href){
         article.innerHTML = '<p>未在 feed 中找到条目，尝试直接加载链接：' + params.href + '</p>';
         loadExternalAndShow(params.href);
       } else {
@@ -175,24 +175,24 @@
       }
     }
 
-    // 解析 URL 参数并启动流程
+
     var params = parseQuery();
     if(!params || (!params.id && !params.href && !params.title)){
       status.textContent = '未提供 id 或 href 参数。';
     } else {
-      // 规范化 href：如果是相对路径或以年份开头的路径，补全为本站点的绝对 URL
+
       if(params.href){
         try{
           var h = params.href;
-          // 如果以 / 开头，直接补全为 origin + href
+
           if(h.indexOf('/')===0){ params.href = location.protocol + '//' + location.host + h; }
-          // 如果看起来像 2025/01/20/... 或没有协议但含年份/，补全前缀
+
           else if(!/^https?:\/\//i.test(h) && /^\d{4}\/\d{2}\/\d{2}\//.test(h)){
             params.href = location.protocol + '//' + location.host + '/' + h;
           }
         }catch(e){ /* ignore */ }
       }
-      // 尝试从 atom 列表查找并渲染
+
       loadAtomAndRender(params);
     }
 

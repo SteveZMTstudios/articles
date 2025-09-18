@@ -7,30 +7,28 @@
 <link rel="stylesheet" href="//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
 <script data-pjax src="//stevezmt.top/sharepoint/js/3rd-party/gitalk-cn.min.js"></script>
 <script>
-  // 保存配置到全局变量，供AJAX页面切换时使用
-  // 规范化 Gitalk id，确保 PJAX/完整刷新一致：仅保留 pathname，去掉域名、查询、hash、尾部 index.html 与多余斜杠
   function __normalizeGitalkId(raw) {
     try {
       if (!raw) raw = location.pathname;
-      // 处理完整 URL
+
       if (/^https?:\/\//i.test(raw)) {
         var u = new URL(raw, window.location.origin);
         raw = u.pathname || '/';
       }
-      // 统一解码
+
       try { raw = decodeURI(raw); } catch (e) {}
-      // 如果像路径（包含/或以.html结尾），按路径规范化；否则视为稳定 id（如 uuid），不加斜线
+
       var looksLikePath = /\//.test(raw) || /\.html?$/i.test(raw);
       if (looksLikePath) {
-        // 去掉尾部 index.html
+
         raw = raw.replace(/index\.html$/i, '');
-        // 确保以 '/' 开头
+
         if (raw && raw.charAt(0) !== '/') raw = '/' + raw;
-        // 去掉末尾 '/'
+
         if (raw.length > 1 && raw.endsWith('/')) raw = raw.slice(0, -1);
         return raw || '/';
       }
-      // 非路径 id 直接返回
+
       return String(raw);
     } catch (e) {
       return (window.location && window.location.pathname) || '/';
@@ -43,7 +41,7 @@
     repo: '<%= theme.comment.gitalk_repo %>',
     owner: '<%= theme.comment.gitalk_owner %>',
     admin: ['<%= theme.comment.gitalk_owner %>'],
-    // 使用构建期提供的 id；若不存在则回退到运行期的 pathname，再统一规范化
+
     id: (function() {
       var preset = '<%= page[theme.comment.gitalk_sid_type] %>';
       if (!preset || preset === 'undefined' || preset === 'null') preset = '';
@@ -51,5 +49,5 @@
     })(),
     distractionFreeMode: false
   };
-  // 注意：渲染逻辑统一由 layout.ejs 的 initGitalk 负责，避免 PJAX 下重复初始化
+
 </script>
