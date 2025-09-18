@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>老史尬侃 - 兼容模式</title>
   <style>
-    /* 极简样式，尽量兼容旧浏览器 */
     body{font-family:Arial,Helvetica,sans-serif;background:#fff;color:#111;margin:0;padding:10px}
     header{margin-bottom:10px}
     h1{font-size:18px;margin:0 0 6px}
@@ -19,7 +18,6 @@
   #content{margin-top:12px;padding:8px;border:1px solid #ddd;background:#fafafa}
   .meta{color:#666;font-size:12px}
   .loading{color:#999}
-    /* 兼容窄屏和旧手机 */
     @media (max-width:400px){h1{font-size:16px}}
   </style>
 </head>
@@ -29,7 +27,7 @@
     <p id="compat-banner" style="background:#ff9800;padding:6px;margin:0;">您的浏览器不支持现代特性，无法正确加载页面内容，已切换到兼容模式。</p>
     <script>
     (function(){
-      // 更严格的现代浏览器判定：仅基于特性存在性，且要求所有关键新特性可用。
+
       try{
         var banner = document.getElementById('compat-banner');
         if(!banner) return;
@@ -48,12 +46,12 @@
           URLSearchParams: (typeof URLSearchParams === 'function')
         };
 
-        // 要求所有特性都存在才视为现代浏览器
+
         var allOk = true;
         for(var k in modernFeatures){ if(!modernFeatures[k]){ allOk = false; break; } }
         if(!allOk) return;
 
-        // 直接切换为绿色提示并跳回主站（不依赖运行时错误判断）
+
         try{ banner.style.background = '#4CAF50'; banner.style.color = '#fff'; }catch(e){}
         try{ banner.textContent = '您的浏览器支持访问更加先进的页面，即将跳转到主站...'; }catch(e){}
         setTimeout(function(){ try{ location.replace('/'); }catch(e){} }, 500);
@@ -78,9 +76,9 @@
   </noscript>
 
   <script data-cfasync="false">
-  // 最小兼容 XHR 获取 /atom.xml，兼容 ActiveXObject（IE6）
 
-  // 兼容性检测：IE11 及更早版本不支持 Function.prototype.bind
+
+
   if (!Function.prototype.bind) {
     var status = document.getElementById('status');
     if (status) status.innerHTML = '您的浏览器不支持 Function.prototype.bind，无法加载内容。请升级浏览器或使用新版 Edge/Chrome/Firefox。';
@@ -100,11 +98,11 @@
     }
 
     function parseXMLString(str){
-      // DOMParser 在老浏览器可能不存在
+
       if(window.DOMParser){
         try{ return (new DOMParser()).parseFromString(str,'application/xml'); }catch(e){}
       }
-      // IE fallback
+
       var doc = null;
       try{
         doc = new ActiveXObject('Microsoft.XMLDOM');
@@ -131,19 +129,19 @@
     }
 
     function safeInnerHTML(el, html){
-      // 尽量直接写入内容（旧浏览器支持）
+
       try{ el.innerHTML = html; }catch(e){
-        // 当 innerHTML 不可用，退回到文本节点
+
         while(el.firstChild) el.removeChild(el.firstChild);
         el.appendChild(document.createTextNode(html));
       }
     }
 
     function renderEntries(doc){
-      // Atom 命名空间处理：在 responseXML 中，entry 可能有命名空间
+
       var entries = doc.getElementsByTagName && doc.getElementsByTagName('entry');
       if(!entries || entries.length===0){
-        // 尝试忽略命名空间
+
         var all = doc.getElementsByTagName('*');
         var tmp = [];
         for(var i=0;i<all.length;i++){
@@ -183,18 +181,18 @@
           meta.className = 'meta';
           meta.appendChild(document.createTextNode(published));
 
-          // summary
+
           var summaryText = '';
           try{ if(summaryNode) summaryText = (summaryNode.textContent || (summaryNode.firstChild && summaryNode.firstChild.nodeValue) || ''); }catch(e){}
           var summaryDiv = document.createElement('div'); summaryDiv.className = 'summary'; if(summaryText) safeInnerHTML(summaryDiv, summaryText);
 
-          // categories
+
           var cats = [];
           try{
             var catNodes = entry.getElementsByTagName && entry.getElementsByTagName('category');
             if(catNodes && catNodes.length>0){ for(var ci=0;ci<catNodes.length;ci++){ try{ var t = catNodes[ci].getAttribute && catNodes[ci].getAttribute('term') || catNodes[ci].textContent || ''; if(t) cats.push(t); }catch(e){} } }
             else {
-              // fallback: scan children for 'category'
+
               var allc = entry.getElementsByTagName('*');
               for(var ac=0;ac<allc.length;ac++){ if((allc[ac].localName||allc[ac].nodeName||'').toLowerCase()==='category'){ var t2 = allc[ac].getAttribute && allc[ac].getAttribute('term') || allc[ac].textContent||''; if(t2) cats.push(t2); } }
             }
@@ -209,14 +207,14 @@
 
           a.onclick = function(evt){
             try{ if(evt && evt.preventDefault) evt.preventDefault(); }catch(e){}
-            // 导航到 content.html，并通过 URL 参数传递 id、href、title（均进行 encodeURIComponent）
+
             var params = [];
             try{ if(id) params.push('id=' + encodeURIComponent(id)); }catch(e){}
             try{ if(href) params.push('href=' + encodeURIComponent(href)); }catch(e){}
             try{ if(title) params.push('title=' + encodeURIComponent(title)); }catch(e){}
             var q = params.length? ('?' + params.join('&')) : '';
             var target = '/k/content.html' + q;
-            // 使用 location.href 导航（旧浏览器支持）
+
             location.href = target;
             return false;
           };
@@ -228,7 +226,7 @@
       var xhr = createXHR(); if(!xhr){ cb(false); return; }
       try{
         xhr.open('GET', url, true);
-        // 尽量避免跨域问题；页面和 atom.xml 在同源下工作
+
         xhr.onreadystatechange = function(){
           if(xhr.readyState===4){
             if((xhr.status>=200 && xhr.status<300) || xhr.status===0){
@@ -245,14 +243,14 @@
       if(!xhr){ status.textContent = '此浏览器不支持网络请求。'; return; }
       try{
         xhr.open('GET','/atom.xml',true);
-        // 希望获得 responseXML；部分旧浏览器需要强制设置 mime
+
         try{ xhr.overrideMimeType && xhr.overrideMimeType('text/xml'); }catch(e){}
         xhr.onreadystatechange = function(){
           if(xhr.readyState===4){
             if((xhr.status>=200 && xhr.status<300) || xhr.status===0){
               var doc = xhr.responseXML;
               if(!doc || !doc.documentElement){
-                // 回退到字符串解析
+
                 doc = parseXMLString(xhr.responseText || xhr.response);
               }
               if(doc) renderEntries(doc);
@@ -266,7 +264,7 @@
       }catch(e){ status.textContent = '请求 atom.xml 时发生错误'; }
     }
 
-    // 初始加载
+
     if(document.readyState==='loading'){
       try{ document.addEventListener('DOMContentLoaded', loadFeed, false); }catch(e){ window.onload = loadFeed; }
     } else loadFeed();
