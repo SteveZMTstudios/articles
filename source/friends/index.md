@@ -14,6 +14,7 @@ qrcode:
 ---
 
 
+
 <style>
 .friends-container{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;padding:20px}
 .friend-card{background: #ffffff1a;border-radius:10px;box-shadow:0 4px 8px rgba(0,0,0,0.1);overflow:hidden;width:200px;text-align:center}
