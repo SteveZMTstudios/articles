@@ -33,6 +33,7 @@
           message: '发现站点更新，请重新载入应用更新。',
           buttonText: '刷新',
           timeout: 0,
+          position: 'right-top',
           onButtonClick: action
         });
       } else if(confirm('发现站点更新，是否刷新以获取最新内容？')) {
