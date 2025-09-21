@@ -71,14 +71,32 @@
       var prev = localStorage.getItem(STORAGE_KEY);
       if(prev && prev !== hash){
         log('hash changed', prev, '=>', hash);
-        // ensure a newer SW is actually available, otherwise only store
         navigator.serviceWorker.getRegistration().then(function(reg){
-          if(reg && reg.waiting){
+          if(!reg){
+            // 没有 registration，直接提示（少见）
             showPrompt();
-          } else {
-            // force an update check to move to waiting
-            if(reg && reg.update) reg.update().then(function(){
-              if(reg.waiting) showPrompt();
+            return;
+          }
+          if(reg.waiting){
+            // 正常等待 -> 提示
+            showPrompt();
+            return;
+          }
+          // 若 skipWaiting=true，新 SW 很可能已经直接 active，没有 waiting
+            // 判断 active 的 scriptURL 是否不同（粗略：hash 已变化基本可认为不同）
+          if(reg.active && !reg.waiting){
+            // 直接提示让用户刷新（可立即获取最新 precache）
+            showPrompt();
+            return;
+          }
+          // 尝试触发 update 再次检查（兼容部分浏览器延迟）
+          if(reg.update){
+            reg.update().then(function(){
+              if(reg.waiting){
+                showPrompt();
+              } else if(reg.active){
+                showPrompt();
+              }
             });
           }
         });
