@@ -345,6 +345,41 @@
         })();
       </script>
       <style data-pjax>
+        /* notbyai icon: placed to the right of the blockquote, centered vertically
+           uses background-image so it responds to CSS color-scheme or body class
+        */
+        .notbyai-wrapper { gap: 12px; display: flex; flex-direction: row; align-items: center; }
+        .notbyai-icons { display:flex; align-items:center; gap:8px; margin-left: auto; }
+        @media (max-width: 768px) {
+          .notbyai-wrapper {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+          .notbyai-icons {
+            margin-left: 0;
+            margin-top: 12px;
+          }
+        }
+        .notbyai-icons .notbyai-icon,
+        .notbyai-icons .notbyai-extra {
+          display: inline-block;
+          width: 9.5121em; /* uniform size for all icons */
+          height: 3em;
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+          flex: 0 0 auto;
+        }
+        /* any extra icons can be added with .notbyai-extra and will appear to the left of the main icon */
+        .notbyai-icons .notbyai-extra { opacity: 0.95; }
+        /* Default (light) main icon */
+        .notbyai-icons .notbyai-icon { background-image: url('/images/notbyai-cn-light.svg'); }
+        /* If page uses mdui dark class on body, switch main icon */
+        body.mdui-theme-layout-dark .notbyai-icons .notbyai-icon { background-image: url('/images/notbyai-cn-dark.svg'); }
+        @media (prefers-color-scheme: dark) {
+          .notbyai-icons .notbyai-icon { background-image: url('/images/notbyai-cn-dark.svg'); }
+        }
+
         /* Copy button base & layout */
   .codeblock-wrapper { overflow: hidden;transition: padding-bottom .35s cubic-bezier(.4,0,.2,1);}
   .codeblock-wrapper.codeblock-pad-top { padding-top: 36px; padding-bottom:0px; }
@@ -380,16 +415,27 @@
           <button class="mdui-fab mdui-color-deep-orange mdui-text-color-white mdui-ripple" mdui-dialog="{target: '#donate'}" mdui-tooltip="{content: '<%= __('donate') %>', position: 'top'}"><i class="mdui-icon material-icons" translate="no">thumb_up</i></button>
         </div>
       <% } %>
-      <blockquote>
-        <% if (page.license) { %>
-          <strong><%- page.license %></strong><br>
-        <% } else if (theme.license && page.license !== false) { %>
-          <strong><%- theme.license %></strong><br>
-        <% } %>
-        <% if (!(page.thislink === false) ) {%>
-          <strong><%= __('permalink') %></strong><br><a href="<%- page.permalink %>"><%- decodeURI(page.permalink) %></a>
-        <% } %>
-      </blockquote>
+      <% if (is_post() && page.license != false) {%>
+      <div class="notbyai-wrapper" style="display:flex;align-items:center;">
+        <blockquote>
+          <% if (page.license) { %>
+            <strong><%- page.license %></strong><br>
+          <% } else if (theme.license && page.license !== false) { %>
+            <strong><%- theme.license %></strong><br>
+          <% } %>
+          <% if (!(page.thislink === false) ) {%>
+            <strong><%= __('permalink') %></strong><br><a href="<%- page.permalink %>"><%- decodeURI(page.permalink) %></a>
+          <% } %>
+        </blockquote>
+        <div class="notbyai-icons" aria-hidden="false">
+          <!-- 可在这里添加额外图标，并放在主图标的左侧，示例：
+               <span class="notbyai-extra" style="background-image: url('/images/extra.svg')" aria-hidden="true"></span>
+          -->
+          <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1.8em;max-height:1.8em;margin-left: .08em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1.8em;max-height:1.8em;margin-left: .08em;"><img src="https://mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1.8em;max-height:1.8em;margin-left: .08em;"><img src="https://mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width: 1.8em;max-height:1.8em;margin-left: .08em;">
+          <a href="//notbyai.fyi"><span class="notbyai-icon" role="img"></span></a>
+        </div>
+      </div>
+      <% } %>
     </div>
     <footer class="mdui-card-actions">
       <% if (page.categories && page.categories.length) { %>
