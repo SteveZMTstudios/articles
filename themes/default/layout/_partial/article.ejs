@@ -425,8 +425,60 @@
 
 <% if (page.comments && theme.comment.use) { %>
   <div id="comment" class="mdui-m-t-5">
+    <!-- 占位提示：当评论区未正常加载时显示 -->
+    <div id="comment-placeholder" style="padding:16px;color:#666;text-align:center;">若评论区未正常加载，请<a href="javascript:location.reload()">刷新此页</a></div>
     <%- partial('_widget/comment/' + theme.comment.use) %>
   </div>
+  <script data-pjax>
+    (function(){
+      var commentEl = document.getElementById('comment');
+      if(!commentEl) return;
+      var placeholder = document.getElementById('comment-placeholder');
+
+      function removePlaceholder(){
+        try{
+          if(placeholder && placeholder.parentNode){
+            placeholder.parentNode.removeChild(placeholder);
+            placeholder = null;
+          }
+        }catch(e){}
+      }
+
+      function widgetHasRendered(){
+        // 如果除了占位元素外还有其他子节点且这些子节点包含有效内容，则视为已加载
+        var children = Array.prototype.slice.call(commentEl.children || []).filter(function(c){ return c.id !== 'comment-placeholder'; });
+        if(children.length === 0) return false;
+
+        for(var i=0;i<children.length;i++){
+          var c = children[i];
+          // 常见的评论容器 id 或者非空节点即表示已渲染
+          if(c.id === 'gitalk-container' || c.id === 'disqus_thread' || c.id === 'utterances' || c.querySelector('*')) return true;
+          if(c.textContent && c.textContent.trim().length > 0) return true;
+        }
+        return false;
+      }
+
+      // 先做一次同步检查
+      if(widgetHasRendered()){
+        removePlaceholder();
+        return;
+      }
+
+      // 监听后续变化：当评论脚本填充 DOM 时移除占位
+      var obs = new MutationObserver(function(){
+        try{
+          if(widgetHasRendered()){
+            removePlaceholder();
+            obs.disconnect();
+          }
+        }catch(e){}
+      });
+      obs.observe(commentEl, {childList:true, subtree:true, characterData:true});
+
+      // 作为保险：如果 20s 内仍未检测到加载，保留占位提示不作更多操作
+      setTimeout(function(){ try{ obs.disconnect(); }catch(e){} }, 20000);
+    })();
+  </script>
 <% } %>
 <% var toc = toc(page.content, {class: 'toc', list_number: false}) %>
 <% if (is_post() && page.toc && toc.length) { %>
