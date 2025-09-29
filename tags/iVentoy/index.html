@@ -137,14 +137,14 @@
   </noscript>
 
   
-  <title>老史尬侃 - Steve ZMT &#39;s Blog</title>
+  <title>标签: iVentoy | 老史尬侃 - Steve ZMT &#39;s Blog</title>
 
   <link rel="shortcut icon" href="/images/favicon.png">
   <link rel="alternate" href="/atom.xml" title="老史尬侃 - Steve ZMT 's Blog" type="application/atom+xml">
   <meta name="description" content="随笔、日志、技术分享、个人作品 Steve ZMT is soliloquize here.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="老史尬侃 - Steve ZMT &#39;s Blog">
-<meta property="og:url" content="https://blog.stevezmt.top/index.html">
+<meta property="og:url" content="https://blog.stevezmt.top/tags/iVentoy/index.html">
 <meta property="og:site_name" content="老史尬侃 - Steve ZMT &#39;s Blog">
 <meta property="og:description" content="随笔、日志、技术分享、个人作品 Steve ZMT is soliloquize here.">
 <meta property="og:locale" content="zh_CN">
@@ -162,7 +162,7 @@
 
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="application-name" content="老史尬侃 - Steve ZMT &#39;s Blog">
-  <meta name="msapplication-starturl" content="https://blog.stevezmt.top/">
+  <meta name="msapplication-starturl" content="https://blog.stevezmt.top/tags/iVentoy/">
   <meta name="msapplication-navbutton-color" content="#448AFF">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="老史尬侃 - Steve ZMT &#39;s Blog">
@@ -172,7 +172,7 @@
   <link rel="manifest" href="/manifest.json">
 
   
-    <link rel="canonical" href="https://blog.stevezmt.top">
+    <link rel="canonical" href="https://blog.stevezmt.top/tags/iVentoy/index.html">
   
 
   
@@ -897,149 +897,19 @@
 </aside>
 
   <main id="main" class="mdui-m-t-5 fadeIn animated">
-  <article class="mdui-card mdui-m-b-5">
-    <div class="mdui-card-content mdui-typo mdui-ripple" id="notice-container">
-      <i class="mdui-icon material-icons mdui-text-color-deep-orange" translate="no">announcement</i> 
-      
-      
-        <span id="random-notice"></span>
-        <script data-pjax>
-          (function() {
-
-            const NoticeSystem = {
-              get isInitialized() {
-                return localStorage.getItem('notice-system-initialized') === 'true';
-              },
-              set isInitialized(value) {
-                localStorage.setItem('notice-system-initialized', value);
-              },
-              typing: false,
-              typingTimeout: null,
-              lastUsedNotice: -1
-            };
-          
-
-            window.initNoticeSystem = function() {
-              console.log('Initializing notice system...');
-              
-              const isHome = window.location.pathname === '/' || 
-                            window.location.pathname === '/index.html';
-              
-              if (!isHome || NoticeSystem.typing) {
-                console.log('Not initializing - not home or typing in progress');
-                return;
-              }
-          
-              const notices = ["该站点尚在建设中。遇到问题请<a target='_blank' href='https://github.com/SteveZMTstudios/articles/issues/new/choose'>反馈给我们</a>！","????!!!!!??!?!?!??!?!?!!!!","请将 busuanzi.ibruce.info 添加到您的 uBlock Origin 例外列表中！","我是一个懒人，所以这个站点可能会很久才更新一次。","这个博客基本上所有的精力都花在刀把上了...","“宇宙小机器人是什么玩意”","// TODO","我很可爱请<a target='_blank' href='https://space.bilibili.com/474130186'>给我钱</a>qwq","console.log('Hello World!')","战神起跳，战神睡觉","喵！","ywqdgfdcfgvbjhnmhgfvcgbjhmkmnjhbv;'wg[;-=t645u]['l786;t;l4qegm;l vbby r5 utuyf t","歪比巴卜","冷知识———阿嚏！","🥵...热知识...","神要是公然去跟人作对，那是任何人都难以对付的。 ——《荷马史诗》","1 2 4 8 16 32 64 128 256 512 1024 2048 4096 8192 16384 32768 65536...","站长闲着无聊搓了一个<a target='_blank' href='/new'>页面创建器</a>，真的得叫他找个班上了...","其实404页面有个地方能点，用鼠标晃晃就能找到（","不要试图以php为url结尾访问本站。本站没有使用任何php页面。","致一位勤劳的俄罗斯黑客：本博客真的没有使用WordPress...","本站点不支持IE浏览器。（真的吗？）","::泼出去的水，我连盆都不要（","::师傅，教我分身术吧。”“首先，你要有把电锯。。。”（","::“你是一个很好奇的人”“为什么这么说？”“你看你又问了”","::小明一出生就没有手，原来是注册账号时忘记领新手礼包（","::人类每天都盖被子睡觉，所以人类是被子植物。","::人往高处走，水往低处流，人的80%是水，所以大部分人就算到了高处也还是下流的（x","::奶牛的英文是cow，所以牛奶的英文是woc（","::大英博物馆发生严重盗窃案，负责人发文哭诉同行内卷。","“我的法力不比如来佛差，你是怎么逃出我的手掌心的?”耶稣不解地问孙悟空（","“打仗打的就是后勤”说罢王将军令人将厨师塞进炮筒（","我怀疑那些新闻记者都是机器人，不然为啥自称“本台记者”（","王老汉找人拼命，现在两人共用一条命（","王警官在现场勘察了4个小时，终于发现了案件还没有发生（","医生说:“吃点好的。”于是我把我在工作群的回复都吃了（","镇关西挨了三拳后心领神会，晚上三更准时来到鲁提辖的房间（","皇帝感叹道：“孤的胜，你们都看在眼里；孤的败。”然后就退朝了（","丈夫自称龙的传人，不料妻子竟生下个黑宝宝。做完亲子鉴定虚惊一场，原来是个乌龙","::“登陆就送一百抽!”美国南部海岸的码头工对运奴船喊道。","“舍友一周不洗澡，身上都臭了，是不是他还在生我上周砍了他一刀的气？”","老臣年迈，无法跪谢皇恩，只好新臣代谢（","地球上有70%的海洋和30%的陆地，那么剩下的30%海洋和70%的陆地去哪了？","刘备被称赞爱民如子，将围观群众挨个摔倒在地。","“你日后要是惹出祸来，师父的名字就不要提了。”菩祖师对孙悟空说（","“变形金刚寂寞了会上网约车吗？”","谈判专家喊话询问被歹徒绑架的人质数是多少，不久后听到回应:“2，3，5，7，11...”","你这辈子就是被咕咕华害了。","你猜猜还要刷多少遍才能刷到这条~","一个半小时是三个半小时（","《你的脑袋怎么尖尖的》"];
-              const noticeElement = document.getElementById('random-notice');
-              
-              if (!noticeElement) {
-                console.log('Notice element not found');
-                return;
-              }
-          
-              function typeWriter(html, element, speed, callback) {
-                console.log('Typing notice:', html);
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = html;
-                const nodes = Array.from(tempDiv.childNodes);
-                let currentNode = 0;
-                let currentChar = 0;
-                NoticeSystem.typing = true;
-
-                function type() {
-                  if (!NoticeSystem.typing) return;
-
-                  if (currentNode >= nodes.length) {
-                    NoticeSystem.typing = false;
-                    if (callback) callback();
-                    return;
-                  }
-
-                  const node = nodes[currentNode];
-                  if (node.nodeType === Node.TEXT_NODE) {
-                    if (currentChar < node.length) {
-                      element.innerHTML += node.textContent[currentChar];
-                      currentChar++;
-                    } else {
-                      currentChar = 0;
-                      currentNode++;
-                    }
-                  } else {
-                    element.innerHTML += node.outerHTML;
-                    currentNode++;
-                  }
-
-                  NoticeSystem.typingTimeout = setTimeout(type, speed);
-                }
-
-                element.innerHTML = '';
-                type();
-              }
-
-              function deleteWriter(element, speed, callback) {
-                if (!element) return;
-                let text = element.innerHTML;
-                let i = text.length;
-                NoticeSystem.typing = true;
-                function erase() {
-                  if (!NoticeSystem.typing) return;
-                  if (i > 0) {
-                    element.innerHTML = text.substring(0, i - 1);
-                    i--;
-                    NoticeSystem.typingTimeout = setTimeout(erase, speed);
-                  } else {
-                    NoticeSystem.typing = false;
-                    if (callback) callback();
-                  }
-                }
-                erase();
-              }
-
-              function displayRandomNotice() {
-                console.log('Displaying random notice');
-                if (NoticeSystem.typing) {
-                  NoticeSystem.typing = false;
-                  clearTimeout(NoticeSystem.typingTimeout);
-                }
-
-                const randomIndex = Math.floor(Math.random() * notices.length);
-                deleteWriter(noticeElement, 13, function() {
-                  typeWriter(notices[randomIndex], noticeElement, 120);
-                  if (randomIndex === NoticeSystem.lastUsedNotice) {
-                    displayRandomNotice();
-                  } else {
-                    NoticeSystem.lastUsedNotice = randomIndex;
-                  }
-                });
-              }
-
-
-              const container = document.getElementById('notice-container');
-              if (container && !NoticeSystem.isInitialized) {
-                container.addEventListener('click', displayRandomNotice);
-                NoticeSystem.isInitialized = true;
-              }
-
-
-              displayRandomNotice();
-            };
-          
-
-            window.initNoticeSystem();
-          })();
-          </script>
-      
-  </article>
 
 
 
+  <div class="mdui-chip mdui-m-b-3">
+    <span class="mdui-chip-icon mdui-color-theme-accent"><i class="mdui-icon material-icons" translate="no">place</i></span>
+    <span class="mdui-chip-title">标签：iVentoy</span>
+  </div>
 
 
   <article class="mdui-card mdui-m-b-5 mdui-hoverable">
     <a href="/2025/09/29/iventoy-pxe-in-home/">
       <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.svg" data-original="/images/random/material-11.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <img src="/images/loading.svg" data-original="/images/random/material-4.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">iVentoy 与家用路由器引导 PXE</div>
@@ -1067,291 +937,6 @@
     </footer>
   </article>
 
-  <article class="mdui-card mdui-m-b-5 mdui-hoverable">
-    <a href="/2025/09/08/coloros-realme-ota-download-guide/">
-      <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.svg" data-original="/images/random/material-5.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
-        <div class="mdui-card-media-covered">
-          <div class="mdui-card-primary">
-            <div class="mdui-card-primary-title">ColorOS/RealmeUI OTA 下载指南</div>
-            <div class="mdui-card-primary-subtitle"><i class="iconfont" translate="no">&#xe697;</i> 2025-09-08 / <i class="iconfont" translate="no">&#xe601;</i> Steve ZMT</div>
-          </div>
-        </div>
-        
-      </header>
-    </a>
-    <div class="mdui-card-content mdui-typo">
-      
-        假你手机和oddo的ota服务器在通过普通的方式都是会403，所以你需要通过一些邪道来搞到OTA包……
-      
-    </div>
-    <div class="mdui-text-center">
-      <a href="/2025/09/08/coloros-realme-ota-download-guide/" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple">查看</a>
-    </div>
-    <footer class="mdui-card-actions">
-      
-        <a class="mdui-ripple article_categories-link" href="/categories/%E6%8A%98%E8%85%BE/">折腾</a>
-      
-      
-        <a class="mdui-ripple article_tags-link" href="/tags/ColorOS/" rel="tag">ColorOS</a><a class="mdui-ripple article_tags-link" href="/tags/RealmeUI/" rel="tag">RealmeUI</a><a class="mdui-ripple article_tags-link" href="/tags/%E4%B8%8B%E8%BD%BD/" rel="tag">下载</a><a class="mdui-ripple article_tags-link" href="/tags/%E5%AE%89%E5%8D%93/" rel="tag">安卓</a>
-      
-    </footer>
-  </article>
-
-  <article class="mdui-card mdui-m-b-5 mdui-hoverable">
-    <a href="/2025/08/20/https-port-443-blocked/">
-      <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.svg" data-original="/images/blog/https-port-443-blocked/thunbnail_compressed.jpg" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
-        <div class="mdui-card-media-covered">
-          <div class="mdui-card-primary">
-            <div class="mdui-card-primary-title">近期关于海外站点https无法访问的情况</div>
-            <div class="mdui-card-primary-subtitle"><i class="iconfont" translate="no">&#xe697;</i> 2025-08-20 / <i class="iconfont" translate="no">&#xe601;</i> Steve ZMT</div>
-          </div>
-        </div>
-        
-      </header>
-    </a>
-    <div class="mdui-card-content mdui-typo">
-      
-        大约在2025年8月20日，所有用户反馈无法访问海外站点，经过排查发现是由于https端口被阻塞所致。……
-      
-    </div>
-    <div class="mdui-text-center">
-      <a href="/2025/08/20/https-port-443-blocked/" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple">查看</a>
-    </div>
-    <footer class="mdui-card-actions">
-      
-        <a class="mdui-ripple article_categories-link" href="/categories/%E7%9E%8E%E8%81%8A/">瞎聊</a>
-      
-      
-        <a class="mdui-ripple article_tags-link" href="/tags/%E6%95%85%E9%9A%9C/" rel="tag">故障</a>
-      
-    </footer>
-  </article>
-
-  <article class="mdui-card mdui-m-b-5 mdui-hoverable">
-    <a href="/2025/01/20/20250120-apex-area-serverdown/">
-      <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.svg" data-original="/images/random/material-6.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
-        <div class="mdui-card-media-covered">
-          <div class="mdui-card-primary">
-            <div class="mdui-card-primary-title">临时服务中断</div>
-            <div class="mdui-card-primary-subtitle"><i class="iconfont" translate="no">&#xe697;</i> 2025-01-20 / <i class="iconfont" translate="no">&#xe601;</i> Steve ZMT</div>
-          </div>
-        </div>
-        
-      </header>
-    </a>
-    <div class="mdui-card-content mdui-typo">
-      
-        🛑灾难性终止网站域 stevezmt.top 和 www.stevezmt.top 因签名未能提交导致暂时性停止运营。……
-      
-    </div>
-    <div class="mdui-text-center">
-      <a href="/2025/01/20/20250120-apex-area-serverdown/" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple">查看</a>
-    </div>
-    <footer class="mdui-card-actions">
-      
-        <a class="mdui-ripple article_categories-link" href="/categories/%E6%8A%98%E8%85%BE/">折腾</a>
-      
-      
-        <a class="mdui-ripple article_tags-link" href="/tags/%E6%84%8F%E5%A4%96/" rel="tag">意外</a><a class="mdui-ripple article_tags-link" href="/tags/%E6%95%85%E9%9A%9C/" rel="tag">故障</a>
-      
-    </footer>
-  </article>
-
-  <article class="mdui-card mdui-m-b-5 mdui-hoverable">
-    <a href="/2025/01/01/2025-new-year/">
-      <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.svg" data-original="/images/random/material-6.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
-        <div class="mdui-card-media-covered">
-          <div class="mdui-card-primary">
-            <div class="mdui-card-primary-title">2025 新年快乐</div>
-            <div class="mdui-card-primary-subtitle"><i class="iconfont" translate="no">&#xe697;</i> 2025-01-01 / <i class="iconfont" translate="no">&#xe601;</i> Steve ZMT</div>
-          </div>
-        </div>
-        
-      </header>
-    </a>
-    <div class="mdui-card-content mdui-typo">
-      
-        2025 新年快乐
-Happy new year 2025!
-……
-      
-    </div>
-    <div class="mdui-text-center">
-      <a href="/2025/01/01/2025-new-year/" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple">查看</a>
-    </div>
-    <footer class="mdui-card-actions">
-      
-      
-    </footer>
-  </article>
-
-  <article class="mdui-card mdui-m-b-5 mdui-hoverable">
-    <a href="/2024/12/21/fork-this-theme/">
-      <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.svg" data-original="/images/random/material-14.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
-        <div class="mdui-card-media-covered">
-          <div class="mdui-card-primary">
-            <div class="mdui-card-primary-title">主题复刻指南</div>
-            <div class="mdui-card-primary-subtitle"><i class="iconfont" translate="no">&#xe697;</i> 2024-12-21 / <i class="iconfont" translate="no">&#xe601;</i> Steve ZMT</div>
-          </div>
-        </div>
-        
-      </header>
-    </a>
-    <div class="mdui-card-content mdui-typo">
-      
-        这里提供了一种方式，可以让你快速复刻这个主题，这样你就能够把它做成你的博客了。……
-      
-    </div>
-    <div class="mdui-text-center">
-      <a href="/2024/12/21/fork-this-theme/" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple">查看</a>
-    </div>
-    <footer class="mdui-card-actions">
-      
-        <a class="mdui-ripple article_categories-link" href="/categories/%E6%8A%98%E8%85%BE/">折腾</a>
-      
-      
-        <a class="mdui-ripple article_tags-link" href="/tags/hexo/" rel="tag">hexo</a><a class="mdui-ripple article_tags-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客</a><a class="mdui-ripple article_tags-link" href="/tags/%E5%BC%80%E6%BA%90/" rel="tag">开源</a>
-      
-    </footer>
-  </article>
-
-  <article class="mdui-card mdui-m-b-5 mdui-hoverable">
-    <a href="/2024/12/03/real-harmony-connect-all/">
-      <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.svg" data-original="/images/random/material-4.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
-        <div class="mdui-card-media-covered">
-          <div class="mdui-card-primary">
-            <div class="mdui-card-primary-title">几乎超越鸿蒙的完全互联方案</div>
-            <div class="mdui-card-primary-subtitle"><i class="iconfont" translate="no">&#xe697;</i> 2024-12-03 / <i class="iconfont" translate="no">&#xe601;</i> Steve ZMT</div>
-          </div>
-        </div>
-        
-      </header>
-    </a>
-    <div class="mdui-card-content mdui-typo">
-      
-        可能是这几天吃太饱了，花了一个周末，折腾了一个自己个人还算满意的全平台互联方案。
-实现效果几乎可以完全满足我个人远程工作的需要，而且绝大部分组件都是开源，几乎无感知的实现了类似鸿蒙宣传的的完全...……
-      
-    </div>
-    <div class="mdui-text-center">
-      <a href="/2024/12/03/real-harmony-connect-all/" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple">查看</a>
-    </div>
-    <footer class="mdui-card-actions">
-      
-        <a class="mdui-ripple article_categories-link" href="/categories/%E6%8A%98%E8%85%BE/">折腾</a>
-      
-      
-        <a class="mdui-ripple article_tags-link" href="/tags/KDE/" rel="tag">KDE</a><a class="mdui-ripple article_tags-link" href="/tags/root/" rel="tag">root</a><a class="mdui-ripple article_tags-link" href="/tags/%E4%BA%92%E8%81%94/" rel="tag">互联</a><a class="mdui-ripple article_tags-link" href="/tags/%E5%AE%89%E5%8D%93/" rel="tag">安卓</a><a class="mdui-ripple article_tags-link" href="/tags/%E5%BC%80%E6%BA%90/" rel="tag">开源</a>
-      
-    </footer>
-  </article>
-
-  <article class="mdui-card mdui-m-b-5 mdui-hoverable">
-    <a href="/2024/12/01/talk-about-x-ai/">
-      <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.svg" data-original="/images/random/material-16.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
-        <div class="mdui-card-media-covered">
-          <div class="mdui-card-primary">
-            <div class="mdui-card-primary-title">关于 x.ai 的一些看法</div>
-            <div class="mdui-card-primary-subtitle"><i class="iconfont" translate="no">&#xe697;</i> 2024-12-01 / <i class="iconfont" translate="no">&#xe601;</i> Steve ZMT</div>
-          </div>
-        </div>
-        
-      </header>
-    </a>
-    <div class="mdui-card-content mdui-typo">
-      
-        前一段时间在某群里抱怨openai实在太贵，而且还有严格的ip要求，不方便使用。有位大佬推荐了x.ai，说是一个免费的AI助手，还是马斯克搞得。我就去试了试，感觉还不错，所以写了这篇文章来分享一下我的使用心得。
-总...……
-      
-    </div>
-    <div class="mdui-text-center">
-      <a href="/2024/12/01/talk-about-x-ai/" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple">查看</a>
-    </div>
-    <footer class="mdui-card-actions">
-      
-        <a class="mdui-ripple article_categories-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><a class="mdui-ripple article_categories-link" href="/categories/%E6%8A%80%E6%9C%AF/%E7%9E%8E%E8%81%8A/">瞎聊</a>
-      
-      
-        <a class="mdui-ripple article_tags-link" href="/tags/AI/" rel="tag">AI</a><a class="mdui-ripple article_tags-link" href="/tags/openai/" rel="tag">openai</a>
-      
-    </footer>
-  </article>
-
-  <article class="mdui-card mdui-m-b-5 mdui-hoverable">
-    <a href="/2024/03/22/hide-your-scanpen/">
-      <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.svg" data-original="/images/blog/hide-your-scanpen/thumb_compressed.jpg" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
-        <div class="mdui-card-media-covered">
-          <div class="mdui-card-primary">
-            <div class="mdui-card-primary-title">如何在学校安全的玩翻译笔</div>
-            <div class="mdui-card-primary-subtitle"><i class="iconfont" translate="no">&#xe697;</i> 2024-03-22 / <i class="iconfont" translate="no">&#xe601;</i> Steve ZMT</div>
-          </div>
-        </div>
-        
-      </header>
-    </a>
-    <div class="mdui-card-content mdui-typo">
-      
-        
-此页面最初由我自己发布在……
-      
-    </div>
-    <div class="mdui-text-center">
-      <a href="/2024/03/22/hide-your-scanpen/" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple">查看</a>
-    </div>
-    <footer class="mdui-card-actions">
-      
-        <a class="mdui-ripple article_categories-link" href="/categories/%E6%8A%98%E8%85%BE/">折腾</a><a class="mdui-ripple article_categories-link" href="/categories/%E6%8A%98%E8%85%BE/%E7%94%B5%E5%AD%90%E5%9E%83%E5%9C%BE/">电子垃圾</a>
-      
-      
-        <a class="mdui-ripple article_tags-link" href="/tags/root/" rel="tag">root</a><a class="mdui-ripple article_tags-link" href="/tags/xposed/" rel="tag">xposed</a><a class="mdui-ripple article_tags-link" href="/tags/%E5%8D%95%E8%AF%8D%E7%AC%94/" rel="tag">单词笔</a><a class="mdui-ripple article_tags-link" href="/tags/%E5%AE%89%E5%8D%93/" rel="tag">安卓</a>
-      
-    </footer>
-  </article>
-
-  <article class="mdui-card mdui-m-b-5 mdui-hoverable">
-    <a href="/2024/02/01/root-on-scanpen/">
-      <header class="mdui-card-media mdui-ripple">
-        <img src="/images/loading.svg" data-original="/images/blog/root-on-scanpen/thumb_compressed.jpg" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
-        <div class="mdui-card-media-covered">
-          <div class="mdui-card-primary">
-            <div class="mdui-card-primary-title">玩飞一台翻译词典笔（进阶-获取root）</div>
-            <div class="mdui-card-primary-subtitle"><i class="iconfont" translate="no">&#xe697;</i> 2024-02-01 / <i class="iconfont" translate="no">&#xe601;</i> Steve ZMT</div>
-          </div>
-        </div>
-        
-      </header>
-    </a>
-    <div class="mdui-card-content mdui-typo">
-      
-        
-此页面最初由我自己发布在……
-      
-    </div>
-    <div class="mdui-text-center">
-      <a href="/2024/02/01/root-on-scanpen/" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple">查看</a>
-    </div>
-    <footer class="mdui-card-actions">
-      
-        <a class="mdui-ripple article_categories-link" href="/categories/%E6%8A%98%E8%85%BE/">折腾</a><a class="mdui-ripple article_categories-link" href="/categories/%E6%8A%98%E8%85%BE/%E7%94%B5%E5%AD%90%E5%9E%83%E5%9C%BE/">电子垃圾</a>
-      
-      
-        <a class="mdui-ripple article_tags-link" href="/tags/root/" rel="tag">root</a><a class="mdui-ripple article_tags-link" href="/tags/%E5%8D%95%E8%AF%8D%E7%AC%94/" rel="tag">单词笔</a><a class="mdui-ripple article_tags-link" href="/tags/%E5%AE%89%E5%8D%93/" rel="tag">安卓</a>
-      
-    </footer>
-  </article>
-
-
-  <nav id="paginator">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><button aria-label="next" class="mdui-btn mdui-btn-raised mdui-btn-icon mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons" translate="no">arrow_forward</i></button></a>
-  </nav>
 
 
 </main>
@@ -1422,4 +1007,5 @@ Happy new year 2025!
                 preloadRatio: 3,
                 processImages: null,
             };
-        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script><script>"use strict";if("serviceWorker"in navigator){navigator.serviceWorker.register("service-worker.js").then((function(reg){reg.onupdatefound=function(){var installingWorker=reg.installing;installingWorker.onstatechange=function(){switch(installingWorker.state){case"installed":if(navigator.serviceWorker.controller){console.log("New or updated content is available.")}else{console.log("Content is now available offline!")}break;case"redundant":console.error("The installing service worker became redundant.");break}}}}))["catch"]((function(e){console.error("Error during service worker registration:",e)}))}</script></body></html>
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>
