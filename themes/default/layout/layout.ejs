@@ -10,6 +10,11 @@
   <% } %>
   <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.6.0.min.js"></script>
   <script>
+    if (typeof jQuery === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"><\/script>');
+    }
+  </script>
+  <script>
 /* //console.log -> console.log */
 
     function __normalizeGitalkId(raw) {
