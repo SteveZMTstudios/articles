@@ -274,16 +274,20 @@
             if(success){
               el.classList.add('copy-success');
               if(icon) icon.textContent='check_circle';
-              if(window.mdui) mdui.snackbar({message:'代码已复制！',position:'bottom'});
-            } else {
-              el.classList.add('copy-fail');
-              if(icon) icon.textContent='warning';
-              if(window.mdui) mdui.snackbar({message:'复制失败！',position:'bottom'});
+              // el._tooltip = new mdui.Tooltip(el, {content: '已复制！', position: 'top'});
+              //el._tooltip.open();
+              } else {
+                el.classList.add('copy-fail');
+                if(icon) icon.textContent='warning';
+                el._tooltip = new mdui.Tooltip(el, {content: '复制失败！', position: 'top'});
+                el._tooltip.open();
             }
             clearTimeout(el._copyTimer);
             el._copyTimer = setTimeout(function(){
               el.classList.remove('copy-success','copy-fail');
-              if(icon) icon.textContent='content_copy';
+                if(icon) icon.textContent='content_copy';
+                //el._tooltip.close();
+                //el._tooltip = null;
             },3000);
           }
 

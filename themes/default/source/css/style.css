@@ -1310,7 +1310,7 @@ details {
 }
 
 details[open] {
-  background: rgba(33, 33, 33, 0.13);
+  background: rgba(33, 33, 33, 0.03);
 }
 
 details summary {
