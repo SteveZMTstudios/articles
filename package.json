@@ -7,20 +7,24 @@
     "clean": "hexo clean",
     "deploy": "hexo deploy",
     "server": "hexo server",
-    "look": "hexo generate && hexo server",
     "test": "hexo clean && hexo generate && hexo server --drafts --watch"
   },
   "hexo": {
-    "version": "7.3.0"
+    "version": "8.1.1"
   },
   "overrides": {
-    "sourcemap-codec": "npm:@jridgewell/sourcemap-codec@^1.5.0"
+    "hexo-offline": {
+      "hexo": "$hexo"
+    },
+    "sourcemap-codec": "npm:@jridgewell/sourcemap-codec@^1.5.0",
+    "glob": "^11.0.0",
+    "source-map": "^0.7.6"
   },
   "resolutions": {
     "sourcemap-codec": "^1.5.0"
   },
   "dependencies": {
-    "hexo": "^8.0.0",
+    "hexo": "^8.1.1",
     "hexo-algolia": "^1.3.2",
     "hexo-cli": "^4.3.2",
     "hexo-deployer-git": "^4.0.0",
