@@ -3,22 +3,34 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
   <title>老史尬侃 - 兼容模式 视图</title>
+  <link rel="stylesheet" href="holo-base-elements.css">
+  <link rel="stylesheet" href="holo-ics-dark-elements.css">
+  <link rel="stylesheet" href="holo-base-widgets.css">
+  <link rel="stylesheet" href="holo-ics-dark-widgets.css">
+  <script src="holo-touch.js"></script>
   <style>
-    body{font-family:Arial,Helvetica,sans-serif;background:#fff;color:#111;margin:0;padding:10px}
-    a{color:#06c}
-    #article{border:1px solid #ddd;padding:10px;background:#fff}
-    .meta{color:#666;font-size:12px;margin-bottom:8px}
-    .summary{color:#333;margin-top:6px;font-size:13px}
-    .categories{color:#666;margin-top:6px;font-size:12px}
+    /* 适配 Holo Dark 的轻度补充 */
+    .container{padding:10px}
+    #article{padding:10px}
+    .meta{font-size:12px;opacity:.8;margin:6px 0}
+    .summary{margin-top:6px;font-size:13px}
+    .categories{font-size:12px;opacity:.8;margin-top:6px}
   </style>
-</head>
+  </head>
 <body>
-  <h3>老史尬侃 - 兼容模式 视图</h3>
-  <p><a href="/k/">← 返回文章列表</a></p>
-  <div id="status">正在加载文章…</div>
-  <div id="article"></div>
+  <header class="holo-actionBar">
+    <button class="holo-title holo-up" onclick="location.href='/k/'" style="line-height:21px;">
+        <img src="kicon.png" />
+
+    返回文章列表</button>
+    <button style="float:right;" onclick="location.href='/'">首页</button>
+  </header>
+  <div class="container">
+    <div id="status">正在加载文章…</div>
+    <div id="article"></div>
+  </div>
 
   <noscript>
     <p style="background:#ff9800;padding:6px;margin:0;">JavaScript 未启用。遗憾的是，您必须启用它才能访问内容。<br />你可以直接访问 <a href="/atom.xml">/atom.xml</a></p>
@@ -28,9 +40,19 @@
 
   if (!Function.prototype.bind) {
     var statusEl = document.getElementById('status');
-    if (statusEl) statusEl.innerHTML = '您的浏览器缺少关键功能（Function.prototype.bind），无法显示此页面。请升级浏览器或在页面顶部选择“仍然访问完整版”。';
-    throw new Error('Function.prototype.bind not supported');
-  }
+    if (statusEl) statusEl.innerHTML = '您的浏览器缺少关键功能（Function.prototype.bind），无法显示此页面。请升级浏览器。';
+      /* Compatibility polyfills for older browsers (bind, forEach, addEventListener fallback) */
+      Function.prototype.bind = function(context) {
+        var fn = this;
+        var slice = Array.prototype.slice;
+        var args = slice.call(arguments, 1);
+        return function() { return fn.apply(context, args.concat(slice.call(arguments))); };
+      };
+    }
+    if (!Array.prototype.forEach) {
+      Array.prototype.forEach = function(cb/*, thisArg*/) { var len=this.length|0; var thisArg=arguments[1]; for(var i=0;i<len;i++) if(i in this) cb.call(thisArg, this[i], i, this); };
+    }
+    (function(){ if(!window.addEventListener && window.attachEvent){ window.addEventListener = function(evt, fn){ window.attachEvent('on' + evt, fn); }; Document.prototype.addEventListener = Element.prototype.addEventListener = function(evt, fn){ return this.attachEvent('on' + evt, fn); }; } })();
   (function(){
     var status = document.getElementById('status');
     var article = document.getElementById('article');
@@ -87,11 +109,12 @@
     function safeInnerHTML(el, html){ try{ el.innerHTML = html; }catch(e){ while(el.firstChild) el.removeChild(el.firstChild); el.appendChild(document.createTextNode(html)); } }
 
     function findEntryInDoc(doc, params){
-      var entries = doc.getElementsByTagName && doc.getElementsByTagName('entry');
-      if(!entries || entries.length===0){ var all=doc.getElementsByTagName('*'), tmp=[]; for(var i=0;i<all.length;i++){ if((all[i].localName||all[i].nodeName||'').toLowerCase()==='entry') tmp.push(all[i]); } entries = tmp; }
+      var entries = (doc.getElementsByTagName && doc.getElementsByTagName('entry')) || [];
+      if(!entries || entries.length===0){ entries = (doc.getElementsByTagName && doc.getElementsByTagName('item')) || []; }
+      if(!entries || entries.length===0){ var all=doc.getElementsByTagName('*'), tmp=[]; for(var i=0;i<all.length;i++){ if((all[i].localName||all[i].nodeName||'').toLowerCase()==='entry' || (all[i].localName||all[i].nodeName||'').toLowerCase()==='item') tmp.push(all[i]); } entries = tmp; }
       for(var i=0;i<entries.length;i++){
         var e = entries[i];
-        var idn = getFirstChildByName(e,'id'); var linkn = getFirstChildByName(e,'link'); var titlen = getFirstChildByName(e,'title');
+        var idn = getFirstChildByName(e,'id'); var linkn = getFirstChildByName(e,'link') || getFirstChildByName(e,'guid'); var titlen = getFirstChildByName(e,'title');
         var id = getText(idn) || (linkn && (linkn.getAttribute && linkn.getAttribute('href')) || getText(linkn) || '');
         var href = linkn && (linkn.getAttribute && linkn.getAttribute('href')) || getText(linkn) || '';
         var title = getText(titlen)||'';
@@ -108,26 +131,44 @@
     function loadAtomAndRender(params){
       var xhr = createXHR(); if(!xhr){ status.textContent='此浏览器不支持网络请求'; return; }
       try{
+        var cacheKey = 'k_feed_cache_v1';
+        try{
+          if(window.localStorage){
+            var raw = localStorage.getItem(cacheKey);
+            if(raw){
+              var cached = JSON.parse(raw);
+              if(cached && (Date.now() - cached.ts) < (2*60*1000) && cached.xml){
+                var doc = parseXMLString(cached.xml);
+                if(doc){ var entry = findEntryInDoc(doc, params); if(entry) return renderEntry(entry); }
+              }
+            }
+          }
+        }catch(e){}
+
         xhr.open('GET','/atom.xml',true);
-        xhr.onreadystatechange = function(){ if(xhr.readyState===4){ if((xhr.status>=200&&xhr.status<300)||xhr.status===0){ var doc = xhr.responseXML; if(!doc||!doc.documentElement) doc = parseXMLString(xhr.responseText||xhr.response); if(doc){ var entry = findEntryInDoc(doc, params); if(entry) return renderEntry(entry); else return tryLoadHref(params); } else { status.textContent='解析 atom.xml 失败'; } } else status.textContent='加载 atom.xml 失败，HTTP：'+xhr.status; } };
-        xhr.send(null);
+        var to = setTimeout(function(){ try{ xhr.abort(); status.textContent = '请求 atom.xml 超时'; }catch(e){}; }, 15000);
+        xhr.onreadystatechange = function(){ if(xhr.readyState===4){ try{ if(to) clearTimeout(to); }catch(e){} if((xhr.status>=200&&xhr.status<300)||xhr.status===0){ var doc = xhr.responseXML; if(!doc||!doc.documentElement) doc = parseXMLString(xhr.responseText||xhr.response); if(doc){ try{ if(window.localStorage){ localStorage.setItem(cacheKey, JSON.stringify({ts:Date.now(), xml: xhr.responseText})); } }catch(e){} var entry = findEntryInDoc(doc, params); if(entry) return renderEntry(entry); else return tryLoadHref(params); } else { status.textContent='解析 atom.xml 失败'; } } else status.textContent='加载 atom.xml 失败，HTTP：'+xhr.status; } };
+        try{ xhr.send(null); }catch(e){ try{ if(to) clearTimeout(to); }catch(ex){} status.textContent='请求 atom.xml 时出错'; }
       }catch(e){ status.textContent='请求 atom.xml 时出错'; }
     }
 
     function renderEntry(entry){
       var title = getText(getFirstChildByName(entry,'title'))||'';
       var published = getText(getFirstChildByName(entry,'published'))||getText(getFirstChildByName(entry,'updated'))||'';
+      if(!published){ var pd = getFirstChildByName(entry,'pubDate'); if(pd) published = getText(pd); }
       var contentNode = getFirstChildByName(entry,'content');
       var summaryNode = getFirstChildByName(entry,'summary');
       var html = '';
       try{ if(contentNode){ html = contentNode.textContent || (contentNode.firstChild && contentNode.firstChild.nodeValue) || ''; } }catch(e){}
       var summaryText = '';
       try{ if(summaryNode) summaryText = summaryNode.textContent || (summaryNode.firstChild && summaryNode.firstChild.nodeValue) || ''; }catch(e){}
+      if(!summaryText){ try{ var desc = getFirstChildByName(entry,'description'); if(desc) summaryText = getText(desc); }catch(e){} }
+      if(!summaryText){ try{ var cec = getFirstChildByName(entry,'encoded'); if(cec && (cec.namespaceURI||'').indexOf('content')!==-1) summaryText = getText(cec); }catch(e){} }
 
 
       var cats = [];
       try{
-        var catNodes = entry.getElementsByTagName && entry.getElementsByTagName('category');
+        var catNodes = entry.getElementsByTagName && (entry.getElementsByTagName('category') || entry.getElementsByTagName('dc:subject'));
         if(catNodes && catNodes.length>0){ for(var ci=0;ci<catNodes.length;ci++){ try{ var t = catNodes[ci].getAttribute && catNodes[ci].getAttribute('term') || catNodes[ci].textContent || ''; if(t) cats.push(t); }catch(e){} } }
         else {
           var allc = entry.getElementsByTagName('*');
@@ -161,8 +202,9 @@
       var xhr = createXHR(); if(!xhr){ article.innerHTML += '<p>此浏览器不支持加载外部页面，请打开：' + href + '</p>'; return; }
       try{
         xhr.open('GET', href, true);
-        xhr.onreadystatechange = function(){ if(xhr.readyState===4){ if((xhr.status>=200&&xhr.status<300)||xhr.status===0){ safeInnerHTML(article, (article.innerHTML||'') + xhr.responseText); status.style.display='none'; } else { article.innerHTML += '<p>远程页面加载失败，HTTP：'+xhr.status+'。请打开：'+href+'</p>'; } } };
-        xhr.send(null);
+        var to = setTimeout(function(){ try{ xhr.abort(); }catch(e){}; article.innerHTML += '<p>加载远程页面超时，请打开：' + href + '</p>'; }, 15000);
+        xhr.onreadystatechange = function(){ if(xhr.readyState===4){ try{ if(to) clearTimeout(to); }catch(e){} if((xhr.status>=200&&xhr.status<300)||xhr.status===0){ safeInnerHTML(article, (article.innerHTML||'') + xhr.responseText); status.style.display='none'; } else { article.innerHTML += '<p>远程页面加载失败，HTTP：'+xhr.status+'。请打开：'+href+'</p>'; } } };
+        try{ xhr.send(null); }catch(e){ try{ if(to) clearTimeout(to); }catch(ex){} article.innerHTML += '<p>加载外部页面时出错，请打开：' + href + '</p>'; }
       }catch(e){ article.innerHTML += '<p>加载外部页面时出错，请打开：' + href + '</p>'; }
     }
 

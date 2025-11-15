@@ -56,7 +56,7 @@
           missingFeatures.length >= 2
         );
 
-  var errorLimit = 6; 
+  var errorLimit = 8; 
   var errorCount = 0;
   function scheduleRedirect(reason) {
           try {
@@ -190,7 +190,7 @@
   
 <link rel="stylesheet" href="/custom.css">
 
-<meta name="generator" content="Hexo 7.3.0"></head>
+<meta name="generator" content="Hexo 8.1.1"></head>
 <!--
 <script data-pjax>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -219,6 +219,11 @@
   <script>window.BUSUANZI_SRC = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';</script>
   
   <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.6.0.min.js"></script>
+  <script>
+    if (typeof jQuery === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"><\/script>');
+    }
+  </script>
   <script>
 /* //console.log -> console.log */
 
@@ -423,6 +428,14 @@
         document.body.insertBefore(progressBar, document.body.firstChild);
       }
       progressBar.style.display = 'block';
+      try {
+        var mainEl = document.getElementById('main');
+        if (mainEl) {
+          mainEl.classList.remove('pjax-enter');
+          // 添加退出类，触发 CSS 过渡
+          mainEl.classList.add('pjax-exit');
+        }
+      } catch (e) {}
     }
 
     function hideLoading() {
@@ -431,6 +444,18 @@
       if (progressBar) {
         progressBar.style.display = 'none';
       }
+      try {
+        var mainEl2 = document.getElementById('main');
+        if (mainEl2) {
+          // 移除退出类，添加进入类以进行淡入动画
+          mainEl2.classList.remove('pjax-exit');
+          mainEl2.classList.add('pjax-enter');
+          // 在过渡结束后清理 enter 类，避免堆积类名
+          setTimeout(function() {
+            try { mainEl2.classList.remove('pjax-enter'); } catch(e) {}
+          }, 420);
+        }
+      } catch (e) {}
     }
 
     function handleAjaxError(errorType, link, href) {
@@ -921,7 +946,7 @@
   <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
   <article class="mdui-card mdui-m-b-5">
     <header class="mdui-card-media">
-      <img src="/images/loading.svg" data-original="/images/random/material-5.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+      <img src="/images/loading.svg" data-original="/images/random/material-1.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
       <div class="mdui-card-media-covered">
         <div class="mdui-card-primary">
             <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;">关于 x.ai 的一些看法</h1></div>
@@ -1156,16 +1181,20 @@
             if(success){
               el.classList.add('copy-success');
               if(icon) icon.textContent='check_circle';
-              if(window.mdui) mdui.snackbar({message:'代码已复制！',position:'bottom'});
-            } else {
-              el.classList.add('copy-fail');
-              if(icon) icon.textContent='warning';
-              if(window.mdui) mdui.snackbar({message:'复制失败！',position:'bottom'});
+              // el._tooltip = new mdui.Tooltip(el, {content: '已复制！', position: 'top'});
+              //el._tooltip.open();
+              } else {
+                el.classList.add('copy-fail');
+                if(icon) icon.textContent='warning';
+                el._tooltip = new mdui.Tooltip(el, {content: '复制失败！', position: 'top'});
+                el._tooltip.open();
             }
             clearTimeout(el._copyTimer);
             el._copyTimer = setTimeout(function(){
               el.classList.remove('copy-success','copy-fail');
-              if(icon) icon.textContent='content_copy';
+                if(icon) icon.textContent='content_copy';
+                //el._tooltip.close();
+                //el._tooltip = null;
             },3000);
           }
 
