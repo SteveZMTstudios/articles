@@ -3,27 +3,34 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
   <title>老史尬侃 - 兼容模式</title>
-  <style>
-    body{font-family:Arial,Helvetica,sans-serif;background:#fff;color:#111;margin:0;padding:10px}
-    header{margin-bottom:10px}
-    h1{font-size:18px;margin:0 0 6px}
-    #list{margin:0;padding:0;list-style:none}
-    #list li{padding:8px;border-bottom:1px solid #eee}
-  a.item{color:#006;text-decoration:none}
-  a.item:hover{text-decoration:underline}
-  .summary{color:#333;margin-top:6px;font-size:13px}
-  .categories{color:#666;margin-top:6px;font-size:12px}
-  #content{margin-top:12px;padding:8px;border:1px solid #ddd;background:#fafafa}
-  .meta{color:#666;font-size:12px}
-  .loading{color:#999}
-    @media (max-width:400px){h1{font-size:16px}}
-  </style>
+  <link rel="stylesheet" href="holo-base-elements.css">
+  <link rel="stylesheet" href="holo-ics-dark-elements.css">
+  <link rel="stylesheet" href="holo-base-widgets.css">
+  <link rel="stylesheet" href="holo-ics-dark-widgets.css">
+  <script type="text/javascript" src="holo-touch.js"></script>
+  <!-- <style>
+    /* 细节微调，避免覆盖 Holo 主样式 */
+    #status.loading{padding:8px}
+    #content{margin-top:12px;padding:8px}
+    .summary{margin-top:6px;font-size:13px}
+    .categories,.meta{font-size:12px;opacity:.8}
+    .holo-list{margin:0;padding:0;list-style:none}
+    .holo-list li{padding:12px 16px}
+    .holo-list li .item{color:inherit;text-decoration:none;display:block}
+  </style> -->
+  <style></style>
 </head>
 <body>
-  <header>
-    <h1>老史尬侃（兼容模式）</h1>
+  <header class="holo-actionBar">
+    <button class="holo-title" onclick="window.open('index.html', '_self');" style="line-height:21px;">
+      <img src="kicon.png" />
+      老史尬侃 - 兼容模式
+    </button>
+    <button style="float:right;" onclick="location.href='/atom.xml'"><img src="rss.png" alt="RSS"></button>
+  </header>
+  <div style="padding:10px">
     <p id="compat-banner" style="background:#ff9800;padding:6px;margin:0;">您的浏览器不支持现代特性，无法正确加载页面内容，已切换到兼容模式。</p>
     <script>
     (function(){
@@ -59,14 +66,12 @@
     </script>
     <p>部分博客内嵌脚本特性可能无法使用。</p>
     <p><a href="https://browser-update.org/update-browser.html">更新浏览器（推荐）</a>以获取最佳体验和页面优化。或<a href="/?persist_no_k=1">仍然访问完整版</a></p>
-    <p><a href="/about/?persist_no_k=1">关于</a> | <a href="/friends/?persist_no_k=1">友链</a> | <a href="/timeline/?persist_no_k=1">时间线</a> | <a href="/atom.xml">RSS</a> | <a href="http://stevezmt.top">主站</a> <a href="https://key.stevezmt.top/">GPG密钥</a> | <a href="mailto:admin@stevezmt.top">电子邮件到 admin@stevezmt.top</a> </p>
-    <hr />
-  </header>
-
-  <div id="app">
-    <div id="status" class="loading">正在加载文章…</div>
-    <ul id="list" role="list"></ul>
-    <div id="content" aria-live="polite"><a href="/about/?persist_no_k=1">关于</a> | <a href="/friends/">友链</a> | <a href="/timeline/?persist_no_k=1">时间线</a> | <a href="/atom.xml">RSS</a> | <a href="http://stevezmt.top">主站</a> <a href="https://key.stevezmt.top/">GPG密钥</a> | <a href="mailto:admin@stevezmt.top">电子邮件</a> </div>
+    <p><button onclick="location.href='/about/?persist_no_k=1'">关于</button><button onclick="location.href='/friends/?persist_no_k=1'">友链</button><button onclick="location.href='/timeline/?persist_no_k=1'">时间线</button><button onclick="location.href='/atom.xml'">RSS订阅</button><button onclick="location.href='http://stevezmt.top'">主站</button> <button onclick="location.href='https://key.stevezmt.top/'">GPG密钥</button><button onclick="location.href='mailto:admin@stevezmt.top'">电子邮件到 admin@stevezmt.top</button> </p>
+    <div id="app">
+      <div id="status" class="loading">正在加载文章…</div>
+      <ul id="list" class="holo-list" role="list"></ul>
+      <div id="content" aria-live="polite"><a href="/about/?persist_no_k=1">关于</a> | <a href="/friends/">友链</a> | <a href="/timeline/?persist_no_k=1">时间线</a> | <a href="/atom.xml">RSS</a> | <a href="http://stevezmt.top">主站</a> <a href="https://key.stevezmt.top/">GPG密钥</a> | <a href="mailto:admin@stevezmt.top">电子邮件</a> </div>
+    </div>
   </div>
 
   <noscript>
@@ -76,13 +81,28 @@
 
   <script data-cfasync="false">
 
-
-
+  /* Compatibility polyfills and helpers for old browsers (IE7/8 era) */
   if (!Function.prototype.bind) {
-    var status = document.getElementById('status');
-    if (status) status.innerHTML = '您的浏览器不支持 Function.prototype.bind，无法加载内容。请升级浏览器或使用新版 Edge/Chrome/Firefox。';
-    throw new Error('Function.prototype.bind not supported');
+    Function.prototype.bind = function(context) {
+      var fn = this;
+      var slice = Array.prototype.slice;
+      var args = slice.call(arguments, 1);
+      return function() { return fn.apply(context, args.concat(slice.call(arguments))); };
+    };
   }
+  if (!Array.prototype.forEach) {
+    Array.prototype.forEach = function(cb/*, thisArg*/) {
+      var len = this.length >>> 0; var i = 0; var thisArg = arguments[1];
+      for(i=0;i<len;i++) if(i in this) cb.call(thisArg, this[i], i, this);
+    };
+  }
+  /* Event helper: addEventListener fallback */
+  (function(){
+    if(!window.addEventListener && window.attachEvent){
+      window.addEventListener = function(evt, fn){ window.attachEvent('on' + evt, fn); };
+      Document.prototype.addEventListener = Element.prototype.addEventListener = function(evt, fn){ return this.attachEvent('on' + evt, fn); };
+    }
+  })();
 
   (function(){
     var status = document.getElementById('status');
@@ -136,9 +156,15 @@
       }
     }
 
+    /* Small compatibility css helper: some old browsers don't support calc() - fall back to 100% width */
+    function supportCalc(){
+      try{ var el = document.createElement('div'); el.style.width = 'calc(100% - 10px)'; return !!el.style.width; }catch(e){return false; }
+    }
+
     function renderEntries(doc){
 
-      var entries = doc.getElementsByTagName && doc.getElementsByTagName('entry');
+      var entries = (doc.getElementsByTagName && doc.getElementsByTagName('entry')) || [];
+      if(!entries || entries.length===0){ entries = (doc.getElementsByTagName && doc.getElementsByTagName('item')) || []; }
       if(!entries || entries.length===0){
 
         var all = doc.getElementsByTagName('*');
@@ -166,8 +192,12 @@
           if(linkNode){ href = linkNode.getAttribute && linkNode.getAttribute('href') || getText(linkNode) || ''; }
           var id = getText(idNode) || href || '';
           var published = getText(publishedNode) || '';
+          if(!published){ var pd = getFirstChildByName(entry,'pubDate'); if(pd) published = getText(pd); }
 
           var li = document.createElement('li');
+          var button = document.createElement('button');
+          try{ if(supportCalc()){ button.style.width = 'calc(100% + 32px)'; } else { button.style.width = '100%'; } }catch(e){ button.style.width = '100%'; }
+          
           var a = document.createElement('a');
           a.href = href || '#';
           a.className = 'item';
@@ -183,12 +213,15 @@
 
           var summaryText = '';
           try{ if(summaryNode) summaryText = (summaryNode.textContent || (summaryNode.firstChild && summaryNode.firstChild.nodeValue) || ''); }catch(e){}
+          /* RSS description/content:encoded fallback */
+          if(!summaryText){ try{ var descNode = getFirstChildByName(entry,'description'); if(descNode) summaryText = getText(descNode); }catch(e){} }
+          if(!summaryText){ try{ var cec = getFirstChildByName(entry,'encoded'); if(cec && (cec.namespaceURI||'').indexOf('content')!==-1) summaryText = getText(cec); }catch(e){} }
           var summaryDiv = document.createElement('div'); summaryDiv.className = 'summary'; if(summaryText) safeInnerHTML(summaryDiv, summaryText);
 
 
           var cats = [];
           try{
-            var catNodes = entry.getElementsByTagName && entry.getElementsByTagName('category');
+            var catNodes = entry.getElementsByTagName && (entry.getElementsByTagName('category') || entry.getElementsByTagName('dc:subject'));
             if(catNodes && catNodes.length>0){ for(var ci=0;ci<catNodes.length;ci++){ try{ var t = catNodes[ci].getAttribute && catNodes[ci].getAttribute('term') || catNodes[ci].textContent || ''; if(t) cats.push(t); }catch(e){} } }
             else {
 
@@ -198,13 +231,14 @@
           }catch(e){}
           var catsDiv = document.createElement('div'); catsDiv.className='categories'; if(cats.length) catsDiv.appendChild(document.createTextNode('分类：' + cats.join(', ')));
 
-          li.appendChild(a);
-          li.appendChild(meta);
-          if(summaryText) li.appendChild(summaryDiv);
-          if(cats.length) li.appendChild(catsDiv);
+          button.appendChild(a);
+          button.appendChild(meta);
+          if(summaryText) button.appendChild(summaryDiv);
+          if(cats.length) button.appendChild(catsDiv);
+          li.appendChild(button);
           listEl.appendChild(li);
 
-          a.onclick = function(evt){
+          button.onclick = function(evt){
             try{ if(evt && evt.preventDefault) evt.preventDefault(); }catch(e){}
 
             var params = [];
@@ -225,15 +259,16 @@
       var xhr = createXHR(); if(!xhr){ cb(false); return; }
       try{
         xhr.open('GET', url, true);
-
+        var to = setTimeout(function(){ try{ xhr.abort(); cb(false, 'timeout'); }catch(e){}; }, 15000);
         xhr.onreadystatechange = function(){
           if(xhr.readyState===4){
+            try{ if(to) clearTimeout(to); }catch(e){}
             if((xhr.status>=200 && xhr.status<300) || xhr.status===0){
               cb(true, xhr.responseText);
             } else cb(false, xhr.status);
           }
         };
-        xhr.send(null);
+        try{ xhr.send(null); }catch(e){ try{ if(to) clearTimeout(to); }catch(ex){}; cb(false, 'send_error'); }
       }catch(e){ cb(false); }
     }
 
@@ -241,6 +276,10 @@
       var xhr = createXHR();
       if(!xhr){ status.textContent = '此浏览器不支持网络请求。'; return; }
       try{
+        var cacheKey = 'k_feed_cache_v1';
+        /* If localStorage present, try cache (short lived) */
+        try{ if(window.localStorage){ var raw = localStorage.getItem(cacheKey); if(raw){ var cached = JSON.parse(raw); if(cached && (Date.now() - cached.ts) < (2*60*1000) && cached.xml){ var doc = parseXMLString(cached.xml); if(doc){ renderEntries(doc); return; } } } } }catch(e){}
+
         xhr.open('GET','/atom.xml',true);
 
         try{ xhr.overrideMimeType && xhr.overrideMimeType('text/xml'); }catch(e){}
@@ -252,7 +291,10 @@
 
                 doc = parseXMLString(xhr.responseText || xhr.response);
               }
-              if(doc) renderEntries(doc);
+              if(doc){
+                try{ if(window.localStorage){ localStorage.setItem(cacheKey, JSON.stringify({ts:Date.now(), xml: xhr.responseText})); } }catch(e){}
+                renderEntries(doc);
+              }
               else status.textContent = '无法解析 atom.xml';
             } else {
               status.textContent = '加载 atom.xml 失败，HTTP 状态：' + xhr.status;
