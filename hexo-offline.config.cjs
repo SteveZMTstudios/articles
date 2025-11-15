@@ -93,7 +93,7 @@ module.exports = {
         }
       },
       {
-        urlPattern: /^https:\/\/(cdn\.staticfile\.org|unpkg\.com|cdn\.bootcdn\.net|cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net|busuanzi\.ibruce\.info|ajax\.aspnetcdn\.com|gcore\.jsdelivr\.net|cdn-city\.livere\.com)\/.*/,
+        urlPattern: /^https:\/\/(cdn\.staticfile\.org|unpkg\.com|cdn\.bootcdn\.net|cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net|busuanzi\.ibruce\.info|ajax\.aspnetcdn\.com|awp-assets\.meituan\.net|gcore\.jsdelivr\.net|cdn-city\.livere\.com)\/.*/,
         handler: 'CacheFirst', // CDN资源优先使用缓存
         options: {
           cacheName: 'cdn-cache',
