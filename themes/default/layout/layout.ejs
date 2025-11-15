@@ -218,6 +218,14 @@
         document.body.insertBefore(progressBar, document.body.firstChild);
       }
       progressBar.style.display = 'block';
+      try {
+        var mainEl = document.getElementById('main');
+        if (mainEl) {
+          mainEl.classList.remove('pjax-enter');
+          // 添加退出类，触发 CSS 过渡
+          mainEl.classList.add('pjax-exit');
+        }
+      } catch (e) {}
     }
 
     function hideLoading() {
@@ -226,6 +234,18 @@
       if (progressBar) {
         progressBar.style.display = 'none';
       }
+      try {
+        var mainEl2 = document.getElementById('main');
+        if (mainEl2) {
+          // 移除退出类，添加进入类以进行淡入动画
+          mainEl2.classList.remove('pjax-exit');
+          mainEl2.classList.add('pjax-enter');
+          // 在过渡结束后清理 enter 类，避免堆积类名
+          setTimeout(function() {
+            try { mainEl2.classList.remove('pjax-enter'); } catch(e) {}
+          }, 420);
+        }
+      } catch (e) {}
     }
 
     function handleAjaxError(errorType, link, href) {
