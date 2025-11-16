@@ -40,80 +40,69 @@
                 return;
               }
           
-              function typeWriter(html, element, speed, callback) {
-                console.log('Typing notice:', html);
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = html;
-                const nodes = Array.from(tempDiv.childNodes);
-                let currentNode = 0;
-                let currentChar = 0;
-                NoticeSystem.typing = true;
+              /*
+               CSS-driven type effect:
+               - 使用少量 JS 将文本节点按字符包裹为 <span class="notice-char" style="--i:idx">...
+               - 通过 CSS animation + animation-delay 逐字符显示
+               - 这样在回退/重复加载场景下更稳定，且不会拆坏 HTML 标签
+              */
 
-                function type() {
-                  if (!NoticeSystem.typing) return;
-
-                  if (currentNode >= nodes.length) {
-                    NoticeSystem.typing = false;
-                    if (callback) callback();
-                    return;
+              function wrapNodeChars(node, outFragment, startIndexObj) {
+                // startIndexObj: {i: number} 用于跨节点计数
+                if (node.nodeType === Node.TEXT_NODE) {
+                  var text = node.textContent || '';
+                  for (var ci = 0; ci < text.length; ci++) {
+                    var ch = text.charAt(ci);
+                    var span = document.createElement('span');
+                    span.className = 'notice-char';
+                    span.style.setProperty('--i', startIndexObj.i);
+                    // 保留空格可见性
+                    if (ch === ' ') span.innerHTML = '&nbsp;'; else span.textContent = ch;
+                    outFragment.appendChild(span);
+                    startIndexObj.i++;
                   }
-
-                  const node = nodes[currentNode];
-                  if (node.nodeType === Node.TEXT_NODE) {
-                    if (currentChar < node.length) {
-                      element.innerHTML += node.textContent[currentChar];
-                      currentChar++;
-                    } else {
-                      currentChar = 0;
-                      currentNode++;
-                    }
-                  } else {
-                    element.innerHTML += node.outerHTML;
-                    currentNode++;
-                  }
-
-                  NoticeSystem.typingTimeout = setTimeout(type, speed);
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                  var clone = node.cloneNode(false);
+                  var children = Array.from(node.childNodes);
+                  children.forEach(function(child){
+                    wrapNodeChars(child, clone, startIndexObj);
+                  });
+                  outFragment.appendChild(clone);
                 }
-
-                element.innerHTML = '';
-                type();
               }
 
-              function deleteWriter(element, speed, callback) {
-                if (!element) return;
-                let text = element.innerHTML;
-                let i = text.length;
-                NoticeSystem.typing = true;
-                function erase() {
-                  if (!NoticeSystem.typing) return;
-                  if (i > 0) {
-                    element.innerHTML = text.substring(0, i - 1);
-                    i--;
-                    NoticeSystem.typingTimeout = setTimeout(erase, speed);
-                  } else {
-                    NoticeSystem.typing = false;
-                    if (callback) callback();
-                  }
+              function renderNoticeWithCss(html) {
+                try {
+                  // 解析 html 片段到临时容器
+                  var temp = document.createElement('div');
+                  temp.innerHTML = html;
+                  var frag = document.createDocumentFragment();
+                  var start = { i: 0 };
+                  Array.from(temp.childNodes).forEach(function(n){ wrapNodeChars(n, frag, start); });
+
+                  // 清空并插入
+                  noticeElement.innerHTML = '';
+                  noticeElement.appendChild(frag);
+                  // 标记用于 CSS 动画（每次渲染都重触动画）
+                  void noticeElement.offsetWidth;
+                  noticeElement.classList.remove('notice-anim-play');
+                  // 强制重排后添加类重新触发动画
+                  setTimeout(function(){ noticeElement.classList.add('notice-anim-play'); }, 10);
+                } catch (e) {
+                  console.warn('renderNoticeWithCss error', e);
+                  noticeElement.innerHTML = html;
                 }
-                erase();
               }
 
               function displayRandomNotice() {
-                console.log('Displaying random notice');
-                if (NoticeSystem.typing) {
-                  NoticeSystem.typing = false;
-                  clearTimeout(NoticeSystem.typingTimeout);
+                if (!Array.isArray(notices) || notices.length === 0) return;
+                var randomIndex = Math.floor(Math.random() * notices.length);
+                if (randomIndex === NoticeSystem.lastUsedNotice && notices.length > 1) {
+                  // pick another
+                  randomIndex = (randomIndex + 1) % notices.length;
                 }
-
-                const randomIndex = Math.floor(Math.random() * notices.length);
-                deleteWriter(noticeElement, 13, function() {
-                  typeWriter(notices[randomIndex], noticeElement, 120);
-                  if (randomIndex === NoticeSystem.lastUsedNotice) {
-                    displayRandomNotice();
-                  } else {
-                    NoticeSystem.lastUsedNotice = randomIndex;
-                  }
-                });
+                NoticeSystem.lastUsedNotice = randomIndex;
+                renderNoticeWithCss(notices[randomIndex]);
               }
 
 
@@ -125,12 +114,31 @@
 
 
               displayRandomNotice();
+                // mark global-initialized to avoid duplicate re-inits from outer script
+                try { window.__notice_initialized_once = true; } catch(e) {}
             };
-          
 
-            window.initNoticeSystem();
+          
           })();
           </script>
+        <style data-pjax>
+          /* Notice CSS-based type animation */
+          /* 初始隐藏，避免服务器渲染内容或 PJAX 切换瞬显 */
+          #random-notice { display:inline-block; line-height:1.45; opacity:0; }
+          #random-notice.notice-anim-play { opacity:1; }
+          #random-notice.notice-anim-play .notice-char { opacity:0; transform:translateY(-6px); display:inline-block; white-space:pre; }
+          @keyframes notice-fade-in {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          #random-notice.notice-anim-play .notice-char {
+            animation-name: notice-fade-in;
+            animation-duration: 360ms;
+            animation-fill-mode: forwards;
+            animation-timing-function: cubic-bezier(.2,.8,.2,1);
+            animation-delay: calc(var(--i) * 0.06s);
+          }
+        </style>
       <% } else { %>
         <%= theme.notice %>
       <% } %>

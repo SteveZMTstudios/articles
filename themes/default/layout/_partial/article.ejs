@@ -530,15 +530,126 @@
     })();
   </script>
 <% } %>
-<% var toc = toc(page.content, {class: 'toc', list_number: false}) %>
-<% if (is_post() && page.toc && toc.length) { %>
-  <div style="position: fixed !important; right: 16px; top: 30%;">
-    <button class="mdui-fab mdui-fab-mini mdui-ripple" style="background: #75757575" mdui-menu="{target: '#toc'}"><i class="mdui-icon material-icons" translate="no">toc</i></button>
-    <ul class="mdui-menu" id="toc">
-      <li class="mdui-menu-item" disabled><%- toc %></li>
-    </ul>
-  </div>
-<% } %>
+<script data-pjax>
+  (function(){
+    // 将当前页面是否启用 toc 传给前端逻辑
+    window.__page_has_toc__ = <%= is_post() && page.toc ? 'true' : 'false' %>;
+
+    function buildTocFromHeadings() {
+      // 清理旧的容器（如果存在）
+      try {
+        var old = document.getElementById('toc-fab-container');
+        if (old && old.parentNode) old.parentNode.removeChild(old);
+      } catch(e) {}
+
+      if (!window.__page_has_toc__) return; // 未启用则直接返回
+
+      var content = document.querySelector('#main article .mdui-card-content');
+      if (!content) return;
+      var headings = content.querySelectorAll('h2, h3, h4, h5, h6');
+      if (!headings || headings.length === 0) return; // 无标题则不展示
+
+      // 构建 TOC 列表（保持原有 .toc 结构样式）
+      function getLevel(h){ var t = parseInt(h.tagName.replace('H',''), 10); return isNaN(t)?6:t; }
+      var rootOl = document.createElement('ol');
+      rootOl.className = 'toc';
+      var currentLevel = 0;
+      var currentOl = rootOl;
+      var olStack = [rootOl];
+
+      headings.forEach(function(h){
+        if (!h.id) return; // 没有 id 的标题跳过
+        var level = getLevel(h);
+        if (currentLevel === 0) currentLevel = level; // 初始化基准层级
+
+        if (level > currentLevel) {
+          // 下钻：创建子 ol，直到匹配层级
+          for (var i = currentLevel; i < level; i++) {
+            var childOl = document.createElement('ol');
+            childOl.className = 'toc-child';
+            var lastLi = currentOl.lastElementChild;
+            if (!lastLi) { lastLi = document.createElement('li'); currentOl.appendChild(lastLi); }
+            lastLi.appendChild(childOl);
+            olStack.push(childOl);
+            currentOl = childOl;
+          }
+          currentLevel = level;
+        } else if (level < currentLevel) {
+          // 回退：弹栈到目标层级
+          for (var j = currentLevel; j > level; j--) {
+            olStack.pop();
+          }
+          currentOl = olStack[olStack.length - 1] || rootOl;
+          currentLevel = level;
+        }
+
+        var li = document.createElement('li');
+        li.className = 'toc-item toc-level-' + level;
+        var a = document.createElement('a');
+        a.className = 'toc-link';
+        a.href = '#' + encodeURIComponent(h.id);
+        var span = document.createElement('span');
+        span.className = 'toc-text';
+        span.textContent = h.textContent || h.innerText || '';
+        a.appendChild(span);
+        li.appendChild(a);
+        currentOl.appendChild(li);
+      });
+
+      // 不生成空 TOC
+      if (!rootOl.children.length) return;
+
+      // 生成浮动按钮 + 菜单（保持原有样式）
+      var container = document.createElement('div');
+      container.id = 'toc-fab-container';
+      container.setAttribute('aria-hidden', 'false');
+      container.style.position = 'fixed';
+      container.style.right = '16px';
+      container.style.top = '30%';
+      container.style.zIndex = '4999';
+
+      var btn = document.createElement('button');
+      btn.className = 'mdui-fab mdui-fab-mini mdui-ripple';
+      btn.style.background = '#75757575';
+      btn.setAttribute('mdui-menu', "{target: '#toc-menu'}");
+      btn.setAttribute('aria-label', '目录');
+      btn.innerHTML = '<i class="mdui-icon material-icons" translate="no">toc<\/i>';
+
+      var menu = document.createElement('ul');
+      menu.className = 'mdui-menu';
+      menu.id = 'toc-menu';
+      var liWrap = document.createElement('li');
+      liWrap.className = 'mdui-menu-item';
+      liWrap.setAttribute('disabled', '');
+      liWrap.appendChild(rootOl);
+      menu.appendChild(liWrap);
+
+      container.appendChild(btn);
+      container.appendChild(menu);
+      document.body.appendChild(container);
+
+      // 初始化 MDUI 组件
+      try { if (window.mdui && typeof mdui.mutation === 'function') mdui.mutation(); } catch(e) {}
+
+      // 点击目录项后关闭菜单（可选优化）
+      menu.addEventListener('click', function(e){
+        var a = e.target.closest('a.toc-link');
+        if (!a) return;
+        // 让 MDUI 菜单关闭
+        try {
+          var inst = mdui.Menu.get(btn);
+          if (inst) inst.close();
+        } catch(e) {}
+      });
+    }
+
+    // 初次与 PJAX 切换后重建
+    document.addEventListener('DOMContentLoaded', buildTocFromHeadings);
+    document.addEventListener('page:updated', buildTocFromHeadings);
+    document.addEventListener('pjax:complete', buildTocFromHeadings);
+    document.addEventListener('pjax:success', buildTocFromHeadings);
+  })();
+</script>
 <div class="mdui-divider" style="margin-bottom: 39px"></div>
 <% if (page.prev || page.next) { %>
   <nav id="paginator">
