@@ -133,7 +133,7 @@ qrcode:
     <div class="friend-info">
       <h3>MBRjun-Blog</h3>
       <p>我们生活在大地上，但我们的梦想超越天空</p>
-      <a href="https://www.libmbr.com/">访问网站</a>
+      <a href="//www.libmbr.com/">访问网站</a>
     </div>
   </div>
 
