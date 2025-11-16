@@ -313,6 +313,7 @@
     window.addEventListener('load', function() {
       setTimeout(function() {
         reinitPageComponents();
+        try { fixMduiDialogs(); fixFixedElements(); } catch(e) {}
       }, 50);
 
   try { window._pjax_last_url = location.href; } catch(e) {}
@@ -347,58 +348,120 @@
     }
 
     function reinitializeNoticeSystem() {
-      if (localStorage.getItem('notice-system-initialized') === 'true') {
-        const noticeElement = document.getElementById('random-notice');
-        if (noticeElement && (window.location.pathname === '/' || window.location.pathname === '/index.html')) {
-          //console.log('Reinitializing notice system');
-          window.initNoticeSystem();
-        }
-      }
-      if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
-        if (typeof window.initNoticeSystem === 'function') {
-          window.initNoticeSystem();
-        }
+      try {
+        if (typeof window.initNoticeSystem !== 'function') return;
+        var isHome = (window.location.pathname === '/' || window.location.pathname === '/index.html');
+        if (!isHome) return;
+        if (window.__notice_initialized_once) return;
+        window.__notice_initialized_once = true;
+        window.initNoticeSystem();
+      } catch (e) {
+        console.warn('reinitializeNoticeSystem error:', e);
       }
     }
 
 
     function fixMduiDialogs() {
-
+      // 避免重复绑定：对每个触发器仅绑定一次
       document.querySelectorAll('[mdui-dialog]').forEach(function(el) {
-        var dialogTarget = el.getAttribute('mdui-dialog');
-
-        var dialogId = '';
         try {
+          if (el.dataset.dialogBound === '1') return;
 
-          var match = /target\s*:\s*['"]#?([^'"]+)['"]/i.exec(dialogTarget);
-          if (match && match[1]) {
-            dialogId = match[1];
-          } 
+          var dialogTarget = el.getAttribute('mdui-dialog') || '';
+          var dialogId = '';
 
-          else if (dialogTarget.startsWith('#')) {
-            dialogId = dialogTarget.substring(1);
-          }
-        } catch(e) {}
-        
-        if (!dialogId) return;
-        
+          try {
+            var match = /target\s*:\s*['"]#?([^'"]+)['"]/i.exec(dialogTarget);
+            if (match && match[1]) dialogId = match[1];
+            else if (dialogTarget && dialogTarget.startsWith('#')) dialogId = dialogTarget.substring(1);
+          } catch(e) {}
 
-        el.removeEventListener('click', handleDialogClick);
-        el.addEventListener('click', handleDialogClick);
-        
-        function handleDialogClick(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          var dialog = document.getElementById(dialogId);
-          if (dialog && window.mdui && mdui.Dialog) {
-            var inst = new mdui.Dialog(dialog, {
-              history: false
-            });
-            inst.open();
-          }
-          return false;
-        }
+          if (!dialogId) return;
+
+          var handler = function(e){
+            try {
+              e.preventDefault();
+              e.stopPropagation();
+            } catch(_) {}
+            var dialog = document.getElementById(dialogId);
+            if (dialog && dialog.parentNode !== document.body) {
+              try { document.body.appendChild(dialog); } catch(_) {}
+            }
+            if (dialog && window.mdui && mdui.Dialog) {
+              try {
+                var inst = new mdui.Dialog(dialog, { history: false });
+                inst.open();
+              } catch(_) {}
+            }
+            return false;
+          };
+
+          // 记录并绑定一次
+          el.__mduiDialogHandler = handler;
+          el.addEventListener('click', handler, false);
+          el.dataset.dialogBound = '1';
+        } catch (e) { /* noop */ }
       });
+    }
+
+    function fixFixedElements() {
+      try {
+        // Known fixed element ids we want to manage (add more ids here if needed)
+        var ids = ['toc'];
+        ids.forEach(function(id) {
+          var moved = document.querySelector('[data-fixed-wrapper-id="' + id + '"]');
+          var newEl = document.querySelector('#main #' + id);
+
+          // If we previously moved a wrapper but current page has no #main copy,
+          // hide the moved wrapper instead of removing it. This avoids permanently
+          // deleting the element (which prevents it from reappearing later).
+          if (moved && !newEl) {
+            try { moved.setAttribute('data-fixed-hidden', 'true'); moved.style.display = 'none'; } catch(e) { }
+          }
+
+          // If both exist but moved is not the wrapper for newEl, it's probably stale
+          if (moved && newEl) {
+            var newWrapper = newEl.closest('div');
+            if (newWrapper && moved !== newWrapper) {
+              try { moved.setAttribute('data-fixed-hidden', 'true'); moved.style.display = 'none'; } catch(e) { }
+              moved = null;
+            }
+          }
+
+          // If new element exists, move it to body (if required)
+          if (newEl) {
+            var wrapper = newEl.closest('div');
+              if (wrapper) {
+                var pos = '';
+                try { pos = getComputedStyle(wrapper).position || wrapper.style.position; } catch(e) {}
+                if (pos === 'fixed' && wrapper.parentNode !== document.body) {
+                  wrapper.setAttribute('data-fixed-wrapper-id', id);
+                  wrapper.removeAttribute('data-fixed-hidden');
+                  wrapper.style.display = '';
+                  document.body.appendChild(wrapper);
+                } else if (pos === 'fixed' && wrapper.parentNode === document.body) {
+                  // Ensure we set the attribute when it's already in the body
+                  if (!wrapper.hasAttribute('data-fixed-wrapper-id')) wrapper.setAttribute('data-fixed-wrapper-id', id);
+                  wrapper.removeAttribute('data-fixed-hidden');
+                  wrapper.style.display = '';
+                }
+                // After moving or ensuring the wrapper is in body, re-run MDUI mutation
+                try { if (window.mdui && typeof mdui.mutation === 'function') mdui.mutation(); } catch(e) {}
+              }
+          }
+        });
+
+        // For any wrappers previously moved to body, hide them if current #main
+        // doesn't contain the corresponding element. Do not remove them permanently.
+        document.querySelectorAll('[data-fixed-wrapper-id]').forEach(function(w) {
+          var id = w.getAttribute('data-fixed-wrapper-id');
+          if (id && !document.querySelector('#main #' + id)) {
+            try { w.setAttribute('data-fixed-hidden', 'true'); w.style.display = 'none'; } catch(e) {}
+          }
+        });
+      } catch (e) {
+        console.warn('fixFixedElements error:', e);
+      }
     }
 
     function simulatePageRefresh() {
@@ -406,14 +469,18 @@
       triggerEvents();
       handleDrawer();
       window.dispatchEvent(new Event('page:updated'));
-      if (typeof window.initNoticeSystem === 'function') {
-        window.initNoticeSystem();
-      }
       reinitializeNoticeSystem();
-
-      setTimeout(fixMduiDialogs, 100);
-      //console.log('Page type:', window.location.pathname);
-      //console.log('Notice system status:', window.noticeSystemInitialized);
+      setTimeout(function(){
+        fixMduiDialogs();
+        fixFixedElements();
+        // 降低图片对首屏渲染的阻塞
+        try {
+          document.querySelectorAll('#main img').forEach(function(img){
+            if (!img.hasAttribute('loading')) img.setAttribute('loading','lazy');
+            if (!img.hasAttribute('decoding')) img.setAttribute('decoding','async');
+          });
+        } catch(_) {}
+      }, 100);
     }
 
 
@@ -492,12 +559,22 @@
 
         $('#main').html($mainContent.html());
 
-        document.querySelectorAll('#main script[data-pjax]').forEach(item => {
-          const newScript = document.createElement('script');
-          Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-          const content = item.text || item.textContent || item.innerHTML || '';
-          if (content) newScript.appendChild(document.createTextNode(content));
-          item.parentNode.replaceChild(newScript, item);
+        // 低优先级执行器：让首屏渲染、动画先于脚本执行
+        var scheduleLowPriority = (window.requestIdleCallback)
+          ? function(fn){ try{ requestIdleCallback(fn, {timeout: 800}); }catch(_){ setTimeout(fn, 0); } }
+          : function(fn){ setTimeout(fn, 0); };
+
+        // 延后执行 data-pjax 内联脚本，避免阻断过渡动画
+        scheduleLowPriority(function(){
+          try {
+            document.querySelectorAll('#main script[data-pjax]').forEach(function(item){
+              var newScript = document.createElement('script');
+              Array.from(item.attributes).forEach(function(attr){ newScript.setAttribute(attr.name, attr.value); });
+              var content = item.text || item.textContent || item.innerHTML || '';
+              if (content) newScript.appendChild(document.createTextNode(content));
+              item.parentNode.replaceChild(newScript, item);
+            });
+          } catch(_) {}
         });
 
         var newGitalkConfigScript = $mainContent.find('script').filter(function() {
@@ -514,16 +591,20 @@
           }
         } catch(e) { console.warn('Normalize Gitalk id failed', e); }
 
-        $mainContent.find('script[src]').each(function() {
-          var src = this.getAttribute('src');
-
-          if (src && !document.querySelector('script[src="'+src+'"]')) {
-            var extScript = document.createElement('script');
-            extScript.src = src;
-            if (this.defer) extScript.defer = true;
-            if (this.async) extScript.async = true;
-            document.body.appendChild(extScript);
-          }
+        // 延后加载外部脚本，默认使用 defer，减轻主线程阻塞
+        scheduleLowPriority(function(){
+          try {
+            $mainContent.find('script[src]').each(function() {
+              var src = this.getAttribute('src');
+              if (src && !document.querySelector('script[src="'+src+'"]')) {
+                var extScript = document.createElement('script');
+                extScript.src = src;
+                extScript.defer = true; // 优先使用 defer
+                if (this.async) extScript.async = true;
+                document.body.appendChild(extScript);
+              }
+            });
+          } catch(_) {}
         });
 
         if (!window._popstate_handling) {
@@ -533,17 +614,23 @@
         document.title = $response.filter('title').text() || document.title;
         simulatePageRefresh();
 
-        var busuanziScriptSelector = 'script[src*="busuanzi"]';
-        var oldBusuanzi = document.querySelector(busuanziScriptSelector);
-        if (oldBusuanzi) {
-          oldBusuanzi.parentNode.removeChild(oldBusuanzi);
-        }
-        if (window.BUSUANZI_SRC) {
-          var script = document.createElement('script');
-          script.src = window.BUSUANZI_SRC;
-          script.defer = true;
-          document.body.appendChild(script);
-        }
+        // 提高 #main 首屏交互性：优先解除 loading，与动画同步
+        hideLoading();
+
+        // busuanzi 放低优先级加载
+        scheduleLowPriority(function(){
+          try {
+            var busuanziScriptSelector = 'script[src*="busuanzi"]';
+            var oldBusuanzi = document.querySelector(busuanziScriptSelector);
+            if (oldBusuanzi && oldBusuanzi.parentNode) oldBusuanzi.parentNode.removeChild(oldBusuanzi);
+            if (window.BUSUANZI_SRC) {
+              var script = document.createElement('script');
+              script.src = window.BUSUANZI_SRC;
+              script.defer = true;
+              document.body.appendChild(script);
+            }
+          } catch(_) {}
+        });
 
   if (targetHash) {
           const target = $(targetHash);
@@ -553,7 +640,6 @@
             }, 300);
           }
         }
-        hideLoading();
       } catch (err) {
         window.location.reload();
         handleAjaxError('switch_error', null, href);
@@ -587,7 +673,7 @@
       } catch (err) {
 
       }
-      if (link.find('.mdui-icon.material-icons').text() === 'search' || !href || typeof href !== 'string' || href.startsWith('javascript:')) {
+      if (link.find('.mdui-icon.material-icons').text() === 'search' || !href || typeof href !== 'string' || href.startsWith('javascript:') || link.attr('data-no-pjax') === 'true') {
         //console.log('handleLinkClick: ignored (search/invalid)', { href: href });
         return true;
       }
@@ -598,20 +684,44 @@
         const targetUrl = hashIndex > -1 ? href.substring(0, hashIndex) : href;
         const targetHash = hashIndex > -1 ? href.substring(hashIndex) : '';
         //console.log('handleLinkClick: ajax target', { targetUrl: targetUrl, targetHash: targetHash });
-        $.ajax({
-          url: targetUrl,
-          method: 'GET',
-          dataType: 'html',
-          success: function(response) {
-            //console.log('AJAX success callback for', href);
-            handleAjaxSuccess(response, href, targetHash);
-          },
-          error: function(xhr, status, error) {
-            console.error('AJAX error', { status: status, error: error, href: href });
-            handleAjaxError('ajax_error', link, href);
-          }
-        });
+        // Use fetch-based pjax wrapper for better control (fall back to ajax if needed)
+        try {
+          pjaxFetch(targetUrl, targetHash);
+        } catch(e) {
+          // fallback to existing AJAX on older browsers
+          $.ajax({
+            url: targetUrl,
+            method: 'GET',
+            dataType: 'html',
+            success: function(response) {
+              handleAjaxSuccess(response, href, targetHash);
+            },
+            error: function(xhr, status, error) {
+              console.error('AJAX error', { status: status, error: error, href: href });
+              handleAjaxError('ajax_error', link, href);
+            }
+          });
+        }
       }
+    }
+
+    function pjaxFetch(href, targetHash, options) {
+      options = options || {};
+      showLoading();
+      fetch(href, { credentials: 'same-origin' }).then(function(res) {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.text();
+      }).then(function(html) {
+        try {
+          handleAjaxSuccess(html, href, targetHash);
+        } catch (e) {
+          console.error('PJAX parse error', e);
+          handleAjaxError('parse_error', null, href);
+        }
+      }).catch(function(err) {
+        console.error('PJAX fetch failed', err, href);
+        handleAjaxError('ajax_error', null, href);
+      });
     }
 
     $(document).on('click', 'a', function(e) {
@@ -693,20 +803,27 @@
       showLoading();
       window._popstate_handling = true;
       var href = location.href;
-      $.ajax({
-        url: href,
-        method: 'GET',
-        dataType: 'html',
-        success: function(response) {
-          handleAjaxSuccess(response, href, null);
-          window._popstate_handling = false;
-          try { window._pjax_last_url = href; } catch(e) {}
-        },
-        error: function(xhr, status, error) {
-          handleAjaxError('br_ajax_error', $(location), href);
-          window._popstate_handling = false;
-        }
-      });
+      try {
+        pjaxFetch(href, null, {popstate: true});
+        window._popstate_handling = false;
+        try { window._pjax_last_url = href; } catch(e) {}
+      } catch (e) {
+        // fallback to ajax request if pjaxFetch unsupported
+        $.ajax({
+          url: href,
+          method: 'GET',
+          dataType: 'html',
+          success: function(response) {
+            handleAjaxSuccess(response, href, null);
+            window._popstate_handling = false;
+            try { window._pjax_last_url = href; } catch(e) {}
+          },
+          error: function(xhr, status, error) {
+            handleAjaxError('br_ajax_error', $(location), href);
+            window._popstate_handling = false;
+          }
+        });
+      }
     };
   </script>
   <script>if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches){document.getElementsByTagName("body")[0].className+=" mdui-theme-layout-dark"};</script>
@@ -947,7 +1064,7 @@
   <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
   <article class="mdui-card mdui-m-b-5">
     <header class="mdui-card-media">
-      <img src="/images/loading.svg" data-original="/images/random/material-9.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+      <img src="/images/loading.svg" data-original="/images/random/material-5.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
       <div class="mdui-card-media-covered">
         <div class="mdui-card-primary">
             <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;">即将跳转</h1></div>
@@ -1401,8 +1518,126 @@ window.onload = async function() {
 
 
 
+<script data-pjax>
+  (function(){
+    // 将当前页面是否启用 toc 传给前端逻辑
+    window.__page_has_toc__ = false;
 
+    function buildTocFromHeadings() {
+      // 清理旧的容器（如果存在）
+      try {
+        var old = document.getElementById('toc-fab-container');
+        if (old && old.parentNode) old.parentNode.removeChild(old);
+      } catch(e) {}
 
+      if (!window.__page_has_toc__) return; // 未启用则直接返回
+
+      var content = document.querySelector('#main article .mdui-card-content');
+      if (!content) return;
+      var headings = content.querySelectorAll('h2, h3, h4, h5, h6');
+      if (!headings || headings.length === 0) return; // 无标题则不展示
+
+      // 构建 TOC 列表（保持原有 .toc 结构样式）
+      function getLevel(h){ var t = parseInt(h.tagName.replace('H',''), 10); return isNaN(t)?6:t; }
+      var rootOl = document.createElement('ol');
+      rootOl.className = 'toc';
+      var currentLevel = 0;
+      var currentOl = rootOl;
+      var olStack = [rootOl];
+
+      headings.forEach(function(h){
+        if (!h.id) return; // 没有 id 的标题跳过
+        var level = getLevel(h);
+        if (currentLevel === 0) currentLevel = level; // 初始化基准层级
+
+        if (level > currentLevel) {
+          // 下钻：创建子 ol，直到匹配层级
+          for (var i = currentLevel; i < level; i++) {
+            var childOl = document.createElement('ol');
+            childOl.className = 'toc-child';
+            var lastLi = currentOl.lastElementChild;
+            if (!lastLi) { lastLi = document.createElement('li'); currentOl.appendChild(lastLi); }
+            lastLi.appendChild(childOl);
+            olStack.push(childOl);
+            currentOl = childOl;
+          }
+          currentLevel = level;
+        } else if (level < currentLevel) {
+          // 回退：弹栈到目标层级
+          for (var j = currentLevel; j > level; j--) {
+            olStack.pop();
+          }
+          currentOl = olStack[olStack.length - 1] || rootOl;
+          currentLevel = level;
+        }
+
+        var li = document.createElement('li');
+        li.className = 'toc-item toc-level-' + level;
+        var a = document.createElement('a');
+        a.className = 'toc-link';
+        a.href = '#' + encodeURIComponent(h.id);
+        var span = document.createElement('span');
+        span.className = 'toc-text';
+        span.textContent = h.textContent || h.innerText || '';
+        a.appendChild(span);
+        li.appendChild(a);
+        currentOl.appendChild(li);
+      });
+
+      // 不生成空 TOC
+      if (!rootOl.children.length) return;
+
+      // 生成浮动按钮 + 菜单（保持原有样式）
+      var container = document.createElement('div');
+      container.id = 'toc-fab-container';
+      container.setAttribute('aria-hidden', 'false');
+      container.style.position = 'fixed';
+      container.style.right = '16px';
+      container.style.top = '30%';
+      container.style.zIndex = '4999';
+
+      var btn = document.createElement('button');
+      btn.className = 'mdui-fab mdui-fab-mini mdui-ripple';
+      btn.style.background = '#75757575';
+      btn.setAttribute('mdui-menu', "{target: '#toc-menu'}");
+      btn.setAttribute('aria-label', '目录');
+      btn.innerHTML = '<i class="mdui-icon material-icons" translate="no">toc<\/i>';
+
+      var menu = document.createElement('ul');
+      menu.className = 'mdui-menu';
+      menu.id = 'toc-menu';
+      var liWrap = document.createElement('li');
+      liWrap.className = 'mdui-menu-item';
+      liWrap.setAttribute('disabled', '');
+      liWrap.appendChild(rootOl);
+      menu.appendChild(liWrap);
+
+      container.appendChild(btn);
+      container.appendChild(menu);
+      document.body.appendChild(container);
+
+      // 初始化 MDUI 组件
+      try { if (window.mdui && typeof mdui.mutation === 'function') mdui.mutation(); } catch(e) {}
+
+      // 点击目录项后关闭菜单（可选优化）
+      menu.addEventListener('click', function(e){
+        var a = e.target.closest('a.toc-link');
+        if (!a) return;
+        // 让 MDUI 菜单关闭
+        try {
+          var inst = mdui.Menu.get(btn);
+          if (inst) inst.close();
+        } catch(e) {}
+      });
+    }
+
+    // 初次与 PJAX 切换后重建
+    document.addEventListener('DOMContentLoaded', buildTocFromHeadings);
+    document.addEventListener('page:updated', buildTocFromHeadings);
+    document.addEventListener('pjax:complete', buildTocFromHeadings);
+    document.addEventListener('pjax:success', buildTocFromHeadings);
+  })();
+</script>
 <div class="mdui-divider" style="margin-bottom: 39px"></div>
 
 
