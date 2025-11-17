@@ -11,7 +11,7 @@
   <script src="//awp-assets.meituan.net/thh/thh_feb_web_portal/js/jquery-3.6.0.min.js"></script>
   <script>
     if (typeof jQuery === 'undefined') {
-      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"><\/script>');
+      document.write('<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"><\/script>');
     }
   </script>
   <script>
@@ -626,5 +626,23 @@
   <%- js(['js/mdui', 'js/script']) %>
   <%- js('custom') %>
   <%- js('js/sw-update') %>
+  <script>
+  (function(){
+    if (!('serviceWorker' in navigator)) return;
+    try {
+      navigator.serviceWorker.getRegistrations().then(function(regs){
+        var rootScope = location.origin + '/';
+        var hasRoot = regs.some(function(r){ return r.scope === rootScope; });
+        if (!hasRoot) {
+          navigator.serviceWorker.register('/service-worker.js', {scope: '/'}).then(function(reg){
+            console.log('[sw-fix] registered root service-worker', reg.scope);
+          }).catch(function(err){
+            console.warn('[sw-fix] root register failed', err);
+          });
+        }
+      }).catch(function(e){ console.warn('[sw-fix] getRegistrations failed', e); });
+    } catch(e) { console.warn('[sw-fix] unexpected', e); }
+  })();
+  </script>
 </body>
 </html>

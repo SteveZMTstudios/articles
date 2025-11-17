@@ -3,14 +3,14 @@ theme_color:
   accent: blue
 
 notice: 
-  - "该站点尚在建设中。遇到问题请<a target='_blank' href='https://github.com/SteveZMTstudios/articles/issues/new/choose'>反馈给我们</a>！"
+  - "该站点尚在建设中。遇到问题请<a target='_blank' href='//github.com/SteveZMTstudios/articles/issues/new/choose'>反馈给我们</a>！"
   - "????!!!!!??!?!?!??!?!?!!!!"
   - "请将 busuanzi.ibruce.info 添加到您的 uBlock Origin 例外列表中！"
   - "我是一个懒人，所以这个站点可能会很久才更新一次。"
   - "这个博客基本上所有的精力都花在刀把上了..."
   - "“宇宙小机器人是什么玩意”"
   - "// TODO"
-  - "我很可爱请<a target='_blank' href='https://space.bilibili.com/474130186'>给我钱</a>qwq"
+  - "我很可爱请<a target='_blank' href='//space.bilibili.com/474130186'>给我钱</a>qwq"
   - "console.log('Hello World!')"
   - "战神起跳，战神睡觉"
   - "喵！"
@@ -67,18 +67,18 @@ sns:
   twitter:
   facebook:
   google_plus:
-  steam: https://steamcommunity.com/id/stevezmt/
+  steam: //steamcommunity.com/id/stevezmt/
   weibo:
   instagram:
   tumblr:
-  github: https://github.com/stevezmtstudios/
+  github: //github.com/stevezmtstudios/
   linkedin:
-  zhihu: https://www.zhihu.com/people/zhang-xian-sheng-70-9
+  zhihu: //www.zhihu.com/people/zhang-xian-sheng-70-9
   douban:
   qq: tencent://message/?uin=3579946866&Menu=yes
   wechat:
-  bilibili: https://space.bilibili.com/474130186
-  custom: https://stevezmt.top/
+  bilibili: //space.bilibili.com/474130186
+  custom: //stevezmt.top/
 
 open_graph:
   twitter:
@@ -100,18 +100,22 @@ pages:
   link: /tagcloud
 - name: 友情链接
   link: /friends
+- name: 兼容视图
+  link: /k
 
 links:
   - name: 史蒂夫ZMT 主页
-    link: https://stevezmt.top/
+    link: //stevezmt.top/
+  - name: Phigros 历史版本收集
+    link: //stevezmt.top/Phigros-history/
   - name: 过气项目存档
-    link: https://rip.stevezmt.top
+    link: //rip.stevezmt.top
 
     
 
 since: 2019
-footer_text: '| <a href="https://icp.gov.moe/?keyword=20240571" target="_blank" class="mdui-text-color-theme-accent">萌ICP备20240571号</a>'
-license: 此页内容遵循<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank" rel="license noopener noreferrer" style="display:inline-block;"> CC BY-NC-SA 4.0 协议</a>
+footer_text: '| <a href="//icp.gov.moe/?keyword=20240571" target="_blank" class="mdui-text-color-theme-accent">萌ICP备20240571号</a>'
+license: 此页内容遵循<a href="//creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank" rel="license noopener noreferrer" style="display:inline-block;"> CC BY-NC-SA 4.0 协议</a>
 
 gallery:
   fancybox_css: //gcore.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css
@@ -132,7 +136,7 @@ donate:
   - name: 微信
     link: /images/page/donate/wechat.jpg
   - name: B币充电
-    link: https://space.bilibili.com/474130186
+    link: //space.bilibili.com/474130186
   
 search:
   placeholder: 搜索...

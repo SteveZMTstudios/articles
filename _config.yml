@@ -1,6 +1,6 @@
 # Hexo Configuration
-## Docs: https://hexo.io/docs/configuration.html
-## Source: https://github.com/hexojs/hexo/
+## Docs: //hexo.io/docs/configuration.html
+## Source: //github.com/hexojs/hexo/
 
 # Site
 title: 老史尬侃 - Steve ZMT 's Blog
@@ -18,8 +18,8 @@ language: zh-CN
 timezone: Asia/Shanghai
 
 # URL
-## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://blog.stevezmt.top/
+## Set your site url here. For example, if you use GitHub Page, set url as '//username.github.io/project'
+url: //blog.stevezmt.top/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -75,7 +75,7 @@ default_category: uncategorized
 category_map:
 tag_map:
 
-## https://developer.mozilla
+## //developer.mozilla
 # Date / Time format
 ## Hexo uses Moment.js to parse and display date
 ## You can customize the date format as defined in
@@ -99,8 +99,8 @@ exclude:
 ignore:
 
 # Extensions
-## Plugins: https://hexo.io/plugins/
-## Themes: https://hexo.io/themes/
+## Plugins: //hexo.io/plugins/
+## Themes: //hexo.io/themes/
 theme: default
 
 # lazyload image
@@ -117,7 +117,7 @@ auto_excerpt:
   length: 150
 
 # Markdown
-## Docs: https://github.com/niemingzhao/hexo-renderer-markdown#readme
+## Docs: //github.com/niemingzhao/hexo-renderer-markdown#readme
 markdown:
   render:
     html: true
@@ -159,12 +159,12 @@ math:
   enabled: true
   engine: mathjax ##可选渲染引擎：mathjax、katex
   mathjax:
-    cdn: https://gcore.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+    cdn: //gcore.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
     mhchem: true
   katex:
-    cdn_css: https://gcore.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css
-    cdn_js: https://gcore.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js
-    auto_render: https://gcore.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js
+    cdn_css: //gcore.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css
+    cdn_js: //gcore.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js
+    auto_render: //gcore.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js
 
 # mermaid 
 mermaid:
@@ -183,7 +183,7 @@ service_worker:
 
 
 # Deployment
-## Docs: https://hexo.io/docs/one-command-deployment
+## Docs: //hexo.io/docs/one-command-deployment
 deploy:
   - type: git
     repo: git@github.com:SteveZMTstudios/articles.git
