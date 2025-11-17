@@ -1,11 +1,8 @@
 博客地址：[blog.stevezmt.top](https://blog.stevezmt.top)
 
-构建状态：<a href='https://github.com/SteveZMTstudios/articles/actions/workflows/hexo-deploy.yml'><img src='https://github.com/SteveZMTstudios/articles/actions/workflows/hexo-deploy.yml/badge.svg' alt='Failed to load Hexo-deploy status'></a> <br> <a href='https://github.com/SteveZMTstudios/articles/actions/workflows/static.yml'><img src='https://github.com/SteveZMTstudios/articles/actions/workflows/static.yml/badge.svg'></a> <br>
-</a>
+构建状态：不可用
 
-构建检查：
-`main`:[![Build Check](https://github.com/SteveZMTstudios/articles/actions/workflows/check-pages.yml/badge.svg?branch=main)](https://github.com/SteveZMTstudios/articles/actions/workflows/check-pages.yml)<br>
-`SteveZMTstudios-patch-1`:[![Build Check](https://github.com/SteveZMTstudios/articles/actions/workflows/check-pages.yml/badge.svg?branch=SteveZMTstudios-patch-1)](https://github.com/SteveZMTstudios/articles/actions/workflows/check-pages.yml)
+构建检查：不可用
 
 [![打开 页面创建器](https://img.shields.io/badge/%E9%A1%B5%E9%9D%A2%E5%88%9B%E5%BB%BA%E5%99%A8-%E5%BC%80%E5%A7%8B-green)](https://blog.stevezmt.top/new)
 

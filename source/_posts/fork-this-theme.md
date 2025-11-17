@@ -86,7 +86,8 @@ hexo g == hexo generate
 ## 3. 部署到Github
 1. 上载仓库文件，输入：`git add .`，添加所有文件，输入：`git commit && git push`，提交文件。
 2. 打开终端，输入：`hexo d`，部署到Github。
-3. 访问`<你的用户名>.github.io`，查看效果。一般需要一会,但是如果你的页面一直提示`There isn't a GitHub Pages site here`,那么你需要检查一下你的仓库设置，确保你的仓库名字是`<你的用户名>.github.io`，以及是否在仓库的`Settings`里面开启了`GitHub Pages`，deploy分支是否设为了gh-pages。
+<!-- 3. 访问`<你的用户名>.github.io`，查看效果。一般需要一会,但是如果你的页面一直提示`There isn't a GitHub Pages site here`,那么你需要检查一下你的仓库设置，确保你的仓库名字是`<你的用户名>.github.io`，以及是否在仓库的`Settings`里面开启了`GitHub Pages`，deploy分支是否设为了gh-pages。 -->
+3. 使用vercel或者netlify等服务部署你的博客。
 4. 勤用搜索，遇到问题先自己解决，解决不了再[提issue](https://github.com/SteveZMTstudios/article-preview/issues)。
 
 ## 鸣谢和引用

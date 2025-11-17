@@ -8,12 +8,10 @@ donate: false
 license: false
 ---
 
-构建状态：<a href='https://github.com/SteveZMTstudios/articles/actions/workflows/hexo-deploy.yml'><img src='https://github.com/SteveZMTstudios/articles/actions/workflows/hexo-deploy.yml/badge.svg'></a><br>
-部署状态：<a href='https://github.com/SteveZMTstudios/articles/actions/workflows/pages/pages-build-deployment'><img src='https://github.com/SteveZMTstudios/articles/actions/workflows/pages/pages-build-deployment/badge.svg'></a>
+构建状态：不可用
+部署状态：不可用
 
-构建检查：
-`main`:[![Build Check](https://github.com/SteveZMTstudios/articles/actions/workflows/check-pages.yml/badge.svg?branch=main)](https://github.com/SteveZMTstudios/articles/actions/workflows/check-pages.yml)<br>
-`SteveZMTstudios-patch-1`:[![Build Check](https://github.com/SteveZMTstudios/articles/actions/workflows/check-pages.yml/badge.svg?branch=SteveZMTstudios-patch-1)](https://github.com/SteveZMTstudios/articles/actions/workflows/check-pages.yml)
+构建检查：不可用
 
 
 <center>

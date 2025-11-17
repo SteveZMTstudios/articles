@@ -6,6 +6,7 @@
     "build": "hexo generate",
     "clean": "hexo clean",
     "deploy": "hexo deploy",
+    "deploy:firebase": "npm run build && npx firebase deploy --only hosting --project your-project-id",
     "server": "hexo server",
     "test": "hexo clean && hexo generate && hexo server --drafts --watch"
   },
