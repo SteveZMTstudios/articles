@@ -1,5 +1,5 @@
 /*!
- * mdui 1.0.2 (https://mdui.org)
+ * mdui 1.0.2 (//mdui.org)
  * Copyright 2016-2021 zdhxiong
  * Licensed under MIT
  */
@@ -148,7 +148,7 @@
 
   function resolve(self, newValue) {
     try {
-      // Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
+      // Promise Resolution Procedure: //github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
       if (newValue === self)
         { throw new TypeError('A promise cannot be resolved with itself.'); }
       if (
@@ -354,7 +354,7 @@
   // Expose the polyfill if Promise is undefined or set to a
   // non-function value. The latter can be due to a named HTMLElement
   // being exposed by browsers for legacy reasons.
-  // https://github.com/taylorhakes/promise-polyfill/issues/114
+  // //github.com/taylorhakes/promise-polyfill/issues/114
   if (typeof globalNS['Promise'] !== 'function') {
     globalNS['Promise'] = Promise$1;
   } else if (!globalNS.Promise.prototype['finally']) {
@@ -620,7 +620,7 @@
   var $ = get$();
 
   // 避免页面加载完后直接执行css动画
-  // https://css-tricks.com/transitions-only-after-page-load/
+  // //css-tricks.com/transitions-only-after-page-load/
   setTimeout(function () { return $('body').addClass('mdui-loaded'); });
   var mdui = {
       $: $,
@@ -3359,10 +3359,10 @@
   }
 
   /**
-   * Inspired by https://github.com/nolimits4web/Framework7/blob/master/src/js/fast-clicks.js
-   * https://github.com/nolimits4web/Framework7/blob/master/LICENSE
+   * Inspired by //github.com/nolimits4web/Framework7/blob/master/src/js/fast-clicks.js
+   * //github.com/nolimits4web/Framework7/blob/master/LICENSE
    *
-   * Inspired by https://github.com/fians/Waves
+   * Inspired by //github.com/fians/Waves
    */
   /**
    * 显示涟漪动画
