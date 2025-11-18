@@ -12,7 +12,7 @@ categories:
 thumbnail: 
 ---
 
-2025年11月23日 11点36分 (UTC时间)，Cloudflare发生中断。有一说一，这次Cloudflare的中断影响实在是太大了。
+2025年11月18日 11点36分 (UTC时间)，Cloudflare发生中断。有一说一，这次Cloudflare的中断影响实在是太大了。
 
 <!--more-->
 
