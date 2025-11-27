@@ -105,7 +105,7 @@
 
   <div class="mdui-list" mdui-collapse="{accordion: true}">
     <% for (var i in theme.pages) { %>
-      <a href="<%- url_for(theme.pages[i].link) %>" class="mdui-list-item mdui-ripple"><%= theme.pages[i].name %></a>
+      <a href="<%- url_for(theme.pages[i].link) %>" <% if (theme.pages[i].target) { %>target="<%= theme.pages[i].target %>"<% } %> class="mdui-list-item mdui-ripple"><%= theme.pages[i].name %></a>
     <% } %>
     <div class="mdui-collapse-item">
       <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-3");if(a){document.getElementsByClassName("mdui-collapse-item")[3].className+=" mdui-collapse-item-open"};</script>

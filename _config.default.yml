@@ -119,6 +119,10 @@ pages:
   link: /friends
 - name: 兼容视图
   link: /k
+  target: _blank
+- name: 开往
+  link: https://www.travellings.cn/go.html
+  target: _blank
 
 links:
   - name: 史蒂夫ZMT 主页
@@ -131,7 +135,7 @@ links:
     
 
 since: 2019
-footer_text: '| <a href="//icp.gov.moe/?keyword=20240571" target="_blank" class="mdui-text-color-theme-accent">萌ICP备20240571号</a>'
+footer_text: '| <a href="//icp.gov.moe/?keyword=20240571" target="_blank" class="mdui-text-color-theme-accent">萌ICP备20240571号</a> | <a href="//beian.miit.gov.cn/#/Integrated/index" target="_blank" class="mdui-text-color-theme-accent">浙ICP备2025213066号-1</a>'
 license: 此页内容遵循<a href="//creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank" rel="license noopener noreferrer" style="display:inline-block;"> CC BY-NC-SA 4.0 协议</a>
 
 gallery:

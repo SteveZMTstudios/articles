@@ -339,6 +339,7 @@ img.avatar-animation:hover {
   background-color: rgba(0, 0, 0, .1);
 }
 
+
 .mdui-theme-layout-dark .article_categories-link:hover {
   background-color: rgba(255, 255, 255, .1);
 }
@@ -1404,4 +1405,8 @@ details:not([open]) > .details-anim {
 }
 .mdui-theme-layout-dark details summary::before {
   color: #bdbdbd;
+}
+
+.mdui-card-media-covered {
+  background-color: rgba(0, 0, 0, 0.4) !important;
 }
