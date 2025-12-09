@@ -16,7 +16,7 @@ notice:
   - "喵！"
   - "歪比巴卜"
   - "冷知识———阿嚏！"
-  - "🥵...热知识..."
+  - "好烫！...热知识"
   - "神要是公然去跟人作对，那是任何人都难以对付的。 ——《荷马史诗》"
   - "1 2 4 8 16 32 64 128 256 512 1024 2048 4096 8192 16384 32768 65536..."
   - "站长闲着无聊搓了一个<a target='_blank' href='/new'>页面创建器</a>，真的得叫他找个班上了..."
@@ -54,7 +54,7 @@ notice:
   - "Jeff Dean 穿裤子时一条腿一条腿地穿，但如果他有两条以上的腿，你就会发现他的方法实际上是O(log n)……"
   - "为什么程序员喜欢在沙滩上工作？因为那里有很多shell("
   - "为什么程序员总是分不清万圣节和圣诞节？因为 <span title='八进制31 = 十进制25,这甚至都不能算是个笑话'>Oct 31 == Dec 25</span>"
-  - "在六月，知名黑客“孙军”在各个SSH服务器上留下了自己的名字(Sun Jun)，以证明其存在"
+  - "在六月，知名黑客“孙军”在各个SSH服务器上留下了自己的名字(Sun Jun)"
   - "Jeff Dean的银行卡密码是圆周率的最后四位。"
   - "Jeff Dean在斯坦福演讲时，场场爆满，连唐纳德·克努特都只能席地而坐。(<span title='你可以在youtube等平台找到录像检查这一点'>确有其事</span>)"
   - "在最高职级为10级的体系里，Jeff Dean晋升至11级。(<span title='为了提拔 Jeff（和 Sanjay），他们不得不设立一个新职位（高级 Google 研究员）。'>确有其事</span>)"
@@ -70,7 +70,6 @@ notice:
   - "好吧，这些笑话不好笑"
   - "关于布尔数最棒的事情是，就算你错了，你也只是错了一点（bit）。"
   - "有两种方法写出零错误的程序，只有第三种方法奏效。"
-  - 
 
 
 
@@ -135,7 +134,7 @@ links:
     
 
 since: 2019
-footer_text: '| <a href="//icp.gov.moe/?keyword=20240571" target="_blank" class="mdui-text-color-theme-accent">萌ICP备20240571号</a> | <a href="//beian.miit.gov.cn/#/Integrated/index" target="_blank" class="mdui-text-color-theme-accent">浙ICP备2025213066号-1</a>'
+footer_text: ' <a href="//icp.gov.moe/?keyword=20240571" target="_blank" class="mdui-text-color-theme-accent"><img style="height:1.5em;vertical-align:middle;" src="https://icp.gov.moe/images/ico64.png"></a> <a href="//beian.miit.gov.cn/#/Integrated/index" target="_blank" class="mdui-text-color-theme-accent">浙ICP备2025213066号</a>'
 license: 此页内容遵循<a href="//creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank" rel="license noopener noreferrer" style="display:inline-block;"> CC BY-NC-SA 4.0 协议</a>
 
 gallery:

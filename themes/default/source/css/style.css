@@ -13,6 +13,33 @@ body {
   flex-direction: column;
 }
 
+/* Theme transition: smooth color/background changes when switching themes */
+:root {
+  --theme-transition-duration: 240ms;
+  --theme-transition-easing: cubic-bezier(.4,0,.2,1);
+}
+
+body,
+#header,
+#main,
+#footer,
+.mdui-toolbar,
+.mdui-appbar,
+.mdui-list-item,
+.mdui-card,
+.mdui-btn,
+.mdui-fab,
+a,
+p,
+h1,h2,h3,h4,h5,h6 {
+  -webkit-transition: color var(--theme-transition-duration) var(--theme-transition-easing),
+    background-color var(--theme-transition-duration) var(--theme-transition-easing),
+    border-color var(--theme-transition-duration) var(--theme-transition-easing);
+  transition: color var(--theme-transition-duration) var(--theme-transition-easing),
+    background-color var(--theme-transition-duration) var(--theme-transition-easing),
+    border-color var(--theme-transition-duration) var(--theme-transition-easing);
+}
+
 #header {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 auto;

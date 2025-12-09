@@ -30,7 +30,7 @@
     try {
       if(window.mdui && mdui.snackbar){
         mdui.snackbar({
-          message: '发现站点更新，请重新载入应用更新。',
+          message: '<i class="mdui-icon material-icons">offline_pin</i> 发现站点更新，请重新载入应用更新。',
           buttonText: '刷新',
           timeout: 0,
           position: 'right-top',

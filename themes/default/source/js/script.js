@@ -4,70 +4,61 @@ var $$ = mdui.$;
 $$(function () {
   $$(window).on('scroll', function (e) {
     var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    if (scrollTop !== 0) {
+    if (scrollTop > 0) {
       $$('#gotop').removeClass('mdui-fab-hide');
     } else {
       $$('#gotop').addClass('mdui-fab-hide');
     }
   });
   $$('#gotop').on('click', function (e) {
-    (function animateScroll() {
-      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      if (scrollTop !== 0) {
-        window.requestAnimationFrame(animateScroll);
-        window.scrollTo(0, scrollTop - (scrollTop / 5));
-      }
-    })();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 });
 
 /* Dark Mode */
-$$.fn.extend({
-  longPress: function (fn) {
-    var $this = this;
-    for (var i = 0; i < $this.length; i++) {
-      (function (target) {
-        var timeout;
-        var start = function (event) {
-          timeout = setTimeout(function () {
-            fn(event);
-          }, 500);
-        };
-        var end = function (event) {
-          clearTimeout(timeout);
-        };
-        target.addEventListener('mousedown', start, false);
-        target.addEventListener('mouseup', end, false);
-        target.addEventListener('touchstart', start, false);
-        target.addEventListener('touchend', end, false);
-      })($this[i]);
+$$(function () {
+  var mode = localStorage.getItem('theme-mode') || 'auto';
+  var body = $$('body');
+  var btn = $$('#theme-toggle');
+  var icon = btn.find('i');
+
+  function applyTheme() {
+    var isDark = false;
+    if (mode === 'auto') {
+      isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      icon.text('brightness_auto');
+    } else if (mode === 'light') {
+      isDark = false;
+      icon.text('brightness_7');
+    } else if (mode === 'dark') {
+      isDark = true;
+      icon.text('brightness_3');
+    }
+
+    if (isDark) {
+      body.addClass('mdui-theme-layout-dark');
+    } else {
+      body.removeClass('mdui-theme-layout-dark');
     }
   }
-});
-$$(function () {
-  $$('#header').longPress(function (e) {
-    if (!window.matchMedia || !window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      if ($$('body').hasClass('mdui-theme-layout-dark')) {
-        $$('body').removeClass('mdui-theme-layout-dark');
-        localStorage.removeItem('mdui-theme-layout-dark');
-      } else {
-        $$('body').addClass('mdui-theme-layout-dark');
-        localStorage.setItem('mdui-theme-layout-dark', true);
-      }
-    }
+
+  // Initial application
+  applyTheme();
+
+  btn.on('click', function () {
+    if (mode === 'auto') mode = 'light';
+    else if (mode === 'light') mode = 'dark';
+    else mode = 'auto';
+    
+    localStorage.setItem('theme-mode', mode);
+    applyTheme();
   });
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
-    if (e.matches) {
-      $$('body').addClass('mdui-theme-layout-dark');
-    } else {
-      $$('body').removeClass('mdui-theme-layout-dark');
-    }
-    localStorage.removeItem('mdui-theme-layout-dark');
-  });
-  var tab = new mdui.Tab('#donate .mdui-tab');
-  $$('#donate').on('opened.mdui.dialog', function (e) {
-    tab.handleUpdate();
-  });
+
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+      if (mode === 'auto') applyTheme();
+    });
+  }
 });
 
 /* Drawer State */
@@ -258,6 +249,22 @@ function reinitPageComponents() {
       console.warn('NoticeSystem reinit error:', e);
     }
   }
+  // Busuanzi
+  if (window.BUSUANZI_SRC) {
+    var oldScript = document.querySelector('script[src="' + window.BUSUANZI_SRC + '"]');
+    if (oldScript) oldScript.remove();
+    var script = document.createElement('script');
+    script.src = window.BUSUANZI_SRC;
+    script.defer = true;
+    document.body.appendChild(script);
+  }
+  // Donate
+  if (document.getElementById('donate')) {
+    var tab = new mdui.Tab('#donate .mdui-tab');
+    $$('#donate').on('opened.mdui.dialog', function (e) {
+      tab.handleUpdate();
+    });
+  }
   if (window.GITALK_SRC && document.getElementById('gitalk-container')) {
     if (typeof Gitalk === 'undefined') {
       var script = document.createElement('script');
@@ -273,6 +280,10 @@ function reinitPageComponents() {
   try { fixMduiDialogs(); fixFixedElements(); } catch(e) {}
 }
 window.reinitPageComponents = reinitPageComponents;
+
+$$(function() {
+  reinitPageComponents();
+});
 
 function fixMduiDialogs() {
   document.querySelectorAll('[mdui-dialog]').forEach(function(el) {
