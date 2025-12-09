@@ -2,16 +2,15 @@ var $$ = mdui.$;
 
 /* Gotop */
 $$(function () {
-  var $gotop = $$('#gotop');
   $$(window).on('scroll', function (e) {
     var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    if (scrollTop > 50) {
-      $gotop.removeClass('mdui-fab-hide');
+    if (scrollTop > 20) {
+      $$('#gotop').removeClass('mdui-fab-hide');
     } else {
-      $gotop.addClass('mdui-fab-hide');
+      $$('#gotop').addClass('mdui-fab-hide');
     }
   });
-  $gotop.on('click', function (e) {
+  $$('#gotop').on('click', function (e) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 });
