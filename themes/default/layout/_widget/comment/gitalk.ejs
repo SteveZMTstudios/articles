@@ -5,6 +5,8 @@
 </script>
 <div id="gitalk-container"></div>
 <link rel="stylesheet" href="//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script data-pjax src="//sharepoint.cf.stevezmt.top/js/3rd-party/gitalk-cn.min.js"></script>
+
 <script>
   function __normalizeGitalkId(raw) {
     try {
@@ -22,9 +24,9 @@
 
         raw = raw.replace(/index\.html$/i, '');
 
-        if (raw && raw.charAt(0) !== '/') raw = '/' + raw;
+        raw = '/' + raw.replace(/^\/+/, '');
 
-        if (raw.length > 1 && raw.endsWith('/')) raw = raw.slice(0, -1);
+        raw = raw.replace(/\/+$/, '');
         return raw || '/';
       }
 

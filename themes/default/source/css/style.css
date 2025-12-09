@@ -28,7 +28,6 @@ body,
 .mdui-list-item,
 .mdui-card,
 .mdui-btn,
-.mdui-fab,
 a,
 p,
 h1,h2,h3,h4,h5,h6 {
@@ -38,6 +37,19 @@ h1,h2,h3,h4,h5,h6 {
   transition: color var(--theme-transition-duration) var(--theme-transition-easing),
     background-color var(--theme-transition-duration) var(--theme-transition-easing),
     border-color var(--theme-transition-duration) var(--theme-transition-easing);
+}
+
+.mdui-fab {
+  -webkit-transition: color var(--theme-transition-duration) var(--theme-transition-easing),
+    background-color var(--theme-transition-duration) var(--theme-transition-easing),
+    border-color var(--theme-transition-duration) var(--theme-transition-easing),
+    -webkit-box-shadow .2s cubic-bezier(.4,0,1,1),
+    -webkit-transform .2s cubic-bezier(.4,0,.2,1);
+  transition: color var(--theme-transition-duration) var(--theme-transition-easing),
+    background-color var(--theme-transition-duration) var(--theme-transition-easing),
+    border-color var(--theme-transition-duration) var(--theme-transition-easing),
+    box-shadow .2s cubic-bezier(.4,0,1,1),
+    transform .2s cubic-bezier(.4,0,.2,1);
 }
 
 #header {
