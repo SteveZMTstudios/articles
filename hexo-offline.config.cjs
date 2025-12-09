@@ -72,8 +72,20 @@ module.exports = {
           expiration: { maxAgeSeconds: 86400 * 7 }, // 7d
         }
       },
+      // {
+      //   urlPattern: /.*\.(png|gif|webp|ico|svg|cur|woff|ijmap|ttf|eot|woff2?)$/,
+      //   handler: 'CacheFirst', // 静态资源优先使用缓存
+      //   options: {
+      //     cacheName: 'media-cache',
+      //     cacheableResponse: { statuses: [0, 200] },
+      //     expiration: { 
+      //       maxAgeSeconds: 86400 * 30, // 30天
+      //       maxEntries: 200 // 限制缓存条目数量，避免缓存过多
+      //     }
+      //   }
+      // },
       {
-        urlPattern: /.*\.(png|gif|webp|ico|svg|cur|woff|ijmap|ttf|eot|woff2?)$/,
+        urlPattern: /.*\.(svg|woff|ijmap|ttf|eot|woff2?)$/,
         handler: 'CacheFirst', // 静态资源优先使用缓存
         options: {
           cacheName: 'media-cache',

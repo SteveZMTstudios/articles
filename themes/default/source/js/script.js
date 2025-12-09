@@ -16,49 +16,48 @@ $$(function () {
 });
 
 /* Dark Mode */
+$$.fn.extend({
+  longPress: function (fn) {
+    var $this = this;
+    for (var i = 0; i < $this.length; i++) {
+      (function (target) {
+        var timeout;
+        var start = function (event) {
+          timeout = setTimeout(function () {
+            fn(event);
+          }, 500);
+        };
+        var end = function (event) {
+          clearTimeout(timeout);
+        };
+        target.addEventListener('mousedown', start, false);
+        target.addEventListener('mouseup', end, false);
+        target.addEventListener('touchstart', start, false);
+        target.addEventListener('touchend', end, false);
+      })($this[i]);
+    }
+  }
+});
 $$(function () {
-  var mode = localStorage.getItem('theme-mode') || 'auto';
-  var body = $$('body');
-  var btn = $$('#theme-toggle');
-  var icon = btn.find('i');
-
-  function applyTheme() {
-    var isDark = false;
-    if (mode === 'auto') {
-      isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      icon.text('brightness_auto');
-    } else if (mode === 'light') {
-      isDark = false;
-      icon.text('brightness_7');
-    } else if (mode === 'dark') {
-      isDark = true;
-      icon.text('brightness_3');
+  $$('#header').longPress(function (e) {
+    if (!window.matchMedia || !window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      if ($$('body').hasClass('mdui-theme-layout-dark')) {
+        $$('body').removeClass('mdui-theme-layout-dark');
+        localStorage.removeItem('mdui-theme-layout-dark');
+      } else {
+        $$('body').addClass('mdui-theme-layout-dark');
+        localStorage.setItem('mdui-theme-layout-dark', true);
+      }
     }
-
-    if (isDark) {
-      body.addClass('mdui-theme-layout-dark');
-    } else {
-      body.removeClass('mdui-theme-layout-dark');
-    }
-  }
-
-  // Initial application
-  applyTheme();
-
-  btn.on('click', function () {
-    if (mode === 'auto') mode = 'light';
-    else if (mode === 'light') mode = 'dark';
-    else mode = 'auto';
-    
-    localStorage.setItem('theme-mode', mode);
-    applyTheme();
   });
-
-  if (window.matchMedia) {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
-      if (mode === 'auto') applyTheme();
-    });
-  }
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+    if (e.matches) {
+      $$('body').addClass('mdui-theme-layout-dark');
+    } else {
+      $$('body').removeClass('mdui-theme-layout-dark');
+    }
+    localStorage.removeItem('mdui-theme-layout-dark');
+  });
 });
 
 /* Drawer State */
