@@ -14,7 +14,13 @@
       document.write('<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"><\/script>');
     }
   </script>
-  <script>if(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches){document.getElementsByTagName("body")[0].className+=" mdui-theme-layout-dark"};</script>
+  <script>
+    var dark = localStorage.getItem("mdui-theme-layout-dark");
+    var light = localStorage.getItem("mdui-theme-layout-light");
+    if (dark || (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches && !light)) {
+      document.getElementsByTagName("body")[0].className+=" mdui-theme-layout-dark";
+    }
+  </script>
   <script>var a=localStorage.getItem("mdui-drawer-close");if(!a){document.getElementsByTagName("body")[0].className+=" mdui-drawer-body-left"};</script>
   <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
   <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>

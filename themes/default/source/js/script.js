@@ -2,61 +2,40 @@ var $$ = mdui.$;
 
 /* Gotop */
 $$(function () {
+  var $gotop = $$('#gotop');
   $$(window).on('scroll', function (e) {
     var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    if (scrollTop > 0) {
-      $$('#gotop').removeClass('mdui-fab-hide');
+    if (scrollTop > 50) {
+      $gotop.removeClass('mdui-fab-hide');
     } else {
-      $$('#gotop').addClass('mdui-fab-hide');
+      $gotop.addClass('mdui-fab-hide');
     }
   });
-  $$('#gotop').on('click', function (e) {
+  $gotop.on('click', function (e) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 });
 
 /* Dark Mode */
-$$.fn.extend({
-  longPress: function (fn) {
-    var $this = this;
-    for (var i = 0; i < $this.length; i++) {
-      (function (target) {
-        var timeout;
-        var start = function (event) {
-          timeout = setTimeout(function () {
-            fn(event);
-          }, 500);
-        };
-        var end = function (event) {
-          clearTimeout(timeout);
-        };
-        target.addEventListener('mousedown', start, false);
-        target.addEventListener('mouseup', end, false);
-        target.addEventListener('touchstart', start, false);
-        target.addEventListener('touchend', end, false);
-      })($this[i]);
-    }
-  }
-});
 $$(function () {
-  $$('#header').longPress(function (e) {
-    if (!window.matchMedia || !window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      if ($$('body').hasClass('mdui-theme-layout-dark')) {
-        $$('body').removeClass('mdui-theme-layout-dark');
-        localStorage.removeItem('mdui-theme-layout-dark');
-      } else {
-        $$('body').addClass('mdui-theme-layout-dark');
-        localStorage.setItem('mdui-theme-layout-dark', true);
-      }
+  $$('#theme-toggle').on('click', function (e) {
+    if ($$('body').hasClass('mdui-theme-layout-dark')) {
+      $$('body').removeClass('mdui-theme-layout-dark');
+      localStorage.removeItem('mdui-theme-layout-dark');
+      localStorage.setItem('mdui-theme-layout-light', 'true');
+    } else {
+      $$('body').addClass('mdui-theme-layout-dark');
+      localStorage.setItem('mdui-theme-layout-dark', 'true');
+      localStorage.removeItem('mdui-theme-layout-light');
     }
   });
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+    if (localStorage.getItem('mdui-theme-layout-dark') || localStorage.getItem('mdui-theme-layout-light')) return;
     if (e.matches) {
       $$('body').addClass('mdui-theme-layout-dark');
     } else {
       $$('body').removeClass('mdui-theme-layout-dark');
     }
-    localStorage.removeItem('mdui-theme-layout-dark');
   });
 });
 
