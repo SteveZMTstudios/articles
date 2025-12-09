@@ -19,23 +19,37 @@
 
       try { raw = decodeURI(raw); } catch (e) {}
 
+      raw = String(raw).trim();
+
+      // UUID (no leading slash) should be returned as-is
+      var uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      if (uuidRe.test(raw)) return raw;
+
       var looksLikePath = /\//.test(raw) || /\.html?$/i.test(raw);
       if (looksLikePath) {
-
         raw = raw.replace(/index\.html$/i, '');
-
-        raw = '/' + raw.replace(/^\/+/, '');
-
-        raw = raw.replace(/\/+$/, '');
+        // normalize to have a single leading slash and no trailing slash
+        raw = '/' + raw.replace(/^\/+/, '').replace(/\/+$/, '');
         return raw || '/';
       }
-
+      console.log('[gitalk] id normalized to non-path:', raw);
       return String(raw);
     } catch (e) {
       return (window.location && window.location.pathname) || '/';
     }
   }
-
+  console.log('[gitalk] loading comments for id:', '<%= page[theme.comment.gitalk_sid_type] %>');
+  console.log('[gitalk] normalized id:', __normalizeGitalkId('<%= page[theme.comment.gitalk_sid_type] %>'));
+  console.log('[gitalk] current location pathname:', window.location.pathname);
+  console.log('[gitalk] gitalk config:', {
+    clientID: '<%= theme.comment.gitalk_client_id %>',
+    clientSecret: '<%= theme.comment.gitalk_client_secret %>',
+    repo: '<%= theme.comment.gitalk_repo %>',
+    owner: '<%= theme.comment.gitalk_owner %>',
+    admin: ['<%= theme.comment.gitalk_owner %>'],
+    id: __normalizeGitalkId('<%= page[theme.comment.gitalk_sid_type] %>' || (window.location && window.location.pathname)),
+    distractionFreeMode: false
+  });
   window.GITALK_CONFIG = {
     clientID: '<%= theme.comment.gitalk_client_id %>',
     clientSecret: '<%= theme.comment.gitalk_client_secret %>',
@@ -52,3 +66,17 @@
   };
 
 </script>
+
+<!--
+<script>
+  var gitalk = new Gitalk({
+    clientID: '<%= theme.comment.gitalk_client_id %>',
+    clientSecret: '<%= theme.comment.gitalk_client_secret %>',
+    repo: '<%= theme.comment.gitalk_repo %>',
+    owner: '<%= theme.comment.gitalk_owner %>',
+    admin: ['<%= theme.comment.gitalk_owner %>'],
+    id: '<%= page[theme.comment.gitalk_sid_type] %>' || location.pathname,
+    distractionFreeMode: false
+  });
+  gitalk.render('gitalk-container');
+</script> -->

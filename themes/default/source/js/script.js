@@ -181,15 +181,28 @@ $$(function () {
 function __normalizeGitalkId(raw) {
   try {
     if (!raw) raw = location.pathname;
+
     if (/^https?:\/\//i.test(raw)) {
       var u = new URL(raw, window.location.origin);
       raw = u.pathname || '/';
     }
+
     try { raw = decodeURI(raw); } catch (e) {}
-    raw = raw.replace(/index\.html$/i, '');
-    if (raw && raw.charAt(0) !== '/') raw = '/' + raw;
-    if (raw.length > 1 && raw.endsWith('/')) raw = raw.slice(0, -1);
-    return raw || '/';
+
+    raw = String(raw).trim();
+
+    // UUID (no leading slash) should be returned as-is
+    var uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (uuidRe.test(raw)) return raw;
+
+    var looksLikePath = /\//.test(raw) || /\.html?$/i.test(raw);
+    if (looksLikePath) {
+      raw = raw.replace(/index\.html$/i, '');
+      // normalize to have a single leading slash and no trailing slash
+      raw = '/' + raw.replace(/^\/+/, '').replace(/\/+$/, '');
+      return raw || '/';
+    }
+    return String(raw);
   } catch (e) {
     return (window.location && window.location.pathname) || '/';
   }
