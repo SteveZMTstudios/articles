@@ -1410,3 +1410,72 @@ details:not([open]) > .details-anim {
 .mdui-card-media-covered {
   background-color: rgba(0, 0, 0, 0.4) !important;
 }
+
+/* PJAX Animations */
+.pjax-out {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.pjax-in {
+  animation: pjaxFadeIn 0.3s cubic-bezier(0.0, 0.0, 0.2, 1) forwards;
+}
+
+@keyframes pjaxFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Loading Bar */
+.pjax-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  z-index: 9999;
+  display: none;
+}
+
+#header .pjax-progress {
+  position: absolute;
+  top: 100%;
+}
+
+.pjax-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.pjax-overlay.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.mdui-theme-layout-dark .pjax-overlay {
+  background-color: #30303080;
+}
+
+/* Ensure sidebar is above overlay on desktop */
+@media (min-width: 1024px) {
+  #sidebar {
+    z-index: 200 !important;
+  }
+}

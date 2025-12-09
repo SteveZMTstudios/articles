@@ -1,5 +1,5 @@
 <script data-pjax>
-  document.addEventListener('DOMContentLoaded', function() {
+  (function() {
     const links = document.querySelectorAll('.mdui-card-content a');
     
     links.forEach(link => {
@@ -9,9 +9,10 @@
           !href.includes('stevezmt.top') && 
           !href.includes('localhost')) {
         link.href = `/redirect?goto=${encodeURIComponent(href)}`;
+        link.target = "_blank";
       }
     });
-  });
+  })();
   </script>
 
 <% if (page.photos && page.photos.length) { %>

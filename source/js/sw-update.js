@@ -130,6 +130,11 @@
   if(document.readyState === 'complete') runHashCheck();
   else window.addEventListener('load', runHashCheck);
 
+  // Add PJAX support
+  document.addEventListener('page:updated', function() {
+    setTimeout(runHashCheck, 1000);
+  });
+
   // expose a manual trigger only for debugging
   try { window.__forceSwHashCheck = runHashCheck; } catch(e){}
 

@@ -39,6 +39,11 @@
                 console.log('Notice element not found');
                 return;
               }
+
+              if (noticeElement.dataset.initialized === 'true') {
+                return;
+              }
+              noticeElement.dataset.initialized = 'true';
           
               /*
                CSS-driven type effect:
@@ -118,6 +123,12 @@
                 try { window.__notice_initialized_once = true; } catch(e) {}
             };
 
+            // Auto-init immediately
+            if (document.readyState === 'loading') {
+              document.addEventListener('DOMContentLoaded', window.initNoticeSystem);
+            } else {
+              window.initNoticeSystem();
+            }
           
           })();
           </script>
