@@ -183,8 +183,8 @@ class Pjax {
 
     if (!bar) {
       bar = document.createElement('div');
-      bar.className = 'pjax-progress mdui-progress mdui-color-transparent';
-      bar.innerHTML = '<div class="mdui-progress-indeterminate mdui-color-theme"></div>';
+      bar.className = 'pjax-progress mdui-progress mdui-color-theme';
+      bar.innerHTML = '<div class="mdui-progress-indeterminate mdui-color-grey-50"></div>';
     }
 
     // Move bar to header if possible, otherwise body
@@ -198,19 +198,6 @@ class Pjax {
       }
     }
 
-    // Dark mode check
-    const isDark = document.body.classList.contains('mdui-theme-layout-dark');
-    const progressInner = bar.querySelector('.mdui-progress-indeterminate');
-    if (progressInner) {
-        if (isDark) {
-            progressInner.classList.remove('mdui-color-theme');
-            progressInner.classList.add('mdui-color-grey-50');
-        } else {
-            progressInner.classList.remove('mdui-color-grey-50');
-            progressInner.classList.add('mdui-color-theme');
-        }
-    }
-
     // Overlay
     let overlay = document.querySelector('.pjax-overlay');
     if (!overlay) {
@@ -218,7 +205,25 @@ class Pjax {
       overlay.className = 'pjax-overlay';
       document.body.appendChild(overlay);
     }
+
+    // Ensure loading content exists
+    if (!overlay.querySelector('.pjax-loading-content')) {
+      overlay.innerHTML = `
+        <div class="pjax-loading-content">
+          <div class="mdui-spinner"></div>
+          <div class="pjax-loading-text">仍在加载...</div>
+        </div>
+      `;
+      mdui.mutation();
+    }
+
     requestAnimationFrame(() => overlay.classList.add('show'));
+
+    // Show "Still loading" after 3 seconds
+    this.loadingTimeout = setTimeout(() => {
+      const content = overlay.querySelector('.pjax-loading-content');
+      if (content) content.classList.add('show');
+    }, 3000);
 
     // var $ = mdui.$;
     // var $header = $(header || '#header');
@@ -228,11 +233,20 @@ class Pjax {
   }
 
   hideLoading() {
+    if (this.loadingTimeout) {
+      clearTimeout(this.loadingTimeout);
+      this.loadingTimeout = null;
+    }
+
     const bar = document.querySelector('.pjax-progress');
     if (bar) bar.style.display = 'none';
     
     const overlay = document.querySelector('.pjax-overlay');
-    if (overlay) overlay.classList.remove('show');
+    if (overlay) {
+      overlay.classList.remove('show');
+      const content = overlay.querySelector('.pjax-loading-content');
+      if (content) content.classList.remove('show');
+    }
   }
 
   trigger(eventName, detail) {

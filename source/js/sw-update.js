@@ -34,6 +34,7 @@
           buttonText: '刷新',
           timeout: 0,
           position: 'right-top',
+          closeOnOutsideClick: false,
           onButtonClick: action
         });
       } else if(confirm('发现站点更新，是否刷新以获取最新内容？')) {
