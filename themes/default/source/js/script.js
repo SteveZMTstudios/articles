@@ -2,14 +2,71 @@ var $$ = mdui.$;
 
 /* Gotop */
 $$(function () {
-  $$(window).on('scroll', function (e) {
+  var circle = document.querySelector('.progress-ring__circle');
+  var radius = circle ? circle.r.baseVal.value : 26;
+  var circumference = radius * 2 * Math.PI;
+  
+  if (circle) {
+    circle.style.strokeDasharray = `${circumference} ${circumference}`;
+    circle.style.strokeDashoffset = circumference;
+  }
+
+  function setProgress(percent) {
+    if (!circle) return;
+    const offset = circumference - percent / 100 * circumference;
+    circle.style.strokeDashoffset = offset;
+  }
+
+  function isArticlePage() {
+    return !!document.querySelector('.mdui-card-primary-title h1');
+  }
+
+  function updateGotop() {
     var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    var container = $$('#gotop-container');
+    var ring = document.querySelector('.progress-ring');
+    var isArticle = isArticlePage();
+
+    // Button Visibility
     if (scrollTop > 20) {
-      $$('#gotop').removeClass('mdui-fab-hide');
+      container.removeClass('mdui-fab-hide');
     } else {
-      $$('#gotop').addClass('mdui-fab-hide');
+      container.addClass('mdui-fab-hide');
     }
-  });
+
+    // Ring Visibility & Progress
+    if (isArticle) {
+      if (ring) ring.style.display = '';
+      
+      var article = document.querySelector('.mdui-card-content');
+      if (article) {
+        var rect = article.getBoundingClientRect();
+        var articleBottom = rect.bottom + scrollTop;
+        var windowHeight = window.innerHeight;
+        var maxScroll = articleBottom - windowHeight;
+        
+        if (maxScroll <= 0) {
+          setProgress(100);
+        } else {
+          var p = (scrollTop / maxScroll) * 100;
+          if (p > 100) p = 100;
+          if (p < 0) p = 0;
+          setProgress(p);
+        }
+      }
+    } else {
+      if (ring) ring.style.display = 'none';
+    }
+  }
+
+  $$(window).on('scroll', updateGotop);
+  
+  // Initial check
+  updateGotop();
+
+  // PJAX
+  $$(document).on('pjax:complete', updateGotop);
+
   $$('#gotop').on('click', function (e) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });

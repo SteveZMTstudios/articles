@@ -6,7 +6,6 @@ tags:
     - AI
     - openai
 categories:
-    - 技术
     - 瞎聊
 #license: true
 toc: false

@@ -186,7 +186,7 @@
         </div>
         <% if (post.sticky || post.top) { %>
           <div class="mdui-card-menu">
-            <button class="mdui-btn mdui-btn-icon mdui-text-color-white"><i class="mdui-icon material-icons" translate="no">fiber_pin</i></button>
+            <button class="mdui-btn mdui-btn-icon mdui-text-color-white"><i class="mdui-icon material-icons" translate="no">flag</i></button>
           </div>
         <% } %>
       </header>
@@ -199,7 +199,7 @@
       <% } %>
     </div>
     <div class="mdui-text-center">
-      <a href="<%- url_for(post.link || post.path) %>"<% if (post.link) { %> target="_blank"<% } %> class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple"><%= __('more') %></a>
+      <a href="<%- url_for(post.link || post.path) %>"<% if (post.link) { %> target="_blank"<% } %> class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons" translate="no">library_books</i> <%= __('more') %></a>
     </div>
     <footer class="mdui-card-actions">
       <% if (post.categories && post.categories.length) { %>

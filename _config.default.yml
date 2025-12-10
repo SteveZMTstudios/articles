@@ -94,6 +94,7 @@ sns:
   qq: tencent://message/?uin=3579946866&Menu=yes
   wechat:
   bilibili: //space.bilibili.com/474130186
+  telegram: //t.me/SteveZMTstudios
   custom: //stevezmt.top/
 
 open_graph:

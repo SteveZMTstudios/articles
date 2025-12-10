@@ -19,38 +19,16 @@ body {
   --theme-transition-easing: cubic-bezier(.4,0,.2,1);
 }
 
-body,
-#header,
-#main,
-#footer,
-.mdui-toolbar,
-.mdui-appbar,
-.mdui-list-item,
-.mdui-card,
-.mdui-btn,
-a,
-p,
-h1,h2,h3,h4,h5,h6 {
-  -webkit-transition: color var(--theme-transition-duration) var(--theme-transition-easing),
-    background-color var(--theme-transition-duration) var(--theme-transition-easing),
-    border-color var(--theme-transition-duration) var(--theme-transition-easing);
-  transition: color var(--theme-transition-duration) var(--theme-transition-easing),
-    background-color var(--theme-transition-duration) var(--theme-transition-easing),
-    border-color var(--theme-transition-duration) var(--theme-transition-easing);
-}
+/* 
+   Global transition removed to prevent conflict with MDUI component animations (e.g. shadows).
+   If smooth theme switching is needed, it should be applied more selectively.
+*/
 
-.mdui-fab {
-  -webkit-transition: color var(--theme-transition-duration) var(--theme-transition-easing),
-    background-color var(--theme-transition-duration) var(--theme-transition-easing),
-    border-color var(--theme-transition-duration) var(--theme-transition-easing),
-    -webkit-box-shadow .2s cubic-bezier(.4,0,1,1),
-    -webkit-transform .2s cubic-bezier(.4,0,.2,1);
-  transition: color var(--theme-transition-duration) var(--theme-transition-easing),
-    background-color var(--theme-transition-duration) var(--theme-transition-easing),
-    border-color var(--theme-transition-duration) var(--theme-transition-easing),
-    box-shadow .2s cubic-bezier(.4,0,1,1),
-    transform .2s cubic-bezier(.4,0,.2,1);
-}
+
+/* .mdui-fab {
+  -webkit-transition: -webkit-box-shadow .2s cubic-bezier(.4,0,1,1), -webkit-transform .2s cubic-bezier(.4,0,.2,1);
+  transition: box-shadow .2s cubic-bezier(.4,0,1,1), transform .2s cubic-bezier(.4,0,.2,1);
+} */
 
 #header {
   -webkit-box-flex: 0;
@@ -1545,4 +1523,43 @@ details:not([open]) > .details-anim {
   #sidebar {
     z-index: 200 !important;
   }
+}
+
+/* Progress Ring & Gotop Container */
+#gotop-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  pointer-events: none;
+  transition: transform .2s cubic-bezier(.4,0,.2,1);
+}
+
+#gotop-container.mdui-fab-hide {
+  transform: scale(0) !important;
+}
+
+#gotop-container #gotop {
+  pointer-events: auto;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.progress-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotate(-90deg);
+  z-index: 99999;
+  pointer-events: none;
+}
+
+.progress-ring__circle {
+  stroke-dasharray: 163.36;
+  stroke-dashoffset: 163.36;
+  transition: stroke-dashoffset 0.1s;
 }

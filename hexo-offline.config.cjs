@@ -6,7 +6,7 @@ module.exports = {
       'redirect/*',
       '404.html',
       '**/manifest*.json',
-      '**/*.{css,js,svg,ttf,woff,woff2,eot}',
+      '**/*.{css,js,svg,woff2}',
     ],
     // 忽略所有查询参数，避免同源资源因参数不同重复缓存
     ignoreURLParametersMatching: [/.*/],
@@ -19,6 +19,7 @@ module.exports = {
     maximumFileSizeToCacheInBytes: 52428800, // 缓存的最大文件大小，以字节为单位。50MB
     skipWaiting: true,
     clientsClaim: true,
+    cleanupOutdatedCaches: true,
     // 按需加载配置：只在用户访问时才缓存资源，而不是预先缓存整个网站
     runtimeCaching: [ // 运行时缓存策略，资源会在首次访问时被缓存
       // CDNs - should be CacheFirst, since they should be used specific versions so should not change
@@ -59,7 +60,7 @@ module.exports = {
         handler: 'CacheFirst',
         options: {
           cacheName: 'css-js-cache',
-          cacheableResponse: { statuses: [0, 200] },
+          cacheableResponse: { statuses: [200] },
           expiration: { maxAgeSeconds: 86400 * 7, maxEntries: 100 } // 7d
         }
             },
@@ -68,7 +69,7 @@ module.exports = {
         handler: 'CacheFirst',
         options: {
           cacheName: 'xml-cache',
-          cacheableResponse: { statuses: [0, 200] },
+          cacheableResponse: { statuses: [200] },
           expiration: { maxAgeSeconds: 86400 * 7 }, // 7d
         }
       },
@@ -89,7 +90,7 @@ module.exports = {
         handler: 'CacheFirst', // 静态资源优先使用缓存
         options: {
           cacheName: 'media-cache',
-          cacheableResponse: { statuses: [0, 200] },
+          cacheableResponse: { statuses: [200] },
           expiration: { 
             maxAgeSeconds: 86400 * 30, // 30天
             maxEntries: 200 // 限制缓存条目数量，避免缓存过多
@@ -101,15 +102,15 @@ module.exports = {
         handler: 'CacheFirst',
         options: {
           cacheName: 'media-preset-cache',
-          cacheableResponse: { statuses: [0, 200] }
+          cacheableResponse: { statuses: [200] }
         }
       },
       {
-        urlPattern: /^https:\/\/(cdn\.staticfile\.org|unpkg\.com|cdn\.bootcdn\.net|cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net|busuanzi\.ibruce\.info|ajax\.aspnetcdn\.com|awp-assets\.meituan\.net|gcore\.jsdelivr\.net|cdn-city\.livere\.com)\/.*/,
+        urlPattern: /^https:\/\/(cdn\.staticfile\.org|unpkg\.com|cdn\.bootcdn\.net|cdnjs\.cloudflare\.com|cdn\.jsdelivr\.net|ajax\.aspnetcdn\.com|awp-assets\.meituan\.net|gcore\.jsdelivr\.net|cdn-city\.livere\.com)\/.*/,
         handler: 'CacheFirst', // CDN资源优先使用缓存
         options: {
           cacheName: 'cdn-cache',
-          cacheableResponse: { statuses: [0, 200] },
+          cacheableResponse: { statuses: [200] },
           expiration: { 
             maxAgeSeconds: 86400 * 30, // 30天
             maxEntries: 100 // 限制CDN缓存条目数量

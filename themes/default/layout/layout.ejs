@@ -26,7 +26,12 @@
   <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
   <main id="main" class="mdui-m-t-5 pjax-in"><%- body %></main>
   <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
-  <button id="gotop" class="mdui-fab mdui-fab-fixed mdui-fab-hide mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons" translate="no">arrow_upward</i></button>
+  <div id="gotop-container" class="mdui-fab-fixed mdui-fab-hide">
+    <button id="gotop" class="mdui-fab mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons" translate="no">arrow_upward</i></button>
+    <svg class="progress-ring" width="60" height="60">
+      <circle class="progress-ring__circle mdui-text-color-theme-a100" stroke="currentColor" stroke-width="4" fill="transparent" r="26" cx="30" cy="30"/>
+    </svg>
+  </div>
   <% if (theme.busuanzi.site || theme.busuanzi.page) { %><script data-pjax defer src="<%- theme.busuanzi.busuanzi_js %>"></script><% } %>
   <%- js(['js/mdui', 'js/script', 'js/pjax']) %>
   <script>
