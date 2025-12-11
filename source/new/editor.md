@@ -3,6 +3,7 @@ title: 博客编辑器
 date: false
 layout: page
 comments: false
+excerpt: markdown 博客编辑器
 ---
 
 <style>
@@ -253,23 +254,31 @@ const DB_KEY_IMAGES = 'blog_editor_images';
 // --- Initialization ---
 document.addEventListener('DOMContentLoaded', async () => {
     // Configure Marked Renderer for Image Preview
-    const renderer = new marked.Renderer();
-    const originalImage = renderer.image;
-    renderer.image = function(href, title, text) {
-        // Check if href matches a cached image
-        // href format: /images/blog/<slug>/<filename>
-        const filename = href.split('/').pop();
-        if (imageAssets[filename]) {
-            const blob = imageAssets[filename];
-            const url = URL.createObjectURL(blob);
-            // Note: This creates object URLs that should ideally be revoked.
-            // Given the simplicity, we rely on page refresh to clear them, 
-            // or we could track them in a list and revoke on next update.
-            return `<img src="${url}" alt="${text}" title="${title || ''}" style="max-width: 100%;" />`;
+    const renderer = {
+        image(href, title, text) {
+            // Compatible with Marked v12+ where arguments are passed as an object
+            if (typeof href === 'object' && href !== null) {
+                const token = href;
+                href = token.href;
+                title = token.title;
+                text = token.text;
+            }
+
+            if (typeof href === 'string' && href) {
+                const filename = href.split('/').pop();
+                const decodedFilename = decodeURIComponent(filename);
+                
+                if (imageAssets[decodedFilename]) {
+                    const blob = imageAssets[decodedFilename];
+                    const url = URL.createObjectURL(blob);
+                    return `<img src="${url}" alt="${text}" title="${title || ''}" style="max-width: 100%;" />`;
+                }
+            }
+            // Fallback
+            return `<img src="${href}" alt="${text}"${title ? ` title="${title}"` : ''} style="max-width: 100%;">`;
         }
-        return originalImage.call(this, href, title, text);
     };
-    marked.setOptions({ renderer: renderer });
+    marked.use({ renderer });
 
     // Ensure idbKeyval is available
     if (typeof idbKeyval === 'undefined') {
