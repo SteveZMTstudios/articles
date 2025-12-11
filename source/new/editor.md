@@ -30,11 +30,38 @@ excerpt: markdown 博客编辑器
         background-color: #212121 !important;
     }
     
+    #editor-card .mdui-fullscreen {
+        z-index: 2000; /* Ensure fullscreen editor is above other elements */
+    }
+    #editor-card .mdui-toolbar {
+        background-color: inherit; /* Match card background */
+    }
+    #editor-card ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    #editor-card .mdui-menu {
+        max-height: 300px;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    #editor-card .mdui-menu a {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    #editor-card .mdui-menu .mdui-typo a:before {
+        height: 0px !important;
+    }
+    
     /* Editor Textarea */
     #editor-content {
         color: inherit; 
         background: transparent;
     }
+
 </style>
 
 <div id="app" class="mdui-container-fluid mdui-p-y-2">
@@ -209,12 +236,24 @@ excerpt: markdown 博客编辑器
 
   <!-- Editor Area -->
   <div class="mdui-card" id="editor-card" style="height: 70vh; display: flex; flex-direction: column; position: relative;">
-    <div class="mdui-toolbar" style="flex-shrink: 0; overflow-x: auto; white-space: nowrap; border-bottom: 1px solid rgba(0,0,0,0.1);">
+    <div class="mdui-toolbar" style="flex-shrink: 0; overflow-x: auto; overflow-y: hidden; white-space: nowrap; border-bottom: 1px solid rgba(0,0,0,0.1);">
+      <!-- History/General -->
+      <button class="mdui-btn mdui-btn-icon" onclick="undo()" mdui-tooltip="{content: '撤销 (Ctrl+Z)'}"><i class="mdui-icon material-icons">undo</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="redo()" mdui-tooltip="{content: '重做 (Ctrl+Y)'}"><i class="mdui-icon material-icons">redo</i></button>
+      <!-- Text Style -->
       <button class="mdui-btn mdui-btn-icon" onclick="insertText('**', '**')" mdui-tooltip="{content: '粗体'}"><i class="mdui-icon material-icons">format_bold</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="insertText('*', '*')" mdui-tooltip="{content: '斜体'}"><i class="mdui-icon material-icons">format_italic</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="insertText('<u>', '</u>')" mdui-tooltip="{content: '下划线'}"><i class="mdui-icon material-icons">format_underlined</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="insertText('~~', '~~')" mdui-tooltip="{content: '删除线'}"><i class="mdui-icon material-icons">format_strikethrough</i></button>
+      <button class="mdui-btn mdui-btn-icon" id="font-size-btn" mdui-tooltip="{content: '字体大小'}"><i class="mdui-icon material-icons">format_size</i></button>
+      <button class="mdui-btn mdui-btn-icon" id="text-color-btn" mdui-tooltip="{content: '文本颜色'}"><i class="mdui-icon material-icons">format_color_text</i></button>
+    <!-- Paragraph Style -->
       <button class="mdui-btn mdui-btn-icon" onclick="insertText('# ', '')" mdui-tooltip="{content: '标题'}"><i class="mdui-icon material-icons">title</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="setAlign('left')" mdui-tooltip="{content: '左对齐'}"><i class="mdui-icon material-icons">format_align_left</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="setAlign('center')" mdui-tooltip="{content: '居中对齐'}"><i class="mdui-icon material-icons">format_align_center</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="setAlign('right')" mdui-tooltip="{content: '右对齐'}"><i class="mdui-icon material-icons">format_align_right</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="clearFormatting()" mdui-tooltip="{content: '清除格式'}"><i class="mdui-icon material-icons">format_clear</i></button>
+      <!-- Insert -->
       <button class="mdui-btn mdui-btn-icon" onclick="insertText('- ', '')" mdui-tooltip="{content: '列表'}"><i class="mdui-icon material-icons">format_list_bulleted</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="insertText('[', '](url)')" mdui-tooltip="{content: '链接'}"><i class="mdui-icon material-icons">link</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="document.getElementById('image-input').click()" mdui-tooltip="{content: '插入图片'}"><i class="mdui-icon material-icons">image</i></button>
@@ -222,8 +261,53 @@ excerpt: markdown 博客编辑器
       <button class="mdui-btn mdui-btn-icon" onclick="insertText('```\n', '\n```')" mdui-tooltip="{content: '代码块'}"><i class="mdui-icon material-icons">code</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="insertText('\n<\!-- more -->\n', '')" mdui-tooltip="{content: '插入摘要分隔符'}"><i class="mdui-icon material-icons">more_horiz</i></button>
       <div class="mdui-toolbar-spacer"></div>
+      <!-- View -->
       <button class="mdui-btn mdui-btn-icon" onclick="toggleFullscreen()" mdui-tooltip="{content: '全屏模式'}"><i class="mdui-icon material-icons" id="fullscreen-icon">fullscreen</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="togglePreview()" mdui-tooltip="{content: '切换预览'}"><i class="mdui-icon material-icons">visibility</i></button>
+      <!-- Menus (Must be siblings of triggers) -->
+      <ul class="mdui-menu" id="font-size-menu">
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setFontSize('12px')">12px (小)</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setFontSize('14px')">14px (正常)</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setFontSize('16px')">16px (中)</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setFontSize('20px')">20px (大)</a></li>
+            <li class="mdui-menu-item mdui-p-a-2" style="min-width: 200px; max-width: 240px;">
+                <div class="mdui-typo-caption mdui-text-color-grey-600 mdui-text-center">自定义大小</div>
+                <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                    <label class="mdui-slider mdui-slider-discrete" style="width: 90%; margin: 0 auto;">
+                        <input type="range" step="1" min="10" max="60" value="16" style="width: 100%;" oninput="document.getElementById('custom-font-size-val').innerText = this.value + 'px'" onchange="setFontSize(this.value + 'px')"/>
+                    </label>
+                    <div class="mdui-text-center mdui-text-color-grey-600" id="custom-font-size-val" style="width: 100%;">16px</div>
+                </div>
+            </li>
+            <div class="mdui-text-center" id="custom-font-size-val">16px</div>
+        </li>
+      </ul>
+      <ul class="mdui-menu" id="text-color-menu">
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#F44336')" class="mdui-text-color-red">● Red</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#E91E63')" class="mdui-text-color-pink">● Pink</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#9C27B0')" class="mdui-text-color-purple">● Purple</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#2196F3')" class="mdui-text-color-blue">● Blue</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#00BCD4')" class="mdui-text-color-cyan">● Cyan</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#4CAF50')" class="mdui-text-color-green">● Green</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#FFEB3B')" class="mdui-text-color-yellow">● Yellow</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#FF9800')" class="mdui-text-color-orange">● Orange</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#9E9E9E')" class="mdui-text-color-grey">● Grey</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#000000')" class="mdui-text-color-black">● Black</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#FFFFFF')" class="mdui-text-color-white mdui-color-grey-800">● White</a></li>
+        <li class="mdui-divider"></li>
+        <li class="mdui-menu-item mdui-p-a-1">
+            <div class="mdui-row mdui-valign mdui-m-0">
+                <div class="mdui-col-xs-8 mdui-p-0">
+                    <input type="color" id="custom-color-input" value="#000000" style="width: 100%; height: 30px; border: none; cursor: pointer; background: transparent;">
+                </div>
+                <div class="mdui-col-xs-4 mdui-p-0 mdui-text-right">
+                    <button class="mdui-btn mdui-btn-icon mdui-btn-dense mdui-ripple" onclick="setColor(document.getElementById('custom-color-input').value)" mdui-tooltip="{content: '应用颜色'}">
+                        <i class="mdui-icon material-icons">check</i>
+                    </button>
+                </div>
+            </div>
+        </li>
+      </ul>
     </div>
     
 <div class="mdui-row mdui-m-a-0" style="flex: 1; overflow: hidden;">
@@ -251,8 +335,90 @@ let imageAssets = {}; // In-memory cache of images: { filename: Blob }
 const DB_KEY_CONTENT = 'blog_editor_content';
 const DB_KEY_IMAGES = 'blog_editor_images';
 
+// --- History Management ---
+let historyStack = [];
+let redoStack = [];
+const MAX_HISTORY = 50;
+
+// --- Auto-save & History Timer ---
+let autoSaveTimer;
+function triggerAutoSave() {
+    const status = document.getElementById('save-status');
+    status.innerHTML = '<span class="mdui-text-color-grey-500" style="display: flex; align-items: center;"> 正在保存... </span>';
+    clearTimeout(autoSaveTimer);
+    autoSaveTimer = setTimeout(saveState, 2000);
+}
+
+let historyDebounceTimer;
+function triggerHistorySave() {
+    clearTimeout(historyDebounceTimer);
+    historyDebounceTimer = setTimeout(recordHistory, 1000);
+}
+
+function recordHistory() {
+    const editor = document.getElementById('editor-content');
+    const content = editor.value;
+    
+    // Avoid duplicates (only check content)
+    if (historyStack.length > 0) {
+        const last = historyStack[historyStack.length - 1];
+        if (last.content === content) return;
+    }
+
+    historyStack.push({
+        content: content,
+        selectionStart: editor.selectionStart,
+        selectionEnd: editor.selectionEnd
+    });
+    
+    if (historyStack.length > MAX_HISTORY) historyStack.shift();
+    redoStack = []; // Clear redo on new action
+}
+
+function undo() {
+    if (historyStack.length === 0) return;
+    
+    const editor = document.getElementById('editor-content');
+    // Save current state to redo
+    redoStack.push({
+        content: editor.value,
+        selectionStart: editor.selectionStart,
+        selectionEnd: editor.selectionEnd
+    });
+    
+    const prev = historyStack.pop();
+    editor.value = prev.content;
+    editor.selectionStart = prev.selectionStart;
+    editor.selectionEnd = prev.selectionEnd;
+    updatePreview();
+    triggerAutoSave(); // Save after undo
+}
+
+function redo() {
+    if (redoStack.length === 0) return;
+    
+    const editor = document.getElementById('editor-content');
+    // Save current to history
+    historyStack.push({
+        content: editor.value,
+        selectionStart: editor.selectionStart,
+        selectionEnd: editor.selectionEnd
+    });
+    
+    const next = redoStack.pop();
+    editor.value = next.content;
+    editor.selectionStart = next.selectionStart;
+    editor.selectionEnd = next.selectionEnd;
+    updatePreview();
+    triggerAutoSave(); // Save after redo
+}
+
 // --- Initialization ---
 document.addEventListener('DOMContentLoaded', async () => {
+    // Initialize Menus
+    new mdui.Menu('#font-size-btn', '#font-size-menu', { covered: false, fixed: false,position: 'bottom', align:'right',gutter: 32 });
+    new mdui.Menu('#text-color-btn', '#text-color-menu', { covered: false, fixed: false, position: 'bottom', align:'right', gutter: 32 });
+
     // Configure Marked Renderer for Image Preview
     const renderer = {
         image(href, title, text) {
@@ -331,17 +497,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error("Failed to load saved state", e);
     }
 
-    // Auto-save Logic (Debounce 2s)
-    let autoSaveTimer;
-    function triggerAutoSave() {
-        clearTimeout(autoSaveTimer);
-        autoSaveTimer = setTimeout(saveState, 2000);
-    }
+    // Initialize History
+    recordHistory();
 
     // Event Listeners
-    document.getElementById('editor-content').addEventListener('input', () => {
+    const editor = document.getElementById('editor-content');
+    editor.addEventListener('input', () => {
         updatePreview();
         triggerAutoSave();
+        triggerHistorySave();
+    });
+
+    // History Shortcuts & Typing
+    editor.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+            e.preventDefault();
+            if (e.shiftKey) redo();
+            else undo();
+        } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
+            e.preventDefault();
+            redo();
+        } else if (e.key === ' ' || e.key === 'Enter') {
+             recordHistory();
+        }
     });
 
     // Attach auto-save to all other inputs
@@ -350,7 +528,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         input.addEventListener('change', triggerAutoSave);
     });
     
-    const editor = document.getElementById('editor-content');
+    // const editor = document.getElementById('editor-content'); // Already defined above
     editor.addEventListener('dragover', (e) => { e.preventDefault(); e.stopPropagation(); editor.classList.add('editor-drag-active'); });
     editor.addEventListener('dragleave', (e) => { e.preventDefault(); e.stopPropagation(); editor.classList.remove('editor-drag-active'); });
     editor.addEventListener('drop', handleDrop);
@@ -398,7 +576,7 @@ async function saveState() {
         thislink: document.getElementById('post-thislink').checked,
         timestamp: new Date().getTime()
     };
-    status.innerHTML = '<span class="mdui-text-color-grey-500" style="display: flex; align-items: center;"> 正在保存... </span>';
+    
     try {
         await idbKeyval.set(DB_KEY_CONTENT, state);
         await idbKeyval.set(DB_KEY_IMAGES, imageAssets);
@@ -416,6 +594,7 @@ async function saveState() {
 }
 
 function insertText(before, after) {
+    recordHistory();
     const textarea = document.getElementById('editor-content');
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
@@ -429,16 +608,384 @@ function insertText(before, after) {
     textarea.selectionEnd = start + before.length + selection.length;
     textarea.focus();
     updatePreview();
+    triggerAutoSave();
 }
 
+// --- Table Editor ---
+let tableEditorState = {
+    rows: 3,
+    cols: 3,
+    alignment: [], 
+    data: [], 
+    styles: [] 
+};
+let selectedCell = null;
+
 function insertTable() {
-    const table = `
-| Column 1 | Column 2 | Column 3 |
-| :--- | :---: | ---: |
-| Text | Text | Text |
-| Text | Text | Text |
-`;
-    insertText(table, '');
+    // 每次都检测并插入到正确父节点
+    let dialog = document.getElementById('table-editor-dialog');
+    if (dialog) {
+        // 若已存在，先移除
+        dialog.parentNode && dialog.parentNode.removeChild(dialog);
+    }
+    initTableEditor();
+
+    // Reset State
+    tableEditorState = {
+        rows: 3,
+        cols: 3,
+        alignment: ['left', 'left', 'left'],
+        data: [['Header 1', 'Header 2', 'Header 3'], ['Text', 'Text', 'Text'], ['Text', 'Text', 'Text']],
+        styles: Array(3).fill().map(() => Array(3).fill({}))
+    };
+
+    // Update UI inputs
+    const rowsInput = document.getElementById('table-rows');
+    const colsInput = document.getElementById('table-cols');
+    if(rowsInput) rowsInput.value = 3;
+    if(colsInput) colsInput.value = 3;
+
+    renderTableEditor();
+    new mdui.Dialog('#table-editor-dialog', { history: false, modal: true }).open();
+}
+
+function initTableEditor() {
+    // Inject Styles
+    const style = document.createElement('style');
+    style.innerHTML = `
+        #table-editor-grid {
+            display: grid;
+            gap: 8px;
+            overflow: auto;
+            max-height: 400px;
+            padding: 10px;
+            background: rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .table-cell-input, .table-col-control {
+            width: 100%;
+            min-width: 80px;
+            box-sizing: border-box;
+        }
+        .table-cell-input {
+            border: 1px solid rgba(0,0,0,0.1);
+            padding: 8px;
+            border-radius: 4px;
+            background: #fff;
+            transition: all 0.2s;
+        }
+        .table-cell-input:focus {
+            border-color: var(--color-theme-accent);
+            box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+        }
+        .table-col-control {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 4px;
+            user-select: none;
+        }
+        .table-col-control:hover {
+            background: rgba(0,0,0,0.1);
+        }
+        .mdui-theme-layout-dark .table-cell-input {
+            background: #424242;
+            border-color: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+        .mdui-theme-layout-dark #table-editor-grid {
+            background: rgba(255,255,255,0.02);
+            border-color: rgba(255,255,255,0.1);
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Inject Dialog HTML
+    const dialogHtml = `
+    <div class="mdui-dialog" id="table-editor-dialog" style="max-width: 95vw; width: 900px;">
+        <div class="mdui-dialog-title">插入表格</div>
+        <div class="mdui-dialog-content" style="overflow: hidden; display: flex; flex-direction: column; height: 600px; padding-bottom: 0;">
+            
+            <!-- Controls -->
+            <div class="mdui-row mdui-m-b-2">
+                <div class="mdui-col-xs-3">
+                    <div class="mdui-textfield mdui-p-a-0">
+                        <label class="mdui-textfield-label">行数</label>
+                        <input class="mdui-textfield-input" type="number" id="table-rows" value="3" min="1">
+                    </div>
+                </div>
+                <div class="mdui-col-xs-3">
+                    <div class="mdui-textfield mdui-p-a-0">
+                        <label class="mdui-textfield-label">列数</label>
+                        <input class="mdui-textfield-input" type="number" id="table-cols" value="3" min="1">
+                    </div>
+                </div>
+                <div class="mdui-col-xs-6 mdui-valign" style="height: 60px;">
+                    <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-ripple mdui-color-theme-accent" id="table-update-dim">
+                        <i class="mdui-icon material-icons mdui-icon-left">grid_on</i> 应用网格
+                    </button>
+                </div>
+            </div>
+
+            <!-- Style Toolbar -->
+            <div class="mdui-toolbar mdui-color-grey-100 mdui-m-b-1" style="min-height: 48px; border-radius: 4px;">
+                 <div class="mdui-valign mdui-m-r-2">
+                    <i class="mdui-icon material-icons mdui-text-color-grey-600 mdui-m-r-1">format_color_text</i>
+                    <input type="color" id="cell-fg-color" title="文字颜色" value="#000000" style="height: 24px; width: 40px; border: none; background: none; cursor: pointer;">
+                 </div>
+                 <div class="mdui-valign mdui-m-r-2">
+                    <i class="mdui-icon material-icons mdui-text-color-grey-600 mdui-m-r-1">format_color_fill</i>
+                    <input type="color" id="cell-bg-color" title="背景颜色" value="#ffffff" style="height: 24px; width: 40px; border: none; background: none; cursor: pointer;">
+                 </div>
+                 <button class="mdui-btn mdui-btn-icon mdui-ripple" id="apply-style-btn" mdui-tooltip="{content: '应用颜色到选中单元格'}">
+                    <i class="mdui-icon material-icons">check</i>
+                 </button>
+                 <button class="mdui-btn mdui-btn-icon mdui-ripple" id="clear-style-btn" mdui-tooltip="{content: '清除选中单元格样式'}">
+                    <i class="mdui-icon material-icons">format_clear</i>
+                 </button>
+                 <div class="mdui-toolbar-spacer"></div>
+                 <span class="mdui-typo-caption mdui-text-color-grey-600">点击列头切换对齐方式</span>
+            </div>
+
+            <!-- Grid -->
+            <div id="table-editor-grid" class="mdui-typo custom-scroll" style="flex: 1;"></div>
+
+        </div>
+        <div class="mdui-dialog-actions">
+            <button class="mdui-btn mdui-ripple" mdui-dialog-close>取消</button>
+            <button class="mdui-btn mdui-ripple mdui-color-theme-accent" onclick="confirmInsertTable()">插入表格</button>
+        </div>
+    </div>
+    `;
+    
+
+    const div = document.createElement('div');
+    div.innerHTML = dialogHtml;
+    // 判断是否全屏，将对话框插入到全屏元素内，否则插入body
+    let parent = document.body;
+    // 兼容各浏览器全屏API
+    const fullscreenElem = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+    if (fullscreenElem && fullscreenElem.id === 'editor-card') {
+        parent = fullscreenElem;
+    }
+    parent.appendChild(div.firstElementChild);
+
+    // Event Listeners
+    document.getElementById('table-update-dim').addEventListener('click', () => {
+        const r = parseInt(document.getElementById('table-rows').value) || 1;
+        const c = parseInt(document.getElementById('table-cols').value) || 1;
+        updateTableDims(r, c);
+    });
+    
+    document.getElementById('apply-style-btn').addEventListener('click', applyStyleToSelected);
+    document.getElementById('clear-style-btn').addEventListener('click', clearStyleSelected);
+}
+
+function updateTableDims(rows, cols) {
+    const newData = [];
+    const newStyles = [];
+    const newAlign = [];
+
+    for(let i=0; i<rows; i++) {
+        newData[i] = [];
+        newStyles[i] = [];
+        for(let j=0; j<cols; j++) {
+            newData[i][j] = (tableEditorState.data[i] && tableEditorState.data[i][j]) || '';
+            newStyles[i][j] = (tableEditorState.styles[i] && tableEditorState.styles[i][j]) || {};
+        }
+    }
+    
+    for(let j=0; j<cols; j++) {
+        newAlign[j] = tableEditorState.alignment[j] || 'left';
+    }
+
+    tableEditorState.rows = rows;
+    tableEditorState.cols = cols;
+    tableEditorState.data = newData;
+    tableEditorState.styles = newStyles;
+    tableEditorState.alignment = newAlign;
+    
+    renderTableEditor();
+
+    // Resize Dialog to fit content
+    const dialog = document.getElementById('table-editor-dialog');
+    if (dialog) {
+        const winW = window.innerWidth;
+        const winH = window.innerHeight;
+        
+        // Calculate optimal width: cols * 120px (min-width 80 + padding) + extra for dialog padding
+        let newW = Math.max(600, cols * 120 + 60);
+        if (newW > winW * 0.95) newW = winW * 0.95;
+        
+        // Calculate optimal height: rows * 60px + header/footer/controls (~250px)
+        let newH = Math.max(500, rows * 60 + 250);
+        if (newH > winH * 0.9) newH = winH * 0.9;
+        
+        dialog.style.width = newW + 'px';
+        dialog.style.maxWidth = '95vw';
+        
+        const content = dialog.querySelector('.mdui-dialog-content');
+        if (content) {
+            content.style.height = newH + 'px';
+        }
+        
+        // Trigger MDUI update to re-center
+        mdui.mutation();
+        window.dispatchEvent(new Event('resize'));
+    }
+}
+
+function renderTableEditor() {
+    const grid = document.getElementById('table-editor-grid');
+    grid.style.gridTemplateColumns = `repeat(${tableEditorState.cols}, 1fr)`;
+    grid.innerHTML = '';
+
+    // Render Column Controls
+    for(let j=0; j<tableEditorState.cols; j++) {
+        const align = tableEditorState.alignment[j];
+        let icon = 'format_align_left';
+        if(align === 'center') icon = 'format_align_center';
+        if(align === 'right') icon = 'format_align_right';
+        
+        const colHeader = document.createElement('div');
+        colHeader.className = 'table-col-control';
+        colHeader.innerHTML = `<i class="mdui-icon material-icons" style="font-size: 18px;">${icon}</i>`;
+        colHeader.title = '切换对齐方式';
+        colHeader.onclick = () => toggleAlign(j);
+        grid.appendChild(colHeader);
+    }
+
+    // Render Cells
+    for(let i=0; i<tableEditorState.rows; i++) {
+        for(let j=0; j<tableEditorState.cols; j++) {
+            const cell = document.createElement('input');
+            cell.className = 'table-cell-input';
+            cell.value = tableEditorState.data[i][j];
+            cell.placeholder = i === 0 ? '标题' : '内容';
+            
+            const style = tableEditorState.styles[i][j];
+            if(style.color) cell.style.color = style.color;
+            if(style.bg) cell.style.backgroundColor = style.bg;
+            
+            cell.onfocus = () => { selectedCell = {r:i, c:j}; };
+            cell.oninput = (e) => { tableEditorState.data[i][j] = e.target.value; };
+            
+            grid.appendChild(cell);
+        }
+    }
+}
+
+function toggleAlign(colIndex) {
+    const aligns = ['left', 'center', 'right'];
+    const current = tableEditorState.alignment[colIndex];
+    const next = aligns[(aligns.indexOf(current) + 1) % 3];
+    tableEditorState.alignment[colIndex] = next;
+    renderTableEditor();
+}
+
+function applyStyleToSelected() {
+    if(!selectedCell) {
+        mdui.snackbar({message: '请先选择一个单元格'});
+        return;
+    }
+    const color = document.getElementById('cell-fg-color').value;
+    const bg = document.getElementById('cell-bg-color').value;
+    
+    tableEditorState.styles[selectedCell.r][selectedCell.c] = {
+        color: color,
+        bg: bg !== '#ffffff' ? bg : null
+    };
+    renderTableEditor();
+}
+
+function clearStyleSelected() {
+    if(!selectedCell) return;
+    tableEditorState.styles[selectedCell.r][selectedCell.c] = {};
+    renderTableEditor();
+}
+
+function confirmInsertTable() {
+    let md = '';
+    const { rows, cols, data, alignment, styles } = tableEditorState;
+
+    // Header Row (Row 0)
+    md += '|';
+    for(let j=0; j<cols; j++) {
+        md += ` ${formatCell(0, j)} |`;
+    }
+    md += '\n|';
+    
+    // Separator Row
+    for(let j=0; j<cols; j++) {
+        const align = alignment[j];
+        if(align === 'left') md += ' :--- |';
+        else if(align === 'center') md += ' :---: |';
+        else md += ' ---: |';
+    }
+    md += '\n';
+
+    // Data Rows
+    for(let i=1; i<rows; i++) {
+        md += '|';
+        for(let j=0; j<cols; j++) {
+            md += ` ${formatCell(i, j)} |`;
+        }
+        md += '\n';
+    }
+
+    insertText(md, '');
+    new mdui.Dialog('#table-editor-dialog').close();
+}
+
+function formatCell(r, c) {
+    let text = tableEditorState.data[r][c] || ' ';
+    // Escape pipes
+    text = text.replace(/\|/g, '\\|');
+    
+    const style = tableEditorState.styles[r][c];
+    
+    if (style && (style.color || style.bg)) {
+        let styleStr = '';
+        if(style.color) styleStr += `color: ${style.color}; `;
+        if(style.bg) styleStr += `background-color: ${style.bg}; `;
+        return `<span style="${styleStr}">${text}</span>`;
+    }
+    return text;
+}
+
+function setFontSize(size) {
+    insertText(`<span style="font-size: ${size};">`, '</span>');
+}
+
+function setColor(color) {
+    insertText(`<span style="color: ${color};">`, '</span>');
+}
+
+function setAlign(align) {
+    insertText(`\n<div style="text-align: ${align};">\n`, '\n</div>\n');
+}
+
+function clearFormatting() {
+    recordHistory();
+    const textarea = document.getElementById('editor-content');
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selection = text.substring(start, end);
+    
+    // Remove span and div tags
+    const newText = selection.replace(/<\/?(span|div)[^>]*>/gi, '');
+    
+    textarea.value = text.substring(0, start) + newText + text.substring(end);
+    
+    textarea.selectionStart = start;
+    textarea.selectionEnd = start + newText.length;
+    textarea.focus();
+    updatePreview();
+    triggerAutoSave();
 }
 
 function togglePreview() {
@@ -477,7 +1024,7 @@ async function handleThumbnailSelect(e) {
     const file = e.target.files[0];
     if (!file) return;
     
-    const slug = document.getElementById('post-slug').value || 'temp';
+    const slug = document.getElementById('post-slug').value || 'untitled';
     
     try {
         const options = {
@@ -505,7 +1052,8 @@ async function handleThumbnailSelect(e) {
 }
 
 async function processImageFiles(files) {
-    const slug = document.getElementById('post-slug').value || 'temp';
+    recordHistory();
+    const slug = document.getElementById('post-slug').value || 'untitled';
     
     for (let i = 0; i < files.length; i++) {
         const file = files[i];
@@ -545,6 +1093,8 @@ async function handleZipImport(e) {
     const file = e.target.files[0];
     if (!file) return;
     
+    recordHistory();
+
     try {
         const zip = await JSZip.loadAsync(file);
         
