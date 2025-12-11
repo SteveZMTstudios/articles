@@ -1,0 +1,8 @@
+{
+  "name": "articles",
+  "entry": "./src/index.js",
+  "assets": {
+    "directory": "./public",
+    "notFoundStrategy": "404Page"
+  }
+}
