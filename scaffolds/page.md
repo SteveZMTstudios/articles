@@ -1,4 +1,5 @@
 ---
+uuid: {{ uuid }}
 title: {{ title }}
 date: {{ date }} # YYYY-MM-DD HH:mm:ss
 comments: false # 设为 'false' 关闭评论 [false|true]

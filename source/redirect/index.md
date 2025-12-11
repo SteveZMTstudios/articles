@@ -4,7 +4,6 @@ title: 即将跳转
 comments: false
 toc: false
 count: false
-date: 1970-01-01 08:00:00
 layout: 
 share_menu:
 donate: false
