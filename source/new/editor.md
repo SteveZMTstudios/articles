@@ -266,10 +266,10 @@ excerpt: markdown 博客编辑器
       <button class="mdui-btn mdui-btn-icon" onclick="togglePreview()" mdui-tooltip="{content: '切换预览'}"><i class="mdui-icon material-icons">visibility</i></button>
       <!-- Menus (Must be siblings of triggers) -->
       <ul class="mdui-menu" id="font-size-menu">
-        <li class="mdui-menu-item"><a href="javascript:;" onclick="setFontSize('12px')">12px (小)</a></li>
-        <li class="mdui-menu-item"><a href="javascript:;" onclick="setFontSize('14px')">14px (正常)</a></li>
-        <li class="mdui-menu-item"><a href="javascript:;" onclick="setFontSize('16px')">16px (中)</a></li>
-        <li class="mdui-menu-item"><a href="javascript:;" onclick="setFontSize('20px')">20px (大)</a></li>
+        <li class="mdui-menu-item"><a style="font-size:12px" href="javascript:;" onclick="setFontSize('12px')">12px (小)</a></li>
+        <li class="mdui-menu-item"><a style="font-size:14px" href="javascript:;" onclick="setFontSize('14px')">14px (正常)</a></li>
+        <li class="mdui-menu-item"><a style="font-size:16px" href="javascript:;" onclick="setFontSize('16px')">16px (中)</a></li>
+        <li class="mdui-menu-item"><a style="font-size:20px" href="javascript:;" onclick="setFontSize('20px')">20px (大)</a></li>
             <li class="mdui-menu-item mdui-p-a-2" style="min-width: 200px; max-width: 240px;">
                 <div class="mdui-typo-caption mdui-text-color-grey-600 mdui-text-center">自定义大小</div>
                 <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
@@ -731,13 +731,13 @@ function initTableEditor() {
             </div>
 
             <!-- Style Toolbar -->
-            <div class="mdui-toolbar mdui-color-grey-100 mdui-m-b-1" style="min-height: 48px; border-radius: 4px;">
+            <div class="mdui-toolbar mdui-m-b-1" style="min-height: 48px; border-radius: 4px;">
                  <div class="mdui-valign mdui-m-r-2">
-                    <i class="mdui-icon material-icons mdui-text-color-grey-600 mdui-m-r-1">format_color_text</i>
+                    <i class="mdui-icon material-icons mdui-m-r-1">format_color_text</i>
                     <input type="color" id="cell-fg-color" title="文字颜色" value="#000000" style="height: 24px; width: 40px; border: none; background: none; cursor: pointer;">
                  </div>
                  <div class="mdui-valign mdui-m-r-2">
-                    <i class="mdui-icon material-icons mdui-text-color-grey-600 mdui-m-r-1">format_color_fill</i>
+                    <i class="mdui-icon material-icons mdui-m-r-1">format_color_fill</i>
                     <input type="color" id="cell-bg-color" title="背景颜色" value="#ffffff" style="height: 24px; width: 40px; border: none; background: none; cursor: pointer;">
                  </div>
                  <button class="mdui-btn mdui-btn-icon mdui-ripple" id="apply-style-btn" mdui-tooltip="{content: '应用颜色到选中单元格'}">
