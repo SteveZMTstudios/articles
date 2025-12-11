@@ -389,14 +389,17 @@ async function saveState() {
         thislink: document.getElementById('post-thislink').checked,
         timestamp: new Date().getTime()
     };
-    
+    status.innerHTML = '<span class="mdui-text-color-grey-500" style="display: flex; align-items: center;"> 正在保存... </span>';
     try {
         await idbKeyval.set(DB_KEY_CONTENT, state);
         await idbKeyval.set(DB_KEY_IMAGES, imageAssets);
-        
         const status = document.getElementById('save-status');
-        status.innerHTML = '<span class="mdui-text-color-green-500" style="display: flex; align-items: center; font-weight: bold;"><i class="mdui-icon material-icons" style="font-size: 18px; margin-right: 4px;">done_all</i> 已保存 ' + new Date().toLocaleTimeString() + '</span>';
-        setTimeout(() => status.innerHTML = '', 2000);
+        const timeStr = new Date().toLocaleTimeString();
+        status.innerHTML = '<span class="mdui-text-color-green-500" style="display: flex; align-items: center; font-weight: bold;"><i class="mdui-icon material-icons" style="font-size: 18px; margin-right: 4px;">done_all</i> 已保存 ' + timeStr + '</span>';
+        
+        setTimeout(() => {
+            status.innerHTML = '<span class="mdui-text-color-grey-500" style="display: flex; align-items: center;"><i class="mdui-icon material-icons" style="font-size: 18px; margin-right: 4px;">done</i> 上次保存 ' + timeStr + '</span>';
+        }, 3000);
     } catch (e) {
         console.error("Save failed", e);
         document.getElementById('save-status').innerHTML = '<span class="mdui-text-color-red-500">保存失败!</span>';
