@@ -30,6 +30,14 @@ document.addEventListener('DOMContentLoaded', function() {
     let startX, startY, translateX = 0, translateY = 0;
     let galleryImages = [];
     let currentIndex = 0;
+    
+    // Pinch Zoom Variables
+    let initialPinchDistance = 0;
+    let initialPinchScale = 1;
+
+    // Auto Hide Controls Variables
+    let controlsTimer;
+    const navButtons = document.querySelectorAll('.lightbox-nav');
 
     // Helper: Reset view
     function resetView() {
@@ -38,10 +46,20 @@ document.addEventListener('DOMContentLoaded', function() {
         translateX = 0;
         translateY = 0;
         updateTransform();
+        showControls();
     }
 
     function updateTransform() {
         img.style.transform = `translate(${translateX}px, ${translateY}px) scale(${currentScale}) rotate(${currentRotation}deg)`;
+    }
+
+    // Helper: Auto Hide Controls
+    function showControls() {
+        navButtons.forEach(btn => btn.classList.remove('hidden'));
+        clearTimeout(controlsTimer);
+        controlsTimer = setTimeout(() => {
+            navButtons.forEach(btn => btn.classList.add('hidden'));
+        }, 2000);
     }
 
     // Helper: Button Feedback
@@ -150,10 +168,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Event Delegation for Images
     document.addEventListener('click', function(e) {
-        if (e.target.tagName === 'IMG' && e.target.closest('.mdui-card-content')) {
+        if (e.target.tagName === 'IMG' && e.target.closest('.mdui-card-content') && !e.target.closest('.notbyai-wrapper')) {
             // Collect images
             const content = e.target.closest('.mdui-card-content');
-            const imgs = Array.from(content.querySelectorAll('img'));
+            // Exclude images in notbyai-wrapper from the gallery list as well
+            const imgs = Array.from(content.querySelectorAll('img')).filter(img => !img.closest('.notbyai-wrapper'));
             
             // Store the BEST available URL for each image
             galleryImages = imgs.map(img => img.getAttribute('data-original') || img.src);
@@ -470,9 +489,23 @@ document.addEventListener('DOMContentLoaded', function() {
         img.classList.remove('grabbing');
     });
 
-    // Touch Events for Mobile Dragging
+    // Touch Events for Mobile Dragging & Pinch Zoom
+    function getDistance(touch1, touch2) {
+        const dx = touch1.clientX - touch2.clientX;
+        const dy = touch1.clientY - touch2.clientY;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
     img.addEventListener('touchstart', (e) => {
-        if (e.touches.length === 1) {
+        showControls(); // Reset timer on touch
+        if (e.touches.length === 2) {
+            // Pinch Start
+            e.preventDefault();
+            isDragging = false;
+            initialPinchDistance = getDistance(e.touches[0], e.touches[1]);
+            initialPinchScale = currentScale;
+        } else if (e.touches.length === 1) {
+            // Drag Start
             e.preventDefault();
             isDragging = true;
             startX = e.touches[0].clientX - translateX;
@@ -482,17 +515,36 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     img.addEventListener('touchmove', (e) => {
-        if (!isDragging) return;
-        e.preventDefault();
-        if (e.touches.length === 1) {
+        showControls(); // Keep controls visible while interacting
+        if (e.touches.length === 2) {
+            // Pinch Move
+            e.preventDefault();
+            const currentDistance = getDistance(e.touches[0], e.touches[1]);
+            if (initialPinchDistance > 0) {
+                const scaleDiff = currentDistance / initialPinchDistance;
+                currentScale = Math.min(Math.max(0.125, initialPinchScale * scaleDiff), 4);
+                updateTransform();
+            }
+        } else if (isDragging && e.touches.length === 1) {
+            // Drag Move
+            e.preventDefault();
             translateX = e.touches[0].clientX - startX;
             translateY = e.touches[0].clientY - startY;
             updateTransform();
         }
     });
 
-    img.addEventListener('touchend', () => {
-        isDragging = false;
-        img.classList.remove('grabbing');
+    img.addEventListener('touchend', (e) => {
+        if (e.touches.length < 2) {
+            initialPinchDistance = 0;
+        }
+        if (e.touches.length === 0) {
+            isDragging = false;
+            img.classList.remove('grabbing');
+        }
     });
+
+    // Reset controls timer on mouse interaction too
+    overlay.addEventListener('mousemove', showControls);
+    overlay.addEventListener('mousedown', showControls);
 });

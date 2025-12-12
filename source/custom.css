@@ -107,7 +107,7 @@ html.no-js #main {
 
 .lightbox-btn:hover {
     background: rgba(255, 255, 255, 0.2);
-    color: #ff4081;
+    color: #448AFF;
 }
 
 .lightbox-btn.success {
@@ -154,7 +154,11 @@ html.no-js #main {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: background 0.3s;
+    transition: background 0.3s, opacity 0.3s;
+}
+
+.lightbox-nav.hidden {
+    opacity: 0;
 }
 
 .lightbox-nav:hover {

@@ -432,6 +432,7 @@
             <strong><%= __('permalink') %></strong><br><a href="<%- page.permalink %>"><%- decodeURI(page.permalink) %></a>
           <% } %>
         </blockquote>
+        <% if (theme.license && page.license !== false) { %>
         <div class="notbyai-icons" aria-hidden="false">
           <!-- 可在这里添加额外图标，并放在主图标的左侧，示例：
                <span class="notbyai-extra" style="background-image: url('/images/extra.svg')" aria-hidden="true"></span>
@@ -439,6 +440,7 @@
           <img src="//mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1.8em;max-height:1.8em;margin-left: .08em;"><img src="//mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1.8em;max-height:1.8em;margin-left: .08em;"><img src="//mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1.8em;max-height:1.8em;margin-left: .08em;"><img src="//mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width: 1.8em;max-height:1.8em;margin-left: .08em;">
           <a href="//notbyai.fyi"><span class="notbyai-icon" role="img"></span></a>
         </div>
+        <% } %>
       </div>
       <% } %>
     </div>
