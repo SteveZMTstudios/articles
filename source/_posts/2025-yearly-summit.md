@@ -15,7 +15,7 @@ comments: true
 
 今年认识了不少人，遇到了不少事，乱七八糟，杂七杂八，五味杂陈，不知道从哪里开始讲
 
-```
+```bash
 sudo journalctl --since "1 year ago"
 ```
 

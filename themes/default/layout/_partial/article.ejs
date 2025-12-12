@@ -188,7 +188,7 @@
                 block.appendChild(wrap);
 
                 requestAnimationFrame(function(){
-                  wrap.style.maxHeight = wrap.scrollHeight + 'px';
+                  wrap.style.maxHeight = (wrap.scrollHeight + 8) + 'px';
                 });
               }
               var toolbar = document.createElement('div');
@@ -314,12 +314,12 @@
               content.style.maxHeight = '0px';
 
               requestAnimationFrame(function(){
-                content.style.maxHeight = startHeight + 'px';
+                content.style.maxHeight = (startHeight + 8) + 'px';
               });
             } else if(willCollapse) {
 
 
-              content.style.maxHeight = startHeight + 'px';
+              content.style.maxHeight = (startHeight + 8) + 'px';
 
               void content.offsetWidth;
 
@@ -330,7 +330,7 @@
               });
             } else {
 
-              content.style.maxHeight = startHeight + 'px';
+              content.style.maxHeight = (startHeight + 8) + 'px';
             }
 
             content.removeEventListener('transitionend', content._collapseHandler || function(){});
@@ -338,7 +338,7 @@
               if(ev.propertyName !== 'max-height') return;
               if(!wrapper.classList.contains('collapsed')){
 
-                content.style.maxHeight = content.scrollHeight + 'px';
+                content.style.maxHeight = (content.scrollHeight + 8) + 'px';
               }
             };
             content.addEventListener('transitionend', content._collapseHandler);
@@ -405,7 +405,7 @@
   .codeblock-wrapper .code-toolbar .code-lang-badge { font-size:12px; line-height:1; padding:4px 8px; border-radius:6px; background:rgba(0,0,0,0.06); color:#000; user-select:none; cursor:default; opacity:.85; }
   .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .code-lang-badge { background:#ffffff24; color:#fff; }
   /* Animated content wrapper */
-  .codeblock-wrapper .code-content-wrap { overflow:auto; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
+  .codeblock-wrapper .code-content-wrap { overflow-x:auto; overflow-y: hidden; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
   .codeblock-wrapper.collapsed .code-content-wrap { max-height:0 !important; padding-top:0 !important; padding-bottom:0 !important; }
   /* Avoid hiding toolbar */
   .codeblock-wrapper.collapsed > .code-toolbar { display:flex !important; }
