@@ -219,6 +219,9 @@ excerpt: markdown 博客编辑器
 
 <div class="mdui-row mdui-m-t-2">
         <div class="mdui-col-xs-12">
+            <button class="mdui-btn mdui-btn-raised mdui-color-green-600 mdui-ripple mdui-m-r-1" onclick="submitToGitHub()">
+                <i class="mdui-icon material-icons">cloud_upload</i> 发布到 GitHub
+            </button>
             <button class="mdui-btn mdui-btn-raised mdui-color-theme-accent mdui-ripple" onclick="exportPost()">
                 <i class="mdui-icon material-icons">file_download</i> 导出 ZIP
             </button>
@@ -1345,5 +1348,186 @@ function handleFullscreenChange() {
         elem.style.height = '100vh';
         elem.style.borderRadius = '0';
     }
+}
+
+// --- GitHub Submission ---
+const WORKER_URL = 'https://pr-helper.cf.miniproj.stevezmt.top'; // TODO: Replace with your Worker URL
+// REPO_OWNER and REPO_NAME are now enforced by the Worker, but we keep them here if needed for other logic or future use.
+// The Worker will ignore these if sent in the body, but for compatibility we can leave them or remove them from the body payload.
+
+async function submitToGitHub() {
+    const token = localStorage.getItem('github_token');
+    if (!token) {
+        if (confirm('需要登录 GitHub 才能提交。是否现在登录？')) {
+            loginWithGitHub();
+        }
+        return;
+    }
+
+    const slug = document.getElementById('post-slug').value || 'untitled';
+    const defaultMsg = `发布 ${slug}`;
+    
+    const message = await showCommitDialog(defaultMsg);
+    if (!message) return; // User cancelled
+
+    // Prepare files
+    const files = [];
+    
+    // 1. Markdown
+    const title = document.getElementById('post-title').value || 'Untitled';
+    const tags = document.getElementById('post-tags').value.split(',').map(t => t.trim()).filter(t => t);
+    const categories = document.getElementById('post-categories').value.split(',').map(c => c.trim()).filter(c => c);
+    const content = document.getElementById('editor-content').value;
+    
+    const donate = document.getElementById('post-donate').checked;
+    const toc = document.getElementById('post-toc').checked;
+    const comments = document.getElementById('post-comments').checked;
+    const top = document.getElementById('post-top').checked;
+    const customDate = document.getElementById('post-date').value;
+    
+    const author = document.getElementById('post-author').value;
+    const thumbnail = document.getElementById('post-thumbnail').value;
+    const excerpt = document.getElementById('post-excerpt').value;
+    const license = document.getElementById('post-license').value;
+    const count = document.getElementById('post-count').checked;
+    const share_menu = document.getElementById('post-share_menu').checked;
+    const qrcode = document.getElementById('post-qrcode').checked;
+    const thislink = document.getElementById('post-thislink').checked;
+
+    const dateStr = customDate || new Date().toISOString().replace('T', ' ').substring(0, 19);
+    const uuid = generateUUID(); 
+    
+    let frontMatter = `---
+uuid: ${uuid}
+title: ${title}
+date: ${dateStr}
+tags: [${tags.join(', ')}]
+categories: [${categories.join(', ')}]
+donate: ${donate}
+toc: ${toc}
+comments: ${comments}
+`;
+    if(top) frontMatter += `top: true\n`;
+    if(author) frontMatter += `author: ${author}\n`;
+    if(thumbnail) frontMatter += `thumbnail: ${thumbnail}\n`;
+    if(excerpt) frontMatter += `excerpt: ${excerpt}\n`;
+    if(license) frontMatter += `license: ${license}\n`;
+    if(!count) frontMatter += `count: false\n`;
+    if(!share_menu) frontMatter += `share_menu: false\n`;
+    if(!qrcode) frontMatter += `qrcode: false\n`;
+    if(!thislink) frontMatter += `thislink: false\n`;
+    
+    frontMatter += `---\n\n${content}\n`;
+    
+    files.push({
+        path: `source/_posts/${slug}.md`,
+        content: frontMatter,
+        encoding: 'utf-8'
+    });
+
+    // 2. Images
+    for (const [filename, blob] of Object.entries(imageAssets)) {
+        if (content.includes(filename)) {
+             const base64 = await blobToBase64(blob);
+             files.push({
+                 path: `source/images/blog/${slug}/${filename}`,
+                 content: base64,
+                 encoding: 'base64'
+             });
+        }
+    }
+
+    // Send to Worker
+    const snackbar = mdui.snackbar({message: '正在提交到 GitHub...', timeout: 0});
+    
+    try {
+        const response = await fetch(`${WORKER_URL}/submit`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                token,
+                files,
+                message
+                // owner and repo are removed from payload as they are enforced by server
+            })
+        });
+        
+        const result = await response.json();
+        snackbar.close();
+        
+        if (result.success) {
+            mdui.dialog({
+                title: '提交成功',
+                content: `Pull Request 已创建: <a href="${result.pr_url}" target="_blank">#${result.pr_number}</a>`,
+                buttons: [{text: '确定'}]
+            });
+        } else {
+            throw new Error(result.error || 'Unknown error');
+        }
+    } catch (e) {
+        snackbar.close();
+        console.error(e);
+        mdui.snackbar({message: `提交失败: ${e.message}`});
+    }
+}
+
+function loginWithGitHub() {
+    const width = 600;
+    const height = 700;
+    const left = (screen.width - width) / 2;
+    const top = (screen.height - height) / 2;
+    window.open(`${WORKER_URL}/auth`, 'github_oauth', `width=${width},height=${height},top=${top},left=${left}`);
+}
+
+window.addEventListener('message', (event) => {
+    if (event.data.type === 'github-token') {
+        localStorage.setItem('github_token', event.data.token);
+        mdui.snackbar({message: 'GitHub 登录成功'});
+    }
+});
+
+function showCommitDialog(defaultMsg) {
+    return new Promise((resolve) => {
+        const dialogHtml = `
+            <div class="mdui-dialog" id="commit-dialog">
+                <div class="mdui-dialog-title">提交到 GitHub</div>
+                <div class="mdui-dialog-content">
+                    <div class="mdui-textfield">
+                        <label class="mdui-textfield-label">Commit Message / PR Title</label>
+                        <input class="mdui-textfield-input" type="text" id="commit-message" value="${defaultMsg}"/>
+                    </div>
+                </div>
+                <div class="mdui-dialog-actions">
+                    <button class="mdui-btn mdui-ripple" mdui-dialog-close onclick="window._commitDialogResolve(null)">取消</button>
+                    <button class="mdui-btn mdui-ripple mdui-color-theme-accent" mdui-dialog-close onclick="window._commitDialogResolve(document.getElementById('commit-message').value)">提交</button>
+                </div>
+            </div>
+        `;
+        
+        const div = document.createElement('div');
+        div.innerHTML = dialogHtml;
+        document.body.appendChild(div.firstElementChild);
+        
+        window._commitDialogResolve = (val) => {
+            resolve(val);
+            delete window._commitDialogResolve;
+            const d = document.getElementById('commit-dialog');
+            if(d) d.parentNode.removeChild(d);
+        };
+        
+        new mdui.Dialog('#commit-dialog', {history: false, modal: true}).open();
+    });
+}
+
+function blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64 = reader.result.split(',')[1];
+            resolve(base64);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
 }
 </script>
