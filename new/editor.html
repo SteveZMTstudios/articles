@@ -1,0 +1,2589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="renderer" content="webkit">
+  
+
+  <script>
+    (function() {
+      try {
+        var LOC = window.location;
+        var path = LOC.pathname || '/';
+        if (path === '/k' || path.indexOf('/k/') === 0 || /[?&]compat=1/.test(LOC.search) || /[?&]nocompat=1/.test(LOC.search)) return;
+
+  var ua = navigator.userAgent || '';
+  var isBot = /Googlebot|Bingbot|Baiduspider|Bytespider|360Spider|Sogou|YandexBot|DuckDuckBot|Slurp|facebookexternalhit|Twitterbot|msnbot/i.test(ua);
+  function getQueryParam(name) {
+    try {
+      if (window.URLSearchParams) {
+        var sp = new URLSearchParams(LOC.search);
+        return sp.get(name);
+      }
+    } catch (e) {}
+    try {
+      var qs = (LOC.search || '').replace(/^\?/, '');
+      var pairs = qs.split('&');
+      for (var i = 0; i < pairs.length; i++) {
+        var p = pairs[i];
+        if (!p) continue;
+        var idx = p.indexOf('=');
+        var k = idx === -1 ? decodeURIComponent(p) : decodeURIComponent(p.slice(0, idx));
+        var v = idx === -1 ? '' : decodeURIComponent(p.slice(idx+1));
+        if (k === name) return v;
+      }
+    } catch (e) {}
+    return null;
+  }
+  var persistNoK = getQueryParam('persist_no_k') === '1';
+
+        function lacks(feature) { return !feature; }
+        var missingFeatures = [];
+        if (lacks(window.Promise)) missingFeatures.push('Promise');
+        if (lacks(window.fetch)) missingFeatures.push('fetch');
+        if (lacks(Object.assign)) missingFeatures.push('Object.assign');
+        if (lacks(Array.prototype.find)) missingFeatures.push('Array.find');
+        if (lacks(document.querySelector)) missingFeatures.push('querySelector');
+        if (lacks(window.addEventListener)) missingFeatures.push('addEventListener');
+        if (lacks(window.IntersectionObserver)) missingFeatures.push('IntersectionObserver');
+        var legacyFeature = (
+          missingFeatures.indexOf('Promise') !== -1 ||
+          missingFeatures.indexOf('querySelector') !== -1 ||
+          missingFeatures.indexOf('addEventListener') !== -1 ||
+          missingFeatures.length >= 2
+        );
+
+  var errorLimit = 8; 
+  var errorCount = 0;
+  function scheduleRedirect(reason) {
+          try {
+            var note = document.createElement('div');
+            note.style.cssText = 'display:none;';
+            note.textContent = 'Compatibility suggestion (/k) triggered: ' + reason;
+            document.documentElement.appendChild(note);
+          } catch (e) {}
+
+          if (window.__compat_redirected) return;
+
+          try {
+            if (!window.__compat_banner_shown) {
+              window.__compat_banner_shown = true;
+              var banner = document.createElement('div');
+              banner.style.cssText = 'background:#ff9800;color:#000;padding:8px;font-size:13px;text-align:center;position:relative;z-index:9999;';
+              banner.innerHTML = '浏览器可能不完全支持本站功能（'+reason+'）请访问 <a href="/k?compat=1&from='+encodeURIComponent(path)+'&reason='+encodeURIComponent(reason)+'">兼容视图</a>以正常阅览。';
+              try { document.documentElement.insertBefore(banner, document.documentElement.firstChild); }
+              catch(e) { document.body && document.body.insertBefore(banner, document.body.firstChild); }
+            }
+          } catch (e) {}
+          console.log('Compatibility suggestion (/k) triggered:', reason);
+          console.log('Missing features:', missingFeatures.join(', '));
+          console.log('Error count:', errorCount);
+          console.log('Is bot:', isBot);
+          console.log('Persist no_k:', persistNoK);
+          
+
+          setTimeout(function() {
+            try {
+              if (isBot || persistNoK) {
+                return;
+              }
+              if (window.__compat_redirected) return; window.__compat_redirected = true;
+              var target = '/k?compat=1&from=' + encodeURIComponent(path) + '&reason=' + encodeURIComponent(reason);
+              try { window.stop && window.stop(); } catch(e){}
+              LOC.replace(target);
+            } catch (e) {}
+          }, 500);
+        }
+
+        window.addEventListener('error', function(e) {
+          try {
+            var el = e && e.target;
+            var isResource = el && el.tagName && (el.tagName === 'SCRIPT' || el.tagName === 'LINK' || el.tagName === 'IMG');
+            if (!isResource) {
+              console.log('Runtime error detected ('+errorCount+'):', e.message, 'at', e.filename + ':' + e.lineno + ':' + e.colno);
+              errorCount++;
+              if (errorCount >= errorLimit) scheduleRedirect('runtime_error_'+errorCount);
+            }
+          } catch(err){}
+        }, true);
+
+        window.addEventListener('unhandledrejection', function(e) {
+          try {
+            errorCount++;
+            if (errorCount >= errorLimit) scheduleRedirect('unhandledrejection_'+errorCount);
+          } catch (err) {}
+        });
+
+        setTimeout(function() {
+          if (!window.mdui && !window.__compat_redirected && (legacyFeature || errorCount > 0)) {
+            scheduleRedirect('timeout_no_core_lib');
+          }
+        }, 20000);
+
+        if (legacyFeature) {
+          scheduleRedirect('legacy_feature');
+        }
+      } catch (e) {
+      }
+    })();
+  </script>
+  <noscript>
+    
+    <meta http-equiv="refresh" content="2; url=/k?compat=1&noscript=1" />
+    <div style="background:#ff9800;color:#000;padding:8px;font-size:13px;text-align:center;">灾难性错误：浏览器未启用Javascript，正在切换到 <a href="/k?compat=1&noscript=1">兼容性视图</a>...</div>
+  </noscript>
+
+  
+  <title>博客编辑器 | 老史尬侃 - Steve ZMT &#39;s Blog</title>
+
+  <link rel="shortcut icon" href="/images/favicon.png">
+  <link rel="alternate" href="/atom.xml" title="老史尬侃 - Steve ZMT 's Blog" type="application/atom+xml">
+  <meta name="description" content="markdown 博客编辑器">
+<meta property="og:type" content="website">
+<meta property="og:title" content="博客编辑器">
+<meta property="og:url" content="https://blog.stevezmt.top/new/editor.html">
+<meta property="og:site_name" content="老史尬侃 - Steve ZMT &#39;s Blog">
+<meta property="og:description" content="markdown 博客编辑器">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.stevezmt.top/new/$%7Burl%7D">
+<meta property="og:image" content="https://blog.stevezmt.top/new/$%7Bhref%7D">
+<meta property="article:published_time" content="2025-12-12T05:00:18.997Z">
+<meta property="article:modified_time" content="2025-12-12T05:00:18.997Z">
+<meta property="article:author" content="Steve ZMT">
+<meta property="article:tag" content="SteveZMT">
+<meta property="article:tag" content="blog">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="史蒂夫ZMT">
+<meta property="article:tag" content="随笔">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.stevezmt.top/new/$%7Burl%7D">
+
+  <meta name="keywords" content="blog,博客,随笔,SteveZMT,史蒂夫ZMT">
+  <meta name="format-detection" content="telephone=no,email=no">
+  <meta name="theme-color" content="#448AFF">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="老史尬侃 - Steve ZMT &#39;s Blog">
+  <meta name="msapplication-starturl" content="https://blog.stevezmt.top/new/editor.html">
+  <meta name="msapplication-navbutton-color" content="#448AFF">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="老史尬侃 - Steve ZMT &#39;s Blog">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="apple-touch-icon" href="/images/favicon.png">
+  <link rel="dns-prefetch" href="/" />
+  <link rel="manifest" href="/manifest.json">
+
+  
+    <link rel="canonical" href="https://blog.stevezmt.top/new/editor.html">
+  
+
+  
+  
+
+
+  
+  
+
+  
+<link rel="stylesheet" href="/css/mdui.css">
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/custom.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+<!--
+<script data-pjax>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create','G-T404DHJEEZ','auto');ga('send','pageview');
+</script>
+-->
+
+<!-- Google tag (gtag.js) -->
+
+<script data-pjax defer src="https://www.googletagmanager.com/gtag/js?id=G-T404DHJEEZ"></script>
+<script data-pjax>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T404DHJEEZ');
+</script>
+
+
+<body class="mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-blue">
+  
+  
+  <script>window.BUSUANZI_SRC = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';</script>
+  
+  <script src="//awp-assets.meituan.net/thh/thh_feb_web_portal/js/jquery-3.6.0.min.js"></script>
+  <script>
+    if (typeof jQuery === 'undefined') {
+      document.write('<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"><\/script>');
+    }
+  </script>
+  <script>
+    var dark = localStorage.getItem("mdui-theme-layout-dark");
+    var light = localStorage.getItem("mdui-theme-layout-light");
+    if (dark || (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches && !light)) {
+      document.getElementsByTagName("body")[0].className+=" mdui-theme-layout-dark";
+    }
+  </script>
+  <script>var a=localStorage.getItem("mdui-drawer-close");if(!a){document.getElementsByTagName("body")[0].className+=" mdui-drawer-body-left"};</script>
+  <header id="header" class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide mdui-appbar-inset">
+  
+  <div id="material-refresh-indicator" style="position:fixed;top: 80px;left:0;width:100vw;z-index:2000;display:flex;justify-content:center;pointer-events:none;transition:transform 0.3s cubic-bezier(.4,0,.2,1),opacity 0.3s;transform:translateY(-48px);opacity:0;">
+    <div style="background:#eee;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.12);padding:9px;display:flex;align-items:center;justify-content:center;">
+      <div class="mdui-spinner" style="width:20px;height:20px;"></div>
+    </div>
+  </div>
+  <div id="banner" class="mdui-toolbar mdui-color-theme">
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="mdui-icon material-icons" translate="no">menu</i></a>
+    <a href="/" class="mdui-typo-headline">老史尬侃 - Steve ZMT &#39;s Blog</a>
+    <div class="mdui-toolbar-spacer"></div>
+    
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon" id="theme-toggle" mdui-tooltip="{content: '切换主题'}"><i class="mdui-icon material-icons" translate="no">brightness_4</i></a>
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: '搜索'}"><i class="mdui-icon material-icons" translate="no">search</i></a>
+    <!-- Open RSS Feed --><!--
+    <a href="/atom.xml" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'RSS'}"><i class="mdui-icon material-icons" translate="no">rss_feed</i></a> -->
+    <!-- Copy RSS Feed To Clipboard -->
+    
+      <a href="javascript:void(0);" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'RSS'}" onclick="copyRssToClipboard('https://blog.stevezmt.top/atom.xml')">
+        <i class="mdui-icon material-icons" translate="no">rss_feed</i>
+      </a>
+      <script data-pjax>
+        function copyRssToClipboard(text) {
+          navigator.clipboard.writeText(text).then(function() {
+            mdui.snackbar({
+              message: '已将RSS订阅链接复制到剪贴板!',
+              position: 'right-top',
+              buttonText: '好',
+            });
+          }, function(err) {
+            console.error('Could not copy text: ', err);
+            mdu.snackbar({
+              message: '复制RSS订阅链接失败!',
+              position: 'right-top',
+            });
+          });
+        }
+      </script>
+      
+  </div>
+</header>
+<div class="mdui-dialog" id="search">
+  <script data-pjax>
+
+    (function() {
+      var searchDialog = document.getElementById('search');
+      if (!searchDialog) return;
+      var typingLock = false;
+      var searchInput = searchDialog.querySelector('input[type="search"]');
+      if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+          if (typingLock) return;
+          typingLock = true;
+          setTimeout(function() { typingLock = false; }, 500);
+        });
+      }
+
+      searchDialog.addEventListener('closed.mdui.dialog', function() {
+        typingLock = false;
+      });
+    })();
+
+    window.showMaterialRefresh = function() {
+      var el = document.getElementById('material-refresh-indicator');
+      if (el) {
+        el.style.transform = 'translateY(0)';
+        el.style.opacity = '1';
+      }
+    };
+    window.hideMaterialRefresh = function() {
+      var el = document.getElementById('material-refresh-indicator');
+      if (el) {
+        el.style.transform = 'translateY(-64px)';
+        el.style.opacity = '0';
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(window.hideMaterialRefresh, 600); });
+  </script>
+  
+    <div class="search-form">
+      <input type="search"  id="search-input" name="search" class="search-form-input" placeholder="搜索...">
+    </div>
+    <div class="search-result" data-resource="/search.xml"></div>
+    
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer mdui-drawer-full-height">
+  <script data-pjax>var a=localStorage.getItem("mdui-drawer-close");if(a){document.getElementById("sidebar").className+=" mdui-drawer-close"};</script>
+  <div class="mdui-grid-tile">
+    <img no-lazy src="/images/banner.png" style="height: 160px;">
+    <img no-lazy src="/images/avatar.jpg@128x128.jpg" class="avatar-animation" alt="Avatar" style="position: absolute; top: 10%; left: 24px; width: 64px; height: 64px; border: 2px solid #fff; border-radius: 50%;">
+    <div class="mdui-grid-tile-actions">
+      <div class="mdui-grid-tile-text">
+        <div class="mdui-grid-tile-title">Steve ZMT</div>
+        <div class="mdui-grid-tile-subtitle"><i class="mdui-icon material-icons" translate="no">art_track</i>这家伙叽里咕噜说什么呢。</div>
+      </div>
+      <!--
+      
+        <div class="mdui-grid-tile-buttons">
+          <a href="mailto:admin@stevezmt.top" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'admin@stevezmt.top'}"><i class="mdui-icon material-icons" translate="no">email</i></a>
+        </div>
+       
+      -->
+      
+        <div class="mdui-grid-tile-buttons">
+          <a href="javascript:void(0);" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'admin@stevezmt.top'}" onclick="copyEmailToClipboard('admin@stevezmt.top')">
+            <i class="mdui-icon material-icons" translate="no">email</i>
+          </a>
+        </div>
+        <script data-pjax>
+          function copyEmailToClipboard(email) {
+            navigator.clipboard.writeText(email).then(function() {
+              mdui.snackbar({
+                message: '已将邮箱地址复制到剪贴板!',
+                position: 'left-top',
+                buttonText: '写邮件',
+                onButtonClick: function(){
+                  window.location.href = 'mailto:' + 'admin@stevezmt.top';
+                }
+              });
+            }, function(err) {
+              console.error('Could not copy text: ', err);
+              mdui.snackbar({
+                message: '复制邮箱地址失败!',
+                position: 'right-top',
+              });
+            });
+          }
+        </script>
+
+    </div>
+  </div>
+
+  <div class="mdui-list" mdui-collapse="{accordion: true}">
+    <a href="/" class="mdui-list-item mdui-ripple">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue" translate="no">home</i>
+      <div class="mdui-list-item-content">主页</div>
+    </a>
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-0");if(a){document.getElementsByClassName("mdui-collapse-item")[0].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-deep-orange" translate="no">archive</i>
+        <div class="mdui-list-item-content">归档</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons" translate="no">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/archives/2025/11/">十一月 2025<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/09/">九月 2025<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/08/">八月 2025<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/01/">一月 2025<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/12/">十二月 2024<span class="mdui-ripple sidebar_archives-count">3</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/03/">三月 2024<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/02/">二月 2024<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2023/10/">十月 2023<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2023/08/">八月 2023<span class="mdui-ripple sidebar_archives-count">1</span></a>
+        
+      </div>
+    </div>
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-1");if(a){document.getElementsByClassName("mdui-collapse-item")[1].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-green" translate="no">class</i>
+        <div class="mdui-list-item-content">分类</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons" translate="no">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/categories/%E6%8A%98%E8%85%BE/">折腾<span class="mdui-ripple sidebar_archives-count">8</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E6%8A%98%E8%85%BE/%E7%94%B5%E5%AD%90%E5%9E%83%E5%9C%BE/">电子垃圾<span class="mdui-ripple sidebar_archives-count">3</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E7%9E%8E%E8%81%8A/">瞎聊<span class="mdui-ripple sidebar_archives-count">3</span></a>
+        
+      </div>
+    </div>
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-2");if(a){document.getElementsByClassName("mdui-collapse-item")[2].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown" translate="no">bookmark</i>
+        <div class="mdui-list-item-content">标签</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons"translate="no">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/tags/AI/" rel="tag">AI<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/Cloudflare/" rel="tag">Cloudflare<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/ColorOS/" rel="tag">ColorOS<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/KDE/" rel="tag">KDE<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/PXE/" rel="tag">PXE<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/RealmeUI/" rel="tag">RealmeUI<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/hexo/" rel="tag">hexo<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/iVentoy/" rel="tag">iVentoy<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/openai/" rel="tag">openai<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/root/" rel="tag">root<span class="mdui-ripple sidebar_archives-count">4</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/xposed/" rel="tag">xposed<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E4%B8%8B%E8%BD%BD/" rel="tag">下载<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E4%BA%92%E8%81%94/" rel="tag">互联<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%8D%95%E8%AF%8D%E7%AC%94/" rel="tag">单词笔<span class="mdui-ripple sidebar_archives-count">3</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%AE%89%E5%8D%93/" rel="tag">安卓<span class="mdui-ripple sidebar_archives-count">5</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%BC%80%E6%BA%90/" rel="tag">开源<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E6%84%8F%E5%A4%96/" rel="tag">意外<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E6%95%85%E9%9A%9C/" rel="tag">故障<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%BC%95%E5%AF%BC/" rel="tag">网络引导<span class="mdui-ripple sidebar_archives-count">1</span></a>
+        
+      </div>
+    </div>
+    <a href="/about" class="mdui-list-item mdui-ripple">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-purple" translate="no">person</i>
+      <div class="mdui-list-item-content">关于</div>
+    </a>
+  </div>
+
+  <div class="mdui-divider"></div>
+
+  <div class="mdui-list" mdui-collapse="{accordion: true}">
+    
+      <a href="/timeline"  class="mdui-list-item mdui-ripple">时间轴</a>
+    
+      <a href="/tagcloud"  class="mdui-list-item mdui-ripple">标签云</a>
+    
+      <a href="/friends"  class="mdui-list-item mdui-ripple">友情链接</a>
+    
+      <a href="/k" target="_blank" class="mdui-list-item mdui-ripple">兼容视图</a>
+    
+      <a href="https://www.travellings.cn/go.html" target="_blank" class="mdui-list-item mdui-ripple">开往</a>
+    
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-3");if(a){document.getElementsByClassName("mdui-collapse-item")[3].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <div class="mdui-list-item-content">其他链接</div>
+        <i class="mdui-list-item-icon mdui-icon material-icons" translate="no">link</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+          <a href="//stevezmt.top/" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">史蒂夫ZMT 主页</a>
+        
+          <a href="//stevezmt.top/Phigros-history/" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">Phigros 历史版本收集</a>
+        
+          <a href="//rip.stevezmt.top" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">过气项目存档</a>
+        
+        
+      </div>
+    </div>
+  </div>
+</aside>
+
+  <main id="main" class="mdui-m-t-5 pjax-in"><script data-pjax>
+  (function() {
+    const links = document.querySelectorAll('.mdui-card-content a');
+    
+    links.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('http') && 
+          !href.includes('blog.stevezmt.top') && 
+          !href.includes('stevezmt.top') && 
+          !href.includes('localhost')) {
+        link.href = `/redirect?goto=${encodeURIComponent(href)}`;
+        link.target = "_blank";
+      }
+    });
+  })();
+  </script>
+
+
+  
+<link rel="stylesheet" href="//gcore.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+  <style>#main article .mdui-card-content .center-block{display:block!important;margin-right:auto!important;margin-left:auto!important}</style>
+  <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
+  <article class="mdui-card mdui-m-b-5">
+    <header class="mdui-card-media">
+      <img src="/images/loading.svg" data-original="/images/random/material-7.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+      <div class="mdui-card-media-covered">
+        <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;">博客编辑器</h1></div>
+          <div class="mdui-card-primary-subtitle"><i class="iconfont" translate="no">&#xe697;</i> 2025-12-12 / <i class="iconfont" translate="no">&#xe601;</i> Steve ZMT &nbsp;&nbsp; <span id="busuanzi_container_page_pv" style="display: none;"><i class="iconfont" translate="no">&#xe7fd;</i> <span id="busuanzi_value_page_pv"></span></span></div>
+        </div>
+      </div>
+      <div class="mdui-card-menu">
+        
+          <button class="mdui-btn mdui-btn-icon mdui-text-color-white" mdui-menu="{target: '#qrcode', align: 'right'}"><i class="mdui-icon material-icons" translate="no">devices</i></button>
+          <ul class="mdui-menu" id="qrcode">
+            
+              <li class="mdui-menu-item"><a class="mdui-text-center mdui-ripple">发送到手机</a></li>
+            
+            <li class="mdui-menu-item" disabled>
+              
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAAB3ElEQVR42u3aQXLCMAwF0Nz/0u0FiPmSU0qi5xXDBOyXhUaSdfw8Yh0YGBgYGBgYGF/DOOL14o/iJ89+tXMGDAyMaYxk4+T7KmnnDBgYGDMZZ4c4+1xO5uL/Xz+DgYGBkW/TS+zOwjQGBgbGXzDWvLzQxcDAwLi2iN1pxn1RLY6BgXFDRi+xu/bzR+83MDAwbsXYaZn1Lg/223YYGBjTGHngq45NJJedvX0xMDBmMnaaYnkKmJTBhcEODAyM8Yx8SGL9/PpFrJ8vp4YYGBhjGL2ULk8c8xbbmxCMgYGBEV9DHq3Va+phYGDMZCSpWy+85kVy/rIwMDBmMnbaakm4zA9XLWsxMDDmMHrJWTKQWgidrb0wMDCmMfLW2M5VQSGY9gIuBgbGQxn52ERyrGuL2DdFNQYGxjBGNWnLw3FSKufnwcDAwMg3yL+vppvNIhYDA2MYY6eI7YXy3tUmBgbGHEZ1XTten19/YmBgTGb0Rk53xlWrI/jliwEMDIyHMpIgmyd5vdCcnwcDA2Myo3qVmAM+WotjYGBgxClgr92/3gUDAwOjOZ5VRObPv3lBGBgYIxlJEZuDq6Nm1eEwDAyMaYw85CVN/yTV2wFgYGBMY9x3YWBgYGBgYGD86/oFuhMR7uAWH/QAAAAASUVORK5CYII=">
+              
+            </li>
+          </ul>
+        
+        
+          <button class="mdui-btn mdui-btn-icon mdui-text-color-white" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="mdui-icon material-icons" translate="no">share</i></button>
+          <ul class="mdui-menu" id="share_menu">
+            <li class="mdui-menu-item">
+              <a href="javascript:void(0);" class="mdui-ripple" onclick="copyToClipboard('https://blog.stevezmt.top/new/editor.html');">复制链接</a>
+            </li>
+
+            <script data-pjax>
+              function copyToClipboard(text) {
+                navigator.clipboard.writeText(text).then(function() {
+                  mdui.snackbar({message: '已复制链接!', position: 'top', buttonText: '好'});
+                }, function(err) {
+                  console.error('Could not copy text: ', err);
+                });
+              }
+            </script>
+            <li class="mdui-menu-item">
+              <a href="//service.weibo.com/share/share.php?appkey=&title=博客编辑器&url=https://blog.stevezmt.top/new/editor.html&pic=https://blog.stevezmt.top/images/favicon.png&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="//twitter.com/intent/tweet?text=博客编辑器&url=https://blog.stevezmt.top/new/editor.html&via=Steve ZMT" target="_blank" class="mdui-ripple">分享到 Twitter</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="//www.facebook.com/sharer/sharer.php?u=https://blog.stevezmt.top/new/editor.html" target="_blank" class="mdui-ripple">分享到 Facebook</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="//plus.google.com/share?url=https://blog.stevezmt.top/new/editor.html" target="_blank" class="mdui-ripple">分享到 Google+</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="//www.linkedin.com/shareArticle?mini=true&url=https://blog.stevezmt.top/new/editor.html&title=博客编辑器" target="_blank" class="mdui-ripple">分享到 LinkedIn</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="//connect.qq.com/widget/shareqq/index.html?site=老史尬侃 - Steve ZMT &#39;s Blog&title=博客编辑器&pics=https://blog.stevezmt.top/images/favicon.png&url=https://blog.stevezmt.top/new/editor.html" target="_blank" class="mdui-ripple">分享到 QQ</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="//telegram.me/share/url?url=https://blog.stevezmt.top/new/editor.html&text=博客编辑器" target="_blank" class="mdui-ripple">分享到 Telegram</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="javascript:void(0);" class="mdui-ripple" onclick="sharePageviaSystem();">更多分享选项</a>
+            </li>
+
+            <script data-pjax>
+              function sharePageviaSystem() {
+                if (navigator.share) {
+                  navigator.share({
+                    title: '博客编辑器',
+                    text: 'markdown 博客编辑器',
+                    url: 'https://blog.stevezmt.top/new/editor.html'
+                  }).then(() => {
+                    mdui.snackbar({message: '感谢分享！', position: 'top'});
+                  }).catch(console.error);
+                } else {
+                  mdui.snackbar({message: '您的浏览器不支持此方式。', position: 'top', buttonText: '好吧'});
+                }
+              }
+            </script>
+          </ul>
+        
+      </div>
+    </header>
+    <div class="mdui-card-content mdui-typo">
+      <style>
+    /* Dark Mode Adaptation */
+    .editor-drag-active {
+        background-color: rgba(0, 0, 0, 0.05) !important;
+    }
+    .mdui-theme-layout-dark .editor-drag-active {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+    }
+    
+    /* Markdown Preview Dark Mode Fixes */
+    .mdui-theme-layout-dark .markdown-body {
+        background-color: #303030 !important; /* Match MDUI dark card */
+        color: #fff !important;
+    }
+    .mdui-theme-layout-dark .markdown-body a {
+        color: #64b5f6 !important;
+    }
+    .mdui-theme-layout-dark .markdown-body code {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+    .mdui-theme-layout-dark .markdown-body pre {
+        background-color: #212121 !important;
+    }
+    
+    #editor-card .mdui-fullscreen {
+        z-index: 2000; /* Ensure fullscreen editor is above other elements */
+    }
+    #editor-card .mdui-toolbar {
+        background-color: inherit; /* Match card background */
+    }
+    #editor-card ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    #editor-card .mdui-menu {
+        max-height: 300px;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    #editor-card .mdui-menu a {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    #editor-card .mdui-menu .mdui-typo a:before {
+        height: 0px !important;
+    }
+    
+    /* Editor Textarea */
+    #editor-content {
+        color: inherit; 
+        background: transparent;
+    }
+
+</style>
+
+<div id="app" class="mdui-container-fluid mdui-p-y-2">
+  <!-- Toolbar & Config -->
+  <div class="mdui-card mdui-p-a-2 mdui-m-b-2">
+    <div class="mdui-row">
+      <div class="mdui-col-md-6">
+        <div class="mdui-textfield mdui-textfield-floating-label">
+          <label class="mdui-textfield-label">文章标题</label>
+          <input class="mdui-textfield-input" type="text" id="post-title" />
+        </div>
+      </div>
+      <div class="mdui-col-md-6" style="display: flex; align-items: flex-end;">
+        <div class="mdui-textfield mdui-textfield-floating-label" style="flex: 1;">
+          <label class="mdui-textfield-label">标识符</label>
+          <input class="mdui-textfield-input" type="text" id="post-slug" />
+        </div>
+        <!-- <button class="mdui-btn mdui-btn-icon mdui-ripple mdui-m-l-1 mdui-m-b-1" onclick="toggleDarkMode()" mdui-tooltip="{content: '切换深色模式'}">
+            <i class="mdui-icon material-icons">brightness_4</i>
+        </button> -->
+      </div>
+    </div>
+    <div class="mdui-row">
+       <div class="mdui-col-md-6">
+        <div class="mdui-textfield mdui-textfield-floating-label">
+          <label class="mdui-textfield-label">标签 (逗号分隔)</label>
+          <input class="mdui-textfield-input" type="text" id="post-tags" />
+        </div>
+      </div>
+      <div class="mdui-col-md-6">
+        <div class="mdui-textfield mdui-textfield-floating-label">
+          <label class="mdui-textfield-label">分类 (逗号分隔)</label>
+          <input class="mdui-textfield-input" type="text" id="post-categories" />
+        </div>
+      </div>
+    </div>
+    <div class="mdui-row mdui-m-t-1">
+        <div class="mdui-col-xs-12">
+            <div class="mdui-panel" mdui-panel>
+                <div class="mdui-panel-item">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">高级设置 (Front-matter)</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body">
+                        <div class="mdui-row">
+                            <div class="mdui-col-md-3 mdui-col-xs-6">
+                                <label class="mdui-checkbox">
+                                    <input type="checkbox" id="post-donate" checked/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    开启打赏
+                                </label>
+                            </div>
+                            <div class="mdui-col-md-3 mdui-col-xs-6">
+                                <label class="mdui-checkbox">
+                                    <input type="checkbox" id="post-toc" checked/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    显示目录
+                                </label>
+                            </div>
+                            <div class="mdui-col-md-3 mdui-col-xs-6">
+                                <label class="mdui-checkbox">
+                                    <input type="checkbox" id="post-comments" checked/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    开启评论
+                                </label>
+                            </div>
+                            <div class="mdui-col-md-3 mdui-col-xs-6">
+                                <label class="mdui-checkbox">
+                                    <input type="checkbox" id="post-top"/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    置顶文章
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mdui-row mdui-m-t-1">
+                             <div class="mdui-col-md-6">
+                                <div class="mdui-textfield mdui-textfield-floating-label">
+                                  <label class="mdui-textfield-label">自定义日期 (YYYY-MM-DD HH:mm:ss)</label>
+                                  <input class="mdui-textfield-input" type="text" id="post-date" />
+                                </div>
+                             </div>
+                             <div class="mdui-col-md-6">
+                                <div class="mdui-textfield mdui-textfield-floating-label">
+                                  <label class="mdui-textfield-label">作者 (Author)</label>
+                                  <input class="mdui-textfield-input" type="text" id="post-author" />
+                                </div>
+                             </div>
+                        </div>
+                        <div class="mdui-row">
+                             <div class="mdui-col-md-6">
+                                <div class="mdui-textfield mdui-textfield-floating-label">
+                                  <label class="mdui-textfield-label">头图 URL (Thumbnail)</label>
+                                  <input class="mdui-textfield-input" type="text" id="post-thumbnail" />
+                                </div>
+                             </div>
+                             <div class="mdui-col-md-6" style="display: flex; align-items: flex-end;">
+                                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-m-b-1" onclick="document.getElementById('thumbnail-input').click()">
+                                    <i class="mdui-icon material-icons">image</i> 上传头图
+                                </button>
+                                <input type="file" id="thumbnail-input" accept="image/*" style="display: none;" />
+                             </div>
+                        </div>
+                        <div class="mdui-row">
+                            <div class="mdui-col-md-3 mdui-col-xs-6">
+                                <label class="mdui-checkbox">
+                                    <input type="checkbox" id="post-count" checked/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    阅读统计
+                                </label>
+                            </div>
+                            <div class="mdui-col-md-3 mdui-col-xs-6">
+                                <label class="mdui-checkbox">
+                                    <input type="checkbox" id="post-share_menu" checked/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    分享菜单
+                                </label>
+                            </div>
+                            <div class="mdui-col-md-3 mdui-col-xs-6">
+                                <label class="mdui-checkbox">
+                                    <input type="checkbox" id="post-qrcode" checked/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    二维码
+                                </label>
+                            </div>
+                            <div class="mdui-col-md-3 mdui-col-xs-6">
+                                <label class="mdui-checkbox">
+                                    <input type="checkbox" id="post-thislink" checked/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    页尾链接
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mdui-row">
+                             <div class="mdui-col-md-12">
+                                <div class="mdui-textfield mdui-textfield-floating-label">
+                                  <label class="mdui-textfield-label">摘要 (Excerpt) - 覆盖自动抓取的摘要</label>
+                                  <textarea class="mdui-textfield-input" id="post-excerpt"></textarea>
+                                </div>
+                             </div>
+                        </div>
+                        <div class="mdui-row">
+                             <div class="mdui-col-md-12">
+                                <div class="mdui-textfield mdui-textfield-floating-label">
+                                  <label class="mdui-textfield-label">版权声明 (License) - 留空为默认，填 false 关闭</label>
+                                  <input class="mdui-textfield-input" type="text" id="post-license" />
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="mdui-row mdui-m-t-2">
+        <div class="mdui-col-xs-12">
+            <button class="mdui-btn mdui-btn-raised mdui-color-green-600 mdui-ripple mdui-m-r-1" onclick="submitToGitHub()">
+                <i class="mdui-icon material-icons">cloud_upload</i> 发布到 GitHub
+            </button>
+            <button class="mdui-btn mdui-btn-raised mdui-color-theme-accent mdui-ripple" onclick="exportPost()">
+                <i class="mdui-icon material-icons">file_download</i> 导出 ZIP
+            </button>
+            <button class="mdui-btn mdui-btn-raised mdui-ripple" onclick="document.getElementById('zip-input').click()">
+                <i class="mdui-icon material-icons">file_upload</i> 导入 ZIP
+            </button>
+            <button class="mdui-btn mdui-btn-raised mdui-ripple" onclick="resetEditor()">
+                <i class="mdui-icon material-icons">refresh</i> 重置
+            </button>
+            <input type="file" id="zip-input" accept=".zip" style="display: none;" />
+            <input type="file" id="image-input" accept="image/*" multiple style="display: none;" />
+        </div>
+    </div>
+  </div>
+
+  <!-- Editor Area -->
+  <div class="mdui-card" id="editor-card" style="height: 70vh; display: flex; flex-direction: column; position: relative;">
+    <div class="mdui-toolbar" style="flex-shrink: 0; overflow-x: auto; overflow-y: hidden; white-space: nowrap; border-bottom: 1px solid rgba(0,0,0,0.1);">
+      <!-- History/General -->
+      <button class="mdui-btn mdui-btn-icon" onclick="undo()" mdui-tooltip="{content: '撤销 (Ctrl+Z)'}"><i class="mdui-icon material-icons">undo</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="redo()" mdui-tooltip="{content: '重做 (Ctrl+Y)'}"><i class="mdui-icon material-icons">redo</i></button>
+      <!-- Text Style -->
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('**', '**')" mdui-tooltip="{content: '粗体'}"><i class="mdui-icon material-icons">format_bold</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('*', '*')" mdui-tooltip="{content: '斜体'}"><i class="mdui-icon material-icons">format_italic</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('<u>', '</u>')" mdui-tooltip="{content: '下划线'}"><i class="mdui-icon material-icons">format_underlined</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('~~', '~~')" mdui-tooltip="{content: '删除线'}"><i class="mdui-icon material-icons">format_strikethrough</i></button>
+      <button class="mdui-btn mdui-btn-icon" id="font-size-btn" mdui-tooltip="{content: '字体大小'}"><i class="mdui-icon material-icons">format_size</i></button>
+      <button class="mdui-btn mdui-btn-icon" id="text-color-btn" mdui-tooltip="{content: '文本颜色'}"><i class="mdui-icon material-icons">format_color_text</i></button>
+    <!-- Paragraph Style -->
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('# ', '')" mdui-tooltip="{content: '标题'}"><i class="mdui-icon material-icons">title</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="setAlign('left')" mdui-tooltip="{content: '左对齐'}"><i class="mdui-icon material-icons">format_align_left</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="setAlign('center')" mdui-tooltip="{content: '居中对齐'}"><i class="mdui-icon material-icons">format_align_center</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="setAlign('right')" mdui-tooltip="{content: '右对齐'}"><i class="mdui-icon material-icons">format_align_right</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="clearFormatting()" mdui-tooltip="{content: '清除格式'}"><i class="mdui-icon material-icons">format_clear</i></button>
+      <!-- Insert -->
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('- ', '')" mdui-tooltip="{content: '列表'}"><i class="mdui-icon material-icons">format_list_bulleted</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('[', '](url)')" mdui-tooltip="{content: '链接'}"><i class="mdui-icon material-icons">link</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="document.getElementById('image-input').click()" mdui-tooltip="{content: '插入图片'}"><i class="mdui-icon material-icons">image</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertTable()" mdui-tooltip="{content: '表格'}"><i class="mdui-icon material-icons">grid_on</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('```\n', '\n```')" mdui-tooltip="{content: '代码块'}"><i class="mdui-icon material-icons">code</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('\n<\!-- more -->\n', '')" mdui-tooltip="{content: '插入摘要分隔符'}"><i class="mdui-icon material-icons">more_horiz</i></button>
+      <div class="mdui-toolbar-spacer"></div>
+      <!-- View -->
+      <button class="mdui-btn mdui-btn-icon" onclick="toggleFullscreen()" mdui-tooltip="{content: '全屏模式'}"><i class="mdui-icon material-icons" id="fullscreen-icon">fullscreen</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="togglePreview()" mdui-tooltip="{content: '切换预览'}"><i class="mdui-icon material-icons">visibility</i></button>
+      <!-- Menus (Must be siblings of triggers) -->
+      <ul class="mdui-menu" id="font-size-menu">
+        <li class="mdui-menu-item"><a style="font-size:12px" href="javascript:;" onclick="setFontSize('12px')">12px (小)</a></li>
+        <li class="mdui-menu-item"><a style="font-size:14px" href="javascript:;" onclick="setFontSize('14px')">14px (正常)</a></li>
+        <li class="mdui-menu-item"><a style="font-size:16px" href="javascript:;" onclick="setFontSize('16px')">16px (中)</a></li>
+        <li class="mdui-menu-item"><a style="font-size:20px" href="javascript:;" onclick="setFontSize('20px')">20px (大)</a></li>
+            <li class="mdui-menu-item mdui-p-a-2" style="min-width: 200px; max-width: 240px;">
+                <div class="mdui-typo-caption mdui-text-color-grey-600 mdui-text-center">自定义大小</div>
+                <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                    <label class="mdui-slider mdui-slider-discrete" style="width: 90%; margin: 0 auto;">
+                        <input type="range" step="1" min="10" max="60" value="16" style="width: 100%;" oninput="document.getElementById('custom-font-size-val').innerText = this.value + 'px'" onchange="setFontSize(this.value + 'px')"/>
+                    </label>
+                    <div class="mdui-text-center mdui-text-color-grey-600" id="custom-font-size-val" style="width: 100%;">16px</div>
+                </div>
+            </li>
+            <div class="mdui-text-center" id="custom-font-size-val">16px</div>
+        </li>
+      </ul>
+      <ul class="mdui-menu" id="text-color-menu">
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#F44336')" class="mdui-text-color-red">● Red</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#E91E63')" class="mdui-text-color-pink">● Pink</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#9C27B0')" class="mdui-text-color-purple">● Purple</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#2196F3')" class="mdui-text-color-blue">● Blue</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#00BCD4')" class="mdui-text-color-cyan">● Cyan</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#4CAF50')" class="mdui-text-color-green">● Green</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#FFEB3B')" class="mdui-text-color-yellow">● Yellow</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#FF9800')" class="mdui-text-color-orange">● Orange</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#9E9E9E')" class="mdui-text-color-grey">● Grey</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#000000')" class="mdui-text-color-black">● Black</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#FFFFFF')" class="mdui-text-color-white mdui-color-grey-800">● White</a></li>
+        <li class="mdui-divider"></li>
+        <li class="mdui-menu-item mdui-p-a-1">
+            <div class="mdui-row mdui-valign mdui-m-0">
+                <div class="mdui-col-xs-8 mdui-p-0">
+                    <input type="color" id="custom-color-input" value="#000000" style="width: 100%; height: 30px; border: none; cursor: pointer; background: transparent;">
+                </div>
+                <div class="mdui-col-xs-4 mdui-p-0 mdui-text-right">
+                    <button class="mdui-btn mdui-btn-icon mdui-btn-dense mdui-ripple" onclick="setColor(document.getElementById('custom-color-input').value)" mdui-tooltip="{content: '应用颜色'}">
+                        <i class="mdui-icon material-icons">check</i>
+                    </button>
+                </div>
+            </div>
+        </li>
+      </ul>
+    </div>
+    
+<div class="mdui-row mdui-m-a-0" style="flex: 1; overflow: hidden;">
+      <div class="mdui-col-xs-12 mdui-p-a-0" id="editor-col" style="height: 100%;">
+        <textarea id="editor-content" class="mdui-p-a-2" style="width: 100%; height: 100%; border: none; resize: none; outline: none; font-family: monospace; font-size: 14px; line-height: 1.5; overflow-y: auto;" placeholder="撰写你的想法..."></textarea>
+      </div>
+      <div class="mdui-col-xs-12 mdui-p-a-2 markdown-body mdui-typo" id="preview-content" style="height: 100%; overflow-y: auto; display: none;">
+        <!-- Preview will be rendered here -->
+      </div>
+    </div>
+    <div id="save-status" style="position: absolute; bottom: 16px; right: 24px; font-size: 12px; pointer-events: none; z-index: 10;"></div>
+  </div>
+</div>
+
+<!-- Dependencies -->
+<script src="https://gcore.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://gcore.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script src="https://gcore.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+<script src="https://gcore.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+<script src="https://unpkg.com/idb-keyval@6.2.1/dist/umd.js"></script>
+
+<script>
+// --- State & Config ---
+let imageAssets = {}; // In-memory cache of images: { filename: Blob }
+const DB_KEY_CONTENT = 'blog_editor_content';
+const DB_KEY_IMAGES = 'blog_editor_images';
+
+// --- History Management ---
+let historyStack = [];
+let redoStack = [];
+const MAX_HISTORY = 50;
+
+// --- Auto-save & History Timer ---
+let autoSaveTimer;
+function triggerAutoSave() {
+    const status = document.getElementById('save-status');
+    status.innerHTML = '<span class="mdui-text-color-grey-500" style="display: flex; align-items: center;"> 正在保存... </span>';
+    clearTimeout(autoSaveTimer);
+    autoSaveTimer = setTimeout(saveState, 2000);
+}
+
+let historyDebounceTimer;
+function triggerHistorySave() {
+    clearTimeout(historyDebounceTimer);
+    historyDebounceTimer = setTimeout(recordHistory, 1000);
+}
+
+function recordHistory() {
+    const editor = document.getElementById('editor-content');
+    const content = editor.value;
+    
+    // Avoid duplicates (only check content)
+    if (historyStack.length > 0) {
+        const last = historyStack[historyStack.length - 1];
+        if (last.content === content) return;
+    }
+
+    historyStack.push({
+        content: content,
+        selectionStart: editor.selectionStart,
+        selectionEnd: editor.selectionEnd
+    });
+    
+    if (historyStack.length > MAX_HISTORY) historyStack.shift();
+    redoStack = []; // Clear redo on new action
+}
+
+function undo() {
+    if (historyStack.length === 0) return;
+    
+    const editor = document.getElementById('editor-content');
+    // Save current state to redo
+    redoStack.push({
+        content: editor.value,
+        selectionStart: editor.selectionStart,
+        selectionEnd: editor.selectionEnd
+    });
+    
+    const prev = historyStack.pop();
+    editor.value = prev.content;
+    editor.selectionStart = prev.selectionStart;
+    editor.selectionEnd = prev.selectionEnd;
+    updatePreview();
+    triggerAutoSave(); // Save after undo
+}
+
+function redo() {
+    if (redoStack.length === 0) return;
+    
+    const editor = document.getElementById('editor-content');
+    // Save current to history
+    historyStack.push({
+        content: editor.value,
+        selectionStart: editor.selectionStart,
+        selectionEnd: editor.selectionEnd
+    });
+    
+    const next = redoStack.pop();
+    editor.value = next.content;
+    editor.selectionStart = next.selectionStart;
+    editor.selectionEnd = next.selectionEnd;
+    updatePreview();
+    triggerAutoSave(); // Save after redo
+}
+
+// --- Initialization ---
+document.addEventListener('DOMContentLoaded', async () => {
+    // Initialize Menus
+    new mdui.Menu('#font-size-btn', '#font-size-menu', { covered: false, fixed: false,position: 'bottom', align:'right',gutter: 32 });
+    new mdui.Menu('#text-color-btn', '#text-color-menu', { covered: false, fixed: false, position: 'bottom', align:'right', gutter: 32 });
+
+    // Configure Marked Renderer for Image Preview
+    const renderer = {
+        image(href, title, text) {
+            // Compatible with Marked v12+ where arguments are passed as an object
+            if (typeof href === 'object' && href !== null) {
+                const token = href;
+                href = token.href;
+                title = token.title;
+                text = token.text;
+            }
+
+            if (typeof href === 'string' && href) {
+                const filename = href.split('/').pop();
+                const decodedFilename = decodeURIComponent(filename);
+                
+                if (imageAssets[decodedFilename]) {
+                    const blob = imageAssets[decodedFilename];
+                    const url = URL.createObjectURL(blob);
+                    return `<img src="/images/loading.svg" data-original="${url}" alt="${text}" title="${title || ''}" style="max-width: 100%;" />`;
+                }
+            }
+            // Fallback
+            return `<img src="/images/loading.svg" data-original="${href}" alt="${text}"${title ? ` title="${title}"` : ''} style="max-width: 100%;">`;
+        }
+    };
+    marked.use({ renderer });
+
+    // Ensure idbKeyval is available
+    if (typeof idbKeyval === 'undefined') {
+        console.error('idbKeyval library not loaded!');
+        mdui.snackbar({message: '自动保存功能不可用 (库加载失败)'});
+        return;
+    }
+
+    // Load saved state
+    try {
+        const savedContent = await idbKeyval.get(DB_KEY_CONTENT);
+        if (savedContent) {
+            document.getElementById('post-title').value = savedContent.title || '';
+            document.getElementById('post-slug').value = savedContent.slug || '';
+            document.getElementById('post-tags').value = savedContent.tags || '';
+            document.getElementById('post-categories').value = savedContent.categories || '';
+            document.getElementById('editor-content').value = savedContent.content || '';
+            
+            // Load advanced settings
+            document.getElementById('post-donate').checked = savedContent.donate !== false;
+            document.getElementById('post-toc').checked = savedContent.toc !== false;
+            document.getElementById('post-comments').checked = savedContent.comments !== false;
+            document.getElementById('post-top').checked = savedContent.top === true;
+            if(savedContent.date) document.getElementById('post-date').value = savedContent.date;
+            
+            if(savedContent.author) document.getElementById('post-author').value = savedContent.author;
+            if(savedContent.thumbnail) document.getElementById('post-thumbnail').value = savedContent.thumbnail;
+            if(savedContent.excerpt) document.getElementById('post-excerpt').value = savedContent.excerpt;
+            if(savedContent.license) document.getElementById('post-license').value = savedContent.license;
+            
+            document.getElementById('post-count').checked = savedContent.count !== false;
+            document.getElementById('post-share_menu').checked = savedContent.share_menu !== false;
+            document.getElementById('post-qrcode').checked = savedContent.qrcode !== false;
+            document.getElementById('post-thislink').checked = savedContent.thislink !== false;
+
+            updatePreview();
+            mdui.updateTextFields();
+        } else {
+            // Initialize new UUID if empty
+            if(!document.getElementById('post-slug').value) {
+                 // Maybe don't auto-fill slug yet, wait for title?
+            }
+        }
+        
+        const savedImages = await idbKeyval.get(DB_KEY_IMAGES);
+        if (savedImages) {
+            imageAssets = savedImages;
+        }
+    } catch (e) {
+        console.error("Failed to load saved state", e);
+    }
+
+    // Initialize History
+    recordHistory();
+
+    // Event Listeners
+    const editor = document.getElementById('editor-content');
+    editor.addEventListener('input', () => {
+        updatePreview();
+        triggerAutoSave();
+        triggerHistorySave();
+    });
+
+    // History Shortcuts & Typing
+    editor.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+            e.preventDefault();
+            if (e.shiftKey) redo();
+            else undo();
+        } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
+            e.preventDefault();
+            redo();
+        } else if (e.key === ' ' || e.key === 'Enter') {
+             recordHistory();
+        }
+    });
+
+    // Attach auto-save to all other inputs
+    document.querySelectorAll('.mdui-textfield-input, input[type="checkbox"]').forEach(input => {
+        input.addEventListener('input', triggerAutoSave);
+        input.addEventListener('change', triggerAutoSave);
+    });
+    
+    // const editor = document.getElementById('editor-content'); // Already defined above
+    editor.addEventListener('dragover', (e) => { e.preventDefault(); e.stopPropagation(); editor.classList.add('editor-drag-active'); });
+    editor.addEventListener('dragleave', (e) => { e.preventDefault(); e.stopPropagation(); editor.classList.remove('editor-drag-active'); });
+    editor.addEventListener('drop', handleDrop);
+    
+    // Image Input Listener
+    document.getElementById('image-input').addEventListener('change', handleImageSelect);
+    // Thumbnail Input Listener
+    document.getElementById('thumbnail-input').addEventListener('change', handleThumbnailSelect);
+    // Zip Input Listener
+    document.getElementById('zip-input').addEventListener('change', handleZipImport);
+});
+
+// --- Core Functions ---
+
+function generateUUID() {
+    function s4() { return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1); }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+}
+
+function updatePreview() {
+    const text = document.getElementById('editor-content').value;
+    const html = marked.parse(text);
+    document.getElementById('preview-content').innerHTML = html;
+}
+
+async function saveState() {
+    const state = {
+        title: document.getElementById('post-title').value,
+        slug: document.getElementById('post-slug').value,
+        tags: document.getElementById('post-tags').value,
+        categories: document.getElementById('post-categories').value,
+        content: document.getElementById('editor-content').value,
+        donate: document.getElementById('post-donate').checked,
+        toc: document.getElementById('post-toc').checked,
+        comments: document.getElementById('post-comments').checked,
+        top: document.getElementById('post-top').checked,
+        date: document.getElementById('post-date').value,
+        author: document.getElementById('post-author').value,
+        thumbnail: document.getElementById('post-thumbnail').value,
+        excerpt: document.getElementById('post-excerpt').value,
+        license: document.getElementById('post-license').value,
+        count: document.getElementById('post-count').checked,
+        share_menu: document.getElementById('post-share_menu').checked,
+        qrcode: document.getElementById('post-qrcode').checked,
+        thislink: document.getElementById('post-thislink').checked,
+        timestamp: new Date().getTime()
+    };
+    
+    try {
+        await idbKeyval.set(DB_KEY_CONTENT, state);
+        await idbKeyval.set(DB_KEY_IMAGES, imageAssets);
+        const status = document.getElementById('save-status');
+        const timeStr = new Date().toLocaleTimeString();
+        status.innerHTML = '<span class="mdui-text-color-green-500" style="display: flex; align-items: center; font-weight: bold;"><i class="mdui-icon material-icons" style="font-size: 18px; margin-right: 4px;">done_all</i> 已保存 ' + timeStr + '</span>';
+        
+        setTimeout(() => {
+            status.innerHTML = '<span class="mdui-text-color-grey-500" style="display: flex; align-items: center;"><i class="mdui-icon material-icons" style="font-size: 18px; margin-right: 4px;">done</i> 上次保存 ' + timeStr + '</span>';
+        }, 3000);
+    } catch (e) {
+        console.error("Save failed", e);
+        document.getElementById('save-status').innerHTML = '<span class="mdui-text-color-red-500">保存失败!</span>';
+    }
+}
+
+function insertText(before, after) {
+    recordHistory();
+    const textarea = document.getElementById('editor-content');
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selection = text.substring(start, end);
+    
+    const newText = before + selection + after;
+    textarea.value = text.substring(0, start) + newText + text.substring(end);
+    
+    textarea.selectionStart = start + before.length;
+    textarea.selectionEnd = start + before.length + selection.length;
+    textarea.focus();
+    updatePreview();
+    triggerAutoSave();
+}
+
+// --- Table Editor ---
+let tableEditorState = {
+    rows: 3,
+    cols: 3,
+    alignment: [], 
+    data: [], 
+    styles: [] 
+};
+let selectedCell = null;
+
+function insertTable() {
+    // 每次都检测并插入到正确父节点
+    let dialog = document.getElementById('table-editor-dialog');
+    if (dialog) {
+        // 若已存在，先移除
+        dialog.parentNode && dialog.parentNode.removeChild(dialog);
+    }
+    initTableEditor();
+
+    // Reset State
+    tableEditorState = {
+        rows: 3,
+        cols: 3,
+        alignment: ['left', 'left', 'left'],
+        data: [['Header 1', 'Header 2', 'Header 3'], ['Text', 'Text', 'Text'], ['Text', 'Text', 'Text']],
+        styles: Array(3).fill().map(() => Array(3).fill({}))
+    };
+
+    // Update UI inputs
+    const rowsInput = document.getElementById('table-rows');
+    const colsInput = document.getElementById('table-cols');
+    if(rowsInput) rowsInput.value = 3;
+    if(colsInput) colsInput.value = 3;
+
+    renderTableEditor();
+    new mdui.Dialog('#table-editor-dialog', { history: false, modal: true }).open();
+}
+
+function initTableEditor() {
+    // Inject Styles
+    const style = document.createElement('style');
+    style.innerHTML = `
+        #table-editor-grid {
+            display: grid;
+            gap: 8px;
+            overflow: auto;
+            max-height: 400px;
+            padding: 10px;
+            background: rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .table-cell-input, .table-col-control {
+            width: 100%;
+            min-width: 80px;
+            box-sizing: border-box;
+        }
+        .table-cell-input {
+            border: 1px solid rgba(0,0,0,0.1);
+            padding: 8px;
+            border-radius: 4px;
+            background: #fff;
+            transition: all 0.2s;
+        }
+        .table-cell-input:focus {
+            border-color: var(--color-theme-accent);
+            box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+        }
+        .table-col-control {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            padding: 8px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 4px;
+            user-select: none;
+        }
+        .table-col-control:hover {
+            background: rgba(0,0,0,0.1);
+        }
+        .mdui-theme-layout-dark .table-cell-input {
+            background: #424242;
+            border-color: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+        .mdui-theme-layout-dark #table-editor-grid {
+            background: rgba(255,255,255,0.02);
+            border-color: rgba(255,255,255,0.1);
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Inject Dialog HTML
+    const dialogHtml = `
+    <div class="mdui-dialog" id="table-editor-dialog" style="max-width: 95vw; width: 900px;">
+        <div class="mdui-dialog-title">插入表格</div>
+        <div class="mdui-dialog-content" style="overflow: hidden; display: flex; flex-direction: column; height: 600px; padding-bottom: 0;">
+            
+            <!-- Controls -->
+            <div class="mdui-row mdui-m-b-2">
+                <div class="mdui-col-xs-3">
+                    <div class="mdui-textfield mdui-p-a-0">
+                        <label class="mdui-textfield-label">行数</label>
+                        <input class="mdui-textfield-input" type="number" id="table-rows" value="3" min="1">
+                    </div>
+                </div>
+                <div class="mdui-col-xs-3">
+                    <div class="mdui-textfield mdui-p-a-0">
+                        <label class="mdui-textfield-label">列数</label>
+                        <input class="mdui-textfield-input" type="number" id="table-cols" value="3" min="1">
+                    </div>
+                </div>
+                <div class="mdui-col-xs-6 mdui-valign" style="height: 60px;">
+                    <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-ripple mdui-color-theme-accent" id="table-update-dim">
+                        <i class="mdui-icon material-icons mdui-icon-left">grid_on</i> 应用网格
+                    </button>
+                </div>
+            </div>
+
+            <!-- Style Toolbar -->
+            <div class="mdui-toolbar mdui-m-b-1" style="min-height: 48px; border-radius: 4px;">
+                 <div class="mdui-valign mdui-m-r-2">
+                    <i class="mdui-icon material-icons mdui-m-r-1">format_color_text</i>
+                    <input type="color" id="cell-fg-color" title="文字颜色" value="#000000" style="height: 24px; width: 40px; border: none; background: none; cursor: pointer;">
+                 </div>
+                 <div class="mdui-valign mdui-m-r-2">
+                    <i class="mdui-icon material-icons mdui-m-r-1">format_color_fill</i>
+                    <input type="color" id="cell-bg-color" title="背景颜色" value="#ffffff" style="height: 24px; width: 40px; border: none; background: none; cursor: pointer;">
+                 </div>
+                 <button class="mdui-btn mdui-btn-icon mdui-ripple" id="apply-style-btn" mdui-tooltip="{content: '应用颜色到选中单元格'}">
+                    <i class="mdui-icon material-icons">check</i>
+                 </button>
+                 <button class="mdui-btn mdui-btn-icon mdui-ripple" id="clear-style-btn" mdui-tooltip="{content: '清除选中单元格样式'}">
+                    <i class="mdui-icon material-icons">format_clear</i>
+                 </button>
+                 <div class="mdui-toolbar-spacer"></div>
+                 <span class="mdui-typo-caption mdui-text-color-grey-600">点击列头切换对齐方式</span>
+            </div>
+
+            <!-- Grid -->
+            <div id="table-editor-grid" class="mdui-typo custom-scroll" style="flex: 1;"></div>
+
+        </div>
+        <div class="mdui-dialog-actions">
+            <button class="mdui-btn mdui-ripple" mdui-dialog-close>取消</button>
+            <button class="mdui-btn mdui-ripple mdui-color-theme-accent" onclick="confirmInsertTable()">插入表格</button>
+        </div>
+    </div>
+    `;
+    
+
+    const div = document.createElement('div');
+    div.innerHTML = dialogHtml;
+    // 判断是否全屏，将对话框插入到全屏元素内，否则插入body
+    let parent = document.body;
+    // 兼容各浏览器全屏API
+    const fullscreenElem = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+    if (fullscreenElem && fullscreenElem.id === 'editor-card') {
+        parent = fullscreenElem;
+    }
+    parent.appendChild(div.firstElementChild);
+
+    // Event Listeners
+    document.getElementById('table-update-dim').addEventListener('click', () => {
+        const r = parseInt(document.getElementById('table-rows').value) || 1;
+        const c = parseInt(document.getElementById('table-cols').value) || 1;
+        updateTableDims(r, c);
+    });
+    
+    document.getElementById('apply-style-btn').addEventListener('click', applyStyleToSelected);
+    document.getElementById('clear-style-btn').addEventListener('click', clearStyleSelected);
+}
+
+function updateTableDims(rows, cols) {
+    const newData = [];
+    const newStyles = [];
+    const newAlign = [];
+
+    for(let i=0; i<rows; i++) {
+        newData[i] = [];
+        newStyles[i] = [];
+        for(let j=0; j<cols; j++) {
+            newData[i][j] = (tableEditorState.data[i] && tableEditorState.data[i][j]) || '';
+            newStyles[i][j] = (tableEditorState.styles[i] && tableEditorState.styles[i][j]) || {};
+        }
+    }
+    
+    for(let j=0; j<cols; j++) {
+        newAlign[j] = tableEditorState.alignment[j] || 'left';
+    }
+
+    tableEditorState.rows = rows;
+    tableEditorState.cols = cols;
+    tableEditorState.data = newData;
+    tableEditorState.styles = newStyles;
+    tableEditorState.alignment = newAlign;
+    
+    renderTableEditor();
+
+    // Resize Dialog to fit content
+    const dialog = document.getElementById('table-editor-dialog');
+    if (dialog) {
+        const winW = window.innerWidth;
+        const winH = window.innerHeight;
+        
+        // Calculate optimal width: cols * 120px (min-width 80 + padding) + extra for dialog padding
+        let newW = Math.max(600, cols * 120 + 60);
+        if (newW > winW * 0.95) newW = winW * 0.95;
+        
+        // Calculate optimal height: rows * 60px + header/footer/controls (~250px)
+        let newH = Math.max(500, rows * 60 + 250);
+        if (newH > winH * 0.9) newH = winH * 0.9;
+        
+        dialog.style.width = newW + 'px';
+        dialog.style.maxWidth = '95vw';
+        
+        const content = dialog.querySelector('.mdui-dialog-content');
+        if (content) {
+            content.style.height = newH + 'px';
+        }
+        
+        // Trigger MDUI update to re-center
+        mdui.mutation();
+        window.dispatchEvent(new Event('resize'));
+    }
+}
+
+function renderTableEditor() {
+    const grid = document.getElementById('table-editor-grid');
+    grid.style.gridTemplateColumns = `repeat(${tableEditorState.cols}, 1fr)`;
+    grid.innerHTML = '';
+
+    // Render Column Controls
+    for(let j=0; j<tableEditorState.cols; j++) {
+        const align = tableEditorState.alignment[j];
+        let icon = 'format_align_left';
+        if(align === 'center') icon = 'format_align_center';
+        if(align === 'right') icon = 'format_align_right';
+        
+        const colHeader = document.createElement('div');
+        colHeader.className = 'table-col-control';
+        colHeader.innerHTML = `<i class="mdui-icon material-icons" style="font-size: 18px;">${icon}</i>`;
+        colHeader.title = '切换对齐方式';
+        colHeader.onclick = () => toggleAlign(j);
+        grid.appendChild(colHeader);
+    }
+
+    // Render Cells
+    for(let i=0; i<tableEditorState.rows; i++) {
+        for(let j=0; j<tableEditorState.cols; j++) {
+            const cell = document.createElement('input');
+            cell.className = 'table-cell-input';
+            cell.value = tableEditorState.data[i][j];
+            cell.placeholder = i === 0 ? '标题' : '内容';
+            
+            const style = tableEditorState.styles[i][j];
+            if(style.color) cell.style.color = style.color;
+            if(style.bg) cell.style.backgroundColor = style.bg;
+            
+            cell.onfocus = () => { selectedCell = {r:i, c:j}; };
+            cell.oninput = (e) => { tableEditorState.data[i][j] = e.target.value; };
+            
+            grid.appendChild(cell);
+        }
+    }
+}
+
+function toggleAlign(colIndex) {
+    const aligns = ['left', 'center', 'right'];
+    const current = tableEditorState.alignment[colIndex];
+    const next = aligns[(aligns.indexOf(current) + 1) % 3];
+    tableEditorState.alignment[colIndex] = next;
+    renderTableEditor();
+}
+
+function applyStyleToSelected() {
+    if(!selectedCell) {
+        mdui.snackbar({message: '请先选择一个单元格'});
+        return;
+    }
+    const color = document.getElementById('cell-fg-color').value;
+    const bg = document.getElementById('cell-bg-color').value;
+    
+    tableEditorState.styles[selectedCell.r][selectedCell.c] = {
+        color: color,
+        bg: bg !== '#ffffff' ? bg : null
+    };
+    renderTableEditor();
+}
+
+function clearStyleSelected() {
+    if(!selectedCell) return;
+    tableEditorState.styles[selectedCell.r][selectedCell.c] = {};
+    renderTableEditor();
+}
+
+function confirmInsertTable() {
+    let md = '';
+    const { rows, cols, data, alignment, styles } = tableEditorState;
+
+    // Header Row (Row 0)
+    md += '|';
+    for(let j=0; j<cols; j++) {
+        md += ` ${formatCell(0, j)} |`;
+    }
+    md += '\n|';
+    
+    // Separator Row
+    for(let j=0; j<cols; j++) {
+        const align = alignment[j];
+        if(align === 'left') md += ' :--- |';
+        else if(align === 'center') md += ' :---: |';
+        else md += ' ---: |';
+    }
+    md += '\n';
+
+    // Data Rows
+    for(let i=1; i<rows; i++) {
+        md += '|';
+        for(let j=0; j<cols; j++) {
+            md += ` ${formatCell(i, j)} |`;
+        }
+        md += '\n';
+    }
+
+    insertText(md, '');
+    new mdui.Dialog('#table-editor-dialog').close();
+}
+
+function formatCell(r, c) {
+    let text = tableEditorState.data[r][c] || ' ';
+    // Escape pipes
+    text = text.replace(/\|/g, '\\|');
+    
+    const style = tableEditorState.styles[r][c];
+    
+    if (style && (style.color || style.bg)) {
+        let styleStr = '';
+        if(style.color) styleStr += `color: ${style.color}; `;
+        if(style.bg) styleStr += `background-color: ${style.bg}; `;
+        return `<span style="${styleStr}">${text}</span>`;
+    }
+    return text;
+}
+
+function setFontSize(size) {
+    insertText(`<span style="font-size: ${size};">`, '</span>');
+}
+
+function setColor(color) {
+    insertText(`<span style="color: ${color};">`, '</span>');
+}
+
+function setAlign(align) {
+    insertText(`\n<div style="text-align: ${align};">\n`, '\n</div>\n');
+}
+
+function clearFormatting() {
+    recordHistory();
+    const textarea = document.getElementById('editor-content');
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selection = text.substring(start, end);
+    
+    // Remove span and div tags
+    const newText = selection.replace(/<\/?(span|div)[^>]*>/gi, '');
+    
+    textarea.value = text.substring(0, start) + newText + text.substring(end);
+    
+    textarea.selectionStart = start;
+    textarea.selectionEnd = start + newText.length;
+    textarea.focus();
+    updatePreview();
+    triggerAutoSave();
+}
+
+function togglePreview() {
+    const editorCol = document.getElementById('editor-col');
+    const previewCol = document.getElementById('preview-content');
+    
+    if (previewCol.style.display === 'none') {
+        // Show Preview, Hide Editor
+        editorCol.style.display = 'none';
+        previewCol.style.display = 'block';
+    } else {
+        // Show Editor, Hide Preview
+        editorCol.style.display = 'block';
+        previewCol.style.display = 'none';
+    }
+}
+
+async function handleDrop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    document.getElementById('editor-content').classList.remove('editor-drag-active');
+    
+    const files = e.dataTransfer.files;
+    if (!files.length) return;
+    await processImageFiles(files);
+}
+
+async function handleImageSelect(e) {
+    const files = e.target.files;
+    if (!files.length) return;
+    await processImageFiles(files);
+    e.target.value = ''; // Reset input
+}
+
+async function handleThumbnailSelect(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const slug = document.getElementById('post-slug').value || 'untitled';
+    
+    try {
+        const options = {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 1920,
+            useWebWorker: true
+        };
+        const compressedFile = await imageCompression(file, options);
+        
+        const ext = file.name.split('.').pop();
+        const filename = `thumb_${Date.now()}.${ext}`;
+        
+        imageAssets[filename] = compressedFile;
+        
+        const imgPath = `/images/blog/${slug}/${filename}`;
+        document.getElementById('post-thumbnail').value = imgPath;
+        mdui.updateTextFields();
+        
+        mdui.snackbar({message: `头图已处理`});
+    } catch (error) {
+        console.error(error);
+        mdui.snackbar({message: `头图处理失败: ${error.message}`});
+    }
+    e.target.value = '';
+}
+
+async function processImageFiles(files) {
+    recordHistory();
+    const slug = document.getElementById('post-slug').value || 'untitled';
+    
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (!file.type.startsWith('image/')) continue;
+
+        // Compress
+        try {
+            const options = {
+                maxSizeMB: 1,
+                maxWidthOrHeight: 1920,
+                useWebWorker: true
+            };
+            const compressedFile = await imageCompression(file, options);
+            
+            // Generate filename
+            const ext = file.name.split('.').pop();
+            const filename = `img_${Date.now()}_${i}.${ext}`;
+            
+            // Store
+            imageAssets[filename] = compressedFile;
+            
+            // Insert Markdown
+            // Path convention: /images/blog/<slug>/<filename>
+            const imgPath = `/images/blog/${slug}/${filename}`;
+            insertText(`![](${imgPath})`, '');
+            
+            mdui.snackbar({message: `图片 ${file.name} 已处理并添加`});
+        } catch (error) {
+            console.error(error);
+            mdui.snackbar({message: `图片处理失败: ${error.message}`});
+        }
+    }
+    updatePreview();
+}
+
+async function handleZipImport(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    recordHistory();
+
+    try {
+        const zip = await JSZip.loadAsync(file);
+        
+        // Find .md file
+        let mdFile = null;
+        let mdContent = '';
+        
+        zip.forEach((relativePath, zipEntry) => {
+            if (relativePath.endsWith('.md') && relativePath.includes('source/_posts/')) {
+                mdFile = zipEntry;
+            }
+        });
+        
+        if (!mdFile) {
+            throw new Error('未找到文章 Markdown 文件');
+        }
+        
+        mdContent = await mdFile.async('string');
+        
+        // Parse Front Matter
+        const fmRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
+        const match = mdContent.match(fmRegex);
+        
+        if (match) {
+            const fmText = match[1];
+            const content = match[2];
+            
+            // Simple YAML parser (assuming standard format generated by this tool)
+            const getVal = (key) => {
+                const regex = new RegExp(`^${key}:\\s*(.*)$`, 'm');
+                const m = fmText.match(regex);
+                return m ? m[1].trim() : null;
+            };
+            
+            const getArr = (key) => {
+                const val = getVal(key);
+                if (!val) return '';
+                return val.replace(/^\[|\]$/g, '').trim();
+            };
+
+            document.getElementById('post-title').value = getVal('title') || '';
+            // Slug from filename or title? Better from filename if possible, but here we rely on user input or existing.
+            // Let's try to extract slug from zip path: source/_posts/slug.md
+            const slugMatch = mdFile.name.match(/source\/_posts\/(.*)\.md/);
+            document.getElementById('post-slug').value = slugMatch ? slugMatch[1] : (getVal('title') || '');
+            
+            document.getElementById('post-tags').value = getArr('tags');
+            document.getElementById('post-categories').value = getArr('categories');
+            document.getElementById('post-date').value = getVal('date') || '';
+            
+            document.getElementById('post-donate').checked = getVal('donate') !== 'false';
+            document.getElementById('post-toc').checked = getVal('toc') !== 'false';
+            document.getElementById('post-comments').checked = getVal('comments') !== 'false';
+            // top is usually not there unless true
+            document.getElementById('post-top').checked = getVal('top') === 'true';
+            
+            document.getElementById('post-author').value = getVal('author') || '';
+            document.getElementById('post-thumbnail').value = getVal('thumbnail') || '';
+            document.getElementById('post-excerpt').value = getVal('excerpt') || '';
+            document.getElementById('post-license').value = getVal('license') || '';
+            
+            document.getElementById('post-count').checked = getVal('count') !== 'false';
+            document.getElementById('post-share_menu').checked = getVal('share_menu') !== 'false';
+            document.getElementById('post-qrcode').checked = getVal('qrcode') !== 'false';
+            document.getElementById('post-thislink').checked = getVal('thislink') !== 'false';
+
+            document.getElementById('editor-content').value = content.trim();
+        } else {
+            document.getElementById('editor-content').value = mdContent;
+        }
+        
+        // Load Images
+        imageAssets = {};
+        const imgFolderPrefix = `source/images/blog/${document.getElementById('post-slug').value}/`;
+        
+        const imgPromises = [];
+        zip.forEach((relativePath, zipEntry) => {
+            if (relativePath.startsWith('source/images/blog/') && !zipEntry.dir) {
+                imgPromises.push(async () => {
+                    const blob = await zipEntry.async('blob');
+                    const filename = relativePath.split('/').pop();
+                    imageAssets[filename] = blob;
+                });
+            }
+        });
+        
+        await Promise.all(imgPromises.map(p => p()));
+        
+        updatePreview();
+        mdui.updateTextFields();
+        mdui.snackbar({message: '导入成功'});
+        
+    } catch (error) {
+        console.error(error);
+        mdui.snackbar({message: `导入失败: ${error.message}`});
+    }
+    e.target.value = '';
+}
+
+async function exportPost() {
+    const zip = new JSZip();
+    
+    const title = document.getElementById('post-title').value || 'Untitled';
+    const slug = document.getElementById('post-slug').value || 'untitled';
+    const tags = document.getElementById('post-tags').value.split(',').map(t => t.trim()).filter(t => t);
+    const categories = document.getElementById('post-categories').value.split(',').map(c => c.trim()).filter(c => c);
+    const content = document.getElementById('editor-content').value;
+    
+    const donate = document.getElementById('post-donate').checked;
+    const toc = document.getElementById('post-toc').checked;
+    const comments = document.getElementById('post-comments').checked;
+    const top = document.getElementById('post-top').checked;
+    const customDate = document.getElementById('post-date').value;
+    
+    const author = document.getElementById('post-author').value;
+    const thumbnail = document.getElementById('post-thumbnail').value;
+    const excerpt = document.getElementById('post-excerpt').value;
+    const license = document.getElementById('post-license').value;
+    const count = document.getElementById('post-count').checked;
+    const share_menu = document.getElementById('post-share_menu').checked;
+    const qrcode = document.getElementById('post-qrcode').checked;
+    const thislink = document.getElementById('post-thislink').checked;
+
+    // Generate Front Matter
+    const dateStr = customDate || new Date().toISOString().replace('T', ' ').substring(0, 19);
+    const uuid = generateUUID();
+    
+    let frontMatter = `---
+uuid: ${uuid}
+title: ${title}
+date: ${dateStr}
+tags: [${tags.join(', ')}]
+categories: [${categories.join(', ')}]
+donate: ${donate}
+toc: ${toc}
+comments: ${comments}
+`;
+    if(top) frontMatter += `top: true\n`;
+    if(author) frontMatter += `author: ${author}\n`;
+    if(thumbnail) frontMatter += `thumbnail: ${thumbnail}\n`;
+    if(excerpt) frontMatter += `excerpt: ${excerpt}\n`;
+    if(license) frontMatter += `license: ${license}\n`;
+    if(!count) frontMatter += `count: false\n`;
+    if(!share_menu) frontMatter += `share_menu: false\n`;
+    if(!qrcode) frontMatter += `qrcode: false\n`;
+    if(!thislink) frontMatter += `thislink: false\n`;
+    
+    frontMatter += `---\n\n${content}\n`;
+
+    // Add Post File
+    zip.file(`source/_posts/${slug}.md`, frontMatter);
+    
+    // Add Images
+    const imgFolder = zip.folder(`source/images/blog/${slug}`);
+    for (const [filename, blob] of Object.entries(imageAssets)) {
+        if (content.includes(filename)) {
+             imgFolder.file(filename, blob);
+        }
+    }
+    
+    // Generate Zip
+    const contentZip = await zip.generateAsync({type:"blob"});
+    saveAs(contentZip, `${slug}-blog-post.zip`);
+    
+    mdui.snackbar({message: '导出成功！解压到项目根目录即可。'});
+}
+
+function resetEditor() {
+    if(confirm('确定要清空编辑器吗？未保存的内容将丢失。')) {
+        document.getElementById('post-title').value = '';
+        document.getElementById('post-slug').value = '';
+        document.getElementById('post-tags').value = '';
+        document.getElementById('post-categories').value = '';
+        document.getElementById('post-date').value = '';
+        document.getElementById('post-author').value = '';
+        document.getElementById('post-thumbnail').value = '';
+        document.getElementById('post-excerpt').value = '';
+        document.getElementById('post-license').value = '';
+        document.getElementById('editor-content').value = '';
+        
+        document.getElementById('post-donate').checked = true;
+        document.getElementById('post-toc').checked = true;
+        document.getElementById('post-comments').checked = true;
+        document.getElementById('post-top').checked = false;
+        
+        document.getElementById('post-count').checked = true;
+        document.getElementById('post-share_menu').checked = true;
+        document.getElementById('post-qrcode').checked = true;
+        document.getElementById('post-thislink').checked = true;
+
+        imageAssets = {};
+        idbKeyval.del(DB_KEY_CONTENT);
+        idbKeyval.del(DB_KEY_IMAGES);
+        updatePreview();
+        mdui.updateTextFields();
+    }
+}
+
+function toggleDarkMode() {
+    document.body.classList.toggle('mdui-theme-layout-dark');
+}
+
+function toggleFullscreen() {
+    const elem = document.getElementById('editor-card');
+    const icon = document.getElementById('fullscreen-icon');
+    
+    if (!document.fullscreenElement) {
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari */
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE11 */
+            elem.msRequestFullscreen();
+        }
+        icon.innerText = 'fullscreen_exit';
+        elem.style.height = '100vh'; // Force full height
+        elem.style.borderRadius = '0';
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+            document.msExitFullscreen();
+        }
+        icon.innerText = 'fullscreen';
+        elem.style.height = '70vh'; // Restore original height
+        elem.style.borderRadius = '';
+    }
+}
+
+// Listen for fullscreen change events (e.g. user presses Esc)
+document.addEventListener('fullscreenchange', handleFullscreenChange);
+document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+function handleFullscreenChange() {
+    const elem = document.getElementById('editor-card');
+    const icon = document.getElementById('fullscreen-icon');
+    
+    if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
+        icon.innerText = 'fullscreen';
+        elem.style.height = '70vh';
+        elem.style.borderRadius = '';
+    } else {
+        icon.innerText = 'fullscreen_exit';
+        elem.style.height = '100vh';
+        elem.style.borderRadius = '0';
+    }
+}
+
+// --- GitHub Submission ---
+const WORKER_URL = 'https://pr-helper.cf.miniproj.stevezmt.top'; // TODO: Replace with your Worker URL
+// REPO_OWNER and REPO_NAME are now enforced by the Worker, but we keep them here if needed for other logic or future use.
+// The Worker will ignore these if sent in the body, but for compatibility we can leave them or remove them from the body payload.
+
+async function submitToGitHub() {
+    const token = localStorage.getItem('github_token');
+    if (!token) {
+        if (confirm('需要登录 GitHub 才能提交。是否现在登录？')) {
+            loginWithGitHub();
+        }
+        return;
+    }
+
+    const slug = document.getElementById('post-slug').value || 'untitled';
+    const defaultMsg = `发布 ${slug}`;
+    
+    const message = await showCommitDialog(defaultMsg);
+    if (!message) return; // User cancelled
+
+    // Prepare files
+    const files = [];
+    
+    // 1. Markdown
+    const title = document.getElementById('post-title').value || 'Untitled';
+    const tags = document.getElementById('post-tags').value.split(',').map(t => t.trim()).filter(t => t);
+    const categories = document.getElementById('post-categories').value.split(',').map(c => c.trim()).filter(c => c);
+    const content = document.getElementById('editor-content').value;
+    
+    const donate = document.getElementById('post-donate').checked;
+    const toc = document.getElementById('post-toc').checked;
+    const comments = document.getElementById('post-comments').checked;
+    const top = document.getElementById('post-top').checked;
+    const customDate = document.getElementById('post-date').value;
+    
+    const author = document.getElementById('post-author').value;
+    const thumbnail = document.getElementById('post-thumbnail').value;
+    const excerpt = document.getElementById('post-excerpt').value;
+    const license = document.getElementById('post-license').value;
+    const count = document.getElementById('post-count').checked;
+    const share_menu = document.getElementById('post-share_menu').checked;
+    const qrcode = document.getElementById('post-qrcode').checked;
+    const thislink = document.getElementById('post-thislink').checked;
+
+    const dateStr = customDate || new Date().toISOString().replace('T', ' ').substring(0, 19);
+    const uuid = generateUUID(); 
+    
+    let frontMatter = `---
+uuid: ${uuid}
+title: ${title}
+date: ${dateStr}
+tags: [${tags.join(', ')}]
+categories: [${categories.join(', ')}]
+donate: ${donate}
+toc: ${toc}
+comments: ${comments}
+`;
+    if(top) frontMatter += `top: true\n`;
+    if(author) frontMatter += `author: ${author}\n`;
+    if(thumbnail) frontMatter += `thumbnail: ${thumbnail}\n`;
+    if(excerpt) frontMatter += `excerpt: ${excerpt}\n`;
+    if(license) frontMatter += `license: ${license}\n`;
+    if(!count) frontMatter += `count: false\n`;
+    if(!share_menu) frontMatter += `share_menu: false\n`;
+    if(!qrcode) frontMatter += `qrcode: false\n`;
+    if(!thislink) frontMatter += `thislink: false\n`;
+    
+    frontMatter += `---\n\n${content}\n`;
+    
+    files.push({
+        path: `source/_posts/${slug}.md`,
+        content: frontMatter,
+        encoding: 'utf-8'
+    });
+
+    // 2. Images
+    for (const [filename, blob] of Object.entries(imageAssets)) {
+        if (content.includes(filename)) {
+             const base64 = await blobToBase64(blob);
+             files.push({
+                 path: `source/images/blog/${slug}/${filename}`,
+                 content: base64,
+                 encoding: 'base64'
+             });
+        }
+    }
+
+    // Send to Worker
+    const snackbar = mdui.snackbar({message: '正在提交到 GitHub...', timeout: 0});
+    
+    try {
+        const response = await fetch(`${WORKER_URL}/submit`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                token,
+                files,
+                message
+                // owner and repo are removed from payload as they are enforced by server
+            })
+        });
+        
+        const result = await response.json();
+        snackbar.close();
+        
+        if (result.success) {
+            mdui.dialog({
+                title: '提交成功',
+                content: `Pull Request 已创建: <a href="${result.pr_url}" target="_blank">#${result.pr_number}</a>`,
+                buttons: [{text: '确定'}]
+            });
+        } else {
+            throw new Error(result.error || 'Unknown error');
+        }
+    } catch (e) {
+        snackbar.close();
+        console.error(e);
+        mdui.snackbar({message: `提交失败: ${e.message}`});
+    }
+}
+
+function loginWithGitHub() {
+    const width = 600;
+    const height = 700;
+    const left = (screen.width - width) / 2;
+    const top = (screen.height - height) / 2;
+    window.open(`${WORKER_URL}/auth`, 'github_oauth', `width=${width},height=${height},top=${top},left=${left}`);
+}
+
+window.addEventListener('message', (event) => {
+    if (event.data.type === 'github-token') {
+        localStorage.setItem('github_token', event.data.token);
+        mdui.snackbar({message: 'GitHub 登录成功'});
+    }
+});
+
+function showCommitDialog(defaultMsg) {
+    return new Promise((resolve) => {
+        const dialogHtml = `
+            <div class="mdui-dialog" id="commit-dialog">
+                <div class="mdui-dialog-title">提交到 GitHub</div>
+                <div class="mdui-dialog-content">
+                    <div class="mdui-textfield">
+                        <label class="mdui-textfield-label">Commit Message / PR Title</label>
+                        <input class="mdui-textfield-input" type="text" id="commit-message" value="${defaultMsg}"/>
+                    </div>
+                </div>
+                <div class="mdui-dialog-actions">
+                    <button class="mdui-btn mdui-ripple" mdui-dialog-close onclick="window._commitDialogResolve(null)">取消</button>
+                    <button class="mdui-btn mdui-ripple mdui-color-theme-accent" mdui-dialog-close onclick="window._commitDialogResolve(document.getElementById('commit-message').value)">提交</button>
+                </div>
+            </div>
+        `;
+        
+        const div = document.createElement('div');
+        div.innerHTML = dialogHtml;
+        document.body.appendChild(div.firstElementChild);
+        
+        window._commitDialogResolve = (val) => {
+            resolve(val);
+            delete window._commitDialogResolve;
+            const d = document.getElementById('commit-dialog');
+            if(d) d.parentNode.removeChild(d);
+        };
+        
+        new mdui.Dialog('#commit-dialog', {history: false, modal: true}).open();
+    });
+}
+
+function blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64 = reader.result.split(',')[1];
+            resolve(base64);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
+}
+</script>
+
+      <script data-pjax>
+        (function(){
+          function attachCopyButtons(){
+            var blocks = document.querySelectorAll('.mdui-card-content figure.highlight, .mdui-card-content pre');
+            blocks.forEach(function(block){
+
+              if(block.matches('pre') && block.closest('figure.highlight')) return;
+              if(block.querySelector(':scope > .code-toolbar')) return;
+              block.classList.add('codeblock-wrapper');
+              if(!block.style.position || block.style.position === 'static') block.style.position = 'relative';
+              if(block.matches('figure.highlight') && !block.querySelector('figcaption')) {
+                block.classList.add('codeblock-pad-top');
+              }
+              if(block.matches('pre') && !block.closest('figure.highlight')) {
+                block.classList.add('codeblock-pad-top');
+              }
+
+              if(!block.querySelector(':scope > .code-content-wrap')) {
+                var wrap = document.createElement('div');
+                wrap.className = 'code-content-wrap';
+                var toMove = [];
+                Array.from(block.childNodes).forEach(function(n){
+                  if(n.nodeType === 1 && (n.classList && (n.classList.contains('code-toolbar')))) return;
+                  toMove.push(n);
+                });
+                toMove.forEach(function(n){ wrap.appendChild(n); });
+                block.appendChild(wrap);
+
+                requestAnimationFrame(function(){
+                  wrap.style.maxHeight = wrap.scrollHeight + 'px';
+                });
+              }
+              var toolbar = document.createElement('div');
+              toolbar.className = 'code-toolbar';
+
+              var copyBtn = document.createElement('button');
+              copyBtn.className = 'copy-btn mdui-btn mdui-ripple';
+              copyBtn.type='button';
+              copyBtn.setAttribute('aria-label','复制代码');
+              copyBtn.innerHTML = '<i class="mdui-icon material-icons" translate="no">content_copy<\/i>';
+              copyBtn.addEventListener('click', function(){ copyText(copyBtn); });
+              toolbar.appendChild(copyBtn);
+
+              var collapseBtn = document.createElement('button');
+              collapseBtn.className = 'collapse-btn mdui-btn mdui-ripple';
+              collapseBtn.type='button';
+              collapseBtn.setAttribute('aria-label','折叠代码');
+              collapseBtn.innerHTML = '<i class="mdui-icon material-icons" translate="no">expand_less<\/i>';
+              collapseBtn.addEventListener('click', function(){ toggleCollapse(block, collapseBtn); });
+              toolbar.appendChild(collapseBtn);
+
+              var lang = detectLanguage(block) || 'Code';
+              var langSpan = document.createElement('span');
+              langSpan.className = 'code-lang-badge';
+              langSpan.textContent = lang;
+              toolbar.appendChild(langSpan);
+              block.appendChild(toolbar);
+            });
+          }
+
+          function detectLanguage(block){
+            try {
+              var cls = block.className || '';
+              var m = cls.match(/highlight\s+([a-zA-Z0-9_+-]+)/);
+              if(m && m[1]) return normalizeLang(m[1]);
+              var code = block.querySelector('code');
+              if(code){
+                for(var i=0;i<code.classList.length;i++){
+                  var c = code.classList[i];
+                  if(/^language-/.test(c)) return normalizeLang(c.replace(/^language-/,''));
+                  if(/^lang-/.test(c)) return normalizeLang(c.replace(/^lang-/,''));
+                }
+              }
+              return 'Code';
+            } catch(e){ return 'Code'; }
+          }
+
+          function normalizeLang(l){
+            l = l.toLowerCase();
+            var map = {js:'JavaScript',javascript:'JavaScript',ts:'TypeScript',py:'Python',py3:'Python',bash:'Bash',sh:'Shell',shell:'Shell',yml:'YAML',yaml:'YAML',md:'Markdown',markdown:'Markdown',json:'JSON',html:'HTML',css:'CSS',csharp:'C#',cs:'C#',cpp:'C++',c:'C',java:'Java',go:'Go',rust:'Rust'};
+            return map[l] || l.charAt(0).toUpperCase()+l.slice(1);
+          }
+
+          window.copyText = function(el){
+            if(!el) return;
+            var container = el.closest('figure.highlight, pre');
+            if(!container){ feedback(false, el); return; }
+
+            var codeArea = container.querySelector('td.code') || container.querySelector('pre code') || container.querySelector('code') || container.querySelector('pre');
+            var text = codeArea ? codeArea.innerText : '';
+            if(!text.trim()) { feedback(false, el); return; }
+            var writeSucceeded = function(){ feedback(true, el); };
+            var writeFailed = function(err){ console.error('Copy failed', err); feedback(false, el); };
+            if(navigator.clipboard && navigator.clipboard.writeText){
+              navigator.clipboard.writeText(text).then(writeSucceeded, writeFailed);
+            } else {
+              try {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position='fixed';
+                ta.style.top='-1000px';
+                ta.style.opacity='0';
+                document.body.appendChild(ta);
+                ta.select();
+                var ok = document.execCommand('copy');
+                document.body.removeChild(ta);
+                ok?writeSucceeded():writeFailed();
+              } catch(e){ writeFailed(e); }
+            }
+          };
+
+          function feedback(success, el){
+            var icon = el.querySelector('i.mdui-icon');
+            if(success){
+              el.classList.add('copy-success');
+              if(icon) icon.textContent='check_circle';
+              // el._tooltip = new mdui.Tooltip(el, {content: '已复制！', position: 'top'});
+              //el._tooltip.open();
+              } else {
+                el.classList.add('copy-fail');
+                if(icon) icon.textContent='warning';
+                el._tooltip = new mdui.Tooltip(el, {content: '复制失败！', position: 'top'});
+                el._tooltip.open();
+            }
+            clearTimeout(el._copyTimer);
+            el._copyTimer = setTimeout(function(){
+              el.classList.remove('copy-success','copy-fail');
+                if(icon) icon.textContent='content_copy';
+                //el._tooltip.close();
+                //el._tooltip = null;
+            },3000);
+          }
+
+          function toggleCollapse(wrapper, btn){
+            if(!wrapper) return;
+            var content = wrapper.querySelector(':scope > .code-content-wrap');
+            if(!content){
+              wrapper.classList.toggle('collapsed');
+              var icon = btn.querySelector('i.mdui-icon');
+              if(wrapper.classList.contains('collapsed')) btn.setAttribute('aria-label','展开代码'); else btn.setAttribute('aria-label','折叠代码');
+              return;
+            }
+            var isCurrentlyCollapsed = wrapper.classList.contains('collapsed');
+            var willCollapse = !isCurrentlyCollapsed;
+            wrapper.classList.toggle('collapsed', willCollapse);
+            btn.setAttribute('aria-label', willCollapse ? '展开代码' : '折叠代码');
+
+
+            var startHeight = content.scrollHeight;
+
+            if(!willCollapse && (content.style.maxHeight === '0px')) {
+
+              content.style.maxHeight = '0px';
+
+              requestAnimationFrame(function(){
+                content.style.maxHeight = startHeight + 'px';
+              });
+            } else if(willCollapse) {
+
+
+              content.style.maxHeight = startHeight + 'px';
+
+              void content.offsetWidth;
+
+              requestAnimationFrame(function(){
+                requestAnimationFrame(function(){
+                  content.style.maxHeight = '0px';
+                });
+              });
+            } else {
+
+              content.style.maxHeight = startHeight + 'px';
+            }
+
+            content.removeEventListener('transitionend', content._collapseHandler || function(){});
+            content._collapseHandler = function(ev){
+              if(ev.propertyName !== 'max-height') return;
+              if(!wrapper.classList.contains('collapsed')){
+
+                content.style.maxHeight = content.scrollHeight + 'px';
+              }
+            };
+            content.addEventListener('transitionend', content._collapseHandler);
+          }
+
+          attachCopyButtons();
+          document.addEventListener('pjax:complete', attachCopyButtons);
+          document.addEventListener('pjax:success', attachCopyButtons);
+        })();
+      </script>
+      <style data-pjax>
+        /* notbyai icon: placed to the right of the blockquote, centered vertically
+           uses background-image so it responds to CSS color-scheme or body class
+        */
+        .notbyai-wrapper { gap: 12px; display: flex; flex-direction: row; align-items: center; }
+        .notbyai-icons { display:flex; align-items:center; gap:8px; margin-left: auto; }
+        @media (max-width: 768px) {
+          .notbyai-wrapper {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+          .notbyai-icons {
+            margin-left: 0;
+            margin-top: 12px;
+          }
+        }
+        .notbyai-icons .notbyai-icon,
+        .notbyai-icons .notbyai-extra {
+          display: inline-block;
+          width: 9.5121em; /* uniform size for all icons */
+          height: 3em;
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+          flex: 0 0 auto;
+        }
+        /* any extra icons can be added with .notbyai-extra and will appear to the left of the main icon */
+        .notbyai-icons .notbyai-extra { opacity: 0.95; }
+        /* Default (light) main icon */
+        .notbyai-icons .notbyai-icon { background-image: url('/images/notbyai-cn-light.svg'); }
+        /* If page uses mdui dark class on body, switch main icon */
+        body.mdui-theme-layout-dark .notbyai-icons .notbyai-icon { background-image: url('/images/notbyai-cn-dark.svg'); }
+        @media (prefers-color-scheme: dark) {
+          .notbyai-icons .notbyai-icon { background-image: url('/images/notbyai-cn-dark.svg'); }
+        }
+
+        /* Copy button base & layout */
+  .codeblock-wrapper { overflow: hidden;transition: padding-bottom .35s cubic-bezier(.4,0,.2,1);}
+  .codeblock-wrapper.codeblock-pad-top { padding-top: 36px; padding-bottom:0px; }
+  .codeblock-wrapper.collapsed { padding-bottom:8px;transition: padding-bottom .35s cubic-bezier(.4,0,.2,1);  }
+  /* Toolbar */
+  .codeblock-wrapper .code-toolbar { position:absolute; top:6px; left:6px; display:flex; gap:8px; align-items:center; z-index:5; }
+  .codeblock-wrapper .code-toolbar button { background:transparent; border-radius:6px; min-width:36px; height:32px; line-height:32px; padding:0 8px; box-shadow:none; text-transform:none; font-size:18px; display:inline-flex; align-items:center; justify-content:center; color:#000; transition:background-color .25s ease, color .25s ease; }
+  .codeblock-wrapper .code-toolbar button i { font-size:20px; transition: transform .3s ease; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar button { color:#fff; }
+  .codeblock-wrapper .code-toolbar button:hover { background: rgba(0,0,0,0.06); }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar button:hover { background: #ffffff1f; }
+  .codeblock-wrapper .code-toolbar .copy-btn.copy-success { background: #4caf504d;  color: #5ac18fff; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .copy-btn.copy-success { background: #4caf5059; }
+  .codeblock-wrapper .code-toolbar .copy-btn.copy-fail { background: #ffeb3b73; color:#8d6e00; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .copy-btn.copy-fail { background: #ffeb3b8c; }
+  .codeblock-wrapper .code-toolbar .collapse-btn i { transition: transform .3s ease; }
+  .codeblock-wrapper.collapsed .code-toolbar .collapse-btn i { transform: rotate(180deg); }
+  .codeblock-wrapper .code-toolbar .code-lang-badge { font-size:12px; line-height:1; padding:4px 8px; border-radius:6px; background:rgba(0,0,0,0.06); color:#000; user-select:none; cursor:default; opacity:.85; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .code-lang-badge { background:#ffffff24; color:#fff; }
+  /* Animated content wrapper */
+  .codeblock-wrapper .code-content-wrap { overflow:auto; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
+  .codeblock-wrapper.collapsed .code-content-wrap { max-height:0 !important; padding-top:0 !important; padding-bottom:0 !important; }
+  /* Avoid hiding toolbar */
+  .codeblock-wrapper.collapsed > .code-toolbar { display:flex !important; }
+        .codeblock-wrapper .copy-btn.copy-success { background: #4caf504d; color:#2e7d32; }
+        .mdui-theme-layout-dark .codeblock-wrapper .copy-btn.copy-success { background: #4caf5059; }
+        .codeblock-wrapper .copy-btn.copy-fail { background: #ffeb3b73; color:#8d6e00; }
+        .mdui-theme-layout-dark .codeblock-wrapper .copy-btn.copy-fail { background: #ffeb3b8c; }
+  /* Legacy compatibility removal of old selectors kept intentionally empty */
+      </style>
+      
+      
+    </div>
+    <footer class="mdui-card-actions">
+      
+      
+    </footer>
+    
+  </article>
+  
+<script src="//ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"></script>
+<script src="//gcore.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+  <script data-pjax>$("#main article .mdui-card-content img.fancybox").on("click",function(e){$.fancybox.open({src:$(this).attr("src")});});</script>
+
+
+
+<script data-pjax>
+  (function(){
+    // 将当前页面是否启用 toc 传给前端逻辑
+    window.__page_has_toc__ = false;
+
+    function buildTocFromHeadings() {
+      // 清理旧的容器（如果存在）
+      try {
+        var old = document.getElementById('toc-fab-container');
+        if (old && old.parentNode) old.parentNode.removeChild(old);
+      } catch(e) {}
+
+      if (!window.__page_has_toc__) return; // 未启用则直接返回
+
+      var content = document.querySelector('#main article .mdui-card-content');
+      if (!content) return;
+      var headings = content.querySelectorAll('h2, h3, h4, h5, h6');
+      if (!headings || headings.length === 0) return; // 无标题则不展示
+
+      // 构建 TOC 列表（保持原有 .toc 结构样式）
+      function getLevel(h){ var t = parseInt(h.tagName.replace('H',''), 10); return isNaN(t)?6:t; }
+      var rootOl = document.createElement('ol');
+      rootOl.className = 'toc';
+      var currentLevel = 0;
+      var currentOl = rootOl;
+      var olStack = [rootOl];
+
+      headings.forEach(function(h){
+        if (!h.id) return; // 没有 id 的标题跳过
+        var level = getLevel(h);
+        if (currentLevel === 0) currentLevel = level; // 初始化基准层级
+
+        if (level > currentLevel) {
+          // 下钻：创建子 ol，直到匹配层级
+          for (var i = currentLevel; i < level; i++) {
+            var childOl = document.createElement('ol');
+            childOl.className = 'toc-child';
+            var lastLi = currentOl.lastElementChild;
+            if (!lastLi) { lastLi = document.createElement('li'); currentOl.appendChild(lastLi); }
+            lastLi.appendChild(childOl);
+            olStack.push(childOl);
+            currentOl = childOl;
+          }
+          currentLevel = level;
+        } else if (level < currentLevel) {
+          // 回退：弹栈到目标层级
+          for (var j = currentLevel; j > level; j--) {
+            olStack.pop();
+          }
+          currentOl = olStack[olStack.length - 1] || rootOl;
+          currentLevel = level;
+        }
+
+        var li = document.createElement('li');
+        li.className = 'toc-item toc-level-' + level;
+        var a = document.createElement('a');
+        a.className = 'toc-link';
+        a.href = '#' + encodeURIComponent(h.id);
+        var span = document.createElement('span');
+        span.className = 'toc-text';
+        span.textContent = h.textContent || h.innerText || '';
+        a.appendChild(span);
+        li.appendChild(a);
+        currentOl.appendChild(li);
+      });
+
+      // 不生成空 TOC
+      if (!rootOl.children.length) return;
+
+      // 生成浮动按钮 + 菜单（保持原有样式）
+      var container = document.createElement('div');
+      container.id = 'toc-fab-container';
+      container.setAttribute('aria-hidden', 'false');
+      container.style.position = 'fixed';
+      container.style.right = '16px';
+      container.style.top = '30%';
+      container.style.zIndex = '4999';
+
+      var btn = document.createElement('button');
+      btn.className = 'mdui-fab mdui-fab-mini mdui-ripple';
+      btn.style.background = '#75757575';
+      btn.setAttribute('mdui-menu', "{target: '#toc-menu'}");
+      btn.setAttribute('aria-label', '目录');
+      btn.innerHTML = '<i class="mdui-icon material-icons" translate="no">toc<\/i>';
+
+      var menu = document.createElement('ul');
+      menu.className = 'mdui-menu';
+      menu.id = 'toc-menu';
+      var liWrap = document.createElement('li');
+      liWrap.className = 'mdui-menu-item';
+      liWrap.setAttribute('disabled', '');
+      liWrap.appendChild(rootOl);
+      menu.appendChild(liWrap);
+
+      container.appendChild(btn);
+      container.appendChild(menu);
+      document.body.appendChild(container);
+
+      // 初始化 MDUI 组件
+      try { if (window.mdui && typeof mdui.mutation === 'function') mdui.mutation(); } catch(e) {}
+
+      // 点击目录项后关闭菜单（可选优化）
+      menu.addEventListener('click', function(e){
+        var a = e.target.closest('a.toc-link');
+        if (!a) return;
+        // 让 MDUI 菜单关闭
+        try {
+          var inst = mdui.Menu.get(btn);
+          if (inst) inst.close();
+        } catch(e) {}
+      });
+    }
+
+    // 初次与 PJAX 切换后重建
+    document.addEventListener('DOMContentLoaded', buildTocFromHeadings);
+    document.addEventListener('page:updated', buildTocFromHeadings);
+    document.addEventListener('pjax:complete', buildTocFromHeadings);
+    document.addEventListener('pjax:success', buildTocFromHeadings);
+  })();
+</script>
+<div class="mdui-divider" style="margin-bottom: 39px"></div>
+
+
+</main>
+  
+<footer id="footer" class="mdui-m-t-5 mdui-p-y-3 mdui-color-theme">
+  <div class="mdui-p-y-0 mdui-text-center">
+    
+    
+    
+    
+    
+    
+    
+      <a href="//github.com/stevezmtstudios/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100"><i class="mdui-icon iconfont" translate="no">&#xe7ab;</i></a>
+    
+    
+      <a href="//steamcommunity.com/id/stevezmt/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Steam" ><svg t="1733311031811" class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7249" width="24" height="24"><path d="M511.104 0C242.261333 0 21.802667 207.36 0.938667 470.912l274.432 113.408a144.512 144.512 0 0 1 81.578666-25.173333c2.688 0 5.333333 0.170667 8.021334 0.256l122.069333-176.725334V380.16a193.194667 193.194667 0 0 1 193.024-193.024c106.410667 0 193.024 86.656 193.024 193.152s-86.613333 193.066667-193.024 193.066667h-4.48l-173.909333 124.202666c0 2.218667 0.170667 4.48 0.170666 6.784a144.725333 144.725333 0 0 1-144.64 144.896 145.578667 145.578667 0 0 1-142.122666-116.352L18.602667 651.52C79.445333 866.432 276.736 1024 511.104 1024c282.752 0 511.957333-229.248 511.957333-512S793.813333 0 511.104 0zM321.706667 776.96l-62.848-26.026667c11.178667 23.168 30.464 42.624 56.064 53.333334a108.842667 108.842667 0 0 0 142.378666-141.824 108.672 108.672 0 0 0-138.88-60.288l64.981334 26.88a80.128 80.128 0 0 1-61.653334 147.925333H321.706667z m487.04-396.928a128.810667 128.810667 0 0 0-128.64-128.64 128.64 128.64 0 1 0 128.64 128.64z m-224.981334-0.213333a96.597333 96.597333 0 1 1 193.322667 0 96.725333 96.725333 0 0 1-96.682667 96.64 96.597333 96.597333 0 0 1-96.64-96.64z" fill="#82b1ff" p-id="7250"></path></svg></a>
+    
+    
+    
+      <a href="//www.zhihu.com/people/zhang-xian-sheng-70-9" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100"><i class="mdui-icon iconfont" translate="no">&#xe6c0;</i></a>
+    
+    
+    
+      <a href="//space.bilibili.com/474130186" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="bilibili" ><svg t="1733305965708" class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5876" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="5877" fill="currentColor"></path></svg></a>
+    
+    
+      <a href="tencent://message/?uin=3579946866&Menu=yes" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100"><i class="mdui-icon iconfont" translate="no">&#xe651;</i></a>
+    
+    
+      <a href="//t.me/SteveZMTstudios" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Telegram"><svg t="1733305965708" class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3029" width="24" height="24"><path d="M883.612 145.595s82.887-32.335 75.979 46.192c-2.302 32.335-23.023 145.505-39.14 267.915L865.193 822.31s-4.604 53.12-46.048 62.36c-41.444 9.237-103.607-32.335-115.121-41.574-9.21-6.928-172.679-110.861-230.24-161.672-16.118-13.858-34.537-41.574 2.302-73.908l241.753-230.96c27.63-27.715 55.258-92.384-59.863-13.857L335.64 582.112s-36.839 23.095-105.91 2.309L80.073 538.229s-55.258-34.644 39.14-69.29c230.242-108.552 513.438-219.413 764.4-323.344z" p-id="3030" fill="currentColor"></path></svg></a>
+    
+    
+    
+      <a href="//stevezmt.top/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Link"><svg t="1733313144945" class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3527" width="24" height="24"><path d="M593.94368 715.648a10.688 10.688 0 0 0-14.976 0L424.21568 870.4c-71.68 71.68-192.576 79.232-271.68 0-79.232-79.232-71.616-200 0-271.616l154.752-154.752a10.688 10.688 0 0 0 0-15.04l-52.992-52.992a10.688 10.688 0 0 0-15.04 0L84.50368 530.688a287.872 287.872 0 0 0 0 407.488 288 288 0 0 0 407.488 0l154.752-154.752a10.688 10.688 0 0 0 0-15.04l-52.736-52.736z m344.384-631.168a288.256 288.256 0 0 1 0 407.616l-154.752 154.752a10.688 10.688 0 0 1-15.04 0l-52.992-52.992a10.688 10.688 0 0 1 0-15.104l154.752-154.688c71.68-71.68 79.232-192.448 0-271.68-79.104-79.232-200-71.68-271.68 0L443.92768 307.2a10.688 10.688 0 0 1-15.04 0l-52.864-52.864a10.688 10.688 0 0 1 0-15.04l154.88-154.752a287.872 287.872 0 0 1 407.424 0z m-296.32 240.896l52.672 52.736a10.688 10.688 0 0 1 0 15.04l-301.504 301.44a10.688 10.688 0 0 1-15.04 0l-52.736-52.672a10.688 10.688 0 0 1 0-15.04l301.632-301.504a10.688 10.688 0 0 1 15.04 0z" fill="currentColor" p-id="3528"></path></svg></a>
+    
+  </div>
+  <div class="mdui-p-y-1 mdui-text-center" translate="no">
+    Copyright &copy; 2019 - 2025 Steve ZMT<br>
+    由 <a href="//hexo.io/" target="_blank" class="mdui-text-color-theme-accent">Hexo</a> 强力驱动  <a href="//icp.gov.moe/?keyword=20240571" target="_blank" class="mdui-text-color-theme-accent"><img style="height:1.5em;vertical-align:middle;" src="/images/loading.svg" data-original="https://icp.gov.moe/images/ico64.png"></a> <a href="//beian.miit.gov.cn/#/Integrated/index" target="_blank" class="mdui-text-color-theme-accent">浙ICP备2025213066号</a>
+    <br>
+      <span id="busuanzi_container_site_pv" style="display: none;"><i class="iconfont" translate="no">&#xe7fd;</i> <span id="busuanzi_value_site_pv"></span></span> &nbsp;&nbsp;
+      <span id="busuanzi_container_site_uv" style="display: none;"><i class="iconfont" translate="no">&#xe601;</i> <span id="busuanzi_value_site_uv"></span></span>
+    
+  </div>
+</footer>
+
+  <div id="gotop-container" class="mdui-fab-fixed mdui-fab-hide">
+    <button id="gotop" class="mdui-fab mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons" translate="no">arrow_upward</i></button>
+    <svg class="progress-ring" width="60" height="60">
+      <circle class="progress-ring__circle mdui-text-color-theme-a100" stroke="currentColor" stroke-width="4" fill="transparent" r="26" cx="30" cy="30"/>
+    </svg>
+  </div>
+  <script data-pjax defer src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+<script src="/js/mdui.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/pjax.js"></script>
+
+  <script>
+    // Remove initial animation class
+    setTimeout(function() {
+      var main = document.getElementById('main');
+      if (main) main.classList.remove('pjax-in');
+    }, 300);
+  </script>
+  
+<script src="/custom.js"></script>
+
+  
+<script src="/js/sw-update.js"></script>
+
+  <script>
+  (function(){
+    if (!('serviceWorker' in navigator)) return;
+    try {
+      navigator.serviceWorker.getRegistrations().then(function(regs){
+        var rootScope = location.origin + '/';
+        var hasRoot = regs.some(function(r){ return r.scope === rootScope; });
+        if (!hasRoot) {
+          navigator.serviceWorker.register('/service-worker.js', {scope: '/'}).then(function(reg){
+            console.log('[sw-fix] registered root service-worker', reg.scope);
+          }).catch(function(err){
+            console.warn('[sw-fix] root register failed', err);
+          });
+        }
+      }).catch(function(e){ console.warn('[sw-fix] getRegistrations failed', e); });
+    } catch(e) { console.warn('[sw-fix] unexpected', e); }
+  })();
+  </script>
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: true,
+                preloadRatio: 3,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>

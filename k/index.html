@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+  <title>老史尬侃 - 兼容模式</title>
+  <link rel="stylesheet" href="//stevezmt.top/sharepoint/cdn/assets/self/articles-k.css">
+  <script type="text/javascript" src="//stevezmt.top/sharepoint/js/3rd-party/holo-touch.min.js"></script>
+  <!-- <style>
+    /* 细节微调，避免覆盖 Holo 主样式 */
+    #status.loading{padding:8px}
+    #content{margin-top:12px;padding:8px}
+    .summary{margin-top:6px;font-size:13px}
+    .categories,.meta{font-size:12px;opacity:.8}
+    .holo-list{margin:0;padding:0;list-style:none}
+    .holo-list li{padding:12px 16px}
+    .holo-list li .item{color:inherit;text-decoration:none;display:block}
+  </style> -->
+  <style></style>
+</head>
+<body>
+  <header class="holo-actionBar">
+    <button class="holo-title" onclick="window.open('index.html', '_self');" style="line-height:21px;">
+      <img src="//stevezmt.top/sharepoint/cdn/image/self/assets-7shet2hxja/kicon.png" />
+      老史尬侃 - 兼容模式
+    </button>
+    <button style="float:right;" onclick="location.href='/atom.xml'"><img src="//stevezmt.top/sharepoint/cdn/image/self/assets-7shet2hxja/rss.png" alt="RSS"></button>
+  </header>
+  <div style="padding:10px">
+    <p id="compat-banner" style="background:#ff9800;padding:6px;margin:0;">您的浏览器不支持现代特性，无法正确加载页面内容，已切换到兼容模式。</p>
+    <script>
+    (function(){
+
+      try{
+        var banner = document.getElementById('compat-banner');
+        if(!banner) return;
+
+        function hasArrayFind(){ try{ return typeof Array.prototype.find === 'function'; }catch(e){return false;} }
+        function hasQS(){ try{ return typeof document.querySelector === 'function'; }catch(e){return false;} }
+        function hasAE(){ try{ return typeof window.addEventListener === 'function'; }catch(e){return false;} }
+
+        var modernFeatures = {
+          Promise: (typeof Promise !== 'undefined' && typeof Promise.resolve === 'function'),
+          fetch: (typeof fetch === 'function'),
+          ObjectAssign: (typeof Object.assign === 'function'),
+          ArrayFind: hasArrayFind(),
+          querySelector: hasQS(),
+          addEventListener: hasAE(),
+          URLSearchParams: (typeof URLSearchParams === 'function')
+        };
+
+
+        var allOk = true;
+        for(var k in modernFeatures){ if(!modernFeatures[k]){ allOk = false; break; } }
+        if(!allOk) return;
+
+
+        try{ banner.style.background = '#4CAF50'; banner.style.color = '#fff'; }catch(e){}
+        try{ banner.textContent = '您的浏览器支持访问更加先进的页面。'; }catch(e){}
+      }catch(e){}
+    })();
+    </script>
+    <p>部分博客内嵌脚本特性可能无法使用。</p>
+    <p><a href="//browser-update.org/update-browser.html">更新浏览器（推荐）</a>以获取最佳体验和页面优化。或<a href="/?persist_no_k=1">仍然访问完整版</a></p>
+    <p><button onclick="location.href='/about/?persist_no_k=1'">关于</button><button onclick="location.href='/friends/?persist_no_k=1'">友链</button><button onclick="location.href='/timeline/?persist_no_k=1'">时间线</button><button onclick="location.href='/atom.xml'">RSS订阅</button><button onclick="location.href='http://stevezmt.top'">主站</button> <button onclick="location.href='//key.stevezmt.top/'">GPG密钥</button><button onclick="location.href='mailto:admin@stevezmt.top'">电子邮件到 admin@stevezmt.top</button> </p>
+    <div id="app">
+      <div id="status" class="loading">正在加载文章…</div>
+      <ul id="list" class="holo-list" role="list"></ul>
+      <div id="content" aria-live="polite"><a href="/about/?persist_no_k=1">关于</a> | <a href="/friends/">友链</a> | <a href="/timeline/?persist_no_k=1">时间线</a> | <a href="/atom.xml">RSS</a> | <a href="http://stevezmt.top">主站</a> <a href="//key.stevezmt.top/">GPG密钥</a> | <a href="mailto:admin@stevezmt.top">电子邮件</a> </div>
+    </div>
+  </div>
+
+  <noscript>
+    <p style="background:#ff9800;padding:6px;margin:0;">浏览器未启用 JavaScript。遗憾的是，你必须启用它才能查看文章列表和内容。</p>
+    <p>你也可以直接访问 <a href="/atom.xml">/atom.xml</a> 阅读原始订阅。</p>
+  </noscript>
+
+  <script data-cfasync="false">
+
+  /* Compatibility polyfills and helpers for old browsers (IE7/8 era) */
+  if (!Function.prototype.bind) {
+    Function.prototype.bind = function(context) {
+      var fn = this;
+      var slice = Array.prototype.slice;
+      var args = slice.call(arguments, 1);
+      return function() { return fn.apply(context, args.concat(slice.call(arguments))); };
+    };
+  }
+  if (!Array.prototype.forEach) {
+    Array.prototype.forEach = function(cb/*, thisArg*/) {
+      var len = this.length >>> 0; var i = 0; var thisArg = arguments[1];
+      for(i=0;i<len;i++) if(i in this) cb.call(thisArg, this[i], i, this);
+    };
+  }
+  /* Event helper: addEventListener fallback */
+  (function(){
+    if(!window.addEventListener && window.attachEvent){
+      window.addEventListener = function(evt, fn){ window.attachEvent('on' + evt, fn); };
+      Document.prototype.addEventListener = Element.prototype.addEventListener = function(evt, fn){ return this.attachEvent('on' + evt, fn); };
+    }
+  })();
+
+  (function(){
+    var status = document.getElementById('status');
+    var listEl = document.getElementById('list');
+    var contentEl = document.getElementById('content');
+
+    function createXHR(){
+      if(window.XMLHttpRequest) return new XMLHttpRequest();
+      try { return new ActiveXObject('Msxml2.XMLHTTP'); } catch(e){}
+      try { return new ActiveXObject('Microsoft.XMLHTTP'); } catch(e){}
+      return null;
+    }
+
+    function parseXMLString(str){
+
+      if(window.DOMParser){
+        try{ return (new DOMParser()).parseFromString(str,'application/xml'); }catch(e){}
+      }
+
+      var doc = null;
+      try{
+        doc = new ActiveXObject('Microsoft.XMLDOM');
+        doc.async = false;
+        doc.loadXML(str);
+        return doc;
+      }catch(e){}
+      return null;
+    }
+
+    function getText(node){
+      if(!node) return '';
+      return node.textContent || node.text || '';
+    }
+
+    function getFirstChildByName(node, name){
+      if(!node) return null;
+      var children = node.childNodes;
+      for(var i=0;i<children.length;i++){
+        var n = children[i];
+        if(n.nodeType===1 && (n.localName===name || n.nodeName===name)) return n;
+      }
+      return null;
+    }
+
+    function safeInnerHTML(el, html){
+
+      try{ el.innerHTML = html; }catch(e){
+
+        while(el.firstChild) el.removeChild(el.firstChild);
+        el.appendChild(document.createTextNode(html));
+      }
+    }
+
+    /* Small compatibility css helper: some old browsers don't support calc() - fall back to 100% width */
+    function supportCalc(){
+      try{ var el = document.createElement('div'); el.style.width = 'calc(100% - 10px)'; return !!el.style.width; }catch(e){return false; }
+    }
+
+    function renderEntries(doc){
+
+      var entries = (doc.getElementsByTagName && doc.getElementsByTagName('entry')) || [];
+      if(!entries || entries.length===0){ entries = (doc.getElementsByTagName && doc.getElementsByTagName('item')) || []; }
+      if(!entries || entries.length===0){
+
+        var all = doc.getElementsByTagName('*');
+        var tmp = [];
+        for(var i=0;i<all.length;i++){
+          if((all[i].localName||all[i].nodeName||'').toLowerCase()==='entry') tmp.push(all[i]);
+        }
+        entries = tmp;
+      }
+
+      if(!entries || entries.length===0){ status.textContent = '未找到文章条目或解析失败。'; return; }
+      status.style.display = 'none';
+
+      for(var i=0;i<entries.length;i++){
+        (function(entry){
+          var titleNode = getFirstChildByName(entry,'title');
+          var linkNode = getFirstChildByName(entry,'link');
+          var idNode = getFirstChildByName(entry,'id');
+          var publishedNode = getFirstChildByName(entry,'published') || getFirstChildByName(entry,'updated');
+          var summaryNode = getFirstChildByName(entry,'summary');
+          var contentNode = getFirstChildByName(entry,'content');
+
+          var title = getText(titleNode) || '（无标题）';
+          var href = '';
+          if(linkNode){ href = linkNode.getAttribute && linkNode.getAttribute('href') || getText(linkNode) || ''; }
+          var id = getText(idNode) || href || '';
+          var published = getText(publishedNode) || '';
+          if(!published){ var pd = getFirstChildByName(entry,'pubDate'); if(pd) published = getText(pd); }
+
+          var li = document.createElement('li');
+          var button = document.createElement('button');
+          try{ if(supportCalc()){ button.style.width = 'calc(100% + 32px)'; } else { button.style.width = '100%'; } }catch(e){ button.style.width = '100%'; }
+          
+          var a = document.createElement('a');
+          a.href = href || '#';
+          a.className = 'item';
+          a.setAttribute('data-id', id);
+          a.setAttribute('data-href', href);
+          a.setAttribute('role','link');
+          a.appendChild(document.createTextNode(title));
+
+          var meta = document.createElement('div');
+          meta.className = 'meta';
+          meta.appendChild(document.createTextNode(published));
+
+
+          var summaryText = '';
+          try{ if(summaryNode) summaryText = (summaryNode.textContent || (summaryNode.firstChild && summaryNode.firstChild.nodeValue) || ''); }catch(e){}
+          /* RSS description/content:encoded fallback */
+          if(!summaryText){ try{ var descNode = getFirstChildByName(entry,'description'); if(descNode) summaryText = getText(descNode); }catch(e){} }
+          if(!summaryText){ try{ var cec = getFirstChildByName(entry,'encoded'); if(cec && (cec.namespaceURI||'').indexOf('content')!==-1) summaryText = getText(cec); }catch(e){} }
+          var summaryDiv = document.createElement('div'); summaryDiv.className = 'summary'; if(summaryText) safeInnerHTML(summaryDiv, summaryText);
+
+
+          var cats = [];
+          try{
+            var catNodes = entry.getElementsByTagName && (entry.getElementsByTagName('category') || entry.getElementsByTagName('dc:subject'));
+            if(catNodes && catNodes.length>0){ for(var ci=0;ci<catNodes.length;ci++){ try{ var t = catNodes[ci].getAttribute && catNodes[ci].getAttribute('term') || catNodes[ci].textContent || ''; if(t) cats.push(t); }catch(e){} } }
+            else {
+
+              var allc = entry.getElementsByTagName('*');
+              for(var ac=0;ac<allc.length;ac++){ if((allc[ac].localName||allc[ac].nodeName||'').toLowerCase()==='category'){ var t2 = allc[ac].getAttribute && allc[ac].getAttribute('term') || allc[ac].textContent||''; if(t2) cats.push(t2); } }
+            }
+          }catch(e){}
+          var catsDiv = document.createElement('div'); catsDiv.className='categories'; if(cats.length) catsDiv.appendChild(document.createTextNode('分类：' + cats.join(', ')));
+
+          button.appendChild(a);
+          button.appendChild(meta);
+          if(summaryText) button.appendChild(summaryDiv);
+          if(cats.length) button.appendChild(catsDiv);
+          li.appendChild(button);
+          listEl.appendChild(li);
+
+          button.onclick = function(evt){
+            try{ if(evt && evt.preventDefault) evt.preventDefault(); }catch(e){}
+
+            var params = [];
+            try{ if(id) params.push('id=' + encodeURIComponent(id)); }catch(e){}
+            try{ if(href) params.push('href=' + encodeURIComponent(href)); }catch(e){}
+            try{ if(title) params.push('title=' + encodeURIComponent(title)); }catch(e){}
+            var q = params.length? ('?' + params.join('&')) : '';
+            var target = '/k/content.html' + q;
+
+            location.href = target;
+            return false;
+          };
+        })(entries[i]);
+      }
+    }
+
+    function loadExternal(url, cb){
+      var xhr = createXHR(); if(!xhr){ cb(false); return; }
+      try{
+        xhr.open('GET', url, true);
+        var to = setTimeout(function(){ try{ xhr.abort(); cb(false, 'timeout'); }catch(e){}; }, 15000);
+        xhr.onreadystatechange = function(){
+          if(xhr.readyState===4){
+            try{ if(to) clearTimeout(to); }catch(e){}
+            if((xhr.status>=200 && xhr.status<300) || xhr.status===0){
+              cb(true, xhr.responseText);
+            } else cb(false, xhr.status);
+          }
+        };
+        try{ xhr.send(null); }catch(e){ try{ if(to) clearTimeout(to); }catch(ex){}; cb(false, 'send_error'); }
+      }catch(e){ cb(false); }
+    }
+
+    function loadFeed(){
+      var xhr = createXHR();
+      if(!xhr){ status.textContent = '此浏览器不支持网络请求。'; return; }
+      try{
+        var cacheKey = 'k_feed_cache_v1';
+        /* If localStorage present, try cache (short lived) */
+        try{ if(window.localStorage){ var raw = localStorage.getItem(cacheKey); if(raw){ var cached = JSON.parse(raw); if(cached && (Date.now() - cached.ts) < (2*60*1000) && cached.xml){ var doc = parseXMLString(cached.xml); if(doc){ renderEntries(doc); return; } } } } }catch(e){}
+
+        xhr.open('GET','/atom.xml',true);
+
+        try{ xhr.overrideMimeType && xhr.overrideMimeType('text/xml'); }catch(e){}
+        xhr.onreadystatechange = function(){
+          if(xhr.readyState===4){
+            if((xhr.status>=200 && xhr.status<300) || xhr.status===0){
+              var doc = xhr.responseXML;
+              if(!doc || !doc.documentElement){
+
+                doc = parseXMLString(xhr.responseText || xhr.response);
+              }
+              if(doc){
+                try{ if(window.localStorage){ localStorage.setItem(cacheKey, JSON.stringify({ts:Date.now(), xml: xhr.responseText})); } }catch(e){}
+                renderEntries(doc);
+              }
+              else status.textContent = '无法解析 atom.xml';
+            } else {
+              status.textContent = '加载 atom.xml 失败，HTTP 状态：' + xhr.status;
+            }
+          }
+        };
+        xhr.send(null);
+      }catch(e){ status.textContent = '请求 atom.xml 时发生错误'; }
+    }
+
+
+    if(document.readyState==='loading'){
+      try{ document.addEventListener('DOMContentLoaded', loadFeed, false); }catch(e){ window.onload = loadFeed; }
+    } else loadFeed();
+
+  })();
+  </script>
+</body>
+</html>

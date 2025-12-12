@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="renderer" content="webkit">
+  
+
+  <script>
+    (function() {
+      try {
+        var LOC = window.location;
+        var path = LOC.pathname || '/';
+        if (path === '/k' || path.indexOf('/k/') === 0 || /[?&]compat=1/.test(LOC.search) || /[?&]nocompat=1/.test(LOC.search)) return;
+
+  var ua = navigator.userAgent || '';
+  var isBot = /Googlebot|Bingbot|Baiduspider|Bytespider|360Spider|Sogou|YandexBot|DuckDuckBot|Slurp|facebookexternalhit|Twitterbot|msnbot/i.test(ua);
+  function getQueryParam(name) {
+    try {
+      if (window.URLSearchParams) {
+        var sp = new URLSearchParams(LOC.search);
+        return sp.get(name);
+      }
+    } catch (e) {}
+    try {
+      var qs = (LOC.search || '').replace(/^\?/, '');
+      var pairs = qs.split('&');
+      for (var i = 0; i < pairs.length; i++) {
+        var p = pairs[i];
+        if (!p) continue;
+        var idx = p.indexOf('=');
+        var k = idx === -1 ? decodeURIComponent(p) : decodeURIComponent(p.slice(0, idx));
+        var v = idx === -1 ? '' : decodeURIComponent(p.slice(idx+1));
+        if (k === name) return v;
+      }
+    } catch (e) {}
+    return null;
+  }
+  var persistNoK = getQueryParam('persist_no_k') === '1';
+
+        function lacks(feature) { return !feature; }
+        var missingFeatures = [];
+        if (lacks(window.Promise)) missingFeatures.push('Promise');
+        if (lacks(window.fetch)) missingFeatures.push('fetch');
+        if (lacks(Object.assign)) missingFeatures.push('Object.assign');
+        if (lacks(Array.prototype.find)) missingFeatures.push('Array.find');
+        if (lacks(document.querySelector)) missingFeatures.push('querySelector');
+        if (lacks(window.addEventListener)) missingFeatures.push('addEventListener');
+        if (lacks(window.IntersectionObserver)) missingFeatures.push('IntersectionObserver');
+        var legacyFeature = (
+          missingFeatures.indexOf('Promise') !== -1 ||
+          missingFeatures.indexOf('querySelector') !== -1 ||
+          missingFeatures.indexOf('addEventListener') !== -1 ||
+          missingFeatures.length >= 2
+        );
+
+  var errorLimit = 8; 
+  var errorCount = 0;
+  function scheduleRedirect(reason) {
+          try {
+            var note = document.createElement('div');
+            note.style.cssText = 'display:none;';
+            note.textContent = 'Compatibility suggestion (/k) triggered: ' + reason;
+            document.documentElement.appendChild(note);
+          } catch (e) {}
+
+          if (window.__compat_redirected) return;
+
+          try {
+            if (!window.__compat_banner_shown) {
+              window.__compat_banner_shown = true;
+              var banner = document.createElement('div');
+              banner.style.cssText = 'background:#ff9800;color:#000;padding:8px;font-size:13px;text-align:center;position:relative;z-index:9999;';
+              banner.innerHTML = '浏览器可能不完全支持本站功能（'+reason+'）请访问 <a href="/k?compat=1&from='+encodeURIComponent(path)+'&reason='+encodeURIComponent(reason)+'">兼容视图</a>以正常阅览。';
+              try { document.documentElement.insertBefore(banner, document.documentElement.firstChild); }
+              catch(e) { document.body && document.body.insertBefore(banner, document.body.firstChild); }
+            }
+          } catch (e) {}
+          console.log('Compatibility suggestion (/k) triggered:', reason);
+          console.log('Missing features:', missingFeatures.join(', '));
+          console.log('Error count:', errorCount);
+          console.log('Is bot:', isBot);
+          console.log('Persist no_k:', persistNoK);
+          
+
+          setTimeout(function() {
+            try {
+              if (isBot || persistNoK) {
+                return;
+              }
+              if (window.__compat_redirected) return; window.__compat_redirected = true;
+              var target = '/k?compat=1&from=' + encodeURIComponent(path) + '&reason=' + encodeURIComponent(reason);
+              try { window.stop && window.stop(); } catch(e){}
+              LOC.replace(target);
+            } catch (e) {}
+          }, 500);
+        }
+
+        window.addEventListener('error', function(e) {
+          try {
+            var el = e && e.target;
+            var isResource = el && el.tagName && (el.tagName === 'SCRIPT' || el.tagName === 'LINK' || el.tagName === 'IMG');
+            if (!isResource) {
+              console.log('Runtime error detected ('+errorCount+'):', e.message, 'at', e.filename + ':' + e.lineno + ':' + e.colno);
+              errorCount++;
+              if (errorCount >= errorLimit) scheduleRedirect('runtime_error_'+errorCount);
+            }
+          } catch(err){}
+        }, true);
+
+        window.addEventListener('unhandledrejection', function(e) {
+          try {
+            errorCount++;
+            if (errorCount >= errorLimit) scheduleRedirect('unhandledrejection_'+errorCount);
+          } catch (err) {}
+        });
+
+        setTimeout(function() {
+          if (!window.mdui && !window.__compat_redirected && (legacyFeature || errorCount > 0)) {
+            scheduleRedirect('timeout_no_core_lib');
+          }
+        }, 20000);
+
+        if (legacyFeature) {
+          scheduleRedirect('legacy_feature');
+        }
+      } catch (e) {
+      }
+    })();
+  </script>
+  <noscript>
+    
+    <meta http-equiv="refresh" content="2; url=/k?compat=1&noscript=1" />
+    <div style="background:#ff9800;color:#000;padding:8px;font-size:13px;text-align:center;">灾难性错误：浏览器未启用Javascript，正在切换到 <a href="/k?compat=1&noscript=1">兼容性视图</a>...</div>
+  </noscript>
+
+  
+  <title>Markdown 渲染测试 | 老史尬侃 - Steve ZMT &#39;s Blog</title>
+
+  <link rel="shortcut icon" href="/images/favicon.png">
+  <link rel="alternate" href="/atom.xml" title="老史尬侃 - Steve ZMT 's Blog" type="application/atom+xml">
+  <meta name="description" content="普通的markdown渲染测试，包含各种语法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Markdown 渲染测试">
+<meta property="og:url" content="https://blog.stevezmt.top/2023/08/21/markdown-test-full/index.html">
+<meta property="og:site_name" content="老史尬侃 - Steve ZMT &#39;s Blog">
+<meta property="og:description" content="普通的markdown渲染测试，包含各种语法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://commonmark.org/help/images/favicon.png">
+<meta property="og:image" content="https://commonmark.org/help/images/favicon.png">
+<meta property="og:image" content="https://commonmark.org/help/images/favicon.png">
+<meta property="og:image" content="https://commonmark.org/help/images/favicon.png">
+<meta property="og:image" content="https://commonmark.org/help/images/favicon.png">
+<meta property="article:published_time" content="2023-08-21T18:13:04.000Z">
+<meta property="article:modified_time" content="2025-12-12T05:00:18.907Z">
+<meta property="article:author" content="Steve ZMT">
+<meta property="article:tag" content="SteveZMT">
+<meta property="article:tag" content="blog">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="史蒂夫ZMT">
+<meta property="article:tag" content="随笔">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://commonmark.org/help/images/favicon.png">
+
+  <meta name="keywords" content="">
+  <meta name="format-detection" content="telephone=no,email=no">
+  <meta name="theme-color" content="#448AFF">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="老史尬侃 - Steve ZMT &#39;s Blog">
+  <meta name="msapplication-starturl" content="https://blog.stevezmt.top/2023/08/21/markdown-test-full/">
+  <meta name="msapplication-navbutton-color" content="#448AFF">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="老史尬侃 - Steve ZMT &#39;s Blog">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="apple-touch-icon" href="/images/favicon.png">
+  <link rel="dns-prefetch" href="/" />
+  <link rel="manifest" href="/manifest.json">
+
+  
+    <link rel="canonical" href="https://blog.stevezmt.top/2023/08/21/markdown-test-full/">
+  
+
+  
+  
+
+
+  
+  
+
+  
+<link rel="stylesheet" href="/css/mdui.css">
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/custom.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+<!--
+<script data-pjax>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create','G-T404DHJEEZ','auto');ga('send','pageview');
+</script>
+-->
+
+<!-- Google tag (gtag.js) -->
+
+<script data-pjax defer src="https://www.googletagmanager.com/gtag/js?id=G-T404DHJEEZ"></script>
+<script data-pjax>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T404DHJEEZ');
+</script>
+
+
+<body class="mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-blue">
+  
+  
+  <script>window.BUSUANZI_SRC = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';</script>
+  
+  <script src="//awp-assets.meituan.net/thh/thh_feb_web_portal/js/jquery-3.6.0.min.js"></script>
+  <script>
+    if (typeof jQuery === 'undefined') {
+      document.write('<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"><\/script>');
+    }
+  </script>
+  <script>
+    var dark = localStorage.getItem("mdui-theme-layout-dark");
+    var light = localStorage.getItem("mdui-theme-layout-light");
+    if (dark || (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches && !light)) {
+      document.getElementsByTagName("body")[0].className+=" mdui-theme-layout-dark";
+    }
+  </script>
+  <script>var a=localStorage.getItem("mdui-drawer-close");if(!a){document.getElementsByTagName("body")[0].className+=" mdui-drawer-body-left"};</script>
+  <header id="header" class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide mdui-appbar-inset">
+  
+  <div id="material-refresh-indicator" style="position:fixed;top: 80px;left:0;width:100vw;z-index:2000;display:flex;justify-content:center;pointer-events:none;transition:transform 0.3s cubic-bezier(.4,0,.2,1),opacity 0.3s;transform:translateY(-48px);opacity:0;">
+    <div style="background:#eee;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.12);padding:9px;display:flex;align-items:center;justify-content:center;">
+      <div class="mdui-spinner" style="width:20px;height:20px;"></div>
+    </div>
+  </div>
+  <div id="banner" class="mdui-toolbar mdui-color-theme">
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="mdui-icon material-icons" translate="no">menu</i></a>
+    <a href="/" class="mdui-typo-headline">老史尬侃 - Steve ZMT &#39;s Blog</a>
+    <div class="mdui-toolbar-spacer"></div>
+    
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon" id="theme-toggle" mdui-tooltip="{content: '切换主题'}"><i class="mdui-icon material-icons" translate="no">brightness_4</i></a>
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: '搜索'}"><i class="mdui-icon material-icons" translate="no">search</i></a>
+    <!-- Open RSS Feed --><!--
+    <a href="/atom.xml" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'RSS'}"><i class="mdui-icon material-icons" translate="no">rss_feed</i></a> -->
+    <!-- Copy RSS Feed To Clipboard -->
+    
+      <a href="javascript:void(0);" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'RSS'}" onclick="copyRssToClipboard('https://blog.stevezmt.top/atom.xml')">
+        <i class="mdui-icon material-icons" translate="no">rss_feed</i>
+      </a>
+      <script data-pjax>
+        function copyRssToClipboard(text) {
+          navigator.clipboard.writeText(text).then(function() {
+            mdui.snackbar({
+              message: '已将RSS订阅链接复制到剪贴板!',
+              position: 'right-top',
+              buttonText: '好',
+            });
+          }, function(err) {
+            console.error('Could not copy text: ', err);
+            mdu.snackbar({
+              message: '复制RSS订阅链接失败!',
+              position: 'right-top',
+            });
+          });
+        }
+      </script>
+      
+  </div>
+</header>
+<div class="mdui-dialog" id="search">
+  <script data-pjax>
+
+    (function() {
+      var searchDialog = document.getElementById('search');
+      if (!searchDialog) return;
+      var typingLock = false;
+      var searchInput = searchDialog.querySelector('input[type="search"]');
+      if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+          if (typingLock) return;
+          typingLock = true;
+          setTimeout(function() { typingLock = false; }, 500);
+        });
+      }
+
+      searchDialog.addEventListener('closed.mdui.dialog', function() {
+        typingLock = false;
+      });
+    })();
+
+    window.showMaterialRefresh = function() {
+      var el = document.getElementById('material-refresh-indicator');
+      if (el) {
+        el.style.transform = 'translateY(0)';
+        el.style.opacity = '1';
+      }
+    };
+    window.hideMaterialRefresh = function() {
+      var el = document.getElementById('material-refresh-indicator');
+      if (el) {
+        el.style.transform = 'translateY(-64px)';
+        el.style.opacity = '0';
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(window.hideMaterialRefresh, 600); });
+  </script>
+  
+    <div class="search-form">
+      <input type="search"  id="search-input" name="search" class="search-form-input" placeholder="搜索...">
+    </div>
+    <div class="search-result" data-resource="/search.xml"></div>
+    
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer mdui-drawer-full-height">
+  <script data-pjax>var a=localStorage.getItem("mdui-drawer-close");if(a){document.getElementById("sidebar").className+=" mdui-drawer-close"};</script>
+  <div class="mdui-grid-tile">
+    <img no-lazy src="/images/banner.png" style="height: 160px;">
+    <img no-lazy src="/images/avatar.jpg@128x128.jpg" class="avatar-animation" alt="Avatar" style="position: absolute; top: 10%; left: 24px; width: 64px; height: 64px; border: 2px solid #fff; border-radius: 50%;">
+    <div class="mdui-grid-tile-actions">
+      <div class="mdui-grid-tile-text">
+        <div class="mdui-grid-tile-title">Steve ZMT</div>
+        <div class="mdui-grid-tile-subtitle"><i class="mdui-icon material-icons" translate="no">art_track</i>这家伙叽里咕噜说什么呢。</div>
+      </div>
+      <!--
+      
+        <div class="mdui-grid-tile-buttons">
+          <a href="mailto:admin@stevezmt.top" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'admin@stevezmt.top'}"><i class="mdui-icon material-icons" translate="no">email</i></a>
+        </div>
+       
+      -->
+      
+        <div class="mdui-grid-tile-buttons">
+          <a href="javascript:void(0);" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'admin@stevezmt.top'}" onclick="copyEmailToClipboard('admin@stevezmt.top')">
+            <i class="mdui-icon material-icons" translate="no">email</i>
+          </a>
+        </div>
+        <script data-pjax>
+          function copyEmailToClipboard(email) {
+            navigator.clipboard.writeText(email).then(function() {
+              mdui.snackbar({
+                message: '已将邮箱地址复制到剪贴板!',
+                position: 'left-top',
+                buttonText: '写邮件',
+                onButtonClick: function(){
+                  window.location.href = 'mailto:' + 'admin@stevezmt.top';
+                }
+              });
+            }, function(err) {
+              console.error('Could not copy text: ', err);
+              mdui.snackbar({
+                message: '复制邮箱地址失败!',
+                position: 'right-top',
+              });
+            });
+          }
+        </script>
+
+    </div>
+  </div>
+
+  <div class="mdui-list" mdui-collapse="{accordion: true}">
+    <a href="/" class="mdui-list-item mdui-ripple">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue" translate="no">home</i>
+      <div class="mdui-list-item-content">主页</div>
+    </a>
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-0");if(a){document.getElementsByClassName("mdui-collapse-item")[0].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-deep-orange" translate="no">archive</i>
+        <div class="mdui-list-item-content">归档</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons" translate="no">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/archives/2025/11/">十一月 2025<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/09/">九月 2025<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/08/">八月 2025<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/01/">一月 2025<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/12/">十二月 2024<span class="mdui-ripple sidebar_archives-count">3</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/03/">三月 2024<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/02/">二月 2024<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2023/10/">十月 2023<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2023/08/">八月 2023<span class="mdui-ripple sidebar_archives-count">1</span></a>
+        
+      </div>
+    </div>
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-1");if(a){document.getElementsByClassName("mdui-collapse-item")[1].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-green" translate="no">class</i>
+        <div class="mdui-list-item-content">分类</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons" translate="no">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/categories/%E6%8A%98%E8%85%BE/">折腾<span class="mdui-ripple sidebar_archives-count">8</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E6%8A%98%E8%85%BE/%E7%94%B5%E5%AD%90%E5%9E%83%E5%9C%BE/">电子垃圾<span class="mdui-ripple sidebar_archives-count">3</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E7%9E%8E%E8%81%8A/">瞎聊<span class="mdui-ripple sidebar_archives-count">3</span></a>
+        
+      </div>
+    </div>
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-2");if(a){document.getElementsByClassName("mdui-collapse-item")[2].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown" translate="no">bookmark</i>
+        <div class="mdui-list-item-content">标签</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons"translate="no">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/tags/AI/" rel="tag">AI<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/Cloudflare/" rel="tag">Cloudflare<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/ColorOS/" rel="tag">ColorOS<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/KDE/" rel="tag">KDE<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/PXE/" rel="tag">PXE<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/RealmeUI/" rel="tag">RealmeUI<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/hexo/" rel="tag">hexo<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/iVentoy/" rel="tag">iVentoy<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/openai/" rel="tag">openai<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/root/" rel="tag">root<span class="mdui-ripple sidebar_archives-count">4</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/xposed/" rel="tag">xposed<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E4%B8%8B%E8%BD%BD/" rel="tag">下载<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E4%BA%92%E8%81%94/" rel="tag">互联<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%8D%95%E8%AF%8D%E7%AC%94/" rel="tag">单词笔<span class="mdui-ripple sidebar_archives-count">3</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%AE%89%E5%8D%93/" rel="tag">安卓<span class="mdui-ripple sidebar_archives-count">5</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%BC%80%E6%BA%90/" rel="tag">开源<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E6%84%8F%E5%A4%96/" rel="tag">意外<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E6%95%85%E9%9A%9C/" rel="tag">故障<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%BC%95%E5%AF%BC/" rel="tag">网络引导<span class="mdui-ripple sidebar_archives-count">1</span></a>
+        
+      </div>
+    </div>
+    <a href="/about" class="mdui-list-item mdui-ripple">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-purple" translate="no">person</i>
+      <div class="mdui-list-item-content">关于</div>
+    </a>
+  </div>
+
+  <div class="mdui-divider"></div>
+
+  <div class="mdui-list" mdui-collapse="{accordion: true}">
+    
+      <a href="/timeline"  class="mdui-list-item mdui-ripple">时间轴</a>
+    
+      <a href="/tagcloud"  class="mdui-list-item mdui-ripple">标签云</a>
+    
+      <a href="/friends"  class="mdui-list-item mdui-ripple">友情链接</a>
+    
+      <a href="/k" target="_blank" class="mdui-list-item mdui-ripple">兼容视图</a>
+    
+      <a href="https://www.travellings.cn/go.html" target="_blank" class="mdui-list-item mdui-ripple">开往</a>
+    
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-3");if(a){document.getElementsByClassName("mdui-collapse-item")[3].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <div class="mdui-list-item-content">其他链接</div>
+        <i class="mdui-list-item-icon mdui-icon material-icons" translate="no">link</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+          <a href="//stevezmt.top/" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">史蒂夫ZMT 主页</a>
+        
+          <a href="//stevezmt.top/Phigros-history/" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">Phigros 历史版本收集</a>
+        
+          <a href="//rip.stevezmt.top" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">过气项目存档</a>
+        
+        
+      </div>
+    </div>
+  </div>
+</aside>
+
+  <main id="main" class="mdui-m-t-5 pjax-in"><script data-pjax>
+  (function() {
+    const links = document.querySelectorAll('.mdui-card-content a');
+    
+    links.forEach(link => {
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('http') && 
+          !href.includes('blog.stevezmt.top') && 
+          !href.includes('stevezmt.top') && 
+          !href.includes('localhost')) {
+        link.href = `/redirect?goto=${encodeURIComponent(href)}`;
+        link.target = "_blank";
+      }
+    });
+  })();
+  </script>
+
+
+  
+<link rel="stylesheet" href="//gcore.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+
+  <style>#main article .mdui-card-content .center-block{display:block!important;margin-right:auto!important;margin-left:auto!important}</style>
+  <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
+  <article class="mdui-card mdui-m-b-5">
+    <header class="mdui-card-media">
+      <img src="/images/loading.svg" data-original="/images/random/material-4.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+      <div class="mdui-card-media-covered">
+        <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;">Markdown 渲染测试</h1></div>
+          <div class="mdui-card-primary-subtitle"><i class="iconfont" translate="no">&#xe697;</i> 2023-08-22 / <i class="iconfont" translate="no">&#xe601;</i> Steve ZMT &nbsp;&nbsp; <span id="busuanzi_container_page_pv" style="display: none;"><i class="iconfont" translate="no">&#xe7fd;</i> <span id="busuanzi_value_page_pv"></span></span></div>
+        </div>
+      </div>
+      <div class="mdui-card-menu">
+        
+          <button class="mdui-btn mdui-btn-icon mdui-text-color-white" mdui-menu="{target: '#qrcode', align: 'right'}"><i class="mdui-icon material-icons" translate="no">devices</i></button>
+          <ul class="mdui-menu" id="qrcode">
+            
+              <li class="mdui-menu-item"><a class="mdui-text-center mdui-ripple">发送到手机</a></li>
+            
+            <li class="mdui-menu-item" disabled>
+              
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACaElEQVR42u3bQXLjMAwEQP//09kXhDsDUozK1TqlHJeF9oGAAPjz89XXBw8PDw8PDw8P72W8T3z99v7167/dq309iQ0PDw/vJu8/R+2SMYNFgZax4eHh4d3nrQ/95ChvSfl9i9jw8PDwXsabld3JoY+Hh4f3rbyokRokjLx8x8PDw3szr3jgH4HXKWTNu9RrwcPDw4t57QDs5t9/MN/Dw8PDW/LqlaZRwZ00hWcp5/BOGR4eHl7ASwrcfCSWl9T5CC2PFg8PD+8Obx1cW+zmiaFdKcjTEh4eHt4dXv7wvy6v87WAtslb3AsPDw/vYV5bKOfrVi01ASRtCzw8PLyneWfL31lYedNhK+/h4eHhHeIlbYhZodymiv3UgoeHh3eHNzuOd5YMksbE1tgMDw8P72Hezgp+NMgvPyH/Lx4eHt5f8Z5o2rYDraRoxsPDw3sPb7ZKNVtO3Smdj60O4OHh4W3z8pQwaxy0DYtZIxgPDw/vJm9/RXW/kTEbyBV5Dw8PD+8orw1oFnqeWvJEUqwO4OHh4R3lzQKaLU61zdnZl4KHh4f3NG+2dHV23T+/S1T04+Hh4V3h7ZfCbcGdJJ5h2wIPDw/vYd4OYFZG50miXUHAw8PDu8Nrr3YhNU8/ecKo8x4eHh7eUV77wL/TkJ0tJdRNXjw8PLwrvCQZ5KG3g7SdJsXwiQEPDw/vEK8da+0Mxtq0VCy84uHh4b2Mt/7otqmx/87DiQEPDw/vMd7OWsBs6Sr/cvHw8PBu8orDdwN8djx2uNeCh4eH93PmZ/kzzE6aad+Jh4eHd5P3fRceHh4eHh4eHt4Lrn9mOc5K2+ENQwAAAABJRU5ErkJggg==">
+              
+            </li>
+          </ul>
+        
+        
+          <button class="mdui-btn mdui-btn-icon mdui-text-color-white" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="mdui-icon material-icons" translate="no">share</i></button>
+          <ul class="mdui-menu" id="share_menu">
+            <li class="mdui-menu-item">
+              <a href="javascript:void(0);" class="mdui-ripple" onclick="copyToClipboard('https://blog.stevezmt.top/2023/08/21/markdown-test-full/');">复制链接</a>
+            </li>
+
+            <script data-pjax>
+              function copyToClipboard(text) {
+                navigator.clipboard.writeText(text).then(function() {
+                  mdui.snackbar({message: '已复制链接!', position: 'top', buttonText: '好'});
+                }, function(err) {
+                  console.error('Could not copy text: ', err);
+                });
+              }
+            </script>
+            <li class="mdui-menu-item">
+              <a href="//service.weibo.com/share/share.php?appkey=&title=Markdown 渲染测试&url=https://blog.stevezmt.top/2023/08/21/markdown-test-full/&pic=https://blog.stevezmt.top/images/favicon.png&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="//twitter.com/intent/tweet?text=Markdown 渲染测试&url=https://blog.stevezmt.top/2023/08/21/markdown-test-full/&via=Steve ZMT" target="_blank" class="mdui-ripple">分享到 Twitter</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="//www.facebook.com/sharer/sharer.php?u=https://blog.stevezmt.top/2023/08/21/markdown-test-full/" target="_blank" class="mdui-ripple">分享到 Facebook</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="//plus.google.com/share?url=https://blog.stevezmt.top/2023/08/21/markdown-test-full/" target="_blank" class="mdui-ripple">分享到 Google+</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="//www.linkedin.com/shareArticle?mini=true&url=https://blog.stevezmt.top/2023/08/21/markdown-test-full/&title=Markdown 渲染测试" target="_blank" class="mdui-ripple">分享到 LinkedIn</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="//connect.qq.com/widget/shareqq/index.html?site=老史尬侃 - Steve ZMT &#39;s Blog&title=Markdown 渲染测试&pics=https://blog.stevezmt.top/images/favicon.png&url=https://blog.stevezmt.top/2023/08/21/markdown-test-full/" target="_blank" class="mdui-ripple">分享到 QQ</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="//telegram.me/share/url?url=https://blog.stevezmt.top/2023/08/21/markdown-test-full/&text=Markdown 渲染测试" target="_blank" class="mdui-ripple">分享到 Telegram</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="javascript:void(0);" class="mdui-ripple" onclick="sharePageviaSystem();">更多分享选项</a>
+            </li>
+
+            <script data-pjax>
+              function sharePageviaSystem() {
+                if (navigator.share) {
+                  navigator.share({
+                    title: 'Markdown 渲染测试',
+                    text: '普通的markdown渲染测试，包含各种语法。',
+                    url: 'https://blog.stevezmt.top/2023/08/21/markdown-test-full/'
+                  }).then(() => {
+                    mdui.snackbar({message: '感谢分享！', position: 'top'});
+                  }).catch(console.error);
+                } else {
+                  mdui.snackbar({message: '您的浏览器不支持此方式。', position: 'top', buttonText: '好吧'});
+                }
+              }
+            </script>
+          </ul>
+        
+      </div>
+    </header>
+    <div class="mdui-card-content mdui-typo">
+      <p>普通的markdown渲染测试，包含各种语法。</p>
+<span id="more"></span>
+
+
+<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><h2 id="文章使用方法"><a href="#文章使用方法" class="headerlink" title="文章使用方法"></a>文章使用方法</h2><p>这原本是一篇 Typora 下使用 Markdown 语法的案例实践分享，最早创建于 2021 年 11 月之前，于 2023 年 6 月大改。本篇文章使用 Markdown 标记语法编写而成，汇聚了常用 Markdown 语法标注。对于不同目标人群有不同的作用：</p>
+<ul>
+<li>对于 Markdown 学习者。可以获取文章源码（Github 仓库地址在下面），并使用你的本地编辑器打开。通过对比标记语言与渲染结果直接学习。如果你不喜欢这种 MarkDown 学习方式，你可以参考 GitHub 学习相关 Markdown 规范：<a target="_blank" rel="noopener" href="https://docs.github.com/zh/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax">基本撰写和格式语法 - GitHub 文档</a></li>
+<li>对于其他人。这篇文章包含不同标准 Markdown 语法，你可以在任何 Markdown 编辑器打开以测试其渲染效果。<ul>
+<li>比如说——你。你使用什么方式看到这篇文章，就了解到你所用的软件对 Markdown 语言的支持情况。如果你通过我的博客打开，那么你看到的就是 Hexo 渲染后的结果（至少目前时是这样）。</li>
+<li>比如说——我，笔记重度依赖。我需要对比本地编辑器的渲染器与 Hexo 各类渲染器和插件对 Markdown 的支持程度，以培养合适的写作习惯，加强核心工作流的可移植性。</li>
+</ul>
+</li>
+</ul>
+<p>文章目前可预览的在线版本：</p>
+<ul>
+<li>Hexo 渲染网页：<a target="_blank" rel="noopener" href="https://uuanqin.top/p/3c4a82e6/">Markdown渲染测试 | 半方池水半方田 (uuanqin.top)</a>。源文件直接通过 Hexo 渲染生成的静态网页。</li>
+<li>Github 仓库： <a target="_blank" rel="noopener" href="https://github.com/uuanqin/Markdown-Grammar-Rendering-Test">https://github.com/uuanqin/Markdown-Grammar-Rendering-Test</a> 。源文件的副本，不定期与 Hexo 本地同步。</li>
+</ul>
+<h2 id="Markdown-标准"><a href="#Markdown-标准" class="headerlink" title="Markdown 标准"></a>Markdown 标准</h2><p>约翰·格鲁伯在 2004 年创造了 Markdown 语言，<a target="_blank" rel="noopener" href="https://daringfireball.net/projects/markdown/">Daring Fireball: Markdown</a>。格鲁伯认为不应完全标准化：「不同的网站（和人们）有不同的需求。没有一种语法可以让所有人满意。[^satisfy]」</p>
+<p>[^satisfy]: <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/Markdown">Markdown - 维基百科，自由的百科全书 (wikipedia.org)</a></p>
+<p>下文将从 Commonmark、GFM 为基础分板块进行 Markdown 渲染测试。</p>
+<p>此外，对一些 Markdown 编辑器语法进行展示。其中，本文使用的 Typora 版本为 1.8.10，Obsidian 版本为 1.6.7。</p>
+<h1 id="基础（CommonMark）"><a href="#基础（CommonMark）" class="headerlink" title="基础（CommonMark）"></a>基础（CommonMark）</h1><p>这一部分测试 Markdown 基础语法，参考自 <a target="_blank" rel="noopener" href="https://commonmark.org/">CommonMark</a>。这部分内容的成功渲染（除了下面的段落部分）是本文结构不至于散乱的基础（比如上文的标题、超链接、列表等的正确渲染）。</p>
+<p>（第一段）这是一个很长很长很长很长的段落。</p>
+<p>只有隔一个空行才能分锻，有点像 Latex。</p>
+<p>在 CommonMark 语法中这三句话是一长句的。</p>
+<p>【提示】在 Typora、Obsidian 中是换行了，这样做是有好处的。</p>
+<p>（第二段）这是一个很长很长很长很长的段落。</p>
+<p>与上一段之间隔了一个空行。</p>
+<p>（第三段）这是一个很长很长很长很长的段落。\</p>
+<p>反斜杠也能起到换行的作用。\</p>
+<p>【提示】Typora、Obsidian 不需要这个符号，这样做会很方便。</p>
+<h1 id="一级标题（类-Atx-形式）"><a href="#一级标题（类-Atx-形式）" class="headerlink" title="一级标题（类 Atx 形式）"></a>一级标题（类 Atx 形式）</h1><h2 id="二级标题（类-Atx-形式）"><a href="#二级标题（类-Atx-形式）" class="headerlink" title="二级标题（类 Atx 形式）"></a>二级标题（类 Atx 形式）</h2><h3 id="三级标题（类-Atx-形式）"><a href="#三级标题（类-Atx-形式）" class="headerlink" title="三级标题（类 Atx 形式）"></a>三级标题（类 Atx 形式）</h3><h1 id="一级标题（类-Setext-形式）"><a href="#一级标题（类-Setext-形式）" class="headerlink" title="一级标题（类 Setext 形式）"></a>一级标题（类 Setext 形式）</h1><h2 id="二级标题（类-Setext-形式）"><a href="#二级标题（类-Setext-形式）" class="headerlink" title="二级标题（类 Setext 形式）"></a>二级标题（类 Setext 形式）</h2><p>【提示】Obsidian 支持类 Setext 形式的标题，请在浏览模式下查看。</p>
+<p><em>斜体（星号表示）</em>  <em>斜体（下划线表示）</em></p>
+<p><strong>粗体（星号表示）</strong> <strong>粗体（下划线表示）</strong></p>
+<blockquote>
+<p>引言</p>
+<blockquote>
+<p>二级引言</p>
+</blockquote>
+<p>引言</p>
+</blockquote>
+<ul>
+<li>无序列表 使用横线</li>
+</ul>
+<ul>
+<li>无序列表 使用星号</li>
+</ul>
+<ol>
+<li>有序列表 使用数字加点</li>
+</ol>
+<ol start="2">
+<li>有序列表 使用数字加右括号</li>
+</ol>
+<p>【提示】Obsidian 中有序列表有区别。</p>
+<ul>
+<li><p>网状列表</p>
+<ol>
+<li>元素 1</li>
+<li>元素 2</li>
+</ol>
+</li>
+<li><p>网状列表</p>
+<ul>
+<li>使用横线</li>
+</ul>
+<ul>
+<li>使用星号</li>
+</ul>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="http://b.org/">链接（方括号后加圆括号）</a></p>
+<p><a target="_blank" rel="noopener" href="http://b.org/">带参考的链接 1</a> 链接外文字 <a target="_blank" rel="noopener" href="http://b.org/">带参考链接 2</a> 链接外文字</p>
+<p>链接悬停提示写法：<a target="_blank" rel="noopener" href="https://a.com/" title="hint">Title</a></p>
+<p><img src="/images/loading.svg" data-original="https://commonmark.org/help/images/favicon.png" alt="图片链接"></p>
+<p><img src="/images/loading.svg" data-original="https://commonmark.org/help/images/favicon.png" alt="图片链接带脚注" title=" 图片标题 "></p>
+<p>【提示】Obsidian 在浏览模式下正常，在编辑模式有点迷惑，这是由它们的链接特色决定的。</p>
+<p>行内代码 <code>Inline Code</code> 行内代码（单个反引号包裹）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># 代码块（三个反引号包裹）</span><br></pre></td></tr></table></figure>
+
+
+<pre><code>代码块（四个空格开头）
+代码块（紧挨上一行）
+</code></pre>
+<p>【提示】Obsidian 这里的代码块在浏览模式下没有区别</p>
+<p>减号式下划线：</p>
+<hr>
+<p>星号式下划线：</p>
+<hr>
+<h1 id="GitHub-Flavored-Markdown（GFM）"><a href="#GitHub-Flavored-Markdown（GFM）" class="headerlink" title="GitHub Flavored Markdown（GFM）"></a>GitHub Flavored Markdown（GFM）</h1><p>GitHub Flavored Markdown, often shortened as GFM, is the dialect of Markdown that is currently supported for user content on GitHub.com and GitHub Enterprise.</p>
+<h2 id="基本格式语法"><a href="#基本格式语法" class="headerlink" title="基本格式语法"></a>基本格式语法</h2><p>这里只介绍 <a target="_blank" rel="noopener" href="https://docs.github.com/zh/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax">基本撰写和格式语法 - GitHub 文档</a> 提及的规范。</p>
+<p>与 CommonMark 对比新增了以下语法：</p>
+<h4 id="支持四级标题（类-Atx-形式，井号方式）"><a href="#支持四级标题（类-Atx-形式，井号方式）" class="headerlink" title="支持四级标题（类 Atx 形式，井号方式）"></a>支持四级标题（类 Atx 形式，井号方式）</h4><h5 id="支持五级标题（类-Atx-形式，井号方式）"><a href="#支持五级标题（类-Atx-形式，井号方式）" class="headerlink" title="支持五级标题（类 Atx 形式，井号方式）"></a>支持五级标题（类 Atx 形式，井号方式）</h5><h6 id="支持六级标题（类-Atx-形式，井号方式）"><a href="#支持六级标题（类-Atx-形式，井号方式）" class="headerlink" title="支持六级标题（类 Atx 形式，井号方式）"></a>支持六级标题（类 Atx 形式，井号方式）</h6><p><del>删除线（两条波浪线）</del></p>
+<p><strong>粗体和嵌入 _ 斜体 _</strong>   两个星号内下划线括住。【提示】Obsidian 支持内嵌斜体，请在浏览模式打开。</p>
+<p><em><strong>全部粗体和斜体（三个星号）</strong></em></p>
+<p>使用<sub>下标</sub></p>
+<p>使用<sup>上标</sup></p>
+<ul>
+<li>加号创建的无序列表</li>
+</ul>
+<p>任务列表展示：</p>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 任务列表</li>
+<li><input disabled="" type="checkbox"> 任务列表</li>
+</ul>
+<p>表情符号（使用冒号括住） :+1:   :smile:【提示】Obsidian 不支持，但是可以直接输入😯</p>
+<p>脚注。使用此括号 [^11] 语法为您的内容 [^12] 添加脚注。</p>
+<p>[^11]: My reference.<br>[^12]: To add line breaks within a footnote, prefix new lines with 2 spaces.<br>  This is a second line. （然而 Typora 不支持这种方式换行）</p>
+<p>【提示】Obsidian 会把脚注自动放到页面后。</p>
+<p>支持转义符（反引号）忽略 Markdown 格式。</p>
+<p>以下符号可以转义（<a target="_blank" rel="noopener" href="https://daringfireball.net/projects/markdown/syntax">Daring Fireball: Markdown Syntax Documentation</a>）</p>
+<p>\   backslash</p>
+<p>`   backtick</p>
+<p>*   asterisk</p>
+<p>_   underscore</p>
+<p>{}  curly braces</p>
+<p>[]  square brackets</p>
+<p>()  parentheses</p>
+<p>支持 Markdown 的隐藏渲染：</p>
+<!-- This content will not appear in the rendered Markdown -->
+
+<p>【提示】Typora 处理仅仅是标黄，Obsidian 支持。</p>
+<h2 id="高级格式"><a href="#高级格式" class="headerlink" title="高级格式"></a>高级格式</h2><p>如果你正在使用 Typora 预览，建议打开偏好设置调整以支持更多语法。</p>
+<h3 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h3><p>表格末尾的竖线可选。单元格的宽度可以不同，无需在列内准确对齐。 标题行的第一列中必须至少有三个横线。可借助 <a target="_blank" rel="noopener" href="https://www.tablesgenerator.com/markdown_tables">在线表格生成工具</a> 生成表格。</p>
+<p>可以在表格中使用格式，例如链接、内联代码块和文本样式。</p>
+<table>
+<thead>
+<tr>
+<th>First Header</th>
+<th>Second Header</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Content Cell</td>
+<td>Content <strong>Cell</strong></td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://docs.github.com/zh/get-started/writing-on-github/working-with-advanced-formatting/organizing-information-with-tables">Content Cell</a></td>
+<td><em>Content</em> Cell</td>
+</tr>
+<tr>
+<td><code>Content Cell</code></td>
+<td><em><strong>Content</strong></em> Cell</td>
+</tr>
+</tbody></table>
+<p>可以通过在标题行中连字符的左侧、右侧或两侧添加冒号 <code> :</code>，来靠左、靠右或居中对齐列中的文本。</p>
+<p>若要包含竖线 <code>|</code> 作为单元格中的内容，请在竖线前使用 <code> \</code></p>
+<table>
+<thead>
+<tr>
+<th align="left">Left-aligned</th>
+<th align="center">Center-aligned</th>
+<th align="right">Right-aligned</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">git status</td>
+<td align="center">git status</td>
+<td align="right">git status</td>
+</tr>
+<tr>
+<td align="left">git diff</td>
+<td align="center">&#96;</td>
+<td align="right">git diff |</td>
+</tr>
+</tbody></table>
+<h3 id="折叠部分"><a href="#折叠部分" class="headerlink" title="折叠部分"></a>折叠部分</h3><details><summary>CLICK ME</summary>
+<p>
+
+<h4 id="We-can-hide-anything-even-code"><a href="#We-can-hide-anything-even-code" class="headerlink" title="We can hide anything, even code!"></a>We can hide anything, even code!</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">puts <span class="string">&quot;Hello World&quot;</span></span><br></pre></td></tr></table></figure>
+
+</p>
+</details>
+
+<p>【提示】Typora ，Obsidian 不支持。</p>
+<h3 id="代码块"><a href="#代码块" class="headerlink" title="代码块"></a>代码块</h3><p>要在围栏代码块中显示三重倒引号，请将其包在四个倒引号内。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">Look! You can see my backticks.</span><br><span class="line">```</span><br></pre></td></tr></table></figure>
+
+<p>支持语法高亮（使用 <a target="_blank" rel="noopener" href="https://github.com/github-linguist/linguist">github-linguist&#x2F;linguist: Language Savant. </a>）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">&quot;Hello World!&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>使用代码块在 Markdown 中创建关系图。 GitHub 支持 Mermaid、GeoJSON、TopoJSON 和 ASCII STL 语法。</p>
+<p>Mermaid 是一款受 Markdown 启发的工具，可将文本呈现为关系图。 例如，Mermaid 可以呈现流程图、序列图、饼图等。 有关详细信息，请参阅 <a target="_blank" rel="noopener" href="https://mermaid-js.github.io/mermaid/#/">Mermaid 文档</a>。如果你的 Markdown 渲染器支持渲染的话，你应该看到下面流程图。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph TD;</span><br><span class="line">    A--&gt;B;</span><br><span class="line">    A--&gt;C;</span><br><span class="line">    B--&gt;D;</span><br><span class="line">    C--&gt;D;</span><br></pre></td></tr></table></figure>
+
+<p>可使用 GeoJSON 或 TopoJSON 语法创建交互式地图。 若要创建地图，请使用 <code>geojson</code> 或 <code>topojson</code> 语法标识符在围栏代码块中添加 GeoJSON 或 TopoJSON。如果你的 Markdown 渲染器支持渲染的话，你应该看到下面两幅图。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;type&quot;: &quot;FeatureCollection&quot;,</span><br><span class="line">  &quot;features&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;type&quot;: &quot;Feature&quot;,</span><br><span class="line">      &quot;id&quot;: 1,</span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;ID&quot;: 0</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;geometry&quot;: &#123;</span><br><span class="line">        &quot;type&quot;: &quot;Polygon&quot;,</span><br><span class="line">        &quot;coordinates&quot;: [</span><br><span class="line">          [</span><br><span class="line">              [-90,35],</span><br><span class="line">              [-90,30],</span><br><span class="line">              [-85,30],</span><br><span class="line">              [-85,35],</span><br><span class="line">              [-90,35]</span><br><span class="line">          ]</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;type&quot;: &quot;Topology&quot;,</span><br><span class="line">  &quot;transform&quot;: &#123;</span><br><span class="line">    &quot;scale&quot;: [0.0005000500050005, 0.00010001000100010001],</span><br><span class="line">    &quot;translate&quot;: [100, 0]</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;objects&quot;: &#123;</span><br><span class="line">    &quot;example&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;GeometryCollection&quot;,</span><br><span class="line">      &quot;geometries&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;type&quot;: &quot;Point&quot;,</span><br><span class="line">          &quot;properties&quot;: &#123;&quot;prop0&quot;: &quot;value0&quot;&#125;,</span><br><span class="line">          &quot;coordinates&quot;: [4000, 5000]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;type&quot;: &quot;LineString&quot;,</span><br><span class="line">          &quot;properties&quot;: &#123;&quot;prop0&quot;: &quot;value0&quot;, &quot;prop1&quot;: 0&#125;,</span><br><span class="line">          &quot;arcs&quot;: [0]</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;type&quot;: &quot;Polygon&quot;,</span><br><span class="line">          &quot;properties&quot;: &#123;&quot;prop0&quot;: &quot;value0&quot;,</span><br><span class="line">            &quot;prop1&quot;: &#123;&quot;this&quot;: &quot;that&quot;&#125;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;arcs&quot;: [[1]]</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;arcs&quot;: [[[4000, 0], [1999, 9999], [2000, -9999], [2000, 9999]],[[0, 0], [0, 9999], [2000, 0], [0, -9999], [-2000, 0]]]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>GFM 可以直接在 Markdown 中使用 ASCII STL 语法来创建交互式 3D 模型。 若要显示模型，请使用 <code>stl</code> 语法标识符在围栏代码块中添加 ASCII STL 语法。如果你的 Markdown 渲染器支持渲染的话，应该看到一个立方体而不是代码块。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">solid cube_corner</span><br><span class="line">  facet normal 0.0 -1.0 0.0</span><br><span class="line">    outer loop</span><br><span class="line">      vertex 0.0 0.0 0.0</span><br><span class="line">      vertex 1.0 0.0 0.0</span><br><span class="line">      vertex 0.0 0.0 1.0</span><br><span class="line">    endloop</span><br><span class="line">  endfacet</span><br><span class="line">  facet normal 0.0 0.0 -1.0</span><br><span class="line">    outer loop</span><br><span class="line">      vertex 0.0 0.0 0.0</span><br><span class="line">      vertex 0.0 1.0 0.0</span><br><span class="line">      vertex 1.0 0.0 0.0</span><br><span class="line">    endloop</span><br><span class="line">  endfacet</span><br><span class="line">  facet normal -1.0 0.0 0.0</span><br><span class="line">    outer loop</span><br><span class="line">      vertex 0.0 0.0 0.0</span><br><span class="line">      vertex 0.0 0.0 1.0</span><br><span class="line">      vertex 0.0 1.0 0.0</span><br><span class="line">    endloop</span><br><span class="line">  endfacet</span><br><span class="line">  facet normal 0.577 0.577 0.577</span><br><span class="line">    outer loop</span><br><span class="line">      vertex 1.0 0.0 0.0</span><br><span class="line">      vertex 0.0 1.0 0.0</span><br><span class="line">      vertex 0.0 0.0 1.0</span><br><span class="line">    endloop</span><br><span class="line">  endfacet</span><br><span class="line">endsolid</span><br></pre></td></tr></table></figure>
+
+<p>【提示】Typora、Obsidian 不支持 <code>geojson</code> 、 <code>topojson</code> 或 <code>ASCII STL</code> 语法。</p>
+<h3 id="数学表达式"><a href="#数学表达式" class="headerlink" title="数学表达式"></a>数学表达式</h3><p>内联表达式：This sentence uses <code>$</code> delimiters to show math inline:  $\sqrt{3x-1}+(1+x)^2$</p>
+<p>要以块的形式添加数学表达式，请启动一个新行，并使用两个美元符号 <code>$$</code> 分隔表达式。</p>
+<p>$$<br>\left( \sum_{k&#x3D;1}^n a_k b_k \right)^2 \leq \left( \sum_{k&#x3D;1}^n a_k^2 \right) \left( \sum_{k&#x3D;1}^n b_k^2 \right)<br>$$</p>
+<p>或者，可以使用 <code>math</code> 代码块语法将数学表达式显示为块。 使用此语法时，无需使用 <code>$$</code> 分隔符。【提示】Typora、Obsidian 不支持。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\sqrt&#123;3&#125;</span><br></pre></td></tr></table></figure>
+
+<p>表示美元符号：</p>
+<ul>
+<li>在数学表达式内，在显式 <code>$</code> 之前添加一个 <code>\</code> 符号。<ul>
+<li>This expression uses <code>\$</code> to display a dollar sign: $\sqrt{$4}$</li>
+</ul>
+</li>
+<li>在数学表达式之外，但在同一行上，在显式 <code>$</code> 两边使用 span 标记。<ul>
+<li>To split <span>$</span>100 in half, we calculate $​100&#x2F;2$</li>
+<li>【提示】Typora 不支持。</li>
+</ul>
+</li>
+</ul>
+<p>如果你还想学习更多，请看 <a target="_blank" rel="noopener" href="https://github.github.com/gfm/">GitHub Flavored Markdown Spec</a></p>
+<p>在网页上以文本的形式展示数学公式，只需要一个 LaTeX 的子集能渲染数学公式即可。KaTeX 就是这样一个支持 HTML 的轻量级的数学公式引擎。因此，在网页中编写数学公式应注意使用兼容性更广的语法。</p>
+<h1 id="Typora"><a href="#Typora" class="headerlink" title="Typora"></a>Typora</h1><p><strong>Typora</strong> 使用 GFM，其特色在于“WYSIWYG”，其有自己特色的语法渲染。</p>
+<p>使用类 Setext 形式 (<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Setext">Setext - Wikipedia</a>) 创建标题。注意使用 Shift+Enter 换行。（有线）</p>
+<p>使用类 Atx 形式创建标题，一共可以有 6 个级别。（井号）</p>
+<p>使用 <code>[TOC]</code> 创建目录：</p>
+<p>[TOC]</p>
+<p>分割线使用三个以上符号（最后一个使用了标签）。符号中间可以插入空格。</p>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr />
+
+<p><kbd>Esc</kbd></p>
+<p>段落的换行是使用两个以上的空格加回车（在 Typora 编辑器里是<kbd>Shift</kbd>+<kbd>Enter</kbd>）</p>
+<p>或者使用 HTML 标签<br>进行换行</p>
+<p>不要吝惜回车，在一些情况下回车会被吞掉！</p>
+<p>代码块内还能高亮：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Here&#x27;s an example:</span><br><span class="line"></span><br><span class="line">```js</span><br><span class="line">function test() &#123;</span><br><span class="line">  console.log(&quot;notice the blank line before this function?&quot;);</span><br><span class="line">&#125;</span><br><span class="line">```</span><br><span class="line"></span><br><span class="line">syntax highlighting:</span><br><span class="line">```ruby</span><br><span class="line">require &#x27;redcarpet&#x27;</span><br><span class="line">markdown = Redcarpet.new(&quot;Hello World!&quot;)</span><br><span class="line">puts markdown.to_html</span><br><span class="line">```</span><br></pre></td></tr></table></figure>
+
+<p>Typora now supports <a target="_blank" rel="noopener" href="http://jekyllrb.com/docs/frontmatter/">YAML Front Matter</a>. Input <code>---</code> at the top of the article and then press <code>Return</code> to introduce a metadata block. Alternatively, you can insert a metadata block from the top menu of Typora. 这里就不演示了哈，弄 Hexo 的喜闻乐见。</p>
+<p>支持有标题的 Link，试试鼠标停留在上面：<a target="_blank" rel="noopener" href="http://example.com/" title="Title">an example</a></p>
+<p>Typora allows you to insert URLs as links, wrapped by <code>&lt;</code>brackets<code>&gt;</code>.</p>
+<p><code>&lt;i@typora.io&gt;</code> becomes <a href="mailto:&#x69;&#64;&#116;&#121;&#112;&#x6f;&#x72;&#97;&#46;&#105;&#x6f;">i@typora.io</a>.</p>
+<p>Typora will also automatically link standard URLs. e.g: <a target="_blank" rel="noopener" href="http://www.google.com/">www.google.com</a>. 就是没有任何标记也解析出地址了。</p>
+<p>Underline is powered by raw HTML.</p>
+<p>支持下划线：<code>&lt;u&gt;下划线&lt;/u&gt;</code> becomes <u>下划线</u>.</p>
+<p>支持上下标（在偏好设置中设置）：H<del>2</del>O  X^2^</p>
+<p>支持高亮：&#x3D;&#x3D;highlight&#x3D;&#x3D;</p>
+<h1 id="Obsidian-Flavored-Markdown（OFM）"><a href="#Obsidian-Flavored-Markdown（OFM）" class="headerlink" title="Obsidian Flavored Markdown（OFM）"></a>Obsidian Flavored Markdown（OFM）</h1><p>Obsidian 是一个基于 Markdown 进行记录的知识库软件，特点在于支持笔记的双向链接。因此，有自己的独特语法。</p>
+<p>Obsidian 努力让 Obsidian 的语法不偏离正统的 Markdown 语法太多。总的来看，Obsidian 的语法大多还是基于 CommonMark，包括了一些 GitHub Flavored Markdown（GFM）和 LaTeX，以及 Obsidian<strong>特有的</strong>语法。</p>
+<table>
+<thead>
+<tr>
+<th>Syntax</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>[[ ]]</strong></td>
+<td><a target="_blank" rel="noopener" href="https://help.obsidian.md/Linking+notes+and+files/Internal+links">Internal links</a></td>
+</tr>
+<tr>
+<td><strong>![[ ]]</strong></td>
+<td><a target="_blank" rel="noopener" href="https://help.obsidian.md/Linking+notes+and+files/Embedding+files">Embedding files</a></td>
+</tr>
+<tr>
+<td><code>%%</code></td>
+<td><a target="_blank" rel="noopener" href="https://help.obsidian.md/Editing+and+formatting/Basic+formatting+syntax#Comments">Comments</a></td>
+</tr>
+<tr>
+<td><code>&gt; [!note]</code></td>
+<td><a target="_blank" rel="noopener" href="https://help.obsidian.md/Editing+and+formatting/Callouts">Callouts</a></td>
+</tr>
+</tbody></table>
+<p>提示：为防止其他插件影响，Embedding files 的示例含转义字符。</p>
+<p>Obsidian doesn’t support Markdown syntax or blank lines within HTML blocks.</p>
+<p>参考：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://publish.obsidian.md/help-zh/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/%E6%A0%BC%E5%BC%8F%E5%8C%96%E4%BD%A0%E7%9A%84%E7%AC%94%E8%AE%B0">格式化你的笔记 - Obsidian 中文帮助 - Obsidian Publish</a></li>
+<li><a target="_blank" rel="noopener" href="https://help.obsidian.md/Editing+and+formatting/Obsidian+Flavored+Markdown">Obsidian Flavored Markdown - Obsidian Help</a></li>
+</ul>
+<h2 id="Internal-links-内部链接"><a href="#Internal-links-内部链接" class="headerlink" title="Internal links 内部链接"></a>Internal links 内部链接</h2><p>通过 <strong>[[ ]]</strong> 来链接库中任意一个文件。</p>
+<p>链接一篇笔记：例如 [[双链渲染测试]]。</p>
+<p>你可以将图片或者音频等附件嵌入到你的笔记中。嵌入文件的语法为 <strong>![[文件名.png]]</strong></p>
+<p>你可以通过相同的语法将 PDF 文件嵌入到你的笔记中。除此之外，你可以通过 <strong>![[My File.pdf#page&#x3D;number]]</strong> 这样的形式直接指定嵌入 PDF 文件的页码。</p>
+<p>由于 Markdown 兼容 HTML，因此你可以使用“iframe”将网页嵌入到笔记中。</p>
+<blockquote>
+<p>这个语法实际受到了 Markdown 相关语法的启发：</p>
+<ol>
+<li>在 Markdown 中，[Image](link.png) 可以让链接指向图片，而 ![Image](link.png) 能让图片嵌入到当前文档中。</li>
+<li>而 <a target="_blank" rel="noopener" href="https://publish.obsidian.md/help-zh/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/%E5%86%85%E9%83%A8%E9%93%BE%E6%8E%A5">内部链接</a> 的语法则基于以下设定：[[My page]] 是 [My page](My page) 的一个便捷写法（或者是“语法糖”）。</li>
+</ol>
+<p>综上，我们可以得到 ![[My page]] 应该等效于 ![My page](My page)。</p>
+<p>当然，我们也可以使用其他形式的语法。比如，Roam Research 的嵌入语法为 <code>&#123;&#123;embed: ((NODE_ID))&#125;&#125;</code>。我们曾经想过使用 <code>((Page name))</code> 这样的形式来表示嵌入，但后来我们认为还是 <strong>![[Page Name]]</strong> 的形式能更好地与其他语法保持一致，便于记忆，同时也能减少符号的占用，让其他符号能够表示其他含义。</p>
+</blockquote>
+<p>你可以通过以下语法调整嵌入到笔记中的图片的大小：</p>
+<p>Markdown 风格的嵌入，使用 <strong>![AltText|100x100](<a target="_blank" rel="noopener" href="https://url/to/image.png/">https://url/to/image.png\</a>)</strong> 这样的语法。</p>
+<p>一般的嵌入，使用 <strong>![[image.png|100x100]]</strong> 这样的语法。</p>
+<p>如果要根据图像的宽高比例进行缩放，请省略高度，如 <strong>![[image.png|100]]</strong>。</p>
+<p><a target="_blank" rel="noopener" href="https://publish.obsidian.md/help-zh/%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/%E4%BD%BF%E7%94%A8+obsidian+URI">Obsidian URI</a> 可以让你在其他应用或 Obsidian 的其他库中打开当前库的某篇笔记。</p>
+<p>比如，你可以通过以下方式跳转到某个库中的某篇笔记（请注意 <a target="_blank" rel="noopener" href="https://publish.obsidian.md/help-zh/%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/%E4%BD%BF%E7%94%A8+obsidian+URI#%E7%BC%96%E7%A0%81">URI 的编码</a>）：</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">打开某篇笔记</span>](<span class="link">obsidian://open?path=D:%2Fpath%2Fto%2Ffile.md</span>)</span><br></pre></td></tr></table></figure>
+
+<p>如果 url 中含有空格的话，空格需要转义为 <code>%20</code>，如：</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">Export options</span>](<span class="link">Pasted%20image</span>)</span><br></pre></td></tr></table></figure>
+
+<p>示例：<a href="Pasted%20image">Export options</a></p>
+<p>当然，你也可以用 <code>&lt;&gt;</code> 将空格包含起来，如：</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">Slides Demo</span>](<span class="link">&lt;Slides Demo&gt;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>示例：<a href="Slides%20Demo">Slides Demo</a></p>
+<h2 id="Comments-注释"><a href="#Comments-注释" class="headerlink" title="Comments 注释"></a>Comments 注释</h2><p>所谓注释，指的是会在编辑模式中显示，但不会在预览模式中显示的内容。使用 <code>%%</code> 可以将内容变为注释。以下为语法：</p>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">这里是行内注释：%%预览模式下你将看不到这句话%%</span><br><span class="line"></span><br><span class="line">这里是跨行注释：</span><br><span class="line">%%</span><br><span class="line">所谓跨行</span><br><span class="line">就是可以有很多行</span><br><span class="line">%%</span><br></pre></td></tr></table></figure>
+
+<p>以下为示例：</p>
+<p>这里是行内注释：%% 预览模式下你将看不到这句话%%</p>
+<p>这里是跨行注释：</p>
+<p>%%<br>所谓跨行<br>就是可以有很多行<br>%%</p>
+<h2 id="标注-Callouts"><a href="#标注-Callouts" class="headerlink" title="标注 Callouts"></a>标注 Callouts</h2><p>参考：<a target="_blank" rel="noopener" href="https://help.obsidian.md/Editing+and+formatting/Callouts">Callouts</a></p>
+<blockquote>
+<p>GFM 也存在类似的语法：<a target="_blank" rel="noopener" href="https://docs.github.com/en/contributing/style-guide-and-content-model/style-guide">Style guide - GitHub Docs</a><br>Microsoft 也有类似的语法，详看后文。</p>
+</blockquote>
+<p>支持以下类型：</p>
+<ul>
+<li>note</li>
+<li>abstract, summary, tldr</li>
+<li>info</li>
+<li>todo</li>
+<li>tip, hint, important</li>
+<li>success, check, done</li>
+<li>question, help, faq</li>
+<li>warning, caution, attention</li>
+<li>failure, fail, missing</li>
+<li>danger, error</li>
+<li>bug</li>
+<li>example</li>
+<li>quote, cite</li>
+</ul>
+<blockquote>
+<p>[!Any]<br>当类型不在列表中时。</p>
+</blockquote>
+<blockquote>
+<p>[!note]<br>Lorem ipsum dolor sit amet</p>
+</blockquote>
+<blockquote>
+<p>[!abstract]<br>Lorem ipsum dolor sit amet</p>
+</blockquote>
+<blockquote>
+<p>[!summary]</p>
+</blockquote>
+<blockquote>
+<p>[!tldr]</p>
+</blockquote>
+<blockquote>
+<p>[!info]<br>Lorem ipsum dolor sit amet</p>
+</blockquote>
+<blockquote>
+<p>[!todo]<br>Lorem ipsum dolor sit amet</p>
+</blockquote>
+<blockquote>
+<p>[!tip]<br>Lorem ipsum dolor sit amet</p>
+</blockquote>
+<blockquote>
+<p>[!hint]</p>
+</blockquote>
+<blockquote>
+<p>[!important]</p>
+</blockquote>
+<blockquote>
+<p>[!success]<br>Lorem ipsum dolor sit amet</p>
+</blockquote>
+<blockquote>
+<p>[!check]</p>
+</blockquote>
+<blockquote>
+<p>[!done]</p>
+</blockquote>
+<blockquote>
+<p>[!question]<br>Lorem ipsum dolor sit amet</p>
+</blockquote>
+<blockquote>
+<p>[!help]</p>
+</blockquote>
+<blockquote>
+<p>[!faq]</p>
+</blockquote>
+<blockquote>
+<p>[!warning]<br>Lorem ipsum dolor sit amet</p>
+</blockquote>
+<blockquote>
+<p>[!caution]</p>
+</blockquote>
+<blockquote>
+<p>[!attention]</p>
+</blockquote>
+<blockquote>
+<p>[!failure]<br>Lorem ipsum dolor sit amet</p>
+</blockquote>
+<blockquote>
+<p>[!fail]</p>
+</blockquote>
+<blockquote>
+<p>[!missing]</p>
+</blockquote>
+<blockquote>
+<p>[!danger]<br>Lorem ipsum dolor sit amet</p>
+</blockquote>
+<blockquote>
+<p>[!error]</p>
+</blockquote>
+<blockquote>
+<p>[!bug]<br>Lorem ipsum dolor sit amet</p>
+</blockquote>
+<blockquote>
+<p>[!example]<br>Lorem ipsum dolor sit amet</p>
+</blockquote>
+<blockquote>
+<p>[!quote]<br>Lorem ipsum dolor sit amet</p>
+</blockquote>
+<blockquote>
+<p>[!cite]</p>
+</blockquote>
+<p>折叠：</p>
+<blockquote>
+<p>[!question]- 折叠尝试（无折叠内容）</p>
+</blockquote>
+<blockquote>
+<p>[!cite]- 折叠尝试（默认关）<br>折叠内容</p>
+</blockquote>
+<blockquote>
+<p>[!success]- 折叠尝试（默认开）<br>折叠内容</p>
+</blockquote>
+<p>在不打断笔记流的情况下使用标注附加内容。</p>
+<blockquote>
+<p>[!info]<br>默认标题<br>Here’s a callout block.<br>It supports <strong>Markdown</strong>, <em>Wikilinks and embeds</em>!</p>
+<p>无序列表：</p>
+<ul>
+<li>项目 1</li>
+</ul>
+<p>有序列表：</p>
+<ol>
+<li>项目 a</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>[!tip] 自定义标题<br>公式渲染：<br>$$<br>r+v-e&#x3D;2<br>$$</p>
+<p>行内代码：<code>Class&lt;?&gt; class = MyClass.class;</code></p>
+<p>图片：<img src="/images/loading.svg" data-original="https://commonmark.org/help/images/favicon.png" alt="图片链接"></p>
+</blockquote>
+<blockquote>
+<p>[!error] 标题内公式 $a^2+b^2&#x3D;c^2$，标题内代码 <code>Hello world!</code></p>
+</blockquote>
+<blockquote>
+<p>[!cite] 标题内图片：<img src="/images/loading.svg" data-original="https://commonmark.org/help/images/favicon.png" alt="图片链接">图片后文字</p>
+</blockquote>
+<blockquote>
+<p>[!question] Can callouts be nested?</p>
+<blockquote>
+<p>[!todo] Yes!, they can.</p>
+<blockquote>
+<p>[!example]+  You can even use multiple layers of nesting.</p>
+<blockquote>
+<p>[!cite]- 折叠尝试<br>折叠内容</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="图表"><a href="#图表" class="headerlink" title="图表"></a>图表</h3><p>Obsidian 通过 <a target="_blank" rel="noopener" href="https://mermaid-js.github.io/">Mermaid</a> 及其所提供的 <a target="_blank" rel="noopener" href="https://mermaid-js.github.io/mermaid-live-editor">编译器</a> 来为用户提供图表的绘制功能。</p>
+<h1 id="Microsoft-Learn"><a href="#Microsoft-Learn" class="headerlink" title="Microsoft Learn"></a>Microsoft Learn</h1><blockquote>
+<p>参考：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/contribute/content/markdown-reference">Markdown reference for Microsoft Learn - Contributor guide | Microsoft Learn</a></p>
+</blockquote>
+<p>Microsoft Learn 还支持自定义 Markdown 扩展。</p>
+<p>例如：警报（备注、提示、重要提示、提醒、警告）</p>
+<blockquote>
+<p>[!NOTE]<br>Information the user should notice even if skimming.</p>
+</blockquote>
+<blockquote>
+<p>[!TIP]<br>Optional information to help a user be more successful.</p>
+</blockquote>
+<blockquote>
+<p>[!IMPORTANT]<br>Essential information required for user success.</p>
+</blockquote>
+<blockquote>
+<p>[!CAUTION]<br>Negative potential consequences of an action.</p>
+</blockquote>
+<blockquote>
+<p>[!WARNING]<br>Dangerous certain consequences of an action.</p>
+</blockquote>
+<p>其他语法详见文档：<a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/contribute/markdown-reference">Microsoft Learn 的 Markdown 参考 - Contributor guide | Microsoft Learn</a></p>
+<p>【提示：与 OFM 的 Callouts 语法一致，具体详看 OFM】</p>
+<h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><h2 id="HTML-支持情况"><a href="#HTML-支持情况" class="headerlink" title="HTML 支持情况"></a>HTML 支持情况</h2><iframe height='265' scrolling='no' title='Fancy Animated SVG Menu' src='http://codepen.io/jeangontijo/embed/OxVywj/?height=265&theme-id=0&default-tab=css,result&embed-version=2' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'></iframe>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;video src=&quot;xxx.mp4&quot; /&gt;  # 这个放在Hexo会使后文无法显示，故此处以代码块包围</span><br></pre></td></tr></table></figure>
+
+<p>可以使用普通的 <code>&lt;img&gt;</code> 标签指定图片的高度与宽度：</p>
+<img src="/images/loading.svg" data-original="https://commonmark.org/help/images/favicon.png" width="30%">
+
+<h3 id="一般标签"><a href="#一般标签" class="headerlink" title="一般标签"></a>一般标签</h3><p>不在 Markdown 涵盖范围之内的标签，都可以直接在文档里面用 HTML 撰写。</p>
+<p>使用<kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>A</kbd>快速打开 QQ 截屏工具，这里使用了 <code>&lt;kbd&gt;</code> 标签</p>
+<p>这是<sub>下标</sub>   这是<sup>上标</sup>    换行标签<br>换行了</p>
+<p>标签：</p>
+<p><em>强调的内容 (好像和斜体差不多)</em> [^斜体]   <strong>语气更强 (粗体？)</strong>[^加粗]    <code>代码 scanf()</code>    <var>变量</var>    <cite>引用</cite></p>
+<h3 id="字体、颜色和大小"><a href="#字体、颜色和大小" class="headerlink" title="字体、颜色和大小"></a>字体、颜色和大小</h3><p><b>粗体文本</b>    <i>斜体文本</i>    <big>大号字体</big>    <small>小号字体</small>    <tt>等宽文本</tt>  <u>下划线</u></p>
+<p><font face="黑体">黑体</font>  <font face="微软雅黑">微软雅黑</font>  <font face="STCAIYUN">华文彩云</font>  <font face="华文行楷" >华文行楷</font>  <font face="时尚中黑" >时尚中黑</font>  （我猜你电脑里装有什么字体就能用什么字体）</p>
+<p><mark>黄色高亮</mark></p>
+<p><font color=#00ffff size=3>#00ffff</font>   <font color=gray size=3>gray 色</font>    <font color=#0099ff size=5 face="黑体">#0099ff size&#x3D;5 黑体</font></p>
+<p><a href='#color'>附录：颜色名列表</a></p>
+<h3 id="折叠段落"><a href="#折叠段落" class="headerlink" title="折叠段落"></a>折叠段落</h3><details><summary>Title</summary>
+content
+</details>
+
+<h3 id="设置锚点"><a href="#设置锚点" class="headerlink" title="设置锚点"></a>设置锚点</h3><p><a href='#jump'>点我跳转（Typora 下按住 Ctrl 键点击）</a></p>
+<p><a href="#jump_two">点我跳转2</a></p>
+<p>这里给出两种方法实现锚点</p>
+<p><a name='jump'>跳转到这里</a></p>
+<p><span id = "jump_two">跳转到这里 2</span></p>
+<h3 id="表格-1"><a href="#表格-1" class="headerlink" title="表格"></a>表格</h3><table><tbody>
+    <tr>
+        <th rowspan="3">我占了三行</th>
+        <th><font color="Green">第一列</font></th>
+        <th>第二列</th>
+        <th>第三列</th>
+    </tr>
+    <tr>
+        <td bgcolor="Tomato">第一列</td>
+        <td>第二列</td>
+        <td>第三列</td>
+    </tr>
+    <tr>
+        <td>第一列</td>
+        <td>第二列</td>
+        <td>第三列</td>
+    </tr>
+</table>
+
+<h3 id="段首缩进"><a href="#段首缩进" class="headerlink" title="段首缩进"></a>段首缩进</h3><p>使用特殊占位符，不同占位符所占空白是不一样大的（请在源码模式下查看）：</p>
+<p>&ensp; 或者&#8194; 表示一个半角的空格</p>
+<p>&emsp; 或者&#8195; 表示一个全角的空格</p>
+<p>&emsp; 或者&emsp; 两个全角的空格（用的比较多）</p>
+<p>&nbsp; 或者&#160; 不断行的空白格</p>
+<h3 id="特殊符号"><a href="#特殊符号" class="headerlink" title="特殊符号"></a>特殊符号</h3><p>&copy;  &trade;  &amp;  &lt;  &gt;  &pound; &yen; &euro; &reg; &plusmn; &sect;  X&sup2; Y&sup3; &frac34; &laquo; &raquo; 37.2&ordm;C</p>
+<h2 id="Mermaid-图示例"><a href="#Mermaid-图示例" class="headerlink" title="Mermaid 图示例"></a>Mermaid 图示例</h2><h3 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h3><h4 id="横向流程图"><a href="#横向流程图" class="headerlink" title="横向流程图"></a>横向流程图</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">A[方形] --&gt;B(圆角)</span><br><span class="line">    B --&gt; C&#123;条件a&#125;</span><br><span class="line">    C --&gt;|a=1| D[结果1]</span><br><span class="line">    C --&gt;|a=2| E[结果2]</span><br><span class="line">    F[横向流程图]</span><br></pre></td></tr></table></figure>
+
+<h4 id="竖向流程图"><a href="#竖向流程图" class="headerlink" title="竖向流程图"></a>竖向流程图</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">A[方形] --&gt; B(圆角)</span><br><span class="line">    B --&gt; C&#123;条件a&#125;</span><br><span class="line">    C --&gt; |a=1| D[结果1]</span><br><span class="line">    C --&gt; |a=2| E[结果2]</span><br><span class="line">    F[竖向流程图]</span><br></pre></td></tr></table></figure>
+
+<h3 id="UML-标准时序图"><a href="#UML-标准时序图" class="headerlink" title="UML 标准时序图"></a>UML 标准时序图</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">%% 时序图例子,-&gt; 直线，--&gt;虚线，-&gt;&gt;实线箭头</span><br><span class="line">  sequenceDiagram</span><br><span class="line">    participant 张三</span><br><span class="line">    participant 李四</span><br><span class="line">    张三-&gt;王五: 王五你好吗？</span><br><span class="line">    loop 健康检查</span><br><span class="line">        王五-&gt;王五: 与疾病战斗</span><br><span class="line">    end</span><br><span class="line">    Note right of 王五: 合理 食物 &lt;br/&gt;看医生...</span><br><span class="line">    李四--&gt;&gt;张三: 很好!</span><br><span class="line">    王五-&gt;李四: 你怎么样?</span><br><span class="line">    李四--&gt;王五: 很好!</span><br></pre></td></tr></table></figure>
+<h3 id="甘特图"><a href="#甘特图" class="headerlink" title="甘特图"></a>甘特图</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">%% 语法示例</span><br><span class="line">        gantt</span><br><span class="line">        dateFormat  YYYY-MM-DD</span><br><span class="line">        title 软件开发甘特图</span><br><span class="line">        section 设计</span><br><span class="line">        需求                      :done,    des1, 2014-01-06,2014-01-08</span><br><span class="line">        原型                      :active,  des2, 2014-01-09, 3d</span><br><span class="line">        UI设计                     :         des3, after des2, 5d</span><br><span class="line">    未来任务                     :         des4, after des3, 5d</span><br><span class="line">        section 开发</span><br><span class="line">        学习准备理解需求                      :crit, done, 2014-01-06,24h</span><br><span class="line">        设计框架                             :crit, done, after des2, 2d</span><br><span class="line">        开发                                 :crit, active, 3d</span><br><span class="line">        未来任务                              :crit, 5d</span><br><span class="line">        耍                                   :2d</span><br><span class="line">        section 测试</span><br><span class="line">        功能测试                              :active, a1, after des3, 3d</span><br><span class="line">        压力测试                               :after a1  , 20h</span><br><span class="line">        测试报告                               : 48h</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="sequence-图示例"><a href="#sequence-图示例" class="headerlink" title="sequence 图示例"></a>sequence 图示例</h2><p>【提示】Obsidian 不支持。</p>
+<h3 id="UML-时序图"><a href="#UML-时序图" class="headerlink" title="UML 时序图"></a>UML 时序图</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">对象A-&gt;对象B: 对象B你好吗?（请求）</span><br><span class="line">Note right of 对象B: 对象B的描述</span><br><span class="line">Note left of 对象A: 对象A的描述(提示)</span><br><span class="line">对象B--&gt;对象A: 我很好(响应)</span><br><span class="line">对象A-&gt;对象B: 你真的好吗？</span><br></pre></td></tr></table></figure>
+
+<h3 id="UML-标准时序图复杂"><a href="#UML-标准时序图复杂" class="headerlink" title="UML 标准时序图复杂"></a>UML 标准时序图复杂</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Title: 标题：复杂使用</span><br><span class="line">对象A-&gt;对象B: 对象B你好吗?（请求）</span><br><span class="line">Note right of 对象B: 对象B的描述</span><br><span class="line">Note left of 对象A: 对象A的描述(提示)</span><br><span class="line">对象B--&gt;对象A: 我很好(响应)</span><br><span class="line">对象B-&gt;小三: 你好吗</span><br><span class="line">小三--&gt;&gt;对象A: 对象B找我了</span><br><span class="line">对象A-&gt;对象B: 你真的好吗？</span><br><span class="line">Note over 小三,对象B: 我们是朋友</span><br><span class="line">participant C</span><br><span class="line">Note right of C: 没人陪我玩</span><br></pre></td></tr></table></figure>
+
+<h2 id="flow-图"><a href="#flow-图" class="headerlink" title="flow 图"></a>flow 图</h2><p>流程图代码分两块，上面一块是创建你的流程（创建元素），然后隔一行，创建流程的走向 (连接元素)。</p>
+<ul>
+<li>创建流程（元素）：tag&#x3D;&gt;type: content:&gt;url<ul>
+<li>tag 是流程图中的标签，在第二段连接元素时会用到。名称可以任意，一般为流程的英文缩写和数字的组合。</li>
+<li>type 用来确定标签的类型，<code>=&gt;</code> 后面表示类型。由于标签的名称可以任意指定，所以要依赖 type 来确定标签的类型（start、end、operation、subroutine、condition、inputoutput）</li>
+<li>content 是流程图文本框中的描述内容，<code>:</code> 后面表示内容，中英文均可。特别注意，<strong>冒号与文本之间一定要有个空格</strong></li>
+<li>url 是一个连接，与框框中的文本相绑定，<code>:&gt;</code> 后面就是对应的 url 链接，点击文本时可以通过链接跳转到 url 指定页面</li>
+</ul>
+</li>
+<li>指向流程 (连接元素)：标识（类别）-&gt;下一个标识<ul>
+<li>使用 -&gt; 来连接两个元素</li>
+<li>对于 condition 类型，有 yes 和 no 两个分支，如示例中的 cond(yes) 和 cond(no)</li>
+<li>每个元素可以制定分支走向，默认向下，也可以用 right 指向右边，如示例中 cond2(yes,right)。</li>
+</ul>
+</li>
+</ul>
+<p>【提示】Obsidian 不支持。</p>
+<h3 id="标准流程图（横向）"><a href="#标准流程图（横向）" class="headerlink" title="标准流程图（横向）"></a>标准流程图（横向）</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">st=&gt;start: 开始框</span><br><span class="line">op=&gt;operation: 处理框</span><br><span class="line">cond=&gt;condition: 判断框(是或否?)</span><br><span class="line">sub1=&gt;subroutine: 子流程</span><br><span class="line">io=&gt;inputoutput: 输入输出框</span><br><span class="line">e=&gt;end: 结束框</span><br><span class="line">st(right)-&gt;op(right)-&gt;cond</span><br><span class="line">cond(yes)-&gt;io(bottom)-&gt;e</span><br><span class="line">cond(no)-&gt;sub1(right)-&gt;op</span><br></pre></td></tr></table></figure>
+
+<h3 id="标准流程图"><a href="#标准流程图" class="headerlink" title="标准流程图"></a>标准流程图</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">st=&gt;start: 开始框</span><br><span class="line">op=&gt;operation: 处理框</span><br><span class="line">cond=&gt;condition: 判断框(是或否?)</span><br><span class="line">sub1=&gt;subroutine: 子流程</span><br><span class="line">io=&gt;inputoutput: 输入输出框</span><br><span class="line">e=&gt;end: 结束框</span><br><span class="line">st-&gt;op-&gt;cond</span><br><span class="line">cond(yes)-&gt;io-&gt;e</span><br><span class="line">cond(no)-&gt;sub1(right)-&gt;op</span><br></pre></td></tr></table></figure>
+
+<h2 id="PlantUML-文本绘图"><a href="#PlantUML-文本绘图" class="headerlink" title="PlantUML 文本绘图"></a>PlantUML 文本绘图</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@startuml</span><br><span class="line">Bob -&gt; Alice : hello</span><br><span class="line">Alice -&gt; Wonderland: hello</span><br><span class="line">Wonderland -&gt; next: hello</span><br><span class="line">next -&gt; Last: hello</span><br><span class="line">Last -&gt; next: hello</span><br><span class="line">next -&gt; Wonderland : hello</span><br><span class="line">Wonderland -&gt; Alice : hello</span><br><span class="line">Alice -&gt; Bob: hello</span><br><span class="line">@enduml</span><br></pre></td></tr></table></figure>
+      <script data-pjax>
+        (function(){
+          function attachCopyButtons(){
+            var blocks = document.querySelectorAll('.mdui-card-content figure.highlight, .mdui-card-content pre');
+            blocks.forEach(function(block){
+
+              if(block.matches('pre') && block.closest('figure.highlight')) return;
+              if(block.querySelector(':scope > .code-toolbar')) return;
+              block.classList.add('codeblock-wrapper');
+              if(!block.style.position || block.style.position === 'static') block.style.position = 'relative';
+              if(block.matches('figure.highlight') && !block.querySelector('figcaption')) {
+                block.classList.add('codeblock-pad-top');
+              }
+              if(block.matches('pre') && !block.closest('figure.highlight')) {
+                block.classList.add('codeblock-pad-top');
+              }
+
+              if(!block.querySelector(':scope > .code-content-wrap')) {
+                var wrap = document.createElement('div');
+                wrap.className = 'code-content-wrap';
+                var toMove = [];
+                Array.from(block.childNodes).forEach(function(n){
+                  if(n.nodeType === 1 && (n.classList && (n.classList.contains('code-toolbar')))) return;
+                  toMove.push(n);
+                });
+                toMove.forEach(function(n){ wrap.appendChild(n); });
+                block.appendChild(wrap);
+
+                requestAnimationFrame(function(){
+                  wrap.style.maxHeight = wrap.scrollHeight + 'px';
+                });
+              }
+              var toolbar = document.createElement('div');
+              toolbar.className = 'code-toolbar';
+
+              var copyBtn = document.createElement('button');
+              copyBtn.className = 'copy-btn mdui-btn mdui-ripple';
+              copyBtn.type='button';
+              copyBtn.setAttribute('aria-label','复制代码');
+              copyBtn.innerHTML = '<i class="mdui-icon material-icons" translate="no">content_copy<\/i>';
+              copyBtn.addEventListener('click', function(){ copyText(copyBtn); });
+              toolbar.appendChild(copyBtn);
+
+              var collapseBtn = document.createElement('button');
+              collapseBtn.className = 'collapse-btn mdui-btn mdui-ripple';
+              collapseBtn.type='button';
+              collapseBtn.setAttribute('aria-label','折叠代码');
+              collapseBtn.innerHTML = '<i class="mdui-icon material-icons" translate="no">expand_less<\/i>';
+              collapseBtn.addEventListener('click', function(){ toggleCollapse(block, collapseBtn); });
+              toolbar.appendChild(collapseBtn);
+
+              var lang = detectLanguage(block) || 'Code';
+              var langSpan = document.createElement('span');
+              langSpan.className = 'code-lang-badge';
+              langSpan.textContent = lang;
+              toolbar.appendChild(langSpan);
+              block.appendChild(toolbar);
+            });
+          }
+
+          function detectLanguage(block){
+            try {
+              var cls = block.className || '';
+              var m = cls.match(/highlight\s+([a-zA-Z0-9_+-]+)/);
+              if(m && m[1]) return normalizeLang(m[1]);
+              var code = block.querySelector('code');
+              if(code){
+                for(var i=0;i<code.classList.length;i++){
+                  var c = code.classList[i];
+                  if(/^language-/.test(c)) return normalizeLang(c.replace(/^language-/,''));
+                  if(/^lang-/.test(c)) return normalizeLang(c.replace(/^lang-/,''));
+                }
+              }
+              return 'Code';
+            } catch(e){ return 'Code'; }
+          }
+
+          function normalizeLang(l){
+            l = l.toLowerCase();
+            var map = {js:'JavaScript',javascript:'JavaScript',ts:'TypeScript',py:'Python',py3:'Python',bash:'Bash',sh:'Shell',shell:'Shell',yml:'YAML',yaml:'YAML',md:'Markdown',markdown:'Markdown',json:'JSON',html:'HTML',css:'CSS',csharp:'C#',cs:'C#',cpp:'C++',c:'C',java:'Java',go:'Go',rust:'Rust'};
+            return map[l] || l.charAt(0).toUpperCase()+l.slice(1);
+          }
+
+          window.copyText = function(el){
+            if(!el) return;
+            var container = el.closest('figure.highlight, pre');
+            if(!container){ feedback(false, el); return; }
+
+            var codeArea = container.querySelector('td.code') || container.querySelector('pre code') || container.querySelector('code') || container.querySelector('pre');
+            var text = codeArea ? codeArea.innerText : '';
+            if(!text.trim()) { feedback(false, el); return; }
+            var writeSucceeded = function(){ feedback(true, el); };
+            var writeFailed = function(err){ console.error('Copy failed', err); feedback(false, el); };
+            if(navigator.clipboard && navigator.clipboard.writeText){
+              navigator.clipboard.writeText(text).then(writeSucceeded, writeFailed);
+            } else {
+              try {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position='fixed';
+                ta.style.top='-1000px';
+                ta.style.opacity='0';
+                document.body.appendChild(ta);
+                ta.select();
+                var ok = document.execCommand('copy');
+                document.body.removeChild(ta);
+                ok?writeSucceeded():writeFailed();
+              } catch(e){ writeFailed(e); }
+            }
+          };
+
+          function feedback(success, el){
+            var icon = el.querySelector('i.mdui-icon');
+            if(success){
+              el.classList.add('copy-success');
+              if(icon) icon.textContent='check_circle';
+              // el._tooltip = new mdui.Tooltip(el, {content: '已复制！', position: 'top'});
+              //el._tooltip.open();
+              } else {
+                el.classList.add('copy-fail');
+                if(icon) icon.textContent='warning';
+                el._tooltip = new mdui.Tooltip(el, {content: '复制失败！', position: 'top'});
+                el._tooltip.open();
+            }
+            clearTimeout(el._copyTimer);
+            el._copyTimer = setTimeout(function(){
+              el.classList.remove('copy-success','copy-fail');
+                if(icon) icon.textContent='content_copy';
+                //el._tooltip.close();
+                //el._tooltip = null;
+            },3000);
+          }
+
+          function toggleCollapse(wrapper, btn){
+            if(!wrapper) return;
+            var content = wrapper.querySelector(':scope > .code-content-wrap');
+            if(!content){
+              wrapper.classList.toggle('collapsed');
+              var icon = btn.querySelector('i.mdui-icon');
+              if(wrapper.classList.contains('collapsed')) btn.setAttribute('aria-label','展开代码'); else btn.setAttribute('aria-label','折叠代码');
+              return;
+            }
+            var isCurrentlyCollapsed = wrapper.classList.contains('collapsed');
+            var willCollapse = !isCurrentlyCollapsed;
+            wrapper.classList.toggle('collapsed', willCollapse);
+            btn.setAttribute('aria-label', willCollapse ? '展开代码' : '折叠代码');
+
+
+            var startHeight = content.scrollHeight;
+
+            if(!willCollapse && (content.style.maxHeight === '0px')) {
+
+              content.style.maxHeight = '0px';
+
+              requestAnimationFrame(function(){
+                content.style.maxHeight = startHeight + 'px';
+              });
+            } else if(willCollapse) {
+
+
+              content.style.maxHeight = startHeight + 'px';
+
+              void content.offsetWidth;
+
+              requestAnimationFrame(function(){
+                requestAnimationFrame(function(){
+                  content.style.maxHeight = '0px';
+                });
+              });
+            } else {
+
+              content.style.maxHeight = startHeight + 'px';
+            }
+
+            content.removeEventListener('transitionend', content._collapseHandler || function(){});
+            content._collapseHandler = function(ev){
+              if(ev.propertyName !== 'max-height') return;
+              if(!wrapper.classList.contains('collapsed')){
+
+                content.style.maxHeight = content.scrollHeight + 'px';
+              }
+            };
+            content.addEventListener('transitionend', content._collapseHandler);
+          }
+
+          attachCopyButtons();
+          document.addEventListener('pjax:complete', attachCopyButtons);
+          document.addEventListener('pjax:success', attachCopyButtons);
+        })();
+      </script>
+      <style data-pjax>
+        /* notbyai icon: placed to the right of the blockquote, centered vertically
+           uses background-image so it responds to CSS color-scheme or body class
+        */
+        .notbyai-wrapper { gap: 12px; display: flex; flex-direction: row; align-items: center; }
+        .notbyai-icons { display:flex; align-items:center; gap:8px; margin-left: auto; }
+        @media (max-width: 768px) {
+          .notbyai-wrapper {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+          .notbyai-icons {
+            margin-left: 0;
+            margin-top: 12px;
+          }
+        }
+        .notbyai-icons .notbyai-icon,
+        .notbyai-icons .notbyai-extra {
+          display: inline-block;
+          width: 9.5121em; /* uniform size for all icons */
+          height: 3em;
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+          flex: 0 0 auto;
+        }
+        /* any extra icons can be added with .notbyai-extra and will appear to the left of the main icon */
+        .notbyai-icons .notbyai-extra { opacity: 0.95; }
+        /* Default (light) main icon */
+        .notbyai-icons .notbyai-icon { background-image: url('/images/notbyai-cn-light.svg'); }
+        /* If page uses mdui dark class on body, switch main icon */
+        body.mdui-theme-layout-dark .notbyai-icons .notbyai-icon { background-image: url('/images/notbyai-cn-dark.svg'); }
+        @media (prefers-color-scheme: dark) {
+          .notbyai-icons .notbyai-icon { background-image: url('/images/notbyai-cn-dark.svg'); }
+        }
+
+        /* Copy button base & layout */
+  .codeblock-wrapper { overflow: hidden;transition: padding-bottom .35s cubic-bezier(.4,0,.2,1);}
+  .codeblock-wrapper.codeblock-pad-top { padding-top: 36px; padding-bottom:0px; }
+  .codeblock-wrapper.collapsed { padding-bottom:8px;transition: padding-bottom .35s cubic-bezier(.4,0,.2,1);  }
+  /* Toolbar */
+  .codeblock-wrapper .code-toolbar { position:absolute; top:6px; left:6px; display:flex; gap:8px; align-items:center; z-index:5; }
+  .codeblock-wrapper .code-toolbar button { background:transparent; border-radius:6px; min-width:36px; height:32px; line-height:32px; padding:0 8px; box-shadow:none; text-transform:none; font-size:18px; display:inline-flex; align-items:center; justify-content:center; color:#000; transition:background-color .25s ease, color .25s ease; }
+  .codeblock-wrapper .code-toolbar button i { font-size:20px; transition: transform .3s ease; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar button { color:#fff; }
+  .codeblock-wrapper .code-toolbar button:hover { background: rgba(0,0,0,0.06); }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar button:hover { background: #ffffff1f; }
+  .codeblock-wrapper .code-toolbar .copy-btn.copy-success { background: #4caf504d;  color: #5ac18fff; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .copy-btn.copy-success { background: #4caf5059; }
+  .codeblock-wrapper .code-toolbar .copy-btn.copy-fail { background: #ffeb3b73; color:#8d6e00; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .copy-btn.copy-fail { background: #ffeb3b8c; }
+  .codeblock-wrapper .code-toolbar .collapse-btn i { transition: transform .3s ease; }
+  .codeblock-wrapper.collapsed .code-toolbar .collapse-btn i { transform: rotate(180deg); }
+  .codeblock-wrapper .code-toolbar .code-lang-badge { font-size:12px; line-height:1; padding:4px 8px; border-radius:6px; background:rgba(0,0,0,0.06); color:#000; user-select:none; cursor:default; opacity:.85; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .code-lang-badge { background:#ffffff24; color:#fff; }
+  /* Animated content wrapper */
+  .codeblock-wrapper .code-content-wrap { overflow:auto; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
+  .codeblock-wrapper.collapsed .code-content-wrap { max-height:0 !important; padding-top:0 !important; padding-bottom:0 !important; }
+  /* Avoid hiding toolbar */
+  .codeblock-wrapper.collapsed > .code-toolbar { display:flex !important; }
+        .codeblock-wrapper .copy-btn.copy-success { background: #4caf504d; color:#2e7d32; }
+        .mdui-theme-layout-dark .codeblock-wrapper .copy-btn.copy-success { background: #4caf5059; }
+        .codeblock-wrapper .copy-btn.copy-fail { background: #ffeb3b73; color:#8d6e00; }
+        .mdui-theme-layout-dark .codeblock-wrapper .copy-btn.copy-fail { background: #ffeb3b8c; }
+  /* Legacy compatibility removal of old selectors kept intentionally empty */
+      </style>
+      
+        <div class="mdui-m-y-2 mdui-text-center">
+          <button class="mdui-fab mdui-color-deep-orange mdui-text-color-white mdui-ripple" mdui-dialog="{target: '#donate'}" mdui-tooltip="{content: '打赏', position: 'top'}"><i class="mdui-icon material-icons" translate="no">thumb_up</i></button>
+        </div>
+      
+      
+      <div class="notbyai-wrapper" style="display:flex;align-items:center;">
+        <blockquote>
+          
+            <strong>此页内容遵循<a href="//creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank" rel="license noopener noreferrer" style="display:inline-block;"> CC BY-NC-SA 4.0 协议</a></strong><br>
+          
+          
+            <strong>本文链接：</strong><br><a href="https://blog.stevezmt.top/2023/08/21/markdown-test-full/">https://blog.stevezmt.top/2023/08/21/markdown-test-full/</a>
+          
+        </blockquote>
+        <div class="notbyai-icons" aria-hidden="false">
+          <!-- 可在这里添加额外图标，并放在主图标的左侧，示例：
+               <span class="notbyai-extra" style="background-image: url('/images/extra.svg')" aria-hidden="true"></span>
+          -->
+          <img src="/images/loading.svg" data-original="//mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1.8em;max-height:1.8em;margin-left: .08em;"><img src="/images/loading.svg" data-original="//mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1.8em;max-height:1.8em;margin-left: .08em;"><img src="/images/loading.svg" data-original="//mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1.8em;max-height:1.8em;margin-left: .08em;"><img src="/images/loading.svg" data-original="//mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width: 1.8em;max-height:1.8em;margin-left: .08em;">
+          <a target="_blank" rel="noopener" href="//notbyai.fyi"><span class="notbyai-icon" role="img"></span></a>
+        </div>
+      </div>
+      
+    </div>
+    <footer class="mdui-card-actions">
+      
+      
+    </footer>
+    
+      <div class="mdui-dialog" id="donate">
+        <div class="mdui-tab mdui-tab-centered">
+          
+            <a href="#donate-0" class="mdui-ripple">支付宝</a>
+          
+            <a href="#donate-1" class="mdui-ripple">微信</a>
+          
+            <a href="#donate-2" class="mdui-ripple">B币充电</a>
+          
+        </div>
+        
+        
+          <div id="donate-0" class="mdui-p-a-2 mdui-typo mdui-text-center">
+            
+              <img src="/images/loading.svg" data-original="/images/page/donate/alipay.jpg" style="width: 300px;">
+            
+          </div>
+        
+          <div id="donate-1" class="mdui-p-a-2 mdui-typo mdui-text-center">
+            
+              <img src="/images/loading.svg" data-original="/images/page/donate/wechat.jpg" style="width: 300px;">
+            
+          </div>
+        
+          <div id="donate-2" class="mdui-p-a-2 mdui-typo mdui-text-center">
+            
+              <a href="//space.bilibili.com/474130186" target="_blank">>> B币充电</a>
+            
+          </div>
+        
+      </div>
+    
+  </article>
+  
+<script src="//ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"></script>
+<script src="//gcore.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+  <script data-pjax>$("#main article .mdui-card-content img.fancybox").on("click",function(e){$.fancybox.open({src:$(this).attr("src")});});</script>
+
+
+
+  <div id="comment" class="mdui-m-t-5">
+    <!-- 占位提示：当评论区未正常加载时显示 -->
+    <div id="comment-placeholder" style="padding:16px;color:#666;text-align:center;">若评论区未正常加载，请<a href="javascript:location.reload()">刷新此页</a></div>
+    <script>
+  if (!window.GITALK_SRC) {
+    window.GITALK_SRC = '//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js';
+  }
+</script>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script data-pjax src="//sharepoint.cf.stevezmt.top/js/3rd-party/gitalk-cn.min.js"></script>
+
+<script>
+  function __normalizeGitalkId(raw) {
+    try {
+      if (!raw) raw = location.pathname;
+
+      if (/^https?:\/\//i.test(raw)) {
+        var u = new URL(raw, window.location.origin);
+        raw = u.pathname || '/';
+      }
+
+      try { raw = decodeURI(raw); } catch (e) {}
+
+      raw = String(raw).trim();
+
+      // UUID (no leading slash) should be returned as-is
+      var uuidRe = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+      if (uuidRe.test(raw)) return raw;
+
+      var looksLikePath = /\//.test(raw) || /\.html?$/i.test(raw);
+      if (looksLikePath) {
+        raw = raw.replace(/index\.html$/i, '');
+        // normalize to have a single leading slash and no trailing slash
+        raw = '/' + raw.replace(/^\/+/, '').replace(/\/+$/, '');
+        return raw || '/';
+      }
+      console.log('[gitalk] id normalized to non-path:', raw);
+      return String(raw);
+    } catch (e) {
+      return (window.location && window.location.pathname) || '/';
+    }
+  }
+  console.log('[gitalk] loading comments for id:', '51640a40-57fa-7a1c-859a-f2fdb2cf7fa5');
+  console.log('[gitalk] normalized id:', __normalizeGitalkId('51640a40-57fa-7a1c-859a-f2fdb2cf7fa5'));
+  console.log('[gitalk] current location pathname:', window.location.pathname);
+  console.log('[gitalk] gitalk config:', {
+    clientID: 'Ov23li2IcxCrL109at0U',
+    clientSecret: '6b1433f474c96a5c5a997a1de53739f6f939470a',
+    repo: 'articles',
+    owner: 'stevezmtstudios',
+    admin: ['stevezmtstudios'],
+    id: __normalizeGitalkId('51640a40-57fa-7a1c-859a-f2fdb2cf7fa5' || (window.location && window.location.pathname)),
+    distractionFreeMode: false
+  });
+  window.GITALK_CONFIG = {
+    clientID: 'Ov23li2IcxCrL109at0U',
+    clientSecret: '6b1433f474c96a5c5a997a1de53739f6f939470a',
+    repo: 'articles',
+    owner: 'stevezmtstudios',
+    admin: ['stevezmtstudios'],
+
+    id: (function() {
+      var preset = '51640a40-57fa-7a1c-859a-f2fdb2cf7fa5';
+      if (!preset || preset === 'undefined' || preset === 'null') preset = '';
+      return __normalizeGitalkId(preset || (window.location && window.location.pathname));
+    })(),
+    distractionFreeMode: false
+  };
+
+</script>
+
+<!--
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'Ov23li2IcxCrL109at0U',
+    clientSecret: '6b1433f474c96a5c5a997a1de53739f6f939470a',
+    repo: 'articles',
+    owner: 'stevezmtstudios',
+    admin: ['stevezmtstudios'],
+    id: '51640a40-57fa-7a1c-859a-f2fdb2cf7fa5' || location.pathname,
+    distractionFreeMode: false
+  });
+  gitalk.render('gitalk-container');
+</script> -->
+  </div>
+  <script data-pjax>
+    (function(){
+      var commentEl = document.getElementById('comment');
+      if(!commentEl) return;
+      var placeholder = document.getElementById('comment-placeholder');
+
+      function removePlaceholder(){
+        try{
+          if(placeholder && placeholder.parentNode){
+            placeholder.parentNode.removeChild(placeholder);
+            placeholder = null;
+          }
+        }catch(e){}
+      }
+
+      function widgetHasRendered(){
+        // 如果除了占位元素外还有其他子节点且这些子节点包含有效内容，则视为已加载
+        var children = Array.prototype.slice.call(commentEl.children || []).filter(function(c){ return c.id !== 'comment-placeholder'; });
+        if(children.length === 0) return false;
+
+        for(var i=0;i<children.length;i++){
+          var c = children[i];
+          // 常见的评论容器 id 或者非空节点即表示已渲染
+          if(c.id === 'gitalk-container' || c.id === 'disqus_thread' || c.id === 'utterances' || c.querySelector('*')) return true;
+          if(c.textContent && c.textContent.trim().length > 0) return true;
+        }
+        return false;
+      }
+
+      // 先做一次同步检查
+      if(widgetHasRendered()){
+        removePlaceholder();
+        return;
+      }
+
+      // 监听后续变化：当评论脚本填充 DOM 时移除占位
+      var obs = new MutationObserver(function(){
+        try{
+          if(widgetHasRendered()){
+            removePlaceholder();
+            obs.disconnect();
+          }
+        }catch(e){}
+      });
+      obs.observe(commentEl, {childList:true, subtree:true, characterData:true});
+
+      // 作为保险：如果 20s 内仍未检测到加载，保留占位提示不作更多操作
+      setTimeout(function(){ try{ obs.disconnect(); }catch(e){} }, 20000);
+    })();
+  </script>
+
+<script data-pjax>
+  (function(){
+    // 将当前页面是否启用 toc 传给前端逻辑
+    window.__page_has_toc__ = true;
+
+    function buildTocFromHeadings() {
+      // 清理旧的容器（如果存在）
+      try {
+        var old = document.getElementById('toc-fab-container');
+        if (old && old.parentNode) old.parentNode.removeChild(old);
+      } catch(e) {}
+
+      if (!window.__page_has_toc__) return; // 未启用则直接返回
+
+      var content = document.querySelector('#main article .mdui-card-content');
+      if (!content) return;
+      var headings = content.querySelectorAll('h2, h3, h4, h5, h6');
+      if (!headings || headings.length === 0) return; // 无标题则不展示
+
+      // 构建 TOC 列表（保持原有 .toc 结构样式）
+      function getLevel(h){ var t = parseInt(h.tagName.replace('H',''), 10); return isNaN(t)?6:t; }
+      var rootOl = document.createElement('ol');
+      rootOl.className = 'toc';
+      var currentLevel = 0;
+      var currentOl = rootOl;
+      var olStack = [rootOl];
+
+      headings.forEach(function(h){
+        if (!h.id) return; // 没有 id 的标题跳过
+        var level = getLevel(h);
+        if (currentLevel === 0) currentLevel = level; // 初始化基准层级
+
+        if (level > currentLevel) {
+          // 下钻：创建子 ol，直到匹配层级
+          for (var i = currentLevel; i < level; i++) {
+            var childOl = document.createElement('ol');
+            childOl.className = 'toc-child';
+            var lastLi = currentOl.lastElementChild;
+            if (!lastLi) { lastLi = document.createElement('li'); currentOl.appendChild(lastLi); }
+            lastLi.appendChild(childOl);
+            olStack.push(childOl);
+            currentOl = childOl;
+          }
+          currentLevel = level;
+        } else if (level < currentLevel) {
+          // 回退：弹栈到目标层级
+          for (var j = currentLevel; j > level; j--) {
+            olStack.pop();
+          }
+          currentOl = olStack[olStack.length - 1] || rootOl;
+          currentLevel = level;
+        }
+
+        var li = document.createElement('li');
+        li.className = 'toc-item toc-level-' + level;
+        var a = document.createElement('a');
+        a.className = 'toc-link';
+        a.href = '#' + encodeURIComponent(h.id);
+        var span = document.createElement('span');
+        span.className = 'toc-text';
+        span.textContent = h.textContent || h.innerText || '';
+        a.appendChild(span);
+        li.appendChild(a);
+        currentOl.appendChild(li);
+      });
+
+      // 不生成空 TOC
+      if (!rootOl.children.length) return;
+
+      // 生成浮动按钮 + 菜单（保持原有样式）
+      var container = document.createElement('div');
+      container.id = 'toc-fab-container';
+      container.setAttribute('aria-hidden', 'false');
+      container.style.position = 'fixed';
+      container.style.right = '16px';
+      container.style.top = '30%';
+      container.style.zIndex = '4999';
+
+      var btn = document.createElement('button');
+      btn.className = 'mdui-fab mdui-fab-mini mdui-ripple';
+      btn.style.background = '#75757575';
+      btn.setAttribute('mdui-menu', "{target: '#toc-menu'}");
+      btn.setAttribute('aria-label', '目录');
+      btn.innerHTML = '<i class="mdui-icon material-icons" translate="no">toc<\/i>';
+
+      var menu = document.createElement('ul');
+      menu.className = 'mdui-menu';
+      menu.id = 'toc-menu';
+      var liWrap = document.createElement('li');
+      liWrap.className = 'mdui-menu-item';
+      liWrap.setAttribute('disabled', '');
+      liWrap.appendChild(rootOl);
+      menu.appendChild(liWrap);
+
+      container.appendChild(btn);
+      container.appendChild(menu);
+      document.body.appendChild(container);
+
+      // 初始化 MDUI 组件
+      try { if (window.mdui && typeof mdui.mutation === 'function') mdui.mutation(); } catch(e) {}
+
+      // 点击目录项后关闭菜单（可选优化）
+      menu.addEventListener('click', function(e){
+        var a = e.target.closest('a.toc-link');
+        if (!a) return;
+        // 让 MDUI 菜单关闭
+        try {
+          var inst = mdui.Menu.get(btn);
+          if (inst) inst.close();
+        } catch(e) {}
+      });
+    }
+
+    // 初次与 PJAX 切换后重建
+    document.addEventListener('DOMContentLoaded', buildTocFromHeadings);
+    document.addEventListener('page:updated', buildTocFromHeadings);
+    document.addEventListener('pjax:complete', buildTocFromHeadings);
+    document.addEventListener('pjax:success', buildTocFromHeadings);
+  })();
+</script>
+<div class="mdui-divider" style="margin-bottom: 39px"></div>
+
+  <nav id="paginator">
+    
+      <a rel="prev" class="extend prev" href="/2023/10/01/play-on-scanpen/" style="display:flex;align-items:center;gap:12px;">
+        <button aria-label="prev" class="mdui-btn mdui-btn-raised mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons" translate="no">arrow_back</i></button>
+        <span style="display:flex;flex-direction:column;align-items:flex-start;">
+          <small class=" prev-title-responsive" style="font-size:12px;opacity:.7;">上一篇</small>
+          <span class=" prev-title-responsive" style="display:block;padding-right:0px;">玩飞一台翻译词典笔（非root方案）</span>
+        </span>
+      </a>
+      <style>
+        @media (max-width: 500px) {
+          .prev-title-responsive {
+            display: none !important;
+          }
+          
+        }
+      </style>
+    
+    <div class="spacer"></div>
+    
+  </nav>
+
+
+</main>
+  
+<footer id="footer" class="mdui-m-t-5 mdui-p-y-3 mdui-color-theme">
+  <div class="mdui-p-y-0 mdui-text-center">
+    
+    
+    
+    
+    
+    
+    
+      <a href="//github.com/stevezmtstudios/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100"><i class="mdui-icon iconfont" translate="no">&#xe7ab;</i></a>
+    
+    
+      <a href="//steamcommunity.com/id/stevezmt/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Steam" ><svg t="1733311031811" class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7249" width="24" height="24"><path d="M511.104 0C242.261333 0 21.802667 207.36 0.938667 470.912l274.432 113.408a144.512 144.512 0 0 1 81.578666-25.173333c2.688 0 5.333333 0.170667 8.021334 0.256l122.069333-176.725334V380.16a193.194667 193.194667 0 0 1 193.024-193.024c106.410667 0 193.024 86.656 193.024 193.152s-86.613333 193.066667-193.024 193.066667h-4.48l-173.909333 124.202666c0 2.218667 0.170667 4.48 0.170666 6.784a144.725333 144.725333 0 0 1-144.64 144.896 145.578667 145.578667 0 0 1-142.122666-116.352L18.602667 651.52C79.445333 866.432 276.736 1024 511.104 1024c282.752 0 511.957333-229.248 511.957333-512S793.813333 0 511.104 0zM321.706667 776.96l-62.848-26.026667c11.178667 23.168 30.464 42.624 56.064 53.333334a108.842667 108.842667 0 0 0 142.378666-141.824 108.672 108.672 0 0 0-138.88-60.288l64.981334 26.88a80.128 80.128 0 0 1-61.653334 147.925333H321.706667z m487.04-396.928a128.810667 128.810667 0 0 0-128.64-128.64 128.64 128.64 0 1 0 128.64 128.64z m-224.981334-0.213333a96.597333 96.597333 0 1 1 193.322667 0 96.725333 96.725333 0 0 1-96.682667 96.64 96.597333 96.597333 0 0 1-96.64-96.64z" fill="#82b1ff" p-id="7250"></path></svg></a>
+    
+    
+    
+      <a href="//www.zhihu.com/people/zhang-xian-sheng-70-9" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100"><i class="mdui-icon iconfont" translate="no">&#xe6c0;</i></a>
+    
+    
+    
+      <a href="//space.bilibili.com/474130186" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="bilibili" ><svg t="1733305965708" class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5876" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="5877" fill="currentColor"></path></svg></a>
+    
+    
+      <a href="tencent://message/?uin=3579946866&Menu=yes" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100"><i class="mdui-icon iconfont" translate="no">&#xe651;</i></a>
+    
+    
+      <a href="//t.me/SteveZMTstudios" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Telegram"><svg t="1733305965708" class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3029" width="24" height="24"><path d="M883.612 145.595s82.887-32.335 75.979 46.192c-2.302 32.335-23.023 145.505-39.14 267.915L865.193 822.31s-4.604 53.12-46.048 62.36c-41.444 9.237-103.607-32.335-115.121-41.574-9.21-6.928-172.679-110.861-230.24-161.672-16.118-13.858-34.537-41.574 2.302-73.908l241.753-230.96c27.63-27.715 55.258-92.384-59.863-13.857L335.64 582.112s-36.839 23.095-105.91 2.309L80.073 538.229s-55.258-34.644 39.14-69.29c230.242-108.552 513.438-219.413 764.4-323.344z" p-id="3030" fill="currentColor"></path></svg></a>
+    
+    
+    
+      <a href="//stevezmt.top/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Link"><svg t="1733313144945" class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3527" width="24" height="24"><path d="M593.94368 715.648a10.688 10.688 0 0 0-14.976 0L424.21568 870.4c-71.68 71.68-192.576 79.232-271.68 0-79.232-79.232-71.616-200 0-271.616l154.752-154.752a10.688 10.688 0 0 0 0-15.04l-52.992-52.992a10.688 10.688 0 0 0-15.04 0L84.50368 530.688a287.872 287.872 0 0 0 0 407.488 288 288 0 0 0 407.488 0l154.752-154.752a10.688 10.688 0 0 0 0-15.04l-52.736-52.736z m344.384-631.168a288.256 288.256 0 0 1 0 407.616l-154.752 154.752a10.688 10.688 0 0 1-15.04 0l-52.992-52.992a10.688 10.688 0 0 1 0-15.104l154.752-154.688c71.68-71.68 79.232-192.448 0-271.68-79.104-79.232-200-71.68-271.68 0L443.92768 307.2a10.688 10.688 0 0 1-15.04 0l-52.864-52.864a10.688 10.688 0 0 1 0-15.04l154.88-154.752a287.872 287.872 0 0 1 407.424 0z m-296.32 240.896l52.672 52.736a10.688 10.688 0 0 1 0 15.04l-301.504 301.44a10.688 10.688 0 0 1-15.04 0l-52.736-52.672a10.688 10.688 0 0 1 0-15.04l301.632-301.504a10.688 10.688 0 0 1 15.04 0z" fill="currentColor" p-id="3528"></path></svg></a>
+    
+  </div>
+  <div class="mdui-p-y-1 mdui-text-center" translate="no">
+    Copyright &copy; 2019 - 2025 Steve ZMT<br>
+    由 <a href="//hexo.io/" target="_blank" class="mdui-text-color-theme-accent">Hexo</a> 强力驱动  <a href="//icp.gov.moe/?keyword=20240571" target="_blank" class="mdui-text-color-theme-accent"><img style="height:1.5em;vertical-align:middle;" src="/images/loading.svg" data-original="https://icp.gov.moe/images/ico64.png"></a> <a href="//beian.miit.gov.cn/#/Integrated/index" target="_blank" class="mdui-text-color-theme-accent">浙ICP备2025213066号</a>
+    <br>
+      <span id="busuanzi_container_site_pv" style="display: none;"><i class="iconfont" translate="no">&#xe7fd;</i> <span id="busuanzi_value_site_pv"></span></span> &nbsp;&nbsp;
+      <span id="busuanzi_container_site_uv" style="display: none;"><i class="iconfont" translate="no">&#xe601;</i> <span id="busuanzi_value_site_uv"></span></span>
+    
+  </div>
+</footer>
+
+  <div id="gotop-container" class="mdui-fab-fixed mdui-fab-hide">
+    <button id="gotop" class="mdui-fab mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons" translate="no">arrow_upward</i></button>
+    <svg class="progress-ring" width="60" height="60">
+      <circle class="progress-ring__circle mdui-text-color-theme-a100" stroke="currentColor" stroke-width="4" fill="transparent" r="26" cx="30" cy="30"/>
+    </svg>
+  </div>
+  <script data-pjax defer src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+<script src="/js/mdui.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/pjax.js"></script>
+
+  <script>
+    // Remove initial animation class
+    setTimeout(function() {
+      var main = document.getElementById('main');
+      if (main) main.classList.remove('pjax-in');
+    }, 300);
+  </script>
+  
+<script src="/custom.js"></script>
+
+  
+<script src="/js/sw-update.js"></script>
+
+  <script>
+  (function(){
+    if (!('serviceWorker' in navigator)) return;
+    try {
+      navigator.serviceWorker.getRegistrations().then(function(regs){
+        var rootScope = location.origin + '/';
+        var hasRoot = regs.some(function(r){ return r.scope === rootScope; });
+        if (!hasRoot) {
+          navigator.serviceWorker.register('/service-worker.js', {scope: '/'}).then(function(reg){
+            console.log('[sw-fix] registered root service-worker', reg.scope);
+          }).catch(function(err){
+            console.warn('[sw-fix] root register failed', err);
+          });
+        }
+      }).catch(function(e){ console.warn('[sw-fix] getRegistrations failed', e); });
+    } catch(e) { console.warn('[sw-fix] unexpected', e); }
+  })();
+  </script>
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: true,
+                preloadRatio: 3,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>

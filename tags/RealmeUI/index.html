@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="renderer" content="webkit">
+  
+
+  <script>
+    (function() {
+      try {
+        var LOC = window.location;
+        var path = LOC.pathname || '/';
+        if (path === '/k' || path.indexOf('/k/') === 0 || /[?&]compat=1/.test(LOC.search) || /[?&]nocompat=1/.test(LOC.search)) return;
+
+  var ua = navigator.userAgent || '';
+  var isBot = /Googlebot|Bingbot|Baiduspider|Bytespider|360Spider|Sogou|YandexBot|DuckDuckBot|Slurp|facebookexternalhit|Twitterbot|msnbot/i.test(ua);
+  function getQueryParam(name) {
+    try {
+      if (window.URLSearchParams) {
+        var sp = new URLSearchParams(LOC.search);
+        return sp.get(name);
+      }
+    } catch (e) {}
+    try {
+      var qs = (LOC.search || '').replace(/^\?/, '');
+      var pairs = qs.split('&');
+      for (var i = 0; i < pairs.length; i++) {
+        var p = pairs[i];
+        if (!p) continue;
+        var idx = p.indexOf('=');
+        var k = idx === -1 ? decodeURIComponent(p) : decodeURIComponent(p.slice(0, idx));
+        var v = idx === -1 ? '' : decodeURIComponent(p.slice(idx+1));
+        if (k === name) return v;
+      }
+    } catch (e) {}
+    return null;
+  }
+  var persistNoK = getQueryParam('persist_no_k') === '1';
+
+        function lacks(feature) { return !feature; }
+        var missingFeatures = [];
+        if (lacks(window.Promise)) missingFeatures.push('Promise');
+        if (lacks(window.fetch)) missingFeatures.push('fetch');
+        if (lacks(Object.assign)) missingFeatures.push('Object.assign');
+        if (lacks(Array.prototype.find)) missingFeatures.push('Array.find');
+        if (lacks(document.querySelector)) missingFeatures.push('querySelector');
+        if (lacks(window.addEventListener)) missingFeatures.push('addEventListener');
+        if (lacks(window.IntersectionObserver)) missingFeatures.push('IntersectionObserver');
+        var legacyFeature = (
+          missingFeatures.indexOf('Promise') !== -1 ||
+          missingFeatures.indexOf('querySelector') !== -1 ||
+          missingFeatures.indexOf('addEventListener') !== -1 ||
+          missingFeatures.length >= 2
+        );
+
+  var errorLimit = 8; 
+  var errorCount = 0;
+  function scheduleRedirect(reason) {
+          try {
+            var note = document.createElement('div');
+            note.style.cssText = 'display:none;';
+            note.textContent = 'Compatibility suggestion (/k) triggered: ' + reason;
+            document.documentElement.appendChild(note);
+          } catch (e) {}
+
+          if (window.__compat_redirected) return;
+
+          try {
+            if (!window.__compat_banner_shown) {
+              window.__compat_banner_shown = true;
+              var banner = document.createElement('div');
+              banner.style.cssText = 'background:#ff9800;color:#000;padding:8px;font-size:13px;text-align:center;position:relative;z-index:9999;';
+              banner.innerHTML = '浏览器可能不完全支持本站功能（'+reason+'）请访问 <a href="/k?compat=1&from='+encodeURIComponent(path)+'&reason='+encodeURIComponent(reason)+'">兼容视图</a>以正常阅览。';
+              try { document.documentElement.insertBefore(banner, document.documentElement.firstChild); }
+              catch(e) { document.body && document.body.insertBefore(banner, document.body.firstChild); }
+            }
+          } catch (e) {}
+          console.log('Compatibility suggestion (/k) triggered:', reason);
+          console.log('Missing features:', missingFeatures.join(', '));
+          console.log('Error count:', errorCount);
+          console.log('Is bot:', isBot);
+          console.log('Persist no_k:', persistNoK);
+          
+
+          setTimeout(function() {
+            try {
+              if (isBot || persistNoK) {
+                return;
+              }
+              if (window.__compat_redirected) return; window.__compat_redirected = true;
+              var target = '/k?compat=1&from=' + encodeURIComponent(path) + '&reason=' + encodeURIComponent(reason);
+              try { window.stop && window.stop(); } catch(e){}
+              LOC.replace(target);
+            } catch (e) {}
+          }, 500);
+        }
+
+        window.addEventListener('error', function(e) {
+          try {
+            var el = e && e.target;
+            var isResource = el && el.tagName && (el.tagName === 'SCRIPT' || el.tagName === 'LINK' || el.tagName === 'IMG');
+            if (!isResource) {
+              console.log('Runtime error detected ('+errorCount+'):', e.message, 'at', e.filename + ':' + e.lineno + ':' + e.colno);
+              errorCount++;
+              if (errorCount >= errorLimit) scheduleRedirect('runtime_error_'+errorCount);
+            }
+          } catch(err){}
+        }, true);
+
+        window.addEventListener('unhandledrejection', function(e) {
+          try {
+            errorCount++;
+            if (errorCount >= errorLimit) scheduleRedirect('unhandledrejection_'+errorCount);
+          } catch (err) {}
+        });
+
+        setTimeout(function() {
+          if (!window.mdui && !window.__compat_redirected && (legacyFeature || errorCount > 0)) {
+            scheduleRedirect('timeout_no_core_lib');
+          }
+        }, 20000);
+
+        if (legacyFeature) {
+          scheduleRedirect('legacy_feature');
+        }
+      } catch (e) {
+      }
+    })();
+  </script>
+  <noscript>
+    
+    <meta http-equiv="refresh" content="2; url=/k?compat=1&noscript=1" />
+    <div style="background:#ff9800;color:#000;padding:8px;font-size:13px;text-align:center;">灾难性错误：浏览器未启用Javascript，正在切换到 <a href="/k?compat=1&noscript=1">兼容性视图</a>...</div>
+  </noscript>
+
+  
+  <title>标签: RealmeUI | 老史尬侃 - Steve ZMT &#39;s Blog</title>
+
+  <link rel="shortcut icon" href="/images/favicon.png">
+  <link rel="alternate" href="/atom.xml" title="老史尬侃 - Steve ZMT 's Blog" type="application/atom+xml">
+  <meta name="description" content="随笔、日志、技术分享、个人作品 Steve ZMT is soliloquize here.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="老史尬侃 - Steve ZMT &#39;s Blog">
+<meta property="og:url" content="https://blog.stevezmt.top/tags/RealmeUI/index.html">
+<meta property="og:site_name" content="老史尬侃 - Steve ZMT &#39;s Blog">
+<meta property="og:description" content="随笔、日志、技术分享、个人作品 Steve ZMT is soliloquize here.">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Steve ZMT">
+<meta property="article:tag" content="SteveZMT">
+<meta property="article:tag" content="blog">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="史蒂夫ZMT">
+<meta property="article:tag" content="随笔">
+<meta name="twitter:card" content="summary">
+
+  <meta name="keywords" content="blog,博客,随笔,SteveZMT,史蒂夫ZMT">
+  <meta name="format-detection" content="telephone=no,email=no">
+  <meta name="theme-color" content="#448AFF">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="老史尬侃 - Steve ZMT &#39;s Blog">
+  <meta name="msapplication-starturl" content="https://blog.stevezmt.top/tags/RealmeUI/">
+  <meta name="msapplication-navbutton-color" content="#448AFF">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="老史尬侃 - Steve ZMT &#39;s Blog">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="apple-touch-icon" href="/images/favicon.png">
+  <link rel="dns-prefetch" href="/" />
+  <link rel="manifest" href="/manifest.json">
+
+  
+    <link rel="canonical" href="https://blog.stevezmt.top/tags/RealmeUI/index.html">
+  
+
+  
+  
+
+
+  
+  
+
+  
+<link rel="stylesheet" href="/css/mdui.css">
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<link rel="stylesheet" href="/custom.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+<!--
+<script data-pjax>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create','G-T404DHJEEZ','auto');ga('send','pageview');
+</script>
+-->
+
+<!-- Google tag (gtag.js) -->
+
+<script data-pjax defer src="https://www.googletagmanager.com/gtag/js?id=G-T404DHJEEZ"></script>
+<script data-pjax>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-T404DHJEEZ');
+</script>
+
+
+<body class="mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-blue">
+  
+  
+  <script>window.BUSUANZI_SRC = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';</script>
+  
+  <script src="//awp-assets.meituan.net/thh/thh_feb_web_portal/js/jquery-3.6.0.min.js"></script>
+  <script>
+    if (typeof jQuery === 'undefined') {
+      document.write('<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"><\/script>');
+    }
+  </script>
+  <script>
+    var dark = localStorage.getItem("mdui-theme-layout-dark");
+    var light = localStorage.getItem("mdui-theme-layout-light");
+    if (dark || (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches && !light)) {
+      document.getElementsByTagName("body")[0].className+=" mdui-theme-layout-dark";
+    }
+  </script>
+  <script>var a=localStorage.getItem("mdui-drawer-close");if(!a){document.getElementsByTagName("body")[0].className+=" mdui-drawer-body-left"};</script>
+  <header id="header" class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide mdui-appbar-inset">
+  
+  <div id="material-refresh-indicator" style="position:fixed;top: 80px;left:0;width:100vw;z-index:2000;display:flex;justify-content:center;pointer-events:none;transition:transform 0.3s cubic-bezier(.4,0,.2,1),opacity 0.3s;transform:translateY(-48px);opacity:0;">
+    <div style="background:#eee;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.12);padding:9px;display:flex;align-items:center;justify-content:center;">
+      <div class="mdui-spinner" style="width:20px;height:20px;"></div>
+    </div>
+  </div>
+  <div id="banner" class="mdui-toolbar mdui-color-theme">
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="mdui-icon material-icons" translate="no">menu</i></a>
+    <a href="/" class="mdui-typo-headline">老史尬侃 - Steve ZMT &#39;s Blog</a>
+    <div class="mdui-toolbar-spacer"></div>
+    
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon" id="theme-toggle" mdui-tooltip="{content: '切换主题'}"><i class="mdui-icon material-icons" translate="no">brightness_4</i></a>
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: '搜索'}"><i class="mdui-icon material-icons" translate="no">search</i></a>
+    <!-- Open RSS Feed --><!--
+    <a href="/atom.xml" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'RSS'}"><i class="mdui-icon material-icons" translate="no">rss_feed</i></a> -->
+    <!-- Copy RSS Feed To Clipboard -->
+    
+      <a href="javascript:void(0);" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'RSS'}" onclick="copyRssToClipboard('https://blog.stevezmt.top/atom.xml')">
+        <i class="mdui-icon material-icons" translate="no">rss_feed</i>
+      </a>
+      <script data-pjax>
+        function copyRssToClipboard(text) {
+          navigator.clipboard.writeText(text).then(function() {
+            mdui.snackbar({
+              message: '已将RSS订阅链接复制到剪贴板!',
+              position: 'right-top',
+              buttonText: '好',
+            });
+          }, function(err) {
+            console.error('Could not copy text: ', err);
+            mdu.snackbar({
+              message: '复制RSS订阅链接失败!',
+              position: 'right-top',
+            });
+          });
+        }
+      </script>
+      
+  </div>
+</header>
+<div class="mdui-dialog" id="search">
+  <script data-pjax>
+
+    (function() {
+      var searchDialog = document.getElementById('search');
+      if (!searchDialog) return;
+      var typingLock = false;
+      var searchInput = searchDialog.querySelector('input[type="search"]');
+      if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+          if (typingLock) return;
+          typingLock = true;
+          setTimeout(function() { typingLock = false; }, 500);
+        });
+      }
+
+      searchDialog.addEventListener('closed.mdui.dialog', function() {
+        typingLock = false;
+      });
+    })();
+
+    window.showMaterialRefresh = function() {
+      var el = document.getElementById('material-refresh-indicator');
+      if (el) {
+        el.style.transform = 'translateY(0)';
+        el.style.opacity = '1';
+      }
+    };
+    window.hideMaterialRefresh = function() {
+      var el = document.getElementById('material-refresh-indicator');
+      if (el) {
+        el.style.transform = 'translateY(-64px)';
+        el.style.opacity = '0';
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(window.hideMaterialRefresh, 600); });
+  </script>
+  
+    <div class="search-form">
+      <input type="search"  id="search-input" name="search" class="search-form-input" placeholder="搜索...">
+    </div>
+    <div class="search-result" data-resource="/search.xml"></div>
+    
+  
+</div>
+
+  <aside id="sidebar" class="mdui-drawer mdui-drawer-full-height">
+  <script data-pjax>var a=localStorage.getItem("mdui-drawer-close");if(a){document.getElementById("sidebar").className+=" mdui-drawer-close"};</script>
+  <div class="mdui-grid-tile">
+    <img no-lazy src="/images/banner.png" style="height: 160px;">
+    <img no-lazy src="/images/avatar.jpg@128x128.jpg" class="avatar-animation" alt="Avatar" style="position: absolute; top: 10%; left: 24px; width: 64px; height: 64px; border: 2px solid #fff; border-radius: 50%;">
+    <div class="mdui-grid-tile-actions">
+      <div class="mdui-grid-tile-text">
+        <div class="mdui-grid-tile-title">Steve ZMT</div>
+        <div class="mdui-grid-tile-subtitle"><i class="mdui-icon material-icons" translate="no">art_track</i>这家伙叽里咕噜说什么呢。</div>
+      </div>
+      <!--
+      
+        <div class="mdui-grid-tile-buttons">
+          <a href="mailto:admin@stevezmt.top" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'admin@stevezmt.top'}"><i class="mdui-icon material-icons" translate="no">email</i></a>
+        </div>
+       
+      -->
+      
+        <div class="mdui-grid-tile-buttons">
+          <a href="javascript:void(0);" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'admin@stevezmt.top'}" onclick="copyEmailToClipboard('admin@stevezmt.top')">
+            <i class="mdui-icon material-icons" translate="no">email</i>
+          </a>
+        </div>
+        <script data-pjax>
+          function copyEmailToClipboard(email) {
+            navigator.clipboard.writeText(email).then(function() {
+              mdui.snackbar({
+                message: '已将邮箱地址复制到剪贴板!',
+                position: 'left-top',
+                buttonText: '写邮件',
+                onButtonClick: function(){
+                  window.location.href = 'mailto:' + 'admin@stevezmt.top';
+                }
+              });
+            }, function(err) {
+              console.error('Could not copy text: ', err);
+              mdui.snackbar({
+                message: '复制邮箱地址失败!',
+                position: 'right-top',
+              });
+            });
+          }
+        </script>
+
+    </div>
+  </div>
+
+  <div class="mdui-list" mdui-collapse="{accordion: true}">
+    <a href="/" class="mdui-list-item mdui-ripple">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue" translate="no">home</i>
+      <div class="mdui-list-item-content">主页</div>
+    </a>
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-0");if(a){document.getElementsByClassName("mdui-collapse-item")[0].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-deep-orange" translate="no">archive</i>
+        <div class="mdui-list-item-content">归档</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons" translate="no">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/archives/2025/11/">十一月 2025<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/09/">九月 2025<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/08/">八月 2025<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/01/">一月 2025<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/12/">十二月 2024<span class="mdui-ripple sidebar_archives-count">3</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/03/">三月 2024<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/02/">二月 2024<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2023/10/">十月 2023<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2023/08/">八月 2023<span class="mdui-ripple sidebar_archives-count">1</span></a>
+        
+      </div>
+    </div>
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-1");if(a){document.getElementsByClassName("mdui-collapse-item")[1].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-green" translate="no">class</i>
+        <div class="mdui-list-item-content">分类</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons" translate="no">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/categories/%E6%8A%98%E8%85%BE/">折腾<span class="mdui-ripple sidebar_archives-count">8</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E6%8A%98%E8%85%BE/%E7%94%B5%E5%AD%90%E5%9E%83%E5%9C%BE/">电子垃圾<span class="mdui-ripple sidebar_archives-count">3</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E7%9E%8E%E8%81%8A/">瞎聊<span class="mdui-ripple sidebar_archives-count">3</span></a>
+        
+      </div>
+    </div>
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-2");if(a){document.getElementsByClassName("mdui-collapse-item")[2].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown" translate="no">bookmark</i>
+        <div class="mdui-list-item-content">标签</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons"translate="no">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/tags/AI/" rel="tag">AI<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/Cloudflare/" rel="tag">Cloudflare<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/ColorOS/" rel="tag">ColorOS<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/KDE/" rel="tag">KDE<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/PXE/" rel="tag">PXE<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/RealmeUI/" rel="tag">RealmeUI<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/hexo/" rel="tag">hexo<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/iVentoy/" rel="tag">iVentoy<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/openai/" rel="tag">openai<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/root/" rel="tag">root<span class="mdui-ripple sidebar_archives-count">4</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/xposed/" rel="tag">xposed<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E4%B8%8B%E8%BD%BD/" rel="tag">下载<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E4%BA%92%E8%81%94/" rel="tag">互联<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%8D%95%E8%AF%8D%E7%AC%94/" rel="tag">单词笔<span class="mdui-ripple sidebar_archives-count">3</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%AE%89%E5%8D%93/" rel="tag">安卓<span class="mdui-ripple sidebar_archives-count">5</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%BC%80%E6%BA%90/" rel="tag">开源<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E6%84%8F%E5%A4%96/" rel="tag">意外<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E6%95%85%E9%9A%9C/" rel="tag">故障<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%BC%95%E5%AF%BC/" rel="tag">网络引导<span class="mdui-ripple sidebar_archives-count">1</span></a>
+        
+      </div>
+    </div>
+    <a href="/about" class="mdui-list-item mdui-ripple">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-purple" translate="no">person</i>
+      <div class="mdui-list-item-content">关于</div>
+    </a>
+  </div>
+
+  <div class="mdui-divider"></div>
+
+  <div class="mdui-list" mdui-collapse="{accordion: true}">
+    
+      <a href="/timeline"  class="mdui-list-item mdui-ripple">时间轴</a>
+    
+      <a href="/tagcloud"  class="mdui-list-item mdui-ripple">标签云</a>
+    
+      <a href="/friends"  class="mdui-list-item mdui-ripple">友情链接</a>
+    
+      <a href="/k" target="_blank" class="mdui-list-item mdui-ripple">兼容视图</a>
+    
+      <a href="https://www.travellings.cn/go.html" target="_blank" class="mdui-list-item mdui-ripple">开往</a>
+    
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-3");if(a){document.getElementsByClassName("mdui-collapse-item")[3].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <div class="mdui-list-item-content">其他链接</div>
+        <i class="mdui-list-item-icon mdui-icon material-icons" translate="no">link</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+          <a href="//stevezmt.top/" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">史蒂夫ZMT 主页</a>
+        
+          <a href="//stevezmt.top/Phigros-history/" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">Phigros 历史版本收集</a>
+        
+          <a href="//rip.stevezmt.top" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">过气项目存档</a>
+        
+        
+      </div>
+    </div>
+  </div>
+</aside>
+
+  <main id="main" class="mdui-m-t-5 pjax-in">
+
+
+
+  <div class="mdui-chip mdui-m-b-3">
+    <span class="mdui-chip-icon mdui-color-theme-accent"><i class="mdui-icon material-icons" translate="no">place</i></span>
+    <span class="mdui-chip-title">标签：RealmeUI</span>
+  </div>
+
+
+  <article class="mdui-card mdui-m-b-5 mdui-hoverable">
+    <a href="/2025/09/08/coloros-realme-ota-download-guide/">
+      <header class="mdui-card-media mdui-ripple">
+        <img src="/images/loading.svg" data-original="/images/random/material-9.png" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+        <div class="mdui-card-media-covered">
+          <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title">ColorOS/RealmeUI OTA 下载指南</div>
+            <div class="mdui-card-primary-subtitle"><i class="iconfont" translate="no">&#xe697;</i> 2025-09-08 / <i class="iconfont" translate="no">&#xe601;</i> Steve ZMT</div>
+          </div>
+        </div>
+        
+      </header>
+    </a>
+    <div class="mdui-card-content mdui-typo">
+      
+        假你手机和oddo的ota服务器在通过普通的方式都是会403，所以你需要通过一些邪道来搞到OTA包……
+      
+    </div>
+    <div class="mdui-text-center">
+      <a href="/2025/09/08/coloros-realme-ota-download-guide/" class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons" translate="no">library_books</i> 查看</a>
+    </div>
+    <footer class="mdui-card-actions">
+      
+        <a class="mdui-ripple article_categories-link" href="/categories/%E6%8A%98%E8%85%BE/">折腾</a>
+      
+      
+        <a class="mdui-ripple article_tags-link" href="/tags/ColorOS/" rel="tag">ColorOS</a><a class="mdui-ripple article_tags-link" href="/tags/RealmeUI/" rel="tag">RealmeUI</a><a class="mdui-ripple article_tags-link" href="/tags/%E4%B8%8B%E8%BD%BD/" rel="tag">下载</a><a class="mdui-ripple article_tags-link" href="/tags/%E5%AE%89%E5%8D%93/" rel="tag">安卓</a>
+      
+    </footer>
+  </article>
+
+
+
+</main>
+  
+<footer id="footer" class="mdui-m-t-5 mdui-p-y-3 mdui-color-theme">
+  <div class="mdui-p-y-0 mdui-text-center">
+    
+    
+    
+    
+    
+    
+    
+      <a href="//github.com/stevezmtstudios/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100"><i class="mdui-icon iconfont" translate="no">&#xe7ab;</i></a>
+    
+    
+      <a href="//steamcommunity.com/id/stevezmt/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Steam" ><svg t="1733311031811" class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7249" width="24" height="24"><path d="M511.104 0C242.261333 0 21.802667 207.36 0.938667 470.912l274.432 113.408a144.512 144.512 0 0 1 81.578666-25.173333c2.688 0 5.333333 0.170667 8.021334 0.256l122.069333-176.725334V380.16a193.194667 193.194667 0 0 1 193.024-193.024c106.410667 0 193.024 86.656 193.024 193.152s-86.613333 193.066667-193.024 193.066667h-4.48l-173.909333 124.202666c0 2.218667 0.170667 4.48 0.170666 6.784a144.725333 144.725333 0 0 1-144.64 144.896 145.578667 145.578667 0 0 1-142.122666-116.352L18.602667 651.52C79.445333 866.432 276.736 1024 511.104 1024c282.752 0 511.957333-229.248 511.957333-512S793.813333 0 511.104 0zM321.706667 776.96l-62.848-26.026667c11.178667 23.168 30.464 42.624 56.064 53.333334a108.842667 108.842667 0 0 0 142.378666-141.824 108.672 108.672 0 0 0-138.88-60.288l64.981334 26.88a80.128 80.128 0 0 1-61.653334 147.925333H321.706667z m487.04-396.928a128.810667 128.810667 0 0 0-128.64-128.64 128.64 128.64 0 1 0 128.64 128.64z m-224.981334-0.213333a96.597333 96.597333 0 1 1 193.322667 0 96.725333 96.725333 0 0 1-96.682667 96.64 96.597333 96.597333 0 0 1-96.64-96.64z" fill="#82b1ff" p-id="7250"></path></svg></a>
+    
+    
+    
+      <a href="//www.zhihu.com/people/zhang-xian-sheng-70-9" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100"><i class="mdui-icon iconfont" translate="no">&#xe6c0;</i></a>
+    
+    
+    
+      <a href="//space.bilibili.com/474130186" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="bilibili" ><svg t="1733305965708" class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5876" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="5877" fill="currentColor"></path></svg></a>
+    
+    
+      <a href="tencent://message/?uin=3579946866&Menu=yes" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100"><i class="mdui-icon iconfont" translate="no">&#xe651;</i></a>
+    
+    
+      <a href="//t.me/SteveZMTstudios" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Telegram"><svg t="1733305965708" class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3029" width="24" height="24"><path d="M883.612 145.595s82.887-32.335 75.979 46.192c-2.302 32.335-23.023 145.505-39.14 267.915L865.193 822.31s-4.604 53.12-46.048 62.36c-41.444 9.237-103.607-32.335-115.121-41.574-9.21-6.928-172.679-110.861-230.24-161.672-16.118-13.858-34.537-41.574 2.302-73.908l241.753-230.96c27.63-27.715 55.258-92.384-59.863-13.857L335.64 582.112s-36.839 23.095-105.91 2.309L80.073 538.229s-55.258-34.644 39.14-69.29c230.242-108.552 513.438-219.413 764.4-323.344z" p-id="3030" fill="currentColor"></path></svg></a>
+    
+    
+    
+      <a href="//stevezmt.top/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Link"><svg t="1733313144945" class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3527" width="24" height="24"><path d="M593.94368 715.648a10.688 10.688 0 0 0-14.976 0L424.21568 870.4c-71.68 71.68-192.576 79.232-271.68 0-79.232-79.232-71.616-200 0-271.616l154.752-154.752a10.688 10.688 0 0 0 0-15.04l-52.992-52.992a10.688 10.688 0 0 0-15.04 0L84.50368 530.688a287.872 287.872 0 0 0 0 407.488 288 288 0 0 0 407.488 0l154.752-154.752a10.688 10.688 0 0 0 0-15.04l-52.736-52.736z m344.384-631.168a288.256 288.256 0 0 1 0 407.616l-154.752 154.752a10.688 10.688 0 0 1-15.04 0l-52.992-52.992a10.688 10.688 0 0 1 0-15.104l154.752-154.688c71.68-71.68 79.232-192.448 0-271.68-79.104-79.232-200-71.68-271.68 0L443.92768 307.2a10.688 10.688 0 0 1-15.04 0l-52.864-52.864a10.688 10.688 0 0 1 0-15.04l154.88-154.752a287.872 287.872 0 0 1 407.424 0z m-296.32 240.896l52.672 52.736a10.688 10.688 0 0 1 0 15.04l-301.504 301.44a10.688 10.688 0 0 1-15.04 0l-52.736-52.672a10.688 10.688 0 0 1 0-15.04l301.632-301.504a10.688 10.688 0 0 1 15.04 0z" fill="currentColor" p-id="3528"></path></svg></a>
+    
+  </div>
+  <div class="mdui-p-y-1 mdui-text-center" translate="no">
+    Copyright &copy; 2019 - 2025 Steve ZMT<br>
+    由 <a href="//hexo.io/" target="_blank" class="mdui-text-color-theme-accent">Hexo</a> 强力驱动  <a href="//icp.gov.moe/?keyword=20240571" target="_blank" class="mdui-text-color-theme-accent"><img style="height:1.5em;vertical-align:middle;" src="/images/loading.svg" data-original="https://icp.gov.moe/images/ico64.png"></a> <a href="//beian.miit.gov.cn/#/Integrated/index" target="_blank" class="mdui-text-color-theme-accent">浙ICP备2025213066号</a>
+    <br>
+      <span id="busuanzi_container_site_pv" style="display: none;"><i class="iconfont" translate="no">&#xe7fd;</i> <span id="busuanzi_value_site_pv"></span></span> &nbsp;&nbsp;
+      <span id="busuanzi_container_site_uv" style="display: none;"><i class="iconfont" translate="no">&#xe601;</i> <span id="busuanzi_value_site_uv"></span></span>
+    
+  </div>
+</footer>
+
+  <div id="gotop-container" class="mdui-fab-fixed mdui-fab-hide">
+    <button id="gotop" class="mdui-fab mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons" translate="no">arrow_upward</i></button>
+    <svg class="progress-ring" width="60" height="60">
+      <circle class="progress-ring__circle mdui-text-color-theme-a100" stroke="currentColor" stroke-width="4" fill="transparent" r="26" cx="30" cy="30"/>
+    </svg>
+  </div>
+  <script data-pjax defer src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+<script src="/js/mdui.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/pjax.js"></script>
+
+  <script>
+    // Remove initial animation class
+    setTimeout(function() {
+      var main = document.getElementById('main');
+      if (main) main.classList.remove('pjax-in');
+    }, 300);
+  </script>
+  
+<script src="/custom.js"></script>
+
+  
+<script src="/js/sw-update.js"></script>
+
+  <script>
+  (function(){
+    if (!('serviceWorker' in navigator)) return;
+    try {
+      navigator.serviceWorker.getRegistrations().then(function(regs){
+        var rootScope = location.origin + '/';
+        var hasRoot = regs.some(function(r){ return r.scope === rootScope; });
+        if (!hasRoot) {
+          navigator.serviceWorker.register('/service-worker.js', {scope: '/'}).then(function(reg){
+            console.log('[sw-fix] registered root service-worker', reg.scope);
+          }).catch(function(err){
+            console.warn('[sw-fix] root register failed', err);
+          });
+        }
+      }).catch(function(e){ console.warn('[sw-fix] getRegistrations failed', e); });
+    } catch(e) { console.warn('[sw-fix] unexpected', e); }
+  })();
+  </script>
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: true,
+                preloadRatio: 3,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>
