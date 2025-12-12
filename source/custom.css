@@ -37,7 +37,7 @@ html.no-js #main {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.8);
     z-index: 9999;
     display: none;
     justify-content: center;
@@ -81,11 +81,11 @@ html.no-js #main {
 
 .lightbox-controls {
     position: absolute;
-    bottom: 20px;
+    bottom: 15px;
     display: flex;
-    gap: 15px;
-    background: rgba(90, 90, 90, 0.26);
-    padding: 10px 20px;
+    gap: 10px;
+    background: rgba(115, 115, 115, 0.368);
+    padding: 10px 10px;
     border-radius: 30px;
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
@@ -147,7 +147,7 @@ html.no-js #main {
     padding: 20px;
     user-select: none;
     z-index: 10001;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0,0,0,0);
     border-radius: 50%;
     width: 60px;
     height: 60px;

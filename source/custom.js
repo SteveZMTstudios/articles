@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <button class="lightbox-btn" id="lb-zoom-out" title="缩小"><i class="mdui-icon material-icons">zoom_out</i></button>
                 <button class="lightbox-btn" id="lb-rotate" title="旋转"><i class="mdui-icon material-icons">rotate_right</i></button>
                 <button class="lightbox-btn" id="lb-copy" title="复制图片"><i class="mdui-icon material-icons">content_copy</i></button>
+                <button class="lightbox-btn" id="lb-new-tab" title="在新标签页打开"><i class="mdui-icon material-icons">open_in_new</i></button>
                 <button class="lightbox-btn" id="lb-download" title="下载"><i class="mdui-icon material-icons">file_download</i></button>
                 <button class="lightbox-btn" id="lb-ocr" title="OCR 文字识别"><i class="mdui-icon material-icons">text_fields</i></button>
             </div>
@@ -240,17 +241,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    document.getElementById('lb-download').addEventListener('click', (e) => {
+    document.getElementById('lb-new-tab').addEventListener('click', (e) => {
+        e.stopPropagation();
+        window.open(img.src, '_blank');
+    });
+
+    document.getElementById('lb-download').addEventListener('click', async (e) => {
         e.stopPropagation();
         try {
+            const response = await fetch(img.src);
+            const blob = await response.blob();
+            const blobUrl = URL.createObjectURL(blob);
+            
             const link = document.createElement('a');
-            link.href = img.src;
-            link.download = img.src.split('/').pop();
+            link.href = blobUrl;
+            link.download = img.src.split('/').pop() || 'download';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            URL.revokeObjectURL(blobUrl);
+            
             showFeedback('lb-download', true);
         } catch (e) {
+            console.error(e);
             showFeedback('lb-download', false);
         }
     });
