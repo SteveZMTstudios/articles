@@ -40,7 +40,7 @@ huang1111仰卧起坐下来终于是改付费制了
 
 买了yubikey 4，玩了几天发现它没有fido，故又买了yubikey 5，现在双持
 
-自己的证书发布的很不规范，给自己写了一个专门[发布gpg密钥的页面](https://key.stevezmt.top)
+自己的证书发布得很不规范，给自己写了一个专门[发布gpg密钥的页面](https://key.stevezmt.top)
 
 月底入了一台iPhone 4s，纯粹玩机瘾上来了，刷成ios6，目前仍在日用
 
