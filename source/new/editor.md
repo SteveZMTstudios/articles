@@ -1062,25 +1062,33 @@ async function processImageFiles(files) {
         const file = files[i];
         if (!file.type.startsWith('image/')) continue;
 
+        // Generate base filename
+        const ext = file.name.split('.').pop();
+        const timestamp = Date.now();
+        const baseName = `img_${timestamp}_${i}`;
+        const originalFilename = `${baseName}.${ext}`;
+        const compressedFilename = `${baseName}_compressed.jpg`;
+
+        // Store Original
+        imageAssets[originalFilename] = file;
+
         // Compress
         try {
             const options = {
-                maxSizeMB: 1,
-                maxWidthOrHeight: 1920,
-                useWebWorker: true
+                maxSizeMB: 0.5,
+                maxWidthOrHeight: 1600,
+                useWebWorker: true,
+                fileType: 'image/jpeg',
+                initialQuality: 0.5
             };
             const compressedFile = await imageCompression(file, options);
             
-            // Generate filename
-            const ext = file.name.split('.').pop();
-            const filename = `img_${Date.now()}_${i}.${ext}`;
-            
-            // Store
-            imageAssets[filename] = compressedFile;
+            // Store Compressed
+            imageAssets[compressedFilename] = compressedFile;
             
             // Insert Markdown
             // Path convention: /images/blog/<slug>/<filename>
-            const imgPath = `/images/blog/${slug}/${filename}`;
+            const imgPath = `/images/blog/${slug}/${compressedFilename}`;
             insertText(`![](${imgPath})`, '');
             
             mdui.snackbar({message: `图片 ${file.name} 已处理并添加`});
@@ -1253,7 +1261,22 @@ comments: ${comments}
     // Add Images
     const imgFolder = zip.folder(`source/images/blog/${slug}`);
     for (const [filename, blob] of Object.entries(imageAssets)) {
+        let shouldInclude = false;
         if (content.includes(filename)) {
+            shouldInclude = true;
+        } else {
+            // Check if it's an original file whose compressed version is used
+            const lastDotIndex = filename.lastIndexOf('.');
+            if (lastDotIndex !== -1) {
+                const nameWithoutExt = filename.substring(0, lastDotIndex);
+                const compressedName = nameWithoutExt + '_compressed.jpg';
+                if (content.includes(compressedName)) {
+                    shouldInclude = true;
+                }
+            }
+        }
+
+        if (shouldInclude) {
              imgFolder.file(filename, blob);
         }
     }
@@ -1427,7 +1450,22 @@ comments: ${comments}
 
     // 2. Images
     for (const [filename, blob] of Object.entries(imageAssets)) {
+        let shouldInclude = false;
         if (content.includes(filename)) {
+            shouldInclude = true;
+        } else {
+            // Check if it's an original file whose compressed version is used
+            const lastDotIndex = filename.lastIndexOf('.');
+            if (lastDotIndex !== -1) {
+                const nameWithoutExt = filename.substring(0, lastDotIndex);
+                const compressedName = nameWithoutExt + '_compressed.jpg';
+                if (content.includes(compressedName)) {
+                    shouldInclude = true;
+                }
+            }
+        }
+
+        if (shouldInclude) {
              const base64 = await blobToBase64(blob);
              files.push({
                  path: `source/images/blog/${slug}/${filename}`,

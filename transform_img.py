@@ -2,7 +2,7 @@ import os
 from PIL import Image
 import re
 
-def convert_images_to_jpg(source_dir, target_dir, quality=60, scale_factor=0.8):
+def convert_images_to_jpg(source_dir, target_dir, quality=50, scale_factor=0.75):
     for root, _, files in os.walk(source_dir):
         for file in files:
             print(f"- Selected file: {file}")
