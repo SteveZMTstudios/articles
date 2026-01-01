@@ -1,20 +1,3 @@
-<script data-pjax>
-  (function() {
-    const links = document.querySelectorAll('.mdui-card-content a');
-    
-    links.forEach(link => {
-      const href = link.getAttribute('href');
-      if (href && href.startsWith('http') && 
-          !href.includes('blog.stevezmt.top') && 
-          !href.includes('stevezmt.top') && 
-          !href.includes('localhost')) {
-        link.href = `/redirect?goto=${encodeURIComponent(href)}`;
-        link.target = "_blank";
-      }
-    });
-  })();
-  </script>
-
 <% if (page.photos && page.photos.length) { %>
   <%- css(theme.gallery.fancybox_css) %>
   <article class="mdui-row-xs-2 mdui-row-sm-3 mdui-row-md-4 mdui-row-lg-5 mdui-row-xl-6 mdui-grid-list" style="margin: 0 auto;">

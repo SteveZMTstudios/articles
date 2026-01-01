@@ -288,7 +288,23 @@ function initGitalk() {
   window.GITALK_CONFIG = config;
 }
 
+function formatExternalLinks() {
+  var links = document.querySelectorAll('.mdui-card-content a');
+  links.forEach(function(link) {
+    var href = link.getAttribute('href');
+    if (href && href.startsWith('http') && 
+        !href.includes('blog.stevezmt.top') && 
+        !href.includes('stevezmt.top') && 
+        !href.includes('localhost') &&
+        !href.includes('/redirect?goto=')) {
+      link.href = '/redirect?goto=' + encodeURIComponent(href);
+      link.target = "_blank";
+    }
+  });
+}
+
 function reinitPageComponents() {
+  formatExternalLinks();
   if (typeof window.initNoticeSystem === 'function') {
     try {
       window.initNoticeSystem();

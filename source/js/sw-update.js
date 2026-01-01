@@ -4,7 +4,7 @@
 
   var SW_URL = '/service-worker.js';
   var STORAGE_KEY = 'sw_hash_v1';
-  var CHECK_TIMEOUT_MS = 15000; // fallback controllerchange timeout
+  var CHECK_TIMEOUT_MS = 3000; // fallback controllerchange timeout
 
   function log(){ try{ console.log.apply(console, ['[sw-update]'].concat([].slice.call(arguments))); }catch(e){} }
 

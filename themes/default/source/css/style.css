@@ -1563,3 +1563,8 @@ details:not([open]) > .details-anim {
   stroke-dashoffset: 163.36;
   transition: stroke-dashoffset 0.1s;
 }
+
+/* Fix anchor overlap with fixed header */
+:target, #title {
+  scroll-margin-top: 80px;
+}
