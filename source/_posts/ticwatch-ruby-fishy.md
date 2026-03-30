@@ -2,8 +2,13 @@
 uuid: 02d8c8ca-9fd8-3475-a01d-e0a413425beb
 title: Ticwatch Pro 3 Ultra 的苦痛之路
 date: 2026-03-27 08:35:55
-tags: [安卓, 开源]
-categories: [折腾]
+tags:
+  - 安卓
+  - 开源
+  - root
+categories:
+  - 折腾
+  - 电子垃圾
 donate: true
 toc: true
 comments: true
@@ -139,15 +144,13 @@ fastboot oem unlock
 3. 保持引导解锁下开机一次，确保能开并且固件版本是对的
 4. 把[这个system.img](https://pixeldrain.com/u/KF15yFYB)下载下来
 5. 刷进去
-```bash
-fastboot flash system 231020_system_image/system.img
-```
-
+  ```bash
+  fastboot flash system 231020_system_image/system.img
+  ```
 6. 上锁。critical锁不锁无所谓，但是一定要上锁
-```bash
-fastboot oem lock
-```
-
+  ```bash
+  fastboot oem lock
+  ```
 7. 此时设备会再进一次recovery清数据，建议这时就按住下面那个键，确保在recovery屏幕完成清理之后进bootloader
 8. 成功进引导之后按下面的按钮切换到Recovery Mode
 9. 在`No Command`屏幕下，按住上面的那个按钮，手从屏幕底下往上滑
@@ -184,6 +187,36 @@ package:com.mobvoi.mwf.magicfaces //元创秀
 package:com.mobvoi.care //小问关怀
 ```
 
+```bash
+adb shell pm disable-user --user 0 com.google.android.marvin.talkback
+adb shell pm disable-user --user 0 com.google.android.apps.maps
+adb shell pm disable-user --user 0 com.google.android.apps.walletnfcrel
+adb shell pm disable-user --user 0 com.mobvoi.mwf.magicfaces
+adb shell pm disable-user --user 0 com.mobvoi.care
+```
+
+（如果临时需要某个组件，手表上设置里也可以直接启用）
+
+
+并且内置ROM的后台实在是太宽松了，用以下命令限制到12个缓存
+
+```bash
+adb shell settings put global activity_manager_constants max_cached_processes=12
+adb shell settings put global activity_manager_constants fg_service_minimum_shown_time_ms=0
+```
+
+恢复：
+```bash
+adb shell settings delete global activity_manager_constants
+```
+
+play商店一直想要后台更新，加进待机桶：
+```bash
+adb shell cmd activity set-standby-bucket com.android.vending rare
+adb shell cmd activity set-standby-bucket com.google.android.apps.maps rare
+adb shell cmd activity set-standby-bucket com.google.android.tts rare
+```
+
 ## 我软件商店呢？
 
 去Play商店逛了一圈发现没有支付宝等一众国内手环应用。去别的地方找了一圈发现都不大兼容。于是心想我要不干脆把小问商店下回来。去网上找到了2.3.1版本，但奈何装上就闪退。
@@ -210,7 +243,7 @@ package:com.mobvoi.care //小问关怀
 
 刚好我嫌wifi调试太耗电了，于是简单搓了一个[蓝牙调试中间件](https://github.com/SteveZMTstudios/WearOS-bluetooth-adb-wrapper)，装在配对的手机上就可以用。
 
-顺手让AI翻译了一下[bugjaeger的界面]()，但是这个我还没签名，回头签一下。
+顺手让AI翻译了一下[bugjaeger的界面](https://stevezmtstudios-my.sharepoint.com/:u:/g/personal/me_stevezmt_top/IQC0vkOuPHvrQZf16X-f2a3PAdN7hW3z8yejsGF70p9PIWE?e=l3YosG)，但是这个我还没签名，回头签一下。
 
 这样就不用想装个app还得开个热点，既浪费手机电也浪费手表电。
 
@@ -240,9 +273,13 @@ fastboot --disable-verity --disable-verification flash vbmeta vbmeta.img
 ```
 
 ---
-
+---
 
 最后手环的vendor没法改nfc使其模拟特定卡片。
+
+shizuku_daemon在后台虽然只有30多兆的内存占用，但是还是捉襟见肘，wearos自己的软件包安装程序根本没法安装app，稍微[改了一下](https://github.com/SteveZMTstudios/PackageInstaller/releases/latest)特轻量的[shizuku安装器](https://github.com/vvb2060/PackageInstaller)，让它直接用root权限安装app，省得多装一个app还常驻后台耗电。
+
+感谢[vvb2060](https://github.com/vvb2060)。
 
 不过150买个带屏幕的openpgp card，webauthn，oauth，还能测量运动和聊qq刷支付宝，感觉还是比三百多的yubikey划算。
 
