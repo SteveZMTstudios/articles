@@ -102,16 +102,26 @@
         <% } %>
       </header>
     </a>
-    <div class="mdui-card-content mdui-typo">
-      <% if (post.excerpt) { %>
-        <%- strip_html(post.excerpt) %>……
-      <% } else { %>
-        <%- strip_html(truncate(post.content, {length: 120})) %>……
-      <% } %>
-    </div>
-    <div class="mdui-text-center">
-      <a href="<%- url_for(post.link || post.path) %>"<% if (post.link) { %> target="_blank"<% } %> class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons" translate="no">library_books</i> <%= __('more') %></a>
-    </div>
+
+      <a href="<%- url_for(post.link || post.path) %>"<% if (post.link) { %> target="_blank"<% } %> class="mdui-card-content mdui-typo mdui-ripple" style="display:block;text-decoration:none;color:inherit;">
+        <% if (post.excerpt) { %>
+          <%- strip_html(post.excerpt) %>...
+          <span style="float: right; display: inline-flex; align-items: center; text-align: right;">
+            <i class="mdui-icon material-icons" style="font-size:1em; vertical-align:middle; line-height:1;" translate="no">navigate_next</i>
+            <%= __('more') %>
+          </span>
+        <% } else { %>
+          <%- strip_html(truncate(post.content, {length: 120})) %>... 
+            <span style="float: right; display: inline-flex; align-items: center; text-align: right;">
+            <i class="mdui-icon material-icons" style="font-size:1em; vertical-align:middle; line-height:1;" translate="no">navigate_next</i>
+            <%= __('more') %>
+          </span>
+        <% } %>
+      </a>
+    
+    <!-- <div class="mdui-text-center">
+       <a href="<%- url_for(post.link || post.path) %>"<% if (post.link) { %> target="_blank"<% } %> class="mdui-btn mdui-btn-icon mdui-ripple" mdui-tooltip="{content: '<%= __('more') %>'}"><i class="mdui-icon material-icons" translate="no">arrow_forward</i></a> 
+    </div> -->
     <footer class="mdui-card-actions">
       <% if (post.categories && post.categories.length) { %>
         <%- list_categories(post.categories, {show_count: false, style: 'none', separator: '', class: 'mdui-ripple article_categories'}) %>

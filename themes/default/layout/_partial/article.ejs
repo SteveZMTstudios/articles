@@ -131,12 +131,18 @@
               <a href="javascript:void(0);" class="mdui-ripple" onclick="sharePageviaSystem();"><%= __('share.system') %></a>
             </li>
 
+            <%
+              var shareText = '';
+              if (page.excerpt) {
+                shareText = String(page.excerpt).replace(/(<([^>]+)>)/gi, '').trim();
+              }
+            %>
             <script data-pjax>
               function sharePageviaSystem() {
                 if (navigator.share) {
                   navigator.share({
                     title: '<%= page.title %>',
-                    text: '<%- page.excerpt.replace(/(<([^>]+)>)/gi, "") %>',
+                    text: <%- JSON.stringify(shareText) %>,
                     url: '<%- page.permalink %>'
                   }).then(() => {
                     mdui.snackbar({message: '感谢分享！', position: 'top'});

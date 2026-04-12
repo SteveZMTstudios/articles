@@ -10,4 +10,5 @@ output/lh-mobile.json
 output/trace-home-mobile-throttled.json
 output/lighthouse-mobile/report.html
 output/trace-home.json
-output/lighthouse-mobile/report.json
+output/
+.playwright-cli/
