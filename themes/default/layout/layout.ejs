@@ -2,17 +2,17 @@
 <html lang="<%= page.lang %>">
 <%- partial('_partial/head') %>
 <body class="mdui-appbar-with-toolbar mdui-theme-primary-<%= theme.theme_color.primary || 'indigo' %> mdui-theme-accent-<%= theme.theme_color.accent || 'pink' %>">
-  <% if (theme.comment && theme.comment.use === 'gitalk' && theme.comment.gitalk_js) { %>
-  <script>window.GITALK_SRC = '<%- theme.comment.gitalk_js %>';</script>
-  <% } %>
-  <% if (theme.busuanzi.site || theme.busuanzi.page) { %>
-  <script>window.BUSUANZI_SRC = '<%- theme.busuanzi.busuanzi_js %>';</script>
-  <% } %>
-  <script src="//awp-assets.meituan.net/thh/thh_feb_web_portal/js/jquery-3.6.0.min.js"></script>
   <script>
-    if (typeof jQuery === 'undefined') {
-      document.write('<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"><\/script>');
-    }
+    window.__SITE_ASSET_CONFIG__ = {
+      analyticsId: '<%= theme.analytics.google_site_id || "" %>',
+      busuanziSrc: '<%= (theme.busuanzi.site || theme.busuanzi.page) ? theme.busuanzi.busuanzi_js : "" %>',
+      legacyJquerySrc: '<%= theme.gallery && theme.gallery.jquery_js ? theme.gallery.jquery_js : "" %>',
+      fancyboxCss: '<%= theme.gallery && theme.gallery.fancybox_css ? theme.gallery.fancybox_css : "" %>',
+      fancyboxJs: '<%= theme.gallery && theme.gallery.fancybox_js ? theme.gallery.fancybox_js : "" %>',
+      gitalkCss: '//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.css',
+      gitalkSrc: '<%= theme.comment && theme.comment.use === "gitalk" ? (theme.comment.gitalk_js || "//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js") : "" %>',
+      gitalkBridgeSrc: '<%= theme.comment && theme.comment.use === "gitalk" ? "//sharepoint.cf.stevezmt.top/js/3rd-party/gitalk-cn.min.js" : "" %>'
+    };
   </script>
   <script>
     var dark = localStorage.getItem("mdui-theme-layout-dark");
@@ -23,8 +23,24 @@
   </script>
   <script>var a=localStorage.getItem("mdui-drawer-close");if(!a){document.getElementsByTagName("body")[0].className+=" mdui-drawer-body-left"};</script>
   <%- partial('_partial/header', null, {cache: !config.relative_link}) %>
+  <%
+    var pageType = 'generic';
+    if (is_home()) pageType = 'home';
+    else if (is_post()) pageType = 'post';
+    else if (page.photos && page.photos.length) pageType = 'gallery';
+    else if (is_archive() || is_category() || is_tag()) pageType = 'listing';
+  %>
+  <main
+    id="main"
+    class="mdui-m-t-5 pjax-in"
+    data-page-type="<%= pageType %>"
+    data-is-home="<%= is_home() ? '1' : '0' %>"
+    data-is-post="<%= is_post() ? '1' : '0' %>"
+    data-has-comments="<%= (is_post() && page.comments && theme.comment.use) ? '1' : '0' %>"
+    data-has-toc="<%= (is_post() && page.toc) ? '1' : '0' %>"
+    data-search-resource="<%= theme.search && theme.search.use === 'plugin' ? url_for(theme.search.path) : '' %>"
+  ><%- body %></main>
   <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
-  <main id="main" class="mdui-m-t-5 pjax-in"><%- body %></main>
   <%- partial('_partial/footer', null, {cache: !config.relative_link}) %>
   <div id="gotop-container" class="mdui-fab-fixed mdui-fab-hide">
     <button id="gotop" class="mdui-fab mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons" translate="no">arrow_upward</i></button>
@@ -32,7 +48,6 @@
       <circle class="progress-ring__circle mdui-text-color-theme-a100" stroke="currentColor" stroke-width="4" fill="transparent" r="26" cx="30" cy="30"/>
     </svg>
   </div>
-  <% if (theme.busuanzi.site || theme.busuanzi.page) { %><script data-pjax defer src="<%- theme.busuanzi.busuanzi_js %>"></script><% } %>
   <%- js(['js/mdui', 'js/script', 'js/pjax']) %>
   <script>
     // Remove initial animation class

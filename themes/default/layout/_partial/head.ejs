@@ -183,7 +183,31 @@
   <% if (theme.analytics.baidu_site_id) { %><%- partial('_widget/analytics/baidu-analytics') %><% } %>
   <% if (theme.analytics.cnzz_site_id) { %><%- partial('_widget/analytics/cnzz-analytics') %><% } %>
 
+  <%
+    function deterministicMaterial(seed) {
+      seed = String(seed || '');
+      var hash = 0;
+      for (var i = 0; i < seed.length; i++) {
+        hash = ((hash << 5) - hash + seed.charCodeAt(i)) | 0;
+      }
+      return '/images/random/material-' + (Math.abs(hash % 19) + 1) + '.png';
+    }
+
+    var preloadImageHref = null;
+    if (is_home() && page.current === 1 && page.posts && page.posts.each) {
+      var firstPost = null;
+      page.posts.each(function(post) {
+        if (!firstPost) firstPost = post;
+      });
+      if (firstPost) {
+        preloadImageHref = url_for(firstPost.thumbnail || deterministicMaterial(firstPost.uuid || firstPost.path || firstPost.title));
+      }
+    } else if (is_post()) {
+      preloadImageHref = url_for(page.thumbnail || deterministicMaterial(page.uuid || page.path || page.title));
+    }
+  %>
+  <% if (preloadImageHref) { %><link rel="preload" as="image" href="<%- preloadImageHref %>"><% } %>
+
   <%- css(['css/mdui', 'css/style']) %>
   <%- css('custom') %>
 </head>
-<% if (theme.analytics.google_site_id) { %><%- partial('_widget/analytics/google-analytics') %><% } %>

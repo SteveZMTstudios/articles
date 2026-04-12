@@ -1,5 +1,18 @@
+<%
+  function deterministicMaterial(seed) {
+    seed = String(seed || '');
+    var hash = 0;
+    for (var i = 0; i < seed.length; i++) {
+      hash = ((hash << 5) - hash + seed.charCodeAt(i)) | 0;
+    }
+    return '/images/random/material-' + (Math.abs(hash % 19) + 1) + '.png';
+  }
+
+  function getArticleThumbnail(pageLike) {
+    return pageLike.thumbnail || deterministicMaterial(pageLike.uuid || pageLike.path || pageLike.title);
+  }
+%>
 <% if (page.photos && page.photos.length) { %>
-  <%- css(theme.gallery.fancybox_css) %>
   <article class="mdui-row-xs-2 mdui-row-sm-3 mdui-row-md-4 mdui-row-lg-5 mdui-row-xl-6 mdui-grid-list" style="margin: 0 auto;">
     <% page.photos.forEach(function (photo) { %>
       <div class="mdui-col">
@@ -11,8 +24,6 @@
       </div>
     <% }) %>
   </article>
-  <%- js([theme.gallery.jquery_js, theme.gallery.lazyload_js, theme.gallery.fancybox_js]) %>
-  <script data-pjax>$("#main article img.lazyload").lazyload({effect:"fadeIn"});</script>
 <% } else if (page.timeline && site.posts.length) { %>
   <style>
     #timeline{max-width:750px;margin:0 auto;padding:0 8px}
@@ -52,12 +63,11 @@
 <% } else if (page.layout === 'custom') { %>
   <%- page.content %>
 <% } else { %>
-  <%- css(theme.gallery.fancybox_css) %>
   <style>#main article .mdui-card-content .center-block{display:block!important;margin-right:auto!important;margin-left:auto!important}</style>
   <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
   <article class="mdui-card mdui-m-b-5">
     <header class="mdui-card-media">
-      <img src="<%- page.thumbnail || '/images/random/material-' + (Math.round(Math.random() * 18) + 1) + '.png' %>" style="max-height: 240px; width: 100%; object-fit: cover;" alt="thumbnails">
+      <img src="<%- url_for(getArticleThumbnail(page)) %>" no-lazy fetchpriority="high" width="1280" height="720" decoding="async" style="max-height: 240px; width: 100%; aspect-ratio: 16 / 9; object-fit: cover;" alt="<%= page.title %>">
       <div class="mdui-card-media-covered">
         <div class="mdui-card-primary">
             <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;"><%= page.title %></h1></div>
@@ -455,14 +465,11 @@
       </div>
     <% } %>
   </article>
-  <%- js([theme.gallery.jquery_js, theme.gallery.fancybox_js]) %>
-  <script data-pjax>$("#main article .mdui-card-content img.fancybox").on("click",function(e){$.fancybox.open({src:$(this).attr("src")});});</script>
 <% } %>
 
 <% if (page.comments && theme.comment.use) { %>
   <div id="comment" class="mdui-m-t-5">
-    <!-- 占位提示：当评论区未正常加载时显示 -->
-    <div id="comment-placeholder" style="padding:16px;color:#666;text-align:center;">若评论区未正常加载，请<a href="javascript:location.reload()">刷新此页</a></div>
+    <div id="comment-placeholder" style="padding:16px;color:#666;text-align:center;">评论区准备中…</div>
     <%- partial('_widget/comment/' + theme.comment.use) %>
   </div>
   <script data-pjax>

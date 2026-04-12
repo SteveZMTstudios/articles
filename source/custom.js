@@ -1,4 +1,9 @@
-document.addEventListener('DOMContentLoaded', function() {
+(function() {
+    function maybeInitLightboxEnhancements() {
+        if (window.__lightbox_initialized) return;
+        if (!document.querySelector('#main article .mdui-card-content img')) return;
+        window.__lightbox_initialized = true;
+
     // Inject HTML
     const lightboxHTML = `
         <div id="lightbox-overlay">
@@ -560,4 +565,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Reset controls timer on mouse interaction too
     overlay.addEventListener('mousemove', showControls);
     overlay.addEventListener('mousedown', showControls);
-});
+    }
+
+    document.addEventListener('page:phase', function(e) {
+        if (!e || !e.detail || e.detail.stage !== 'after-visible') return;
+        maybeInitLightboxEnhancements();
+    });
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', maybeInitLightboxEnhancements);
+    } else {
+        maybeInitLightboxEnhancements();
+    }
+})();

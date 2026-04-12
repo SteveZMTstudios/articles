@@ -81,10 +81,10 @@
     <div class="search-form">
       <input type="search"  id="search-input" name="search" class="search-form-input" placeholder="<%= theme.search.placeholder %>">
     </div>
-    <div class="search-result" data-resource="<%- url_for(theme.search.path) %>"></div>
+    <div class="search-result" data-resource="<%- url_for(theme.search.path) %>" aria-live="polite"></div>
     
   <% } else { %>
     <%- search_form({class: 'search-form', text: theme.search.placeholder, button: false}) %>
-    <div class="search-result"></div>
+    <div class="search-result" aria-live="polite"></div>
   <% } %>
 </div>

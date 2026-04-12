@@ -5,6 +5,9 @@
   var SW_URL = '/service-worker.js';
   var STORAGE_KEY = 'sw_hash_v1';
   var CHECK_TIMEOUT_MS = 3000; // fallback controllerchange timeout
+  var MIN_CHECK_INTERVAL_MS = 10 * 60 * 1000;
+  var scheduledCheck = null;
+  var lastCheckAt = 0;
 
   function log(){ try{ console.log.apply(console, ['[sw-update]'].concat([].slice.call(arguments))); }catch(e){} }
 
@@ -68,6 +71,7 @@
   }
 
   function runHashCheck(){
+    lastCheckAt = Date.now();
     fetchHash().then(function(hash){
       if(!hash) return; // skip if failed
       var prev = localStorage.getItem(STORAGE_KEY);
@@ -127,13 +131,26 @@
   // Register listener once ready
   navigator.serviceWorker.ready.then(function(reg){ listenRegistration(reg); });
 
-  // Delay hash check until window load for best chance of fresh SW fetch
-  if(document.readyState === 'complete') runHashCheck();
-  else window.addEventListener('load', runHashCheck);
+  function scheduleHashCheck(delay){
+    if (scheduledCheck) clearTimeout(scheduledCheck);
+    scheduledCheck = setTimeout(function(){
+      scheduledCheck = null;
+      if (Date.now() - lastCheckAt < MIN_CHECK_INTERVAL_MS) return;
+      runHashCheck();
+    }, delay || 0);
+  }
 
-  // Add PJAX support
-  document.addEventListener('page:updated', function() {
-    setTimeout(runHashCheck, 1000);
+  document.addEventListener('page:phase', function(e){
+    if (!e || !e.detail || e.detail.stage !== 'idle-preload') return;
+    scheduleHashCheck(1200);
+  });
+
+  document.addEventListener('visibilitychange', function(){
+    if (document.visibilityState === 'visible') scheduleHashCheck(3000);
+  });
+
+  window.addEventListener('focus', function(){
+    scheduleHashCheck(3000);
   });
 
   // expose a manual trigger only for debugging

@@ -11,7 +11,11 @@ class Pjax {
     }, options);
 
     this.container = document.querySelector(this.options.container);
-    this.request = null;
+    this.abortController = null;
+    this.navigationId = 0;
+    this.progressTimer = null;
+    this.overlayTimer = null;
+    this.loadingTextTimer = null;
     this.init();
   }
 
@@ -87,7 +91,11 @@ class Pjax {
   async load(url, options = {}) {
     const opts = Object.assign({}, this.options, options);
     
-    if (this.request) this.request.abort(); // Abort controller if using fetch? Fetch doesn't abort easily without AbortController
+    if (this.abortController) {
+      this.abortController.abort();
+    }
+    this.abortController = new AbortController();
+    const navigationId = ++this.navigationId;
 
     // Show loading
     this.trigger('pjax:send', { url });
@@ -98,8 +106,11 @@ class Pjax {
         headers: {
           'X-PJAX': 'true',
           'X-PJAX-Container': this.options.container
-        }
+        },
+        signal: this.abortController.signal
       });
+
+      if (navigationId !== this.navigationId) return;
 
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
@@ -119,6 +130,7 @@ class Pjax {
       await new Promise(r => setTimeout(r, opts.duration)); // Wait for animation
 
       // Replace content
+      this.syncContainerAttributes(newContent);
       this.container.innerHTML = newContent.innerHTML;
       
       // Execute scripts
@@ -148,14 +160,15 @@ class Pjax {
         this.container.classList.remove('pjax-in');
       }, opts.duration);
 
+      // Re-init plugins
+      this.reinitPlugins();
+
       this.hideLoading();
       this.trigger('pjax:complete', { url });
       this.trigger('pjax:success', { url });
 
-      // Re-init plugins
-      this.reinitPlugins();
-
     } catch (err) {
+      if (err && err.name === 'AbortError') return;
       console.error('[Pjax] Load error:', err);
       this.hideLoading();
       this.trigger('pjax:error', { url, error: err });
@@ -173,6 +186,22 @@ class Pjax {
       Array.from(script.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
       newScript.appendChild(document.createTextNode(script.innerHTML));
       script.parentNode.replaceChild(newScript, script);
+    });
+  }
+
+  syncContainerAttributes(newContent) {
+    Array.from(this.container.attributes).forEach(attr => {
+      if (attr.name === 'id' || attr.name === 'class') return;
+      this.container.removeAttribute(attr.name);
+    });
+
+    Array.from(newContent.attributes).forEach(attr => {
+      if (attr.name === 'id') return;
+      if (attr.name === 'class') {
+        this.container.className = attr.value;
+        return;
+      }
+      this.container.setAttribute(attr.name, attr.value);
     });
   }
 
@@ -217,29 +246,46 @@ class Pjax {
       mdui.mutation();
     }
 
-    requestAnimationFrame(() => overlay.classList.add('show'));
+    if (this.progressTimer) clearTimeout(this.progressTimer);
+    if (this.overlayTimer) clearTimeout(this.overlayTimer);
+    if (this.loadingTextTimer) clearTimeout(this.loadingTextTimer);
 
-    // Show "Still loading" after 3 seconds
-    this.loadingTimeout = setTimeout(() => {
+    bar.style.display = 'none';
+    overlay.classList.remove('show');
+    const content = overlay.querySelector('.pjax-loading-content');
+    if (content) content.classList.remove('show');
+
+    this.progressTimer = setTimeout(() => {
+      bar.style.display = 'block';
+      if (typeof window.showMaterialRefresh === 'function') {
+        window.showMaterialRefresh();
+      }
+      mdui.mutation();
+    }, 120);
+
+    this.overlayTimer = setTimeout(() => {
+      requestAnimationFrame(() => overlay.classList.add('show'));
+    }, 900);
+
+    this.loadingTextTimer = setTimeout(() => {
       const content = overlay.querySelector('.pjax-loading-content');
       if (content) content.classList.add('show');
-    }, 3000);
-
-    // var $ = mdui.$;
-    // var $header = $(header || '#header');
-    // $header.removeClass('mdui-headroom-unpinned-top').addClass('mdui-headroom-pinned-top');
-    bar.style.display = 'block';
-    mdui.mutation();
+    }, 2200);
   }
 
   hideLoading() {
-    if (this.loadingTimeout) {
-      clearTimeout(this.loadingTimeout);
-      this.loadingTimeout = null;
-    }
+    if (this.progressTimer) clearTimeout(this.progressTimer);
+    if (this.overlayTimer) clearTimeout(this.overlayTimer);
+    if (this.loadingTextTimer) clearTimeout(this.loadingTextTimer);
+    this.progressTimer = null;
+    this.overlayTimer = null;
+    this.loadingTextTimer = null;
 
     const bar = document.querySelector('.pjax-progress');
     if (bar) bar.style.display = 'none';
+    if (typeof window.hideMaterialRefresh === 'function') {
+      window.hideMaterialRefresh();
+    }
     
     const overlay = document.querySelector('.pjax-overlay');
     if (overlay) {
@@ -255,18 +301,11 @@ class Pjax {
   }
 
   reinitPlugins() {
-    // Dispatch standard events for compatibility
+    if (typeof window.reinitPageComponents === 'function') window.reinitPageComponents();
+    if (window.mdui) mdui.mutation();
+    document.dispatchEvent(new Event('page:updated'));
     window.dispatchEvent(new Event('resize'));
     window.dispatchEvent(new Event('scroll'));
-    
-    // Re-init MDUI
-    if (window.mdui) mdui.mutation();
-
-    // Custom re-init logic from old script
-    if (typeof window.reinitPageComponents === 'function') window.reinitPageComponents();
-    
-    // Trigger custom event for other scripts to hook into
-    document.dispatchEvent(new Event('page:updated'));
   }
 }
 

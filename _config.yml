@@ -111,7 +111,7 @@ lazyload:
   onlypost: false # optional
   loadingImg: /images/loading.svg
   isSPA: true # optional
-  preloadRatio: 3 # optional, default is 1
+  preloadRatio: 1.25 # optional, default is 1
 
 excerpt_length: 160
 auto_excerpt:
