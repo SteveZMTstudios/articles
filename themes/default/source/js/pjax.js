@@ -257,15 +257,12 @@ class Pjax {
 
     this.progressTimer = setTimeout(() => {
       bar.style.display = 'block';
-      if (typeof window.showMaterialRefresh === 'function') {
-        window.showMaterialRefresh();
-      }
       mdui.mutation();
     }, 120);
 
     this.overlayTimer = setTimeout(() => {
       requestAnimationFrame(() => overlay.classList.add('show'));
-    }, 900);
+    }, 120);
 
     this.loadingTextTimer = setTimeout(() => {
       const content = overlay.querySelector('.pjax-loading-content');
@@ -283,9 +280,6 @@ class Pjax {
 
     const bar = document.querySelector('.pjax-progress');
     if (bar) bar.style.display = 'none';
-    if (typeof window.hideMaterialRefresh === 'function') {
-      window.hideMaterialRefresh();
-    }
     
     const overlay = document.querySelector('.pjax-overlay');
     if (overlay) {

@@ -1,10 +1,4 @@
 <header id="header" class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide mdui-appbar-inset">
-  
-  <div id="material-refresh-indicator" style="position:fixed;top: 80px;left:0;width:100vw;z-index:2000;display:flex;justify-content:center;pointer-events:none;transition:transform 0.3s cubic-bezier(.4,0,.2,1),opacity 0.3s;transform:translateY(-48px);opacity:0;">
-    <div style="background:#eee;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.12);padding:9px;display:flex;align-items:center;justify-content:center;">
-      <div class="mdui-spinner" style="width:20px;height:20px;"></div>
-    </div>
-  </div>
   <div id="banner" class="mdui-toolbar mdui-color-theme">
     <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="mdui-icon material-icons" translate="no">menu</i></a>
     <a href="<%- url_for() %>" class="mdui-typo-headline"><%= config.title %></a>
@@ -60,22 +54,6 @@
       });
     })();
 
-    window.showMaterialRefresh = function() {
-      var el = document.getElementById('material-refresh-indicator');
-      if (el) {
-        el.style.transform = 'translateY(0)';
-        el.style.opacity = '1';
-      }
-    };
-    window.hideMaterialRefresh = function() {
-      var el = document.getElementById('material-refresh-indicator');
-      if (el) {
-        el.style.transform = 'translateY(-64px)';
-        el.style.opacity = '0';
-      }
-    };
-
-    document.addEventListener('DOMContentLoaded', function() { setTimeout(window.hideMaterialRefresh, 600); });
   </script>
   <% if (theme.search.use === 'plugin') { %>
     <div class="search-form">
