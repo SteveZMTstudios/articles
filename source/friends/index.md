@@ -6,13 +6,12 @@ toc: false
 count: false
 date: 1970-01-01 08:00:00
 
-layout: 
+layout:
 share_menu:
 donate:
 license:
-qrcode: 
+qrcode:
 ---
-
 
 <style>
 .friends-container {
@@ -240,29 +239,63 @@ qrcode:
     </div>
   </div>
 
+<div class="mdui-card friend-card mdui-hoverable">
+          <div class="mdui-card-media">
+            <img src="https://www.yukina.ink/logo.avif" alt="Yukina" loading="lazy">
+            <div class="mdui-card-media-covered">
+                <div class="mdui-card-primary">
+                  <div class="mdui-card-primary-title">Yukina</div>
+                  <div class="mdui-card-primary-subtitle">Welcome to the melty land.</div>
+                </div>
+            </div>
+          </div>
+          <div class="mdui-card-actions">
+            <a href="https://blog.yukina.ink/" target="_blank" class="mdui-btn mdui-ripple mdui-text-color-theme-accent">访问网站</a>
+          </div>
+        </div>
+
+<div class="mdui-card friend-card mdui-hoverable">
+          <div class="mdui-card-media">
+            <img src="https://blog.akana.moe/favicon.ico" alt="日落果的 Blog" loading="lazy">
+            <div class="mdui-card-media-covered">
+                <div class="mdui-card-primary">
+                  <div class="mdui-card-primary-title">日落果的 Blog</div>
+                  <div class="mdui-card-primary-subtitle">好耶，是日落果。</div>
+                </div>
+            </div>
+          </div>
+          <div class="mdui-card-actions">
+            <a href="https://blog.akana.moe/" target="_blank" class="mdui-btn mdui-ripple mdui-text-color-theme-accent">访问网站</a>
+          </div>
+        </div>
+
+
 </div>
   <!-- 可以继续添加更多友链卡片 -->
   <!-- SAMPLE --
 
-  <!-- <div class="mdui-card friend-card mdui-hoverable">
-    <div class="mdui-card-media">
-        <img src="<link:图片链接>" alt="<name:博客名称>" loading="lazy">
-        <div class="mdui-card-media-covered">
-          <div class="mdui-card-primary">
-            <div class="mdui-card-primary-title"><name:博客名称></div>
-            <div class="mdui-card-primary-subtitle"><description:不超过15字的简介></div>
+  <!--  
+        <div class="mdui-card friend-card mdui-hoverable">
+          <div class="mdui-card-media">
+            <img src="<url:图片链接>" alt="<name:博客名称>" loading="lazy">
+            <div class="mdui-card-media-covered">
+                <div class="mdui-card-primary">
+                  <div class="mdui-card-primary-title"><name:博客名称></div>
+                  <div class="mdui-card-primary-subtitle"><description:不超过15字的简介></div>
+                </div>
+            </div>
+          </div>
+          <div class="mdui-card-actions">
+            <a href="<link:站点链接>" target="_blank" class="mdui-btn mdui-ripple mdui-text-color-theme-accent">访问网站</a>
           </div>
         </div>
-    </div>
-    <div class="mdui-card-actions">
-      <a href="<link:站点链接>" target="_blank" class="mdui-btn mdui-ripple mdui-text-color-theme-accent">访问网站</a>
-    </div>
-  </div> --> 
-
+ -->
 
 ### 如何找我玩
+
 各位大佬想交换友链的话可以在 [issue 区](https://github.com/SteveZMTstudios/articles/issues/new/choose) 留言～
 本站信息：
+
 ```
 标题：`老史尬侃`
 简介：`这家伙叽里咕噜说什么呢`
@@ -271,6 +304,7 @@ qrcode:
 ```
 
 友链提交格式：
+
 ```
 "网站名称：" <name:string>
 "网站地址：" <link:urlstr>
@@ -281,5 +315,3 @@ qrcode:
     <text:html>   // 您可定义希望的样式，参见/friends/index.md
 ]
 ```
-
-
