@@ -52,6 +52,12 @@ var $$ = mdui.$;
     circumference: 0
   };
 
+  var reloadScrollState = {
+    key: '__top_reload_scroll__',
+    topThreshold: 16,
+    correctionThreshold: 24
+  };
+
   function normalizeUrl(url) {
     if (!url) return '';
     if (url.indexOf('//') === 0) return window.location.protocol + url;
@@ -81,6 +87,49 @@ var $$ = mdui.$;
       needsGallery: pageType === 'gallery' || !!document.querySelector('[data-fancybox]'),
       hasArticleImages: !!document.querySelector('#main article .mdui-card-content img')
     };
+  }
+
+  function getNavigationType() {
+    var entry = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+    if (entry && entry.type) return entry.type;
+    if (performance.navigation && performance.navigation.type === 1) return 'reload';
+    return 'navigate';
+  }
+
+  function persistScrollPosition() {
+    try {
+      sessionStorage.setItem(reloadScrollState.key, JSON.stringify({
+        url: window.location.pathname + window.location.search,
+        y: window.scrollY || window.pageYOffset || 0
+      }));
+    } catch (e) {}
+  }
+
+  function normalizeReloadScroll() {
+    if (getNavigationType() !== 'reload') return;
+
+    var saved = null;
+    try {
+      saved = JSON.parse(sessionStorage.getItem(reloadScrollState.key) || 'null');
+    } catch (e) {
+      saved = null;
+    }
+
+    if (!saved) return;
+    if (saved.url !== window.location.pathname + window.location.search) return;
+    if (saved.y > reloadScrollState.topThreshold) return;
+
+    function snapToTop() {
+      if ((window.scrollY || window.pageYOffset || 0) <= reloadScrollState.correctionThreshold) {
+        window.scrollTo(0, 0);
+      }
+    }
+
+    snapToTop();
+    requestAnimationFrame(snapToTop);
+    setTimeout(snapToTop, 80);
+    setTimeout(snapToTop, 240);
+    setTimeout(snapToTop, 600);
   }
 
   function clearLifecycleTimers() {
@@ -430,6 +479,8 @@ var $$ = mdui.$;
     var container = document.getElementById('gotop-container');
     var ring = document.querySelector('.progress-ring');
     if (!container) return;
+
+    persistScrollPosition();
 
     var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
     if (scrollTop > 20) {
@@ -850,6 +901,8 @@ var $$ = mdui.$;
       }
     } catch (e) {}
 
+    normalizeReloadScroll();
+    persistScrollPosition();
     scheduleGotopUpdate();
   }
 
@@ -879,6 +932,8 @@ var $$ = mdui.$;
   }
 
   document.addEventListener('page:phase', handlePagePhase);
+  window.addEventListener('pagehide', persistScrollPosition);
+  window.addEventListener('beforeunload', persistScrollPosition);
 
   window.reinitPageComponents = function () {
     runPageLifecycle('reinit');

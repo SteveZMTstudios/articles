@@ -665,9 +665,9 @@ thislink: false
 
     function buildLinkMarkup(urlObject, schemeState) {
       return `
-        <a href="#" id="redirect-copy-link" class="redirect-link" >
+        <button href="#" id="redirect-copy-link" class="mdui-card mdui-ripple redirect-link" style="text-decoration: none;">
           ${buildSchemeMarkup(schemeState)}${buildHostMarkup(urlObject)}${buildPathMarkup(urlObject)}
-        </a>
+        </button>
       `;
     }
 
@@ -875,8 +875,8 @@ thislink: false
         <p class="redirect-warning">您将要访问的链接不属于老史尬侃或 stevezmt.top ，请注意您的账号和财产安全。</p>
 
         <div class="redirect-actions">
-          <button id="redirect-continue" type="button" class="mdui-btn mdui-btn-dense mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons" translate="no">open_in_new</i>继续访问</button>
-          <button id="redirect-back" type="button" class="mdui-btn mdui-btn-dense mdui-ripple"><i class="mdui-icon material-icons" translate="no">arrow_back</i>返回</button>
+          <button id="redirect-continue" type="button" class="mdui-btn mdui-btn-dense mdui-color-theme-accent mdui-ripple mdui-btn-block"><i class="mdui-icon material-icons" translate="no">open_in_new</i>继续访问</button>
+          <button id="redirect-back" type="button" class="mdui-btn mdui-btn-dense mdui-ripple mdui-btn-block"><i class="mdui-icon material-icons" translate="no">arrow_back</i>返回</button>
         </div>
       `;
 
@@ -948,7 +948,7 @@ thislink: false
     <div class="redirect-hero" aria-hidden="true">
       <span class="redirect-hero-icon redirect-hero-icon-linked"><span class="redirect-icon-placeholder" aria-hidden="true"></span></span>
       <span class="redirect-hero-icon redirect-hero-icon-linked"><span class="redirect-mdi-icon" aria-hidden="true" style="--mdi-url:url('./mdi/web-clock.svg')"></span></span>
-      <span class="redirect-hero-icon"><i class="mdui-icon material-icons mdui-spinner" translate="no">autorenew</i></span>
+      <span class="redirect-hero-icon"><i class="mdui-icon material-icons mdui-spinner mdui-spinner-colorful" translate="no">autorenew</i></span>
     </div>
     <p mdui-tooltip="{content: '若加载的时间过长，请刷新网页'}">正在加载链接详细信息...</p>
   </div>

@@ -15,125 +15,228 @@ qrcode:
 
 
 <style>
-.friends-container{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;padding:20px}
-.friend-card{background: #ffffff1a;border-radius:10px;box-shadow:0 4px 8px rgba(0,0,0,0.1);overflow:hidden;width:200px;text-align:center}
-.card-image{height:120px;overflow:hidden}
-.card-image img{width:100%;height:120px;object-fit:cover;display:block}
-.friend-info{padding:15px}
-.friend-info h3{margin:0;font-size:1.2em;}
-.friend-info p{color:var(--text-color-secondary, #a8a7a7ff)}
-.friend-info a{color:#3498db;text-decoration:none}
+.friends-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  justify-content: center;
+  gap: 20px;
+  padding: 20px 0;
+}
+.friend-card {
+  border-radius: 4px !important; /* Material Design 2 default corner */
+  background: var(--mdui-theme-surface, #fff);
+  overflow: hidden;
+}
+.friend-card .mdui-card-media {
+  aspect-ratio: 4 / 3;
+}
+.friend-card .mdui-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.friend-card .mdui-card-primary {
+  padding: 16px 16px 12px 16px;
+}
+.friend-card .mdui-card-primary-title {
+  font-size: 1.15em;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.friend-card .mdui-card-primary-subtitle {
+  font-size: 0.9em;
+  opacity: 0.85;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.friend-card .mdui-card-actions {
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 8px;
+  line-height: 1;
+}
+/* 修复主题自带 a 标签下划线和基线对齐导致按钮视觉偏差 */
+.friend-card .mdui-card-actions .mdui-btn::before {
+  display: none !important;
+}
+.friend-card .mdui-card-actions .mdui-btn {
+  margin: 0;
+  vertical-align: middle !important;
+  border-radius: 4px;
+  font-weight: 500;
+  letter-spacing: .0892857143em;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, .87) !important;
+}
+.mdui-theme-layout-dark .friend-card .mdui-card-actions .mdui-btn {
+  color: rgba(255, 255, 255, .88) !important;
+}
+
+@media (max-width: 600px) {
+  .friends-container {
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+  }
+  .friend-card .mdui-card-media {
+  aspect-ratio: 16 / 9;
+  }
+
+}
 </style>
 
 <div class="friends-container">
-  <div class="friend-card  mdui-ripple">
-    <div class="card-image">
-        <img src="https://blog.canyie.top/data/image/avatar_new.jpg" alt="残页的小博客">
+  <div class="mdui-card friend-card mdui-hoverable">
+    <div class="mdui-card-media">
+        <img src="https://blog.canyie.top/data/image/avatar_new.jpg" alt="残页的小博客" loading="lazy">
+        <div class="mdui-card-media-covered">
+          <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title">残页的小博客</div>
+            <div class="mdui-card-primary-subtitle">#Android天才 巨佬</div>
+          </div>
+        </div>
     </div>
-    <div class="friend-info">
-      <h3>残页的小博客</h3>
-      <p>#Android天才 巨佬</p>
-      <a href="https://blog.canyie.top/">访问网站</a>
+    <div class="mdui-card-actions">
+      <a href="https://blog.canyie.top/" target="_blank" class="mdui-btn mdui-ripple mdui-text-color-theme-accent">访问网站</a>
     </div>
   </div>
   
-  <div class="friend-card  mdui-ripple">
-    <div class="card-image ">
-        <img src="/friends/listder.jpg" alt="listder's blog">
+  <div class="mdui-card friend-card mdui-hoverable">
+    <div class="mdui-card-media">
+        <img src="/friends/listder.jpg" alt="listder's blog" loading="lazy">
+        <div class="mdui-card-media-covered">
+          <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title">listder's blog</div>
+            <div class="mdui-card-primary-subtitle">I'm lolicon!</div>
+          </div>
+        </div>
     </div>
-    <div class="friend-info">
-      <h3>listder's blog</h3>
-      <p>I'm lolicon!</p>
-      <a href="https://blog.listder.xyz/">访问网站</a>
-    </div>
-  </div>
-
-   <div class="friend-card  mdui-ripple">
-    <div class="card-image">
-        <img src="https://bu.dusays.com/2024/10/25/671b2438203a6.gif" alt="Elykia">
-    </div>
-    <div class="friend-info">
-      <h3>Elykia</h3>
-      <p>致以无暇之人</p>
-      <a href="https://blog.elykia.cn/">访问网站</a>
+    <div class="mdui-card-actions">
+      <a href="https://blog.listder.xyz/" target="_blank" class="mdui-btn mdui-ripple mdui-text-color-theme-accent">访问网站</a>
     </div>
   </div>
 
-  <div class="friend-card mdui-ripple">
-    <div class="card-image">
-        <img src="https://s3.ax1x.com/2021/01/31/yEfCCR.png" alt="西行妖">
+  <div class="mdui-card friend-card mdui-hoverable">
+    <div class="mdui-card-media">
+        <img src="https://bu.dusays.com/2024/10/25/671b2438203a6.gif" alt="Elykia" loading="lazy">
+        <div class="mdui-card-media-covered">
+          <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title">Elykia</div>
+            <div class="mdui-card-primary-subtitle">致以无暇之人</div>
+          </div>
+        </div>
     </div>
-    <div class="friend-info">
-      <h3>西行妖</h3>
-      <p>人生五十年，如梦亦如幻</p>
-      <a href="https://my.toho.red">访问网站</a>
+    <div class="mdui-card-actions">
+      <a href="https://blog.elykia.cn/" target="_blank" class="mdui-btn mdui-ripple mdui-text-color-theme-accent">访问网站</a>
     </div>
   </div>
 
-  <!-- <div class="friend-card  mdui-ripple" >
-    <div style="height: 120px; overflow: hidden;">
-        <img src="https://cdn.lar.moe/static/avatar/me.webp" alt="花と詩" style="width: 100%; height: 120px; object-fit: cover;">
+  <div class="mdui-card friend-card mdui-hoverable">
+    <div class="mdui-card-media">
+        <img src="https://s3.ax1x.com/2021/01/31/yEfCCR.png" alt="西行妖" loading="lazy">
+        <div class="mdui-card-media-covered">
+          <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title">西行妖</div>
+            <div class="mdui-card-primary-subtitle">人生五十年，如梦亦如幻</div>
+          </div>
+        </div>
     </div>
-    <div class="friend-info" style="padding: 15px;">
-      <h3 style="margin: 0; font-size: 1.2em;  color: var(--text-color, #000);">花と詩</h3>
-      <p style="color: #666;">Hana to Uta</p>
-      <a href="https://lar.moe/" style="color: #3498db; text-decoration: none;">访问网站</a>
+    <div class="mdui-card-actions">
+      <a href="https://my.toho.red" target="_blank" class="mdui-btn mdui-ripple mdui-text-color-theme-accent">访问网站</a>
+    </div>
+  </div>
+
+  <!-- <div class="mdui-card friend-card mdui-hoverable">
+    <div class="mdui-card-media">
+        <img src="https://cdn.lar.moe/static/avatar/me.webp" alt="花と詩" style="object-fit: cover;" loading="lazy">
+        <div class="mdui-card-media-covered">
+          <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title">花と詩</div>
+            <div class="mdui-card-primary-subtitle">Hana to Uta</div>
+          </div>
+        </div>
+    </div>
+    <div class="mdui-card-actions">
+      <a href="https://lar.moe/" target="_blank" class="mdui-btn mdui-ripple mdui-text-color-theme-accent">访问网站</a>
     </div>
   </div> -->
   <!-- Address Unreachable at 2025-09-20! Please Contact with us. -->
 
-
-  <div class="friend-card mdui-ripple">
-    <div class="card-image">
-        <img src="/friends/piowonsler.jpg" alt="TuskedEvening0">
+  <div class="mdui-card friend-card mdui-hoverable">
+    <div class="mdui-card-media">
+        <img src="/friends/piowonsler.jpg" alt="TuskedEvening0" loading="lazy">
+        <div class="mdui-card-media-covered">
+          <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title">TuskedEvening0</div>
+            <div class="mdui-card-primary-subtitle">Not too freedom nor too correct.</div>
+          </div>
+        </div>
     </div>
-    <div class="friend-info">
-      <h3>TuskedEvening0</h3>
-      <p>Not too freedom nor too correct.</p>
-      <a href="https://tuskede0.top/">访问网站</a>
-    </div>
-  </div>
-
-  <div class="friend-card  mdui-ripple">
-    <div class="card-image">
-        <img src="https://zhmoegirl.com/favicon.ico" alt="InternetBugs的个人小站">
-    </div>
-    <div class="friend-info">
-      <h3>InternetBugs的个人小站</h3>
-      <p>一个什么都没有的小博客</p>
-      <a href="https://zhmoegirl.com/">访问网站</a>
+    <div class="mdui-card-actions">
+      <a href="https://tuskede0.top/" target="_blank" class="mdui-btn mdui-ripple mdui-text-color-theme-accent">访问网站</a>
     </div>
   </div>
 
-  <div class="friend-card  mdui-ripple">
-    <div class="card-image">
-        <img src="https://sin.moe/api/v2/objects/avatar/kf9ppqa68kkdxf4rnr.jpeg" alt="🍋小T">
+  <!-- <div class="mdui-card friend-card mdui-hoverable">
+    <div class="mdui-card-media">
+        <img src="https://zhmoegirl.com/favicon.ico" alt="InternetBugs的个人小站" loading="lazy">
+        <div class="mdui-card-media-covered">
+          <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title">InternetBugs的个人小站</div>
+            <div class="mdui-card-primary-subtitle">一个什么都没有的小博客</div>
+          </div>
+        </div>
     </div>
-    <div class="friend-info">
-      <h3>🍋小T</h3>
-      <p>あなたと居たいままで</p>
-      <a href="https://sin.moe/">访问网站</a>
+    <div class="mdui-card-actions">
+      <a href="https://zhmoegirl.com/" target="_blank" class="mdui-btn mdui-ripple mdui-text-color-theme-accent">访问网站</a>
+    </div>
+  </div> -->
+
+  <!-- <div class="mdui-card friend-card mdui-hoverable">
+    <div class="mdui-card-media">
+        <img src="https://sin.moe/api/v2/objects/avatar/kf9ppqa68kkdxf4rnr.jpeg" alt="🍋小T" loading="lazy">
+        <div class="mdui-card-media-covered">
+          <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title">🍋小T</div>
+            <div class="mdui-card-primary-subtitle">あなたと居たいままで</div>
+          </div>
+        </div>
+    </div>
+    <div class="mdui-card-actions">
+      <a href="https://sin.moe/" target="_blank" class="mdui-btn mdui-ripple mdui-text-color-theme-accent">访问网站</a>
+    </div>
+  </div> -->
+
+  <div class="mdui-card friend-card mdui-hoverable">
+    <div class="mdui-card-media">
+        <img src="https://cos.zyglq.cn/static/web-logo.jpg" alt="资源管理器博客" loading="lazy">
+        <div class="mdui-card-media-covered">
+          <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title">资源管理器博客</div>
+            <div class="mdui-card-primary-subtitle">心中有光，对立重伤</div>
+          </div>
+        </div>
+    </div>
+    <div class="mdui-card-actions">
+      <a href="https://www.zyglq.cn/" target="_blank" class="mdui-btn mdui-ripple mdui-text-color-theme-accent">访问网站</a>
     </div>
   </div>
 
-  <div class="friend-card  mdui-ripple">
-    <div class="card-image">
-        <img src="https://cos.zyglq.cn/static/web-logo.jpg" alt="资源管理器博客">
+  <div class="mdui-card friend-card mdui-hoverable">
+    <div class="mdui-card-media">
+        <img src="https://lfs.libmbr.com/assets/pics/LG4v5Savatar180px.webp" alt="MBRjun-Blog" loading="lazy">
+        <div class="mdui-card-media-covered">
+          <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title">MBRjun-Blog</div>
+            <div class="mdui-card-primary-subtitle">我们生活在大地上，但我们的梦想超越天空</div>
+          </div>
+        </div>
     </div>
-    <div class="friend-info">
-      <h3>资源管理器博客</h3>
-      <p>心中有光，对立重伤</p>
-      <a href="https://www.zyglq.cn/">访问网站</a>
-    </div>
-  </div>
-  <div class="friend-card  mdui-ripple">
-    <div class="card-image">
-        <img src="https://lfs.libmbr.com/assets/pics/LG4v5Savatar180px.webp" alt="MBRjun-Blog">
-    </div>
-    <div class="friend-info">
-      <h3>MBRjun-Blog</h3>
-      <p>我们生活在大地上，但我们的梦想超越天空</p>
-      <a href="//www.libmbr.com/">访问网站</a>
+    <div class="mdui-card-actions">
+      <a href="https://www.libmbr.com/" target="_blank" class="mdui-btn mdui-ripple mdui-text-color-theme-accent">访问网站</a>
     </div>
   </div>
 
@@ -141,14 +244,18 @@ qrcode:
   <!-- 可以继续添加更多友链卡片 -->
   <!-- SAMPLE --
 
-  <!-- <div class="friend-card  mdui-ripple">
-    <div class="card-image">
-        <img src="<link:图片链接>" alt="<name:博客名称>">
+  <!-- <div class="mdui-card friend-card mdui-hoverable">
+    <div class="mdui-card-media">
+        <img src="<link:图片链接>" alt="<name:博客名称>" loading="lazy">
+        <div class="mdui-card-media-covered">
+          <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title"><name:博客名称></div>
+            <div class="mdui-card-primary-subtitle"><description:不超过15字的简介></div>
+          </div>
+        </div>
     </div>
-    <div class="friend-info">
-      <h3><name:博客名称></h3>
-      <p><description:不超过15字的简介></p>
-      <a href="<link:站点链接>">访问网站</a>
+    <div class="mdui-card-actions">
+      <a href="<link:站点链接>" target="_blank" class="mdui-btn mdui-ripple mdui-text-color-theme-accent">访问网站</a>
     </div>
   </div> --> 
 

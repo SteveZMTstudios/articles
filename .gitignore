@@ -12,3 +12,4 @@ output/lighthouse-mobile/report.html
 output/trace-home.json
 output/
 .playwright-cli/
+.npm-cache/
