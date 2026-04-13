@@ -524,8 +524,8 @@ var $$ = mdui.$;
       var href = link.getAttribute('href');
       if (!href || !href.startsWith('http')) return;
       if (href.includes('blog.stevezmt.top') || href.includes('stevezmt.top') || href.includes('localhost')) return;
-      if (href.includes('/redirect?goto=')) return;
-      link.href = '/redirect?goto=' + encodeURIComponent(href);
+      if (href.includes('/redirect/?goto=')) return;
+      link.href = '/redirect/?goto=' + encodeURIComponent(href);
       link.target = '_blank';
     });
   }
