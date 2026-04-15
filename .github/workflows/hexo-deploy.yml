@@ -55,22 +55,23 @@ jobs:
       run: |
         RUNNER_IP=$(curl -s https://api.ipify.org)
         echo "runner_ip=$RUNNER_IP" >> $GITHUB_OUTPUT
-        echo "## ⚠️ WeChat IP Whitelist Required" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "**Current GitHub Actions Runner IP:** \`$RUNNER_IP\`" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "```" >> $GITHUB_STEP_SUMMARY
-        echo "$RUNNER_IP" >> $GITHUB_STEP_SUMMARY
-        echo "```" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "### Action Required (Next 3 minutes):" >> $GITHUB_STEP_SUMMARY
-        echo "1. Log in to [WeChat Developer Platform](https://developers.weixin.qq.com/platform/)" >> $GITHUB_STEP_SUMMARY
-        echo "2. Navigate: \"My Services\" → \"Official Account\" → \"Development Keys\"" >> $GITHUB_STEP_SUMMARY
-        echo "3. Find **API IP Whitelist** and click \"Add\"" >> $GITHUB_STEP_SUMMARY
-        echo "4. Enter this IP: **\`$RUNNER_IP\`**" >> $GITHUB_STEP_SUMMARY
-        echo "5. Save and wait for this workflow to auto-retry in 3 minutes" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "⏳ Workflow will automatically retry sync after 3 minutes." >> $GITHUB_STEP_SUMMARY
+        echo ""
+        echo "=========================================="
+        echo "⚠️  WeChat IP Whitelist Required"
+        echo "=========================================="
+        echo ""
+        echo "Current GitHub Actions Runner IP: $RUNNER_IP"
+        echo ""
+        echo "Action Required (Next 3 minutes):"
+        echo "1. Log in to WeChat Developer Platform"
+        echo "2. Navigate: My Services → Official Account → Development Keys"
+        echo "3. Find API IP Whitelist section and click Add"
+        echo "4. Enter this IP: $RUNNER_IP"
+        echo "5. Save and wait for this workflow to auto-retry in 3 minutes"
+        echo ""
+        echo "⏳  Workflow will automatically retry sync after 3 minutes."
+        echo "=========================================="
+        echo ""
 
 
     - name: Install Theme dependencies (if any)

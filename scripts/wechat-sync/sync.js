@@ -125,6 +125,12 @@ class WeChatSyncExecutor {
       // 2. 上传图片到微信，收集 URL 映射
       const imageUrlMap = {};
       for (const imgPath of imagePaths) {
+        // 跳过绝对 URL（如 https://example.com/image.jpg）
+        if (imgPath.startsWith('http://') || imgPath.startsWith('https://')) {
+          this.logger.debug(`[Sync]   Skipping external image: ${imgPath}`);
+          continue;
+        }
+
         try {
           const fullImgPath = path.join(this.sourceDir, imgPath);
           if (fs.existsSync(fullImgPath)) {

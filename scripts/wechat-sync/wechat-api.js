@@ -118,8 +118,28 @@ class WeChatAPIClient {
     
     try {
       const fileBuffer = fs.readFileSync(imagePath);
+      
+      // 检查文件大小（微信限制10MB）
+      if (fileBuffer.length === 0) {
+        throw new Error('Image file is empty');
+      }
+      if (fileBuffer.length > 10 * 1024 * 1024) {
+        throw new Error(`Image file too large (${fileBuffer.length} bytes > 10MB)`);
+      }
+
+      // 根据文件扩展名判断 Content-Type
+      const ext = path.extname(imagePath).toLowerCase();
+      let contentType = 'image/jpeg';
+      if (ext === '.png') {
+        contentType = 'image/png';
+      } else if (ext === '.gif') {
+        contentType = 'image/gif';
+      } else if (ext === '.webp') {
+        contentType = 'image/webp';
+      }
+
       const result = await this._httpPost(url, fileBuffer, {
-        'Content-Type': 'image/jpeg',
+        'Content-Type': contentType,
       });
 
       if (result.errcode) {
