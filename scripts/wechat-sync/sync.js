@@ -70,6 +70,15 @@ class WeChatSyncExecutor {
         return this._finalize();
       }
 
+      // 从清单中合并配置
+      if (manifest.wechat_config) {
+        this.config = {
+          ...this.config,
+          ...manifest.wechat_config,
+        };
+        this.logger.debug('[Sync] Loaded wechat config from manifest');
+      }
+
       this.report.total = manifest.posts.length;
 
       // 诊断阶段
@@ -122,7 +131,36 @@ class WeChatSyncExecutor {
       // 1. 读取并渲染 markdown
       const { html, images: imagePaths } = this.renderer.readAndRender(source_path);
 
-      // 2. 上传图片到微信，收集 URL 映射
+      // 2. 处理头图
+      let coverUrl = null;
+      const thumbnail = post.thumbnail; // 前置条件中的头图
+      
+      try {
+        if (thumbnail) {
+          // 使用文章指定的头图
+          const thumbnailPath = path.join(this.sourceDir, thumbnail);
+          if (fs.existsSync(thumbnailPath)) {
+            coverUrl = await this.apiClient.uploadContentImage(thumbnailPath);
+            this.logger.info(`[Sync]   Cover uploaded: ${thumbnail} -> ${coverUrl}`);
+          } else {
+            this.logger.warn(`[Sync]   Thumbnail not found: ${thumbnailPath}, will use random cover`);
+          }
+        }
+        
+        // 如果无头图，使用随机头图
+        if (!coverUrl && this.config.cover?.use_default_when_missing) {
+          const randomCover = await this._getRandomCover();
+          if (randomCover) {
+            coverUrl = await this.apiClient.uploadContentImage(randomCover);
+            this.logger.info(`[Sync]   Random cover uploaded: ${coverUrl}`);
+          }
+        }
+      } catch (err) {
+        // 头图上传失败不中断同步，仅记录警告
+        this.logger.warn(`[Sync]   Failed to upload cover: ${err.message}`);
+      }
+
+      // 3. 上传正文图片到微信，收集 URL 映射
       const imageUrlMap = {};
       for (const imgPath of imagePaths) {
         // 跳过绝对 URL（如 https://example.com/image.jpg）
@@ -146,13 +184,24 @@ class WeChatSyncExecutor {
         }
       }
 
-      // 3. 替换 HTML 中的图片 URL
+      // 4. 替换 HTML 中的图片 URL
       let finalHtml = html;
       if (Object.keys(imageUrlMap).length > 0) {
         finalHtml = this.renderer.replaceImageUrls(html, imageUrlMap);
       }
 
-      // 4. 创建草稿
+      // 5. 添加前缀和后缀
+      const prefix = this.config.article_prefix ? this.config.article_prefix.trim() : '';
+      const suffix = this.config.article_suffix ? this.config.article_suffix.trim() : '';
+      
+      if (prefix) {
+        finalHtml = `<p>${prefix.replace(/\n/g, '</p><p>')}</p>\n${finalHtml}`;
+      }
+      if (suffix) {
+        finalHtml = `${finalHtml}\n<p>${suffix.replace(/\n/g, '</p><p>')}</p>`;
+      }
+
+      // 6. 创建草稿
       const draftItem = {
         title: title,
         author: this.config.author || 'Steve ZMT',
@@ -162,17 +211,23 @@ class WeChatSyncExecutor {
         content_source_url: `${this.config.origin}${post.permalink}`, // 原文链接
       };
 
+      // 如果有头图，添加到草稿
+      if (coverUrl) {
+        draftItem.thumb_media_id = coverUrl; // 微信 API 需要使用 media_id，但如果是 URL 可能需要调整
+      }
+
       const draftResult = await this.apiClient.addDraft(draftItem);
       
       this.logger.info(`[Sync]   Draft created: media_id=${draftResult.media_id}`);
 
-      // 5. 记录成功
+      // 7. 记录成功
       this.report.succeeded += 1;
       this.report.posts.push({
         uuid: uuid,
         title: title,
         status: 'success',
         media_id: draftResult.media_id,
+        cover_url: coverUrl,
         images_uploaded: Object.keys(imageUrlMap).length,
       });
 
@@ -186,6 +241,41 @@ class WeChatSyncExecutor {
         status: 'failed',
         error: err.message,
       });
+    }
+  }
+
+  /**
+   * 获取随机头图
+   */
+  _getRandomCover() {
+    try {
+      const coverDir = this.config.cover?.default_cover_dir || '/images/random';
+      const fullCoverDir = path.join(this.sourceDir, coverDir);
+      
+      if (!fs.existsSync(fullCoverDir)) {
+        this.logger.warn(`[Sync]   Random cover directory not found: ${fullCoverDir}`);
+        return null;
+      }
+
+      const files = fs.readdirSync(fullCoverDir);
+      const imageFiles = files.filter(f => 
+        /\.(jpg|jpeg|png|gif|webp)$/i.test(f)
+      );
+
+      if (imageFiles.length === 0) {
+        this.logger.warn(`[Sync]   No image files found in cover directory: ${fullCoverDir}`);
+        return null;
+      }
+
+      // 随机选择一张
+      const randomFile = imageFiles[Math.floor(Math.random() * imageFiles.length)];
+      const randomPath = path.join(fullCoverDir, randomFile);
+      
+      this.logger.debug(`[Sync]   Selected random cover: ${randomFile}`);
+      return randomPath;
+    } catch (err) {
+      this.logger.warn(`[Sync]   Failed to get random cover: ${err.message}`);
+      return null;
     }
   }
 
@@ -253,19 +343,29 @@ class WeChatSyncExecutor {
 async function main() {
   const appid = process.env.WECHAT_APPID;
   const appsecret = process.env.WECHAT_APPSECRET;
-  const author = process.env.WECHAT_AUTHOR || 'Steve ZMT';
-  const origin = process.env.WECHAT_ORIGIN || 'https://blog.stevezmt.top';
 
   if (!appid || !appsecret) {
     console.error('[Sync] Error: WECHAT_APPID and WECHAT_APPSECRET environment variables are required');
     process.exit(1);
   }
 
-  const executor = new WeChatSyncExecutor({
+  // 默认配置
+  let wechatConfig = {
     appid,
     appsecret,
-    author,
-    origin,
+    author: process.env.WECHAT_AUTHOR || 'Steve ZMT',
+    origin: process.env.WECHAT_ORIGIN || 'https://blog.stevezmt.top',
+    article_prefix: '',
+    article_suffix: '',
+    cover: {
+      use_default_when_missing: true,
+      default_cover_dir: '/images/random',
+    },
+    content: {},
+  };
+
+  const executor = new WeChatSyncExecutor({
+    ...wechatConfig,
     baseDir: process.cwd(),
     sourceDir: 'source',
   });

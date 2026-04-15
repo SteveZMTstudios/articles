@@ -72,6 +72,7 @@ async function exportSyncList() {
         tags: post.tags ? post.tags.map(t => t.name) : [],
         permalink: post.permalink || '',
         excerpt: post.excerpt || post.description || '',
+        thumbnail: post.thumbnail || post.cover || '',  // 从前置条件读取头图
         source_path: post.source,        // 相对于 source/ 的相对路径
         content_raw: post._content || '', // 原始 markdown 内容（如果可用）
       });
@@ -83,6 +84,17 @@ async function exportSyncList() {
     generated_at: new Date().toISOString(),
     total_posts: postsToSync.length,
     posts: postsToSync,
+    // 包含微信同步配置（排除敏感信息如 appid/appsecret）
+    wechat_config: {
+      article_prefix: config.article_prefix || '',
+      article_suffix: config.article_suffix || '',
+      cover: config.cover || {
+        use_default_when_missing: true,
+        default_cover_dir: '/images/random',
+      },
+      origin: config.origin || hexo.config.url,
+      author: config.author || hexo.config.author,
+    },
   };
 
   fs.writeFileSync(

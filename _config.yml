@@ -192,6 +192,15 @@ wechat_sync:
   author: ${WECHAT_AUTHOR}       # 微信公众号作者名（可覆盖全局 author）
   origin: https://blog.stevezmt.top  # 博客原文链接的基础 URL
   
+  # 文章装饰
+  article_prefix: |             # 转发文章前的前缀段落（如：免责声明、导读等）
+  article_suffix: |             # 转发文章后的后缀段落（如：原文链接、交流方式等）
+  
+  # 头图配置
+  cover:
+    use_default_when_missing: true              # 文章无头图时，使用默认随机头图
+    default_cover_dir: /images/random           # 默认头图目录（相对 source 目录）
+  
   # 内容处理策略
   content:
     upload_images: true                    # 是否上传图片到微信素材库并替换 URL
