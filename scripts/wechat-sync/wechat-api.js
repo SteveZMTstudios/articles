@@ -203,6 +203,152 @@ class WeChatAPIClient {
   }
 
   /**
+   * 获取所有草稿列表（分页）
+   * 返回 [{ media_id, title, digest, ... }]
+   */
+  async getAllDrafts() {
+    const token = await this.getAccessToken();
+    const allDrafts = [];
+    let offset = 0;
+    const limit = 20;
+
+    try {
+      while (true) {
+        const url = `https://api.weixin.qq.com/cgi-bin/draft/getsummary?access_token=${token}`;
+        const result = await this._httpPostJSON(url, {
+          type: 'news',
+          offset: offset,
+          count: limit,
+        });
+
+        if (result.errcode) {
+          throw new WeChatAPIError(
+            `Failed to get draft summary: ${result.errmsg}`,
+            result.errcode
+          );
+        }
+
+        if (!result.item || result.item.length === 0) {
+          break;
+        }
+
+        // 提取每篇草稿的标题和 media_id
+        for (const item of result.item) {
+          if (item.content && item.content.news_item && item.content.news_item.length > 0) {
+            const news = item.content.news_item[0];
+            allDrafts.push({
+              media_id: item.media_id,
+              title: news.title,
+              digest: news.digest,
+              author: news.author,
+              create_time: item.create_time,
+            });
+          }
+        }
+
+        offset += limit;
+        if (result.item_count < limit) {
+          break;
+        }
+      }
+
+      return allDrafts;
+    } catch (err) {
+      if (err instanceof WeChatAPIError) {
+        throw err;
+      }
+      throw new WeChatAPIError(`Failed to get all drafts: ${err.message}`);
+    }
+  }
+
+  /**
+   * 获取所有已发布的素材（分页）
+   * 返回 [{ media_id, title, digest, ... }]
+   */
+  async getAllPublishedMaterials() {
+    const token = await this.getAccessToken();
+    const allMaterials = [];
+    let offset = 0;
+    const limit = 20;
+
+    try {
+      while (true) {
+        const url = `https://api.weixin.qq.com/cgi-bin/material/batchget?access_token=${token}`;
+        const result = await this._httpPostJSON(url, {
+          type: 'news',
+          offset: offset,
+          count: limit,
+        });
+
+        if (result.errcode) {
+          throw new WeChatAPIError(
+            `Failed to get published materials: ${result.errmsg}`,
+            result.errcode
+          );
+        }
+
+        if (!result.item || result.item.length === 0) {
+          break;
+        }
+
+        // 提取每篇已发布素材的标题和 media_id
+        for (const item of result.item) {
+          if (item.content && item.content.news_item && item.content.news_item.length > 0) {
+            const news = item.content.news_item[0];
+            allMaterials.push({
+              media_id: item.media_id,
+              title: news.title,
+              digest: news.digest,
+              author: news.author,
+              create_time: item.create_time,
+            });
+          }
+        }
+
+        offset += limit;
+        if (result.item_count < limit) {
+          break;
+        }
+      }
+
+      return allMaterials;
+    } catch (err) {
+      if (err instanceof WeChatAPIError) {
+        throw err;
+      }
+      throw new WeChatAPIError(`Failed to get published materials: ${err.message}`);
+    }
+  }
+
+  /**
+   * 删除草稿
+   */
+  async deleteDraft(mediaId) {
+    const token = await this.getAccessToken();
+    const url = `https://api.weixin.qq.com/cgi-bin/draft/delete?access_token=${token}`;
+
+    try {
+      const result = await this._httpPostJSON(url, {
+        media_id: mediaId,
+      });
+
+      if (result.errcode) {
+        throw new WeChatAPIError(
+          `Failed to delete draft: ${result.errmsg}`,
+          result.errcode
+        );
+      }
+
+      return true;
+    } catch (err) {
+      if (err instanceof WeChatAPIError) {
+        throw err;
+      }
+      throw new WeChatAPIError(`Failed to delete draft: ${err.message}`);
+    }
+  }
+
+  /**
    * 诊断：测试 API 可用性
    */
   async diagnose() {

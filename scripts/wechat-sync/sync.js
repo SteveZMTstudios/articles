@@ -54,6 +54,21 @@ class WeChatSyncExecutor {
     };
 
     this.syncedUuids = [];
+    
+    // 状态管理
+    this.state = {
+      last_sync_at: null,
+      synced_uuids: [],
+      uuid_to_media_id: {}, // uuid -> { media_id, title, status }
+    };
+    
+    // 微信后台现有稿件缓存（title -> { media_id, status }）
+    this.wechatTitleMap = {};
+    
+    // 被强制同步的 uuid 列表
+    this.forceUuids = new Set(
+      (process.env.WECHAT_FORCE_UUIDS || '').split(',').filter(Boolean)
+    );
   }
 
   /**
@@ -94,6 +109,12 @@ class WeChatSyncExecutor {
       // 诊断阶段
       await this._diagnose();
 
+      // 加载本地状态（uuid -> media_id 映射）
+      this._loadState();
+
+      // 扫描微信后台现有稿件并建立缓存
+      await this._scanWeChatExistingContent();
+
       // 同步各文章
       for (const post of manifest.posts) {
         await this._syncPost(post);
@@ -130,6 +151,63 @@ class WeChatSyncExecutor {
   }
 
   /**
+   * 加载本地状态文件
+   */
+  _loadState() {
+    const stateFilePath = path.join(this.baseDir, STATE_FILE);
+    if (fs.existsSync(stateFilePath)) {
+      try {
+        const content = fs.readFileSync(stateFilePath, 'utf8');
+        const loaded = JSON.parse(content);
+        this.state.last_sync_at = loaded.last_sync_at;
+        this.state.synced_uuids = loaded.synced_uuids || [];
+        this.state.uuid_to_media_id = loaded.uuid_to_media_id || {};
+        this.logger.info(`[Sync] Loaded state from ${STATE_FILE}`);
+      } catch (err) {
+        this.logger.warn(`[Sync] Failed to load state file: ${err.message}`);
+      }
+    }
+  }
+
+  /**
+   * 扫描微信后台现有稿件，建立 title 到 media_id 的映射
+   */
+  async _scanWeChatExistingContent() {
+    this.logger.info('[Sync] Scanning WeChat existing drafts and published materials...');
+
+    try {
+      // 获取所有草稿
+      const drafts = await this.apiClient.getAllDrafts();
+      this.logger.debug(`[Sync] Found ${drafts.length} drafts in WeChat`);
+      
+      for (const draft of drafts) {
+        this.wechatTitleMap[draft.title] = {
+          media_id: draft.media_id,
+          status: 'draft',
+          create_time: draft.create_time,
+        };
+      }
+
+      // 获取所有已发布素材
+      const published = await this.apiClient.getAllPublishedMaterials();
+      this.logger.debug(`[Sync] Found ${published.length} published materials in WeChat`);
+      
+      for (const material of published) {
+        this.wechatTitleMap[material.title] = {
+          media_id: material.media_id,
+          status: 'published',
+          create_time: material.create_time,
+        };
+      }
+
+      this.logger.info(`[Sync] Total existing articles in WeChat: ${Object.keys(this.wechatTitleMap).length}`);
+    } catch (err) {
+      this.logger.warn(`[Sync] Failed to scan WeChat content: ${err.message}`);
+      this.logger.warn('[Sync] Will proceed with sync (may create duplicates)');
+    }
+  }
+
+  /**
    * 同步单篇文章
    */
   async _syncPost(post) {
@@ -138,6 +216,43 @@ class WeChatSyncExecutor {
     this.logger.info(`[Sync] Processing post: ${title} (uuid: ${uuid})`);
 
     try {
+      // 0. 检查是否已存在于微信后台
+      const existing = this.wechatTitleMap[title];
+      const isForced = this.forceUuids.has(uuid);
+      
+      if (existing && !isForced) {
+        this.logger.info(
+          `[Sync]   Skipped: Article already exists in WeChat (${existing.status}, media_id=${existing.media_id})`
+        );
+        this.report.skipped += 1;
+        this.report.posts.push({
+          uuid: uuid,
+          title: title,
+          status: 'skipped',
+          reason: `already_${existing.status}`,
+          existing_media_id: existing.media_id,
+        });
+        return;
+      }
+
+      // 如果在强制同步列表中且已存在，删除旧的
+      if (existing && isForced) {
+        try {
+          // 只能删除草稿，已发布的无法删除
+          if (existing.status === 'draft') {
+            await this.apiClient.deleteDraft(existing.media_id);
+            this.logger.info(`[Sync]   Deleted old draft: media_id=${existing.media_id}`);
+            delete this.wechatTitleMap[title];
+          } else {
+            this.logger.warn(
+              `[Sync]   Cannot delete published material (media_id=${existing.media_id}), will create new draft`
+            );
+          }
+        } catch (err) {
+          this.logger.warn(`[Sync]   Failed to delete old draft: ${err.message}, will proceed`);
+        }
+      }
+
       // 1. 读取并渲染 markdown
       const { html, images: imagePaths } = this.renderer.readAndRender(source_path);
 
@@ -287,6 +402,14 @@ class WeChatSyncExecutor {
         images_uploaded: Object.keys(imageUrlMap).length,
       });
 
+      // 更新本地状态：记录 uuid -> media_id 映射
+      this.state.uuid_to_media_id[uuid] = {
+        media_id: draftResult.media_id,
+        title: title,
+        status: 'draft',
+        synced_at: new Date().toISOString(),
+      };
+      
       this.syncedUuids.push(uuid);
     } catch (err) {
       this.logger.error(`[Sync]   Failed: ${err.message}`);
@@ -527,6 +650,7 @@ class WeChatSyncExecutor {
     const state = {
       last_sync_at: new Date().toISOString(),
       synced_uuids: this.syncedUuids,
+      uuid_to_media_id: this.state.uuid_to_media_id,
       total_synced: this.syncedUuids.length,
     };
     fs.writeFileSync(stateFilePath, JSON.stringify(state, null, 2), 'utf8');
