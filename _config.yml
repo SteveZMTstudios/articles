@@ -183,6 +183,45 @@ service_worker:
   stripPrefix: public
   verbose: true
 
+# WeChat Sync Configuration
+# 本配置控制"文章同步到微信公众号草稿箱"的行为
+wechat_sync:
+  enabled: true                 # 是否启用微信同步功能
+  appid: ${WECHAT_APPID}         # 微信 AppID（通过环境变量注入）
+  appsecret: ${WECHAT_APPSECRET} # 微信 AppSecret（通过环境变量注入）
+  author: ${WECHAT_AUTHOR}       # 微信公众号作者名（可覆盖全局 author）
+  origin: https://blog.stevezmt.top  # 博客原文链接的基础 URL
+  
+  # 内容处理策略
+  content:
+    upload_images: true                    # 是否上传图片到微信素材库并替换 URL
+    keep_original_image_urls: false        # 若 upload_images=false，是否保留原图片 URL（可能被微信拦截）
+    html_tags_whitelist:                   # 正文 HTML 标签白名单
+      - p
+      - h1
+      - h2
+      - h3
+      - h4
+      - h5
+      - h6
+      - a
+      - strong
+      - em
+      - img
+      - ol
+      - ul
+      - li
+      - br
+      - blockquote
+      - code
+      - pre
+  
+  # 同步机制
+  sync:
+    target: draft                # 目标：draft(草稿) 或 publish(直接发布，仅供参考)
+    incremental: true            # 增量同步：仅新增文章，不重复同步
+    max_retries: 3               # 单篇文章失败重试次数
+    timeout_ms: 30000            # 单次 API 调用超时（毫秒）
 
 # Deployment
 ## Docs: //hexo.io/docs/one-command-deployment

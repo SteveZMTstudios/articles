@@ -8,7 +8,9 @@
     "deploy": "hexo deploy",
     "deploy:firebase": "npm run build && npx firebase deploy --only hosting --project your-project-id",
     "server": "hexo server",
-    "test": "hexo clean && hexo generate && hexo server --drafts --watch"
+    "test": "hexo clean && hexo generate && hexo server --drafts --watch",
+    "wechat:sync": "node scripts/wechat-sync/sync.js",
+    "wechat:diagnose": "node -e \"const {WeChatAPIClient} = require('./scripts/wechat-sync/wechat-api'); const c = new WeChatAPIClient({appid: process.env.WECHAT_APPID, appsecret: process.env.WECHAT_APPSECRET, baseDir: process.cwd()}); c.diagnose().then(r => console.log(JSON.stringify(r, null, 2)));\""
   },
   "hexo": {
     "version": "8.1.1"
@@ -42,6 +44,7 @@
     "hexo-renderer-marked": "^7.0.1",
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0",
+    "markdown-it": "^13.0.2",
     "mdui": "^2.1.4",
     "qiniu": "^7.15.1",
     "qrcode": "^1.5.4"

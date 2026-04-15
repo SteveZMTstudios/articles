@@ -63,3 +63,27 @@ jobs:
       run: |
         # Run the exact commands you use locally to ensure consistency
         npm run clean && npm run build && npm run deploy
+
+    - name: Sync posts to WeChat (Optional)
+      id: wechat-sync
+      if: ${{ env.WECHAT_APPID != '' && env.WECHAT_APPSECRET != '' }}
+      env:
+        WECHAT_APPID: ${{ secrets.WECHAT_APPID }}
+        WECHAT_APPSECRET: ${{ secrets.WECHAT_APPSECRET }}
+        WECHAT_AUTHOR: ${{ secrets.WECHAT_AUTHOR || 'Steve ZMT' }}
+        WECHAT_ORIGIN: https://blog.stevezmt.top
+      run: |
+        echo "Starting WeChat sync..."
+        npm run wechat:sync || {
+          echo "WeChat sync failed, but deployment already successful"
+          exit 0
+        }
+
+    - name: Summary
+      if: always()
+      run: |
+        echo "## Deployment Complete" >> $GITHUB_STEP_SUMMARY
+        echo "- Hexo build and deploy: ✅" >> $GITHUB_STEP_SUMMARY
+        if [ -f ".github/wechat-sync-report.json" ]; then
+          echo "- WeChat sync: ✅ (see report)" >> $GITHUB_STEP_SUMMARY
+        fi
