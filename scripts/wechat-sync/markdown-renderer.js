@@ -54,9 +54,13 @@ class MarkdownRenderer {
     
     // 移除 front-matter (YAML)
     const contentWithoutFrontMatter = this._removeFrontMatter(rawContent);
+
+    // 移除潜在控制字符，避免微信接口判定为非法内容
+    const normalizedContent = contentWithoutFrontMatter
+      .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F]/g, '');
     
     // 渲染为 HTML
-    const html = this.md.render(contentWithoutFrontMatter);
+    const html = this.md.render(normalizedContent);
     
     // 清洗 HTML
     const cleanHtml = this._sanitizeHtml(html);
@@ -93,8 +97,16 @@ class MarkdownRenderer {
    * 移除 YAML front-matter
    */
   _removeFrontMatter(content) {
-    const frontMatterRegex = /^---\n([\s\S]*?)\n---\n/;
-    return content.replace(frontMatterRegex, '');
+    if (!content) {
+      return '';
+    }
+
+    // 兼容 UTF-8 BOM + 前导空行 + CRLF/LF
+    let normalized = content.replace(/^\uFEFF/, '');
+    normalized = normalized.replace(/^(?:[ \t]*\r?\n)+/, '');
+
+    const frontMatterRegex = /^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/;
+    return normalized.replace(frontMatterRegex, '');
   }
 
   /**

@@ -267,8 +267,12 @@ class WeChatSyncExecutor {
         draftItem.thumb_media_id = coverMediaId;
       }
 
-      const draftResult = await this.apiClient.addDraft(draftItem);
-      
+      const draftOutcome = await this._createDraftWithFallbacks(draftItem);
+      const draftResult = draftOutcome.result;
+
+      if (draftOutcome.mode !== 'normal') {
+        this.logger.warn(`[Sync]   Draft created with fallback mode: ${draftOutcome.mode}`);
+      }
       this.logger.info(`[Sync]   Draft created: media_id=${draftResult.media_id}`);
 
       // 8. 记录成功
@@ -278,6 +282,7 @@ class WeChatSyncExecutor {
         title: title,
         status: 'success',
         media_id: draftResult.media_id,
+        content_mode: draftOutcome.mode,
         cover_media_id: coverMediaId,
         images_uploaded: Object.keys(imageUrlMap).length,
       });
@@ -402,6 +407,110 @@ class WeChatSyncExecutor {
     }
 
     return out || source.slice(0, 30);
+  }
+
+  async _createDraftWithFallbacks(draftItem) {
+    const attempts = [
+      {
+        mode: 'normal',
+        content: draftItem.content,
+      },
+      {
+        mode: 'strip-inline-style',
+        content: this._stripInlineStyles(draftItem.content),
+      },
+      {
+        mode: 'plain-safe',
+        content: this._toPlainSafeHtml(draftItem.content),
+      },
+    ];
+
+    let lastError = null;
+
+    for (let i = 0; i < attempts.length; i += 1) {
+      const attempt = attempts[i];
+      try {
+        if (i > 0) {
+          this.logger.warn(`[Sync]   Retrying draft with content fallback: ${attempt.mode}`);
+        }
+        const result = await this.apiClient.addDraft({
+          ...draftItem,
+          content: attempt.content,
+        });
+        return { result, mode: attempt.mode };
+      } catch (err) {
+        lastError = err;
+        const canRetry = i < attempts.length - 1 && this._isInvalidContentError(err);
+        if (!canRetry) {
+          throw err;
+        }
+        this.logger.warn(`[Sync]   Draft rejected as invalid content, preparing next fallback. reason=${err.message}`);
+      }
+    }
+
+    throw lastError || new Error('Failed to create draft with unknown error');
+  }
+
+  _isInvalidContentError(err) {
+    const errcode = Number(err?.errcode);
+    const message = (err?.message || '').toLowerCase();
+    return message.includes('invalid content') || errcode === 47001;
+  }
+
+  _stripInlineStyles(html) {
+    return (html || '')
+      .replace(/\sstyle=(['"])[\s\S]*?\1/gi, '')
+      .replace(/\sclass=(['"])[\s\S]*?\1/gi, '')
+      .replace(/\sid=(['"])[\s\S]*?\1/gi, '')
+      .replace(/\sdata-[\w:-]+=(['"])[\s\S]*?\1/gi, '');
+  }
+
+  _toPlainSafeHtml(html) {
+    const images = [];
+    let text = (html || '').replace(/<!--([\s\S]*?)-->/g, ' ');
+
+    text = text.replace(/<img\s+[^>]*src=(['"])([^'"]+)\1[^>]*>/gi, (_, _q, src) => {
+      images.push(src);
+      return `\n[[WECHAT_IMG_${images.length - 1}]]\n`;
+    });
+
+    text = text
+      .replace(/<\/?(h[1-6]|p|div|blockquote|pre|code|li|ul|ol|table|thead|tbody|tr|th|td|section|article)\b[^>]*>/gi, '\n')
+      .replace(/<br\s*\/?\s*>/gi, '\n')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F]/g, ' ')
+      .replace(/\r\n/g, '\n')
+      .replace(/[ \t]+/g, ' ')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+
+    const parts = text.split(/\n\n+/).map(item => item.trim()).filter(Boolean);
+    const paragraphs = parts.map(part => {
+      const escaped = this._escapeHtml(part).replace(/\n/g, '<br>');
+      const withImageSlots = escaped.replace(/\[\[WECHAT_IMG_(\d+)\]\]/g, (_m, idx) => {
+        const src = images[Number(idx)];
+        return src ? `</p><p><img src="${src}" /></p><p>` : '';
+      });
+      return `<p>${withImageSlots}</p>`;
+    });
+
+    let safeHtml = paragraphs.join('\n');
+    if (!safeHtml) {
+      safeHtml = '<p>内容为空</p>';
+    }
+
+    return safeHtml
+      .replace(/<p>\s*<\/p>/g, '')
+      .replace(/(<\/p>\s*<p>){3,}/g, '</p><p>');
+  }
+
+  _escapeHtml(text) {
+    return String(text || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   /**
