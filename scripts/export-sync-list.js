@@ -26,6 +26,16 @@ async function exportSyncList() {
   const outputDir = path.join(hexo.base_dir, '.github');
   const outputFile = path.join(outputDir, 'wechat-posts-to-sync.json');
   const stateFile = path.join(outputDir, 'wechat-sync-state.json');
+  const forceUuids = new Set(
+    (process.env.WECHAT_FORCE_UUIDS || '')
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean)
+  );
+
+  if (forceUuids.size > 0) {
+    hexo.log.info(`[WeChat Sync] Force re-sync enabled for UUIDs: ${Array.from(forceUuids).join(', ')}`);
+  }
 
   // 确保输出目录存在
   if (!fs.existsSync(outputDir)) {
@@ -61,7 +71,7 @@ async function exportSyncList() {
       !post.draft &&
       post.uuid &&
       post.date <= now &&
-      !syncedUuids.has(post.uuid)
+      (!syncedUuids.has(post.uuid) || forceUuids.has(post.uuid))
     ) {
       postsToSync.push({
         uuid: post.uuid,

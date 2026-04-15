@@ -130,8 +130,14 @@ class WeChatAPIClient {
         );
       }
 
+      // uploadimg 接口返回字段是 url（历史兼容 image_url）
+      const imageUrl = result.url || result.image_url;
+      if (!imageUrl) {
+        throw new WeChatAPIError(`Failed to upload content image: missing url in response: ${JSON.stringify(result)}`);
+      }
+
       // 返回图片 URL，可直接用于 HTML 中的 <img src>
-      return result.image_url;
+      return imageUrl;
     } catch (err) {
       if (err instanceof WeChatAPIError) {
         throw err;

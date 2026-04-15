@@ -4,6 +4,11 @@ on:
   pull_request_target:
     types: [closed]
   workflow_dispatch:
+    inputs:
+      wechat_force_uuids:
+        description: "Comma-separated post UUIDs to force re-sync (optional)"
+        required: false
+        default: ""
 
 permissions:
   id-token: write
@@ -91,8 +96,13 @@ jobs:
         fi
 
     - name: Clean, Build and Deploy (match local)
+      env:
+        WECHAT_FORCE_UUIDS: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.wechat_force_uuids || '' }}
       run: |
         # Run the exact commands you use locally to ensure consistency
+        if [ -n "$WECHAT_FORCE_UUIDS" ]; then
+          echo "[WeChat Sync] Force UUIDs: $WECHAT_FORCE_UUIDS"
+        fi
         npm run clean && npm run build && npm run deploy
 
 
@@ -110,10 +120,14 @@ jobs:
       env:
         WECHAT_APPID: ${{ secrets.WECHAT_APPID }}
         WECHAT_APPSECRET: ${{ secrets.WECHAT_APPSECRET }}
-        WECHAT_AUTHOR: ${{ secrets.WECHAT_AUTHOR || 'Steve ZMT' }}
+        WECHAT_AUTHOR: Steve ZMT
         WECHAT_ORIGIN: https://blog.stevezmt.top
+        WECHAT_FORCE_UUIDS: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.wechat_force_uuids || '' }}
       run: |
         echo "Starting WeChat sync..."
+        if [ -n "$WECHAT_FORCE_UUIDS" ]; then
+          echo "[WeChat Sync] Force UUIDs enabled: $WECHAT_FORCE_UUIDS"
+        fi
         npm run wechat:sync || {
           echo "WeChat sync failed, but deployment already successful"
           exit 0

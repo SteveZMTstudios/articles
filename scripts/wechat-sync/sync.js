@@ -187,6 +187,9 @@ class WeChatSyncExecutor {
           const fullImgPath = this._resolveSourcePath(imgPath);
           if (fs.existsSync(fullImgPath)) {
             const wechatImageUrl = await this.apiClient.uploadContentImage(fullImgPath);
+            if (!wechatImageUrl || typeof wechatImageUrl !== 'string') {
+              throw new Error('WeChat content image API returned empty url');
+            }
             imageUrlMap[imgPath] = wechatImageUrl;
             this.logger.info(`[Sync]   Image uploaded: ${imgPath} -> ${wechatImageUrl}`);
           } else {
@@ -235,15 +238,21 @@ class WeChatSyncExecutor {
         finalHtml = `${finalHtml}\n<p>${suffix.replace(/\n/g, '</p><p>')}</p>`;
       }
 
-      // 6. 创建草稿
+      // 6.5 注入微信端排版样式，避免在公众号内呈现过于扁平
+      if (this.config?.content?.apply_wechat_typography !== false) {
+        finalHtml = this._applyWechatTypography(finalHtml);
+      }
+
+      // 7. 创建草稿
       const origin = (this.config.origin || '').replace(/\/$/, '');
       const permalink = post.permalink || '';
       const contentSourceUrl = /^https?:\/\//i.test(permalink) ? permalink : `${origin}${permalink}`;
+      const digest = this._buildDigest(post, title);
 
       const draftItem = {
         title: title,
         author: this.config.author || 'Steve ZMT',
-        digest: post.excerpt || title,
+        digest,
         show_cover_pic: 1, // 显示正文中的首张图
         content: finalHtml,
         content_source_url: contentSourceUrl, // 原文链接
@@ -262,7 +271,7 @@ class WeChatSyncExecutor {
       
       this.logger.info(`[Sync]   Draft created: media_id=${draftResult.media_id}`);
 
-      // 7. 记录成功
+      // 8. 记录成功
       this.report.succeeded += 1;
       this.report.posts.push({
         uuid: uuid,
@@ -331,6 +340,68 @@ class WeChatSyncExecutor {
   _resolveSourcePath(assetPath) {
     const normalized = (assetPath || '').replace(/^[./\\]+/, '').replace(/^[/\\]+/, '');
     return path.join(this.sourceDir, normalized);
+  }
+
+  _applyWechatTypography(html) {
+    let out = html;
+
+    out = this._addTagStyle(out, 'h1', 'margin: 1.2em 0 0.7em; font-size: 1.6em; line-height: 1.45; font-weight: 700;');
+    out = this._addTagStyle(out, 'h2', 'margin: 1.1em 0 0.65em; font-size: 1.35em; line-height: 1.5; font-weight: 700;');
+    out = this._addTagStyle(out, 'h3', 'margin: 1em 0 0.6em; font-size: 1.2em; line-height: 1.55; font-weight: 700;');
+    out = this._addTagStyle(out, 'h4', 'margin: 0.95em 0 0.55em; font-size: 1.1em; line-height: 1.55; font-weight: 700;');
+    out = this._addTagStyle(out, 'p', 'margin: 0.85em 0; line-height: 1.9; word-break: break-word;');
+    out = this._addTagStyle(out, 'ul', 'margin: 0.8em 0; padding-left: 1.45em;');
+    out = this._addTagStyle(out, 'ol', 'margin: 0.8em 0; padding-left: 1.55em;');
+    out = this._addTagStyle(out, 'li', 'margin: 0.35em 0; line-height: 1.85;');
+    out = this._addTagStyle(out, 'img', 'max-width: 100%; height: auto; display: block; margin: 0.9em auto; border-radius: 4px;');
+    out = this._addTagStyle(out, 'pre', 'margin: 0.9em 0; padding: 0.75em 0.85em; background: #f6f8fa; border-radius: 6px; overflow-x: auto; white-space: pre; line-height: 1.6;');
+    out = this._addTagStyle(out, 'code', 'font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 0.92em;');
+    out = this._addTagStyle(out, 'blockquote', 'margin: 0.9em 0; padding: 0.2em 0.9em; border-left: 3px solid #d0d7de; color: #57606a;');
+
+    return `<section style="font-size: 16px; line-height: 1.9; color: #1f2328; word-break: break-word;">${out}</section>`;
+  }
+
+  _addTagStyle(html, tagName, styleText) {
+    const re = new RegExp(`<${tagName}(\\b[^>]*)>`, 'gi');
+    return html.replace(re, (_, attrs) => `<${tagName}${this._mergeStyleAttr(attrs, styleText)}>`);
+  }
+
+  _mergeStyleAttr(attrs, styleText) {
+    const styleRe = /\sstyle=(['"])(.*?)\1/i;
+    const match = attrs.match(styleRe);
+    if (!match) {
+      return `${attrs} style="${styleText}"`;
+    }
+
+    const merged = `${match[2].trim().replace(/;?$/, ';')} ${styleText}`.trim();
+    return attrs.replace(styleRe, ` style="${merged}"`);
+  }
+
+  _buildDigest(post, title) {
+    const raw = (post.excerpt || post.description || title || '').toString();
+
+    // 去 HTML 标签并压缩空白，避免 description 非法或超长
+    const plain = raw
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    const fallback = (title || '').toString().trim();
+    const source = plain || fallback || '无摘要';
+
+    // 微信对 digest 有长度限制，按 UTF-8 字节截断更稳妥
+    const maxBytes = Number(this.config?.sync?.digest_max_bytes || 120);
+    let out = '';
+    for (const ch of source) {
+      const next = out + ch;
+      if (Buffer.byteLength(next, 'utf8') > maxBytes) {
+        break;
+      }
+      out = next;
+    }
+
+    return out || source.slice(0, 30);
   }
 
   /**
