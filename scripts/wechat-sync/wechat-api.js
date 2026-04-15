@@ -80,10 +80,7 @@ class WeChatAPIClient {
     const url = `https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=${token}&type=image`;
     
     try {
-      const fileBuffer = fs.readFileSync(imagePath);
-      const result = await this._httpPost(url, fileBuffer, {
-        'Content-Type': 'image/jpeg',
-      });
+      const result = await this._httpPostMultipartFile(url, imagePath, 'media');
 
       if (result.errcode) {
         throw new WeChatAPIError(
@@ -92,11 +89,8 @@ class WeChatAPIClient {
         );
       }
 
-      // 返回媒体 ID，可用于草稿中的图文消息
-      return {
-        media_id: result.media_id,
-        thumb_media_id: result.thumb_media_id,
-      };
+      // 永久素材接口返回 media_id，可作为草稿 thumb_media_id
+      return result.media_id;
     } catch (err) {
       if (err instanceof WeChatAPIError) {
         throw err;
@@ -127,20 +121,7 @@ class WeChatAPIClient {
         throw new Error(`Image file too large (${fileBuffer.length} bytes > 10MB)`);
       }
 
-      // 根据文件扩展名判断 Content-Type
-      const ext = path.extname(imagePath).toLowerCase();
-      let contentType = 'image/jpeg';
-      if (ext === '.png') {
-        contentType = 'image/png';
-      } else if (ext === '.gif') {
-        contentType = 'image/gif';
-      } else if (ext === '.webp') {
-        contentType = 'image/webp';
-      }
-
-      const result = await this._httpPost(url, fileBuffer, {
-        'Content-Type': contentType,
-      });
+      const result = await this._httpPostMultipartFile(url, imagePath, 'media');
 
       if (result.errcode) {
         throw new WeChatAPIError(
@@ -318,6 +299,77 @@ class WeChatAPIClient {
       req.write(data);
       req.end();
     });
+  }
+
+  /**
+   * HTTP POST multipart/form-data 文件上传
+   */
+  _httpPostMultipartFile(url, filePath, fieldName = 'media') {
+    return new Promise((resolve, reject) => {
+      const fileBuffer = fs.readFileSync(filePath);
+      const fileName = path.basename(filePath);
+      const contentType = this._getImageContentType(filePath);
+      const boundary = `----WechatSyncBoundary${Date.now().toString(16)}`;
+
+      const prefix = Buffer.from(
+        `--${boundary}\r\n` +
+        `Content-Disposition: form-data; name="${fieldName}"; filename="${fileName}"\r\n` +
+        `Content-Type: ${contentType}\r\n\r\n`,
+        'utf8'
+      );
+      const suffix = Buffer.from(`\r\n--${boundary}--\r\n`, 'utf8');
+      const body = Buffer.concat([prefix, fileBuffer, suffix]);
+
+      const urlObj = new URL(url);
+      const options = {
+        hostname: urlObj.hostname,
+        path: urlObj.pathname + urlObj.search,
+        method: 'POST',
+        headers: {
+          'Content-Type': `multipart/form-data; boundary=${boundary}`,
+          'Content-Length': body.length,
+        },
+        timeout: this.timeout,
+      };
+
+      const req = https.request(options, (res) => {
+        let response = '';
+        res.on('data', chunk => { response += chunk; });
+        res.on('end', () => {
+          try {
+            resolve(JSON.parse(response));
+          } catch (e) {
+            reject(new Error(`Invalid JSON response: ${response}`));
+          }
+        });
+      });
+
+      req.on('error', reject);
+      req.on('timeout', () => {
+        req.destroy();
+        reject(new Error(`Request timeout (${this.timeout}ms)`));
+      });
+
+      req.write(body);
+      req.end();
+    });
+  }
+
+  _getImageContentType(filePath) {
+    const ext = path.extname(filePath).toLowerCase();
+    if (ext === '.png') {
+      return 'image/png';
+    }
+    if (ext === '.gif') {
+      return 'image/gif';
+    }
+    if (ext === '.bmp') {
+      return 'image/bmp';
+    }
+    if (ext === '.webp') {
+      return 'image/webp';
+    }
+    return 'image/jpeg';
   }
 
   /**

@@ -72,9 +72,19 @@ class WeChatSyncExecutor {
 
       // 从清单中合并配置
       if (manifest.wechat_config) {
+        const manifestConfig = { ...manifest.wechat_config };
+
+        // 避免把 "${VAR}" 这类未解析占位符覆盖掉运行时环境变量
+        if (typeof manifestConfig.author === 'string' && /^\$\{[^}]+\}$/.test(manifestConfig.author)) {
+          delete manifestConfig.author;
+        }
+        if (typeof manifestConfig.origin === 'string' && /^\$\{[^}]+\}$/.test(manifestConfig.origin)) {
+          delete manifestConfig.origin;
+        }
+
         this.config = {
           ...this.config,
-          ...manifest.wechat_config,
+          ...manifestConfig,
         };
         this.logger.debug('[Sync] Loaded wechat config from manifest');
       }
@@ -132,27 +142,31 @@ class WeChatSyncExecutor {
       const { html, images: imagePaths } = this.renderer.readAndRender(source_path);
 
       // 2. 处理头图
-      let coverUrl = null;
+      let coverMediaId = null;
       const thumbnail = post.thumbnail; // 前置条件中的头图
       
       try {
         if (thumbnail) {
+          if (thumbnail.startsWith('http://') || thumbnail.startsWith('https://')) {
+            this.logger.warn(`[Sync]   External thumbnail cannot be used as thumb_media_id directly: ${thumbnail}`);
+          } else {
           // 使用文章指定的头图
-          const thumbnailPath = path.join(this.sourceDir, thumbnail);
+          const thumbnailPath = this._resolveSourcePath(thumbnail);
           if (fs.existsSync(thumbnailPath)) {
-            coverUrl = await this.apiClient.uploadContentImage(thumbnailPath);
-            this.logger.info(`[Sync]   Cover uploaded: ${thumbnail} -> ${coverUrl}`);
+            coverMediaId = await this.apiClient.uploadImage(thumbnailPath);
+            this.logger.info(`[Sync]   Cover uploaded: ${thumbnail} -> media_id=${coverMediaId}`);
           } else {
             this.logger.warn(`[Sync]   Thumbnail not found: ${thumbnailPath}, will use random cover`);
+          }
           }
         }
         
         // 如果无头图，使用随机头图
-        if (!coverUrl && this.config.cover?.use_default_when_missing) {
+        if (!coverMediaId && this.config.cover?.use_default_when_missing) {
           const randomCover = await this._getRandomCover();
           if (randomCover) {
-            coverUrl = await this.apiClient.uploadContentImage(randomCover);
-            this.logger.info(`[Sync]   Random cover uploaded: ${coverUrl}`);
+            coverMediaId = await this.apiClient.uploadImage(randomCover);
+            this.logger.info(`[Sync]   Random cover uploaded: media_id=${coverMediaId}`);
           }
         }
       } catch (err) {
@@ -170,7 +184,7 @@ class WeChatSyncExecutor {
         }
 
         try {
-          const fullImgPath = path.join(this.sourceDir, imgPath);
+          const fullImgPath = this._resolveSourcePath(imgPath);
           if (fs.existsSync(fullImgPath)) {
             const wechatImageUrl = await this.apiClient.uploadContentImage(fullImgPath);
             imageUrlMap[imgPath] = wechatImageUrl;
@@ -190,6 +204,26 @@ class WeChatSyncExecutor {
         finalHtml = this.renderer.replaceImageUrls(html, imageUrlMap);
       }
 
+      // 如果还没有封面，回退使用正文第一张本地图
+      if (!coverMediaId) {
+        for (const imgPath of imagePaths) {
+          if (imgPath.startsWith('http://') || imgPath.startsWith('https://')) {
+            continue;
+          }
+          const localImgPath = this._resolveSourcePath(imgPath);
+          if (!fs.existsSync(localImgPath)) {
+            continue;
+          }
+          try {
+            coverMediaId = await this.apiClient.uploadImage(localImgPath);
+            this.logger.info(`[Sync]   Fallback cover uploaded from content image: media_id=${coverMediaId}`);
+            break;
+          } catch (err) {
+            this.logger.warn(`[Sync]   Failed to upload fallback cover from ${imgPath}: ${err.message}`);
+          }
+        }
+      }
+
       // 5. 添加前缀和后缀
       const prefix = this.config.article_prefix ? this.config.article_prefix.trim() : '';
       const suffix = this.config.article_suffix ? this.config.article_suffix.trim() : '';
@@ -202,18 +236,26 @@ class WeChatSyncExecutor {
       }
 
       // 6. 创建草稿
+      const origin = (this.config.origin || '').replace(/\/$/, '');
+      const permalink = post.permalink || '';
+      const contentSourceUrl = /^https?:\/\//i.test(permalink) ? permalink : `${origin}${permalink}`;
+
       const draftItem = {
         title: title,
         author: this.config.author || 'Steve ZMT',
         digest: post.excerpt || title,
         show_cover_pic: 1, // 显示正文中的首张图
         content: finalHtml,
-        content_source_url: `${this.config.origin}${post.permalink}`, // 原文链接
+        content_source_url: contentSourceUrl, // 原文链接
       };
 
-      // 如果有头图，添加到草稿
-      if (coverUrl) {
-        draftItem.thumb_media_id = coverUrl; // 微信 API 需要使用 media_id，但如果是 URL 可能需要调整
+      if (!coverMediaId) {
+        throw new Error('No valid cover image available (thumb_media_id is required by WeChat draft API)');
+      }
+
+      // 草稿封面必须是永久素材 media_id
+      if (coverMediaId) {
+        draftItem.thumb_media_id = coverMediaId;
       }
 
       const draftResult = await this.apiClient.addDraft(draftItem);
@@ -227,7 +269,7 @@ class WeChatSyncExecutor {
         title: title,
         status: 'success',
         media_id: draftResult.media_id,
-        cover_url: coverUrl,
+        cover_media_id: coverMediaId,
         images_uploaded: Object.keys(imageUrlMap).length,
       });
 
@@ -249,34 +291,46 @@ class WeChatSyncExecutor {
    */
   _getRandomCover() {
     try {
-      const coverDir = this.config.cover?.default_cover_dir || '/images/random';
-      const fullCoverDir = path.join(this.sourceDir, coverDir);
-      
-      if (!fs.existsSync(fullCoverDir)) {
-        this.logger.warn(`[Sync]   Random cover directory not found: ${fullCoverDir}`);
-        return null;
+      const configuredDir = this.config.cover?.default_cover_dir || 'themes/default/source/images/random';
+      const normalizedConfiguredDir = configuredDir.replace(/^[/\\]+/, '');
+
+      const candidateDirs = [
+        path.isAbsolute(configuredDir) ? configuredDir : null,
+        path.join(this.baseDir, normalizedConfiguredDir),
+        path.join(this.sourceDir, normalizedConfiguredDir),
+        path.join(this.baseDir, 'themes/default/source/images/random'),
+      ].filter(Boolean);
+
+      for (const fullCoverDir of candidateDirs) {
+        if (!fs.existsSync(fullCoverDir)) {
+          continue;
+        }
+
+        const files = fs.readdirSync(fullCoverDir);
+        const imageFiles = files.filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f));
+
+        if (imageFiles.length === 0) {
+          continue;
+        }
+
+        // 随机选择一张
+        const randomFile = imageFiles[Math.floor(Math.random() * imageFiles.length)];
+        const randomPath = path.join(fullCoverDir, randomFile);
+        this.logger.debug(`[Sync]   Selected random cover: ${randomPath}`);
+        return randomPath;
       }
 
-      const files = fs.readdirSync(fullCoverDir);
-      const imageFiles = files.filter(f => 
-        /\.(jpg|jpeg|png|gif|webp)$/i.test(f)
-      );
-
-      if (imageFiles.length === 0) {
-        this.logger.warn(`[Sync]   No image files found in cover directory: ${fullCoverDir}`);
-        return null;
-      }
-
-      // 随机选择一张
-      const randomFile = imageFiles[Math.floor(Math.random() * imageFiles.length)];
-      const randomPath = path.join(fullCoverDir, randomFile);
-      
-      this.logger.debug(`[Sync]   Selected random cover: ${randomFile}`);
-      return randomPath;
+      this.logger.warn(`[Sync]   Random cover directory not found or empty. Tried: ${candidateDirs.join(', ')}`);
+      return null;
     } catch (err) {
       this.logger.warn(`[Sync]   Failed to get random cover: ${err.message}`);
       return null;
     }
+  }
+
+  _resolveSourcePath(assetPath) {
+    const normalized = (assetPath || '').replace(/^[./\\]+/, '').replace(/^[/\\]+/, '');
+    return path.join(this.sourceDir, normalized);
   }
 
   /**
@@ -359,7 +413,7 @@ async function main() {
     article_suffix: '',
     cover: {
       use_default_when_missing: true,
-      default_cover_dir: '/images/random',
+      default_cover_dir: 'themes/default/source/images/random',
     },
     content: {},
   };

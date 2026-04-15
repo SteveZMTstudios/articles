@@ -199,7 +199,7 @@ wechat_sync:
   # 头图配置
   cover:
     use_default_when_missing: true              # 文章无头图时，使用默认随机头图
-    default_cover_dir: /images/random           # 默认头图目录（相对 source 目录）
+    default_cover_dir: themes/default/source/images/random  # 默认头图目录（相对仓库根目录）
   
   # 内容处理策略
   content:

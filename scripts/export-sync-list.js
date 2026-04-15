@@ -90,7 +90,7 @@ async function exportSyncList() {
       article_suffix: config.article_suffix || '',
       cover: config.cover || {
         use_default_when_missing: true,
-        default_cover_dir: '/images/random',
+        default_cover_dir: 'themes/default/source/images/random',
       },
       origin: config.origin || hexo.config.url,
       author: config.author || hexo.config.author,
