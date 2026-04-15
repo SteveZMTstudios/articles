@@ -18,6 +18,9 @@ jobs:
     env:
       # 提前切到 Node.js 24 运行 JavaScript actions，避免后续默认切换带来的不确定性
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      # 将 secrets 暴露为环境变量，用于 if 条件判断
+      WECHAT_APPID: ${{ secrets.WECHAT_APPID }}
+      WECHAT_APPSECRET: ${{ secrets.WECHAT_APPSECRET }}
 
     steps:
     - name: Checkout repository
@@ -48,7 +51,7 @@ jobs:
     
     - name: Detect GitHub Actions Runner IP
       id: detect-ip
-      if: ${{ secrets.WECHAT_APPID != '' && secrets.WECHAT_APPSECRET != '' }}
+      if: ${{ env.WECHAT_APPID != '' && env.WECHAT_APPSECRET != '' }}
       run: |
         RUNNER_IP=$(curl -s https://api.ipify.org)
         echo "runner_ip=$RUNNER_IP" >> $GITHUB_OUTPUT
@@ -102,7 +105,7 @@ jobs:
 
     - name: Sync posts to WeChat (Optional)
       id: wechat-sync
-      if: ${{ secrets.WECHAT_APPID != '' && secrets.WECHAT_APPSECRET != '' }}
+      if: ${{ env.WECHAT_APPID != '' && env.WECHAT_APPSECRET != '' }}
       env:
         WECHAT_APPID: ${{ secrets.WECHAT_APPID }}
         WECHAT_APPSECRET: ${{ secrets.WECHAT_APPSECRET }}
