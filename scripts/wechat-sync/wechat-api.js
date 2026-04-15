@@ -213,6 +213,12 @@ class WeChatAPIClient {
       result.errors.push(`Token error: ${err.message} (code: ${err.errcode})`);
       if (err.errcode === 61004) {
         result.errors.push('>> IP 白名单配置失败，请检查微信开发者平台的 IP 白名单设置或启用"风险调用确认"');
+      } else if (err.errcode === 40164) {
+        result.errors.push('>> IP 不在微信后台的 API 白名单中。GitHub Actions IP 是动态的，无法提前配置完整白名单。');
+        result.errors.push('   解决方案：');
+        result.errors.push('   1. 联系微信技术支持，询问是否支持 GitHub Actions 部署（可能需要企业认证）');
+        result.errors.push('   2. 在自己的固定 IP 服务器上部署脚本，然后在微信后台配置该服务器 IP');
+        result.errors.push('   3. 向微信申请"动态 IP 白名单"或"自动确认"功能');
       } else if (err.errcode === 40001) {
         result.errors.push('>> AppSecret 配置错误或已过期，请检查 Secrets 配置');
       }

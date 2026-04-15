@@ -15,10 +15,13 @@ jobs:
     # 只在PR被合并时执行
     if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    env:
+      # 提前切到 Node.js 24 运行 JavaScript actions，避免后续默认切换带来的不确定性
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v5
 
     - name: Setup Git
       run: |
@@ -34,7 +37,7 @@ jobs:
         ssh-keyscan github.com >> ~/.ssh/known_hosts
 
     - name: Setup Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v5
       with:
         node-version: '22'  # 你可以根据需要修改 Node.js 版本
 
@@ -42,6 +45,30 @@ jobs:
       run: |
         # Use npm ci to install exact versions from package-lock.json for reproducibility
         npm ci || npm install
+    
+    - name: Detect GitHub Actions Runner IP
+      id: detect-ip
+      if: ${{ secrets.WECHAT_APPID != '' && secrets.WECHAT_APPSECRET != '' }}
+      run: |
+        RUNNER_IP=$(curl -s https://api.ipify.org)
+        echo "runner_ip=$RUNNER_IP" >> $GITHUB_OUTPUT
+        echo "## ⚠️ WeChat IP Whitelist Required" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Current GitHub Actions Runner IP:** \`$RUNNER_IP\`" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "```" >> $GITHUB_STEP_SUMMARY
+        echo "$RUNNER_IP" >> $GITHUB_STEP_SUMMARY
+        echo "```" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Action Required (Next 3 minutes):" >> $GITHUB_STEP_SUMMARY
+        echo "1. Log in to [WeChat Developer Platform](https://developers.weixin.qq.com/platform/)" >> $GITHUB_STEP_SUMMARY
+        echo "2. Navigate: \"My Services\" → \"Official Account\" → \"Development Keys\"" >> $GITHUB_STEP_SUMMARY
+        echo "3. Find **API IP Whitelist** and click \"Add\"" >> $GITHUB_STEP_SUMMARY
+        echo "4. Enter this IP: **\`$RUNNER_IP\`**" >> $GITHUB_STEP_SUMMARY
+        echo "5. Save and wait for this workflow to auto-retry in 3 minutes" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "⏳ Workflow will automatically retry sync after 3 minutes." >> $GITHUB_STEP_SUMMARY
+
 
     - name: Install Theme dependencies (if any)
       run: |
@@ -64,9 +91,18 @@ jobs:
         # Run the exact commands you use locally to ensure consistency
         npm run clean && npm run build && npm run deploy
 
+
+    - name: Wait for Manual IP Whitelist Configuration (3 minutes)
+      if: ${{ steps.detect-ip.outcome == 'success' }}
+      run: |
+        echo "⏳ Waiting 3 minutes for you to add IP to WeChat whitelist..."
+        echo "Check the job summary above for the IP address and whitelist instructions."
+        sleep 180
+        echo "✅ Resuming WeChat sync..."
+
     - name: Sync posts to WeChat (Optional)
       id: wechat-sync
-      if: ${{ env.WECHAT_APPID != '' && env.WECHAT_APPSECRET != '' }}
+      if: ${{ secrets.WECHAT_APPID != '' && secrets.WECHAT_APPSECRET != '' }}
       env:
         WECHAT_APPID: ${{ secrets.WECHAT_APPID }}
         WECHAT_APPSECRET: ${{ secrets.WECHAT_APPSECRET }}

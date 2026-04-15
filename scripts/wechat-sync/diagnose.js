@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+
 
 /**
  * 本地诊断脚本

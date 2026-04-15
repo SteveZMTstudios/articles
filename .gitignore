@@ -13,3 +13,5 @@ output/trace-home.json
 output/
 .playwright-cli/
 .npm-cache/
+
+.env    

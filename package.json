@@ -20,7 +20,8 @@
       "hexo": "$hexo"
     },
     "sourcemap-codec": "npm:@jridgewell/sourcemap-codec@^1.5.0",
-    "source-map": "^0.7.6"
+    "source-map": "^0.7.6",
+    "serialize-javascript": "^7.0.5"
   },
   "resolutions": {
     "sourcemap-codec": "^1.5.0"
@@ -44,7 +45,7 @@
     "hexo-renderer-marked": "^7.0.1",
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0",
-    "markdown-it": "^13.0.2",
+    "markdown-it": "^14.1.1",
     "mdui": "^2.1.4",
     "qiniu": "^7.15.1",
     "qrcode": "^1.5.4"
