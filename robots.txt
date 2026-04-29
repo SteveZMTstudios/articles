@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Allow: /archives/
+Allow: /categories/
+Allow: /tags/
+Allow: /about/
+Disallow: /vendors/
+Disallow: /fonts/
+Disallow: /fancybox/
+Sitemap: https://blog.stevezmt.top/sitemap.xml
+Sitemap: https://blog.stevezmt.top/sitemap.txt

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400" aria-hidden="true">
+  <g>
+    <rect x="0" y="0" width="10" height="400" fill="#d3d3d3" opacity="0.9" />
+    <animateTransform attributeName="transform" type="translate"
+      values="-10 0;410 0"
+      dur="1s"
+      repeatCount="indefinite"
+      calcMode="spline"
+      keyTimes="0;1"
+      keySplines="0.4 0 0.2 1" />
+  </g>
+</svg>
