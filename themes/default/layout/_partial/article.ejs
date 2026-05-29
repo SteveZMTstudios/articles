@@ -17,7 +17,7 @@
     <% page.photos.forEach(function (photo) { %>
       <div class="mdui-col">
         <div class="mdui-grid-tile mdui-hoverable">
-          <a data-fancybox="gallery" href="<%- url_for(photo) %>">
+          <a data-lightbox-item data-lightbox-src="<%- url_for(photo) %>" data-no-pjax href="<%- url_for(photo) %>">
             <img src="/images/grey.png" class="lazyload" data-original="<%- url_for(photo) %>" style="height: 160px; border-radius: 2px;">
           </a>
         </div>
@@ -218,6 +218,38 @@
             });
           }
 
+          function bindCodeContentCopy(){
+            var content = document.querySelector('#main article .mdui-card-content');
+            if(!content || content.dataset.codeClickCopyBound === '1') return;
+
+            content.dataset.codeClickCopyBound = '1';
+            content.addEventListener('click', function(event){
+              var target = event.target && event.target.nodeType === 1 ? event.target : event.target.parentElement;
+              if(!target || !target.closest) return;
+
+              var clickedCode = target.closest('code');
+              if(!clickedCode || !content.contains(clickedCode)) return;
+              if(clickedCode.closest('.code-toolbar')) return;
+              if(clickedCode.closest('pre, figure.highlight')) return;
+
+              var text = clickedCode.innerText;
+              if(!text || !text.trim()) {
+                codeClickFeedback(clickedCode, false);
+                return;
+              }
+
+              event.preventDefault();
+              event.stopPropagation();
+
+              writeClipboard(text, function(){
+                codeClickFeedback(clickedCode, true);
+              }, function(err){
+                console.error('Copy failed', err);
+                codeClickFeedback(clickedCode, false);
+              });
+            });
+          }
+
           function detectLanguage(block){
             try {
               var cls = block.className || '';
@@ -246,11 +278,20 @@
             var container = el.closest('figure.highlight, pre');
             if(!container){ feedback(false, el); return; }
 
-            var codeArea = container.querySelector('td.code') || container.querySelector('pre code') || container.querySelector('code') || container.querySelector('pre');
-            var text = codeArea ? codeArea.innerText : '';
+            var text = getCodeBlockText(container);
             if(!text.trim()) { feedback(false, el); return; }
-            var writeSucceeded = function(){ feedback(true, el); };
-            var writeFailed = function(err){ console.error('Copy failed', err); feedback(false, el); };
+            writeClipboard(text, function(){ feedback(true, el); }, function(err){ console.error('Copy failed', err); feedback(false, el); });
+          };
+
+          function getCodeBlockText(container){
+            var codeArea = container.querySelector('td.code') || container.querySelector('pre code') || container.querySelector('code');
+            if(!codeArea && container.matches && container.matches('pre')){
+              codeArea = container.querySelector(':scope > .code-content-wrap') || container;
+            }
+            return codeArea ? codeArea.innerText : '';
+          }
+
+          function writeClipboard(text, writeSucceeded, writeFailed){
             if(navigator.clipboard && navigator.clipboard.writeText){
               navigator.clipboard.writeText(text).then(writeSucceeded, writeFailed);
             } else {
@@ -267,7 +308,7 @@
                 ok?writeSucceeded():writeFailed();
               } catch(e){ writeFailed(e); }
             }
-          };
+          }
 
           function feedback(success, el){
             var icon = el.querySelector('i.mdui-icon');
@@ -289,6 +330,20 @@
                 //el._tooltip.close();
                 //el._tooltip = null;
             },3000);
+          }
+
+          function codeClickFeedback(el, success){
+            if(!el) return;
+            el.classList.remove('code-copy-success','code-copy-fail');
+            el.classList.add(success ? 'code-copy-success' : 'code-copy-fail');
+            clearTimeout(el._codeClickCopyTimer);
+            el._codeClickCopyTimer = setTimeout(function(){
+              el.classList.remove('code-copy-success','code-copy-fail');
+            }, 900);
+
+            if(window.mdui && mdui.snackbar){
+              mdui.snackbar({message: success ? '已复制代码' : '复制失败', position: 'top', timeout: 1000});
+            }
           }
 
           function toggleCollapse(wrapper, btn){
@@ -344,8 +399,11 @@
           }
 
           attachCopyButtons();
+          bindCodeContentCopy();
           document.addEventListener('pjax:complete', attachCopyButtons);
           document.addEventListener('pjax:success', attachCopyButtons);
+          document.addEventListener('pjax:complete', bindCodeContentCopy);
+          document.addEventListener('pjax:success', bindCodeContentCopy);
         })();
       </script>
       <style data-pjax>
@@ -403,6 +461,11 @@
   .codeblock-wrapper.collapsed .code-toolbar .collapse-btn i { transform: rotate(180deg); }
   .codeblock-wrapper .code-toolbar .code-lang-badge { font-size:12px; line-height:1; padding:4px 8px; border-radius:6px; background:rgba(0,0,0,0.06); color:#000; user-select:none; cursor:default; opacity:.85; }
   .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .code-lang-badge { background:#ffffff24; color:#fff; }
+  .mdui-card-content code { cursor:pointer; }
+  .mdui-card-content pre code,
+  .mdui-card-content figure.highlight code { cursor:inherit; }
+  .mdui-card-content code.code-copy-success { outline:2px solid #4caf50a8; outline-offset:2px; }
+  .mdui-card-content code.code-copy-fail { outline:2px solid #f44336a8; outline-offset:2px; }
   /* Animated content wrapper */
   .codeblock-wrapper .code-content-wrap { overflow-x:auto; overflow-y: hidden; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
   .codeblock-wrapper.collapsed .code-content-wrap { max-height:0 !important; padding-top:0 !important; padding-bottom:0 !important; }

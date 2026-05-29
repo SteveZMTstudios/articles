@@ -70,7 +70,17 @@ notice:
   - "好吧，这些笑话不好笑"
   - "关于布尔数最棒的事情是，就算你错了，你也只是错了一点（bit）。"
   - "有两种方法写出零错误的程序，只有第三种方法奏效。"
-
+  - "AI 扰乱了行业。请加入我们，我们还要进一步扰乱行业。"
+  - "头抬起，为了确保你是最新的，请勿™关闭计算机，坐和放宽"
+  - "做 轰！嚓嚓擦 推—推— 的事"
+  - '“恶意的外部设备免受攻击保护你的设备的内存”'
+  - "SteveZMT 整了这些设置以与你的硬件性能匹配"
+  - '“热门开放原地阿妈项目”'
+  - "开发者的大事，大快所有人心的大好事"
+  - "“您的 Onedrive 满是 99%”"
+  - "免 费 花 分 文"
+  - "滚回功率，坐和放宽"
+  
 
 
 favicon: /images/favicon.png
@@ -139,9 +149,7 @@ footer_text: ' <a href="//icp.gov.moe/?keyword=20240571" target="_blank" class="
 license: 此页内容遵循<a href="//creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank" rel="license noopener noreferrer" style="display:inline-block;"> CC BY-NC-SA 4.0 协议</a>
 
 gallery:
-  fancybox_css: //gcore.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css
-  fancybox_js: //gcore.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js
-  jquery_js: //ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js
+  lightbox: builtin
   lazyload_js: //gcore.jsdelivr.net/npm/jquery-lazyload@1.9.7/jquery.lazyload.min.js
 busuanzi:
   site: true

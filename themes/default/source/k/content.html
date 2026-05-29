@@ -70,32 +70,64 @@
 
     function parseQuery(){
       var q = location.search || location.hash || '';
+      if(!q){
+        try{
+          var full = String(location.href || '');
+          var qi = full.indexOf('?');
+          var hi = full.indexOf('#');
+          if(qi !== -1) q = full.substring(qi);
+          else if(hi !== -1) q = full.substring(hi);
+        }catch(e){}
+      }
       var raw = '';
       if(q.indexOf('?')===0) raw = q.substring(1);
       else if(q.indexOf('#')===0) raw = q.substring(1);
       else raw = q;
       var obj = {};
-      if(!raw) return obj;
+      if(!raw){
+        var fallback = readCookie('k_last_url');
+        if(fallback) obj.url = obj.href = fallback;
+        return obj;
+      }
 
       if(raw.indexOf('=')!==-1){
         var parts = raw.split('&');
         for(var i=0;i<parts.length;i++){
           var p = parts[i]; if(!p) continue;
           var kv = p.split('=');
-          var k = decodeURIComponent(kv[0]||'');
-          var v = decodeURIComponent(kv.slice(1).join('=')||'');
+          var k = decodeParam(kv[0]||'');
+          var v = decodeParam(kv.slice(1).join('=')||'');
           if(k) obj[k]=v;
         }
+        if(!obj.href && obj.url) obj.href = obj.url;
+        if(!obj.url && obj.href) obj.url = obj.href;
         return obj;
       }
 
       try{
-        var decoded = decodeURIComponent(raw);
+        var decoded = decodeParam(raw);
         if(decoded.indexOf('/')!==-1){ obj.href = decoded; return obj; }
       }catch(e){ /* ignore */ }
 
       obj.href = raw;
       return obj;
+    }
+
+    function decodeParam(value){
+      value = String(value || '').replace(/\+/g, '%20');
+      try{ return decodeURIComponent(value); }catch(e){}
+      try{ return unescape(value); }catch(e){}
+      return value;
+    }
+
+    function readCookie(name){
+      var parts = String(document.cookie || '').split(';');
+      for(var i=0;i<parts.length;i++){
+        var item = parts[i];
+        while(item.charAt(0)===' ') item = item.substring(1);
+        if(item.indexOf(name + '=')===0) return decodeParam(item.substring(name.length + 1));
+      }
+      return '';
     }
 
     function parseXMLString(str){
@@ -224,7 +256,7 @@
 
     var params = parseQuery();
     if(!params || (!params.id && !params.href && !params.title)){
-      status.textContent = '未提供 id 或 href 参数。';
+      status.textContent = '未提供 url、id 或 href 参数。';
     } else {
 
       if(params.href){

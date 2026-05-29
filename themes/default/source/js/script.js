@@ -41,7 +41,6 @@ var $$ = mdui.$;
     scripts: {},
     styles: {},
     commentPromise: null,
-    galleryPromise: null,
     busuanziLoadCount: 0
   };
 
@@ -84,7 +83,6 @@ var $$ = mdui.$;
       hasComments: dataset.hasComments === '1',
       hasToc: dataset.hasToc === '1',
       searchResource: dataset.searchResource || '',
-      needsGallery: pageType === 'gallery' || !!document.querySelector('[data-fancybox]'),
       hasArticleImages: !!document.querySelector('#main article .mdui-card-content img')
     };
   }
@@ -766,35 +764,6 @@ var $$ = mdui.$;
   window.loadCommentsNow = loadCommentsNow;
   window.retryDeferredComments = loadCommentsNow;
 
-  function ensureGalleryRuntime() {
-    var context = getPageContext();
-    if (!context.needsGallery) return Promise.resolve(false);
-    if (assetState.galleryPromise) return assetState.galleryPromise;
-
-    var assets = getSiteAssets();
-    assetState.galleryPromise = ensureScript(assets.legacyJquerySrc, 'legacy-jquery', { defer: true })
-      .then(function () {
-        return Promise.all([
-          ensureStylesheet(assets.fancyboxCss, 'fancybox-css'),
-          ensureScript(assets.fancyboxJs, 'fancybox-js', { defer: true })
-        ]);
-      })
-      .then(function () {
-        if (window.jQuery && window.jQuery.fn && window.jQuery.fn.fancybox) {
-          window.jQuery('[data-fancybox]').fancybox({
-            buttons: ['close']
-          });
-        }
-        return true;
-      })
-      .catch(function () {
-        assetState.galleryPromise = null;
-        return false;
-      });
-
-    return assetState.galleryPromise;
-  }
-
   function fixMduiDialogs() {
     document.querySelectorAll('[mdui-dialog]').forEach(function (el) {
       try {
@@ -919,10 +888,6 @@ var $$ = mdui.$;
     if (detail.stage === 'idle-preload') {
       if (context.searchResource && (!context.isPost || document.visibilityState === 'visible')) {
         ensureSearchIndex({ silent: true }).catch(function () {});
-      }
-
-      if (context.needsGallery) {
-        ensureGalleryRuntime();
       }
 
       if (context.hasComments) {

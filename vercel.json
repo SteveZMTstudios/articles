@@ -8,6 +8,8 @@
     }
   ],
   "routes": [
+    { "src": "/atom.xml", "headers": { "content-type": "application/xml; charset=utf-8", "cache-control": "public, max-age=0, must-revalidate" } },
+    { "src": "/feed.xsl", "headers": { "content-type": "application/xml; charset=utf-8", "cache-control": "public, max-age=0, must-revalidate" } },
     { "src": "/service-worker.js", "headers": { "cache-control": "no-cache" } },
     { "src": "/workbox-.*.js", "headers": { "cache-control": "no-cache" } },
     { "src": "/js/sw-update.js", "headers": { "cache-control": "no-cache" } },

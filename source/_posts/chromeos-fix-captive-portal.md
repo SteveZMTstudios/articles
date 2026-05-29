@@ -7,7 +7,7 @@ categories: [折腾]
 donate: true
 toc: true
 comments: true
-thumbnail: /images/blog/chromeos-fix-captive-portal/thumb_1780016817302.png
+thumbnail: /images/blog/chromeos-fix-captive-portal/thumbnail.jpg
 ---
 
 其实一年前就应该把这篇文章发出来的，结果直到最近整理自己的项目库时才发现说“噢我以前还研究过这个”。
@@ -349,19 +349,20 @@ fi
 4. 粘贴以下命令到终端：
 ```bash
 curl https://gist.githubusercontent.com/SteveZMTstudios/e3beeb227b3b4fd31c22f1ce2eb7bad3/raw/ab901b598e91d74a645340b9ca560c40519329c3/patch_shill.sh | sudo bash
-
 ```
 
 如果您介意远程命令，那么：  
 5. 将此脚本保存到“我的文件”目录下。  
 6.    
-   ```bash
+```bash
    cd /home/chronos/user/MyFiles
-   ```
-7.   
-   ```bash
-   bash patch_shill.sh
-   ```  
+```
+
+7.
+```bash
+   sudo bash patch_shill.sh
+```
+
 8. 此时，您会断开所有的网络连接。如果您是有线网络，那么它将自动连接。如果您是WiFi网络（包括手机热点），则可能需要重新连接。
 
 ![](/images/blog/chromeos-fix-captive-portal/img_1780021043487_0_compressed.jpg)
@@ -369,9 +370,9 @@ curl https://gist.githubusercontent.com/SteveZMTstudios/e3beeb227b3b4fd31c22f1ce
 如果您无法控制WiFi网络，则可能需要重启您的设备。
 
 9. 如果您出于某些原因想要撤消更改，运行：
-   ```bash
+```bash
    bash patch_shill.sh -r
-   ```
+```
 
 另外，每次更新 ChromeOS 后，由于 Rootfs被重建，都需要再次执行此脚本。
 

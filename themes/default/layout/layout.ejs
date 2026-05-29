@@ -6,9 +6,6 @@
     window.__SITE_ASSET_CONFIG__ = {
       analyticsId: '<%= theme.analytics.google_site_id || "" %>',
       busuanziSrc: '<%= (theme.busuanzi.site || theme.busuanzi.page) ? theme.busuanzi.busuanzi_js : "" %>',
-      legacyJquerySrc: '<%= theme.gallery && theme.gallery.jquery_js ? theme.gallery.jquery_js : "" %>',
-      fancyboxCss: '<%= theme.gallery && theme.gallery.fancybox_css ? theme.gallery.fancybox_css : "" %>',
-      fancyboxJs: '<%= theme.gallery && theme.gallery.fancybox_js ? theme.gallery.fancybox_js : "" %>',
       gitalkCss: '//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.css',
       gitalkSrc: '<%= theme.comment && theme.comment.use === "gitalk" ? (theme.comment.gitalk_js || "//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js") : "" %>',
       gitalkBridgeSrc: '<%= theme.comment && theme.comment.use === "gitalk" ? "//sharepoint.cf.stevezmt.top/js/3rd-party/gitalk-cn.min.js" : "" %>'
@@ -48,7 +45,7 @@
       <circle class="progress-ring__circle mdui-text-color-theme-a100" stroke="currentColor" stroke-width="4" fill="transparent" r="26" cx="30" cy="30"/>
     </svg>
   </div>
-  <%- js(['js/mdui', 'js/script', 'js/pjax']) %>
+  <%- js(['js/mdui', 'js/script', 'js/lightbox', 'js/pjax']) %>
   <script>
     // Remove initial animation class
     setTimeout(function() {

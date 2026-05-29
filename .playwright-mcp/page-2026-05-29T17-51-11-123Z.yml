@@ -1,0 +1,284 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]: Atom
+    - link "XML" [ref=e5] [cursor=pointer]:
+      - /url: /atom.xml
+    - link "首页" [ref=e6] [cursor=pointer]:
+      - /url: /
+  - generic [ref=e7]:
+    - generic [ref=e8]:
+      - generic [ref=e9]: Atom Feed
+      - heading "老史尬侃 - Steve ZMT 's Blog" [level=1] [ref=e10]
+      - paragraph [ref=e11]: 这家伙叽里咕噜说什么呢。
+      - paragraph [ref=e12]: "最后更新: 2026-05-29T02:46:49.507Z / 条目: 17"
+      - paragraph [ref=e13]:
+        - link "订阅源 XML" [ref=e14] [cursor=pointer]:
+          - /url: /atom.xml
+        - link "返回站点首页" [ref=e15] [cursor=pointer]:
+          - /url: /
+    - generic [ref=e16]:
+      - checkbox "展开正文" [ref=e17]
+      - heading "ChromeOS 修复“无法连接到互联网”" [level=2] [ref=e18]:
+        - link "ChromeOS 修复“无法连接到互联网”" [ref=e19] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2026/05/29/chromeos-fix-captive-portal/
+      - paragraph [ref=e20]: "发布: 2026-05-28T18:18:12.000Z 更新: 2026-05-29T02:46:49.507Z"
+      - paragraph [ref=e21]:
+        - generic [ref=e22]: 折腾
+        - generic [ref=e23]: 故障
+        - generic [ref=e24]: 开源
+        - generic [ref=e25]: root
+        - generic [ref=e26]: linux
+        - generic [ref=e27]: chromeos
+      - generic [ref=e28]: 其实一年前就应该把这篇文章发出来的，结果直到最近整理自己的项目库时才发现说“噢我以前还研究过这个”。 一年前多前新入了一个AMD笔记本，算是把老Intel电脑换掉了，而且由于CPU受支持，终于可以装上心心念念的
+      - paragraph [ref=e29]:
+        - link "打开原文" [ref=e30] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2026/05/29/chromeos-fix-captive-portal/
+        - generic [ref=e31] [cursor=pointer]: 展开正文
+    - generic [ref=e32]:
+      - checkbox "展开正文" [ref=e33]
+      - heading "WSL中如何顺畅地使用GPG和Yubikey这类东西" [level=2] [ref=e34]:
+        - link "WSL中如何顺畅地使用GPG和Yubikey这类东西" [ref=e35] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2026/04/13/wsl-gpg.exe/
+      - paragraph [ref=e36]: "发布: 2026-04-13T07:59:34.000Z 更新: 2026-05-29T02:30:10.333Z"
+      - paragraph [ref=e37]:
+        - generic [ref=e38]: 瞎搞
+        - generic [ref=e39]: 开源
+        - generic [ref=e40]: linux
+        - generic [ref=e41]: wsl
+        - generic [ref=e42]: yubikey
+        - generic [ref=e43]: usb
+      - generic [ref=e44]: 这事明明很简单的，怎么给互联网和技术大牛搞得这么复杂？
+      - paragraph [ref=e45]:
+        - link "打开原文" [ref=e46] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2026/04/13/wsl-gpg.exe/
+        - generic [ref=e47] [cursor=pointer]: 展开正文
+    - generic [ref=e48]:
+      - checkbox "展开正文" [ref=e49]
+      - heading "Ticwatch Pro 3 Ultra 的苦痛之路" [level=2] [ref=e50]:
+        - link "Ticwatch Pro 3 Ultra 的苦痛之路" [ref=e51] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2026/03/27/ticwatch-ruby-fishy/
+      - paragraph [ref=e52]: "发布: 2026-03-27T00:35:55.000Z 更新: 2026-05-29T02:30:10.333Z"
+      - paragraph [ref=e53]:
+        - generic [ref=e54]: 折腾
+        - generic [ref=e55]: 电子垃圾
+        - generic [ref=e56]: 安卓
+        - generic [ref=e57]: 开源
+        - generic [ref=e58]: root
+      - generic [ref=e59]: 这几天二手淘了一个ticwatch pro3 ultra。170。 卖家说他刷了国行系统。 刚好那天勤工俭学发工资想买点东西，再一看，170就能买到一个带屏幕、GPS还有NFC的安卓9，那还要啥自行车，当时就脑子一热入了…
+      - paragraph [ref=e60]:
+        - link "打开原文" [ref=e61] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2026/03/27/ticwatch-ruby-fishy/
+        - generic [ref=e62] [cursor=pointer]: 展开正文
+    - generic [ref=e63]:
+      - checkbox "展开正文" [ref=e64]
+      - heading "2025 年度总结" [level=2] [ref=e65]:
+        - link "2025 年度总结" [ref=e66] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2025/12/12/2025-yearly-summit/
+      - paragraph [ref=e67]: "发布: 2025-12-11T20:49:14.000Z 更新: 2026-05-29T02:30:10.333Z"
+      - paragraph [ref=e68]:
+        - generic [ref=e69]: 瞎聊
+      - generic [ref=e70]: 2025年又要这么稀里糊涂地过完了，这篇博文算是给2025年做个年度总结。
+      - paragraph [ref=e71]:
+        - link "打开原文" [ref=e72] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2025/12/12/2025-yearly-summit/
+        - generic [ref=e73] [cursor=pointer]: 展开正文
+    - generic [ref=e74]:
+      - checkbox "展开正文" [ref=e75]
+      - heading "50%的互联网爆炸了" [level=2] [ref=e76]:
+        - link "50%的互联网爆炸了" [ref=e77] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2025/11/18/cloudflare-down/
+      - paragraph [ref=e78]: "发布: 2025-11-18T13:57:56.000Z 更新: 2025-11-19T03:48:30.672Z"
+      - paragraph [ref=e79]:
+        - generic [ref=e80]: 瞎聊
+        - generic [ref=e81]: Cloudflare
+      - generic [ref=e82]: 2025年11月18日 11点36分 (UTC时间)，Cloudflare发生中断。有一说一，这次Cloudflare的中断影响实在是太大了。
+      - paragraph [ref=e83]:
+        - link "打开原文" [ref=e84] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2025/11/18/cloudflare-down/
+        - generic [ref=e85] [cursor=pointer]: 展开正文
+    - generic [ref=e86]:
+      - checkbox "展开正文" [ref=e87]
+      - heading "iVentoy 与家用路由器引导 PXE" [level=2] [ref=e88]:
+        - link "iVentoy 与家用路由器引导 PXE" [ref=e89] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2025/09/29/iventoy-pxe-in-home/
+      - paragraph [ref=e90]: "发布: 2025-09-29T13:31:33.000Z 更新: 2025-11-19T03:48:30.673Z"
+      - paragraph [ref=e91]:
+        - generic [ref=e92]: 折腾
+        - generic [ref=e93]: iVentoy
+        - generic [ref=e94]: PXE
+        - generic [ref=e95]: 网络引导
+      - generic [ref=e96]: 近期要给家里另一台电脑重做系统，但是手边没有U盘，就想着折腾网络启动看看免U盘能不能装系统。
+      - paragraph [ref=e97]:
+        - link "打开原文" [ref=e98] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2025/09/29/iventoy-pxe-in-home/
+        - generic [ref=e99] [cursor=pointer]: 展开正文
+    - generic [ref=e100]:
+      - checkbox "展开正文" [ref=e101]
+      - heading "ColorOS/RealmeUI OTA 下载指南" [level=2] [ref=e102]:
+        - link "ColorOS/RealmeUI OTA 下载指南" [ref=e103] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2025/09/08/coloros-realme-ota-download-guide/
+      - paragraph [ref=e104]: "发布: 2025-09-08T01:20:14.000Z 更新: 2025-11-19T03:48:30.672Z"
+      - paragraph [ref=e105]:
+        - generic [ref=e106]: 折腾
+        - generic [ref=e107]: ColorOS
+        - generic [ref=e108]: RealmeUI
+        - generic [ref=e109]: 安卓
+        - generic [ref=e110]: 下载
+      - generic [ref=e111]: 假你手机和oddo的ota服务器在通过普通的方式都是会403，所以你需要通过一些邪道来搞到OTA包
+      - paragraph [ref=e112]:
+        - link "打开原文" [ref=e113] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2025/09/08/coloros-realme-ota-download-guide/
+        - generic [ref=e114] [cursor=pointer]: 展开正文
+    - generic [ref=e115]:
+      - checkbox "展开正文" [ref=e116]
+      - heading "近期关于海外站点https无法访问的情况" [level=2] [ref=e117]:
+        - link "近期关于海外站点https无法访问的情况" [ref=e118] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2025/08/20/https-port-443-blocked/
+      - paragraph [ref=e119]: "发布: 2025-08-20T11:14:44.000Z 更新: 2025-11-19T03:48:30.673Z"
+      - paragraph [ref=e120]:
+        - generic [ref=e121]: 瞎聊
+        - generic [ref=e122]: 故障
+      - generic [ref=e123]: 大约在2025年8月20日，所有用户反馈无法访问海外站点，经过排查发现是由于https端口被阻塞所致。
+      - paragraph [ref=e124]:
+        - link "打开原文" [ref=e125] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2025/08/20/https-port-443-blocked/
+        - generic [ref=e126] [cursor=pointer]: 展开正文
+    - generic [ref=e127]:
+      - checkbox "展开正文" [ref=e128]
+      - heading "临时服务中断" [level=2] [ref=e129]:
+        - link "临时服务中断" [ref=e130] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2025/01/20/20250120-apex-area-serverdown/
+      - paragraph [ref=e131]: "发布: 2025-01-20T07:11:29.000Z 更新: 2025-11-19T03:48:30.672Z"
+      - paragraph [ref=e132]:
+        - generic [ref=e133]: 折腾
+        - generic [ref=e134]: 故障
+        - generic [ref=e135]: 意外
+      - generic [ref=e136]: 🛑灾难性终止 网站域 stevezmt.top 和 www.stevezmt.top 因签名未能提交导致暂时性停止运营。
+      - paragraph [ref=e137]:
+        - link "打开原文" [ref=e138] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2025/01/20/20250120-apex-area-serverdown/
+        - generic [ref=e139] [cursor=pointer]: 展开正文
+    - generic [ref=e140]:
+      - checkbox "展开正文" [ref=e141]
+      - heading "2025 新年快乐" [level=2] [ref=e142]:
+        - link "2025 新年快乐" [ref=e143] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2025/01/01/2025-new-year/
+      - paragraph [ref=e144]: "发布: 2025-01-01T04:27:24.000Z 更新: 2025-11-19T03:48:30.672Z"
+      - generic [ref=e145]: 2025 新年快乐 Happy new year 2025!
+      - paragraph [ref=e146]:
+        - link "打开原文" [ref=e147] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2025/01/01/2025-new-year/
+        - generic [ref=e148] [cursor=pointer]: 展开正文
+    - generic [ref=e149]:
+      - checkbox "展开正文" [ref=e150]
+      - heading "主题复刻指南" [level=2] [ref=e151]:
+        - link "主题复刻指南" [ref=e152] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2024/12/21/fork-this-theme/
+      - paragraph [ref=e153]: "发布: 2024-12-21T09:54:54.000Z 更新: 2025-11-19T03:48:30.672Z"
+      - paragraph [ref=e154]:
+        - generic [ref=e155]: 折腾
+        - generic [ref=e156]: 开源
+        - generic [ref=e157]: hexo
+        - generic [ref=e158]: 博客
+      - generic [ref=e159]: 这里提供了一种方式，可以让你快速复刻这个主题，这样你就能够把它做成你的博客了。
+      - paragraph [ref=e160]:
+        - link "打开原文" [ref=e161] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2024/12/21/fork-this-theme/
+        - generic [ref=e162] [cursor=pointer]: 展开正文
+    - generic [ref=e163]:
+      - checkbox "展开正文" [ref=e164]
+      - heading "几乎超越鸿蒙的完全互联方案" [level=2] [ref=e165]:
+        - link "几乎超越鸿蒙的完全互联方案" [ref=e166] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2024/12/03/real-harmony-connect-all/
+      - paragraph [ref=e167]: "发布: 2024-12-03T12:15:22.000Z 更新: 2025-11-19T03:48:30.673Z"
+      - paragraph [ref=e168]:
+        - generic [ref=e169]: 折腾
+        - generic [ref=e170]: 安卓
+        - generic [ref=e171]: 开源
+        - generic [ref=e172]: root
+        - generic [ref=e173]: 互联
+        - generic [ref=e174]: KDE
+      - generic [ref=e175]: 可能是这几天吃太饱了 ，花了一个周末，折腾了一个自己个人还算满意的全平台互联方案。 实现效果几乎可以完全满足我个人远程工作的需要，而且绝大部分组件都是开源，几乎无感知的实现了类似鸿蒙宣传的的完全互联方案。 但是好像目前只能限制
+      - paragraph [ref=e176]:
+        - link "打开原文" [ref=e177] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2024/12/03/real-harmony-connect-all/
+        - generic [ref=e178] [cursor=pointer]: 展开正文
+    - generic [ref=e179]:
+      - checkbox "展开正文" [ref=e180]
+      - heading "关于 x.ai 的一些看法" [level=2] [ref=e181]:
+        - link "关于 x.ai 的一些看法" [ref=e182] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2024/12/01/talk-about-x-ai/
+      - paragraph [ref=e183]: "发布: 2024-12-01T03:54:46.000Z 更新: 2025-12-11T03:07:50.055Z"
+      - paragraph [ref=e184]:
+        - generic [ref=e185]: 瞎聊
+        - generic [ref=e186]: AI
+        - generic [ref=e187]: openai
+      - generic [ref=e188]: 前一段时间在某群里抱怨openai实在太贵，而且还有严格的ip要求，不方便使用。有位大佬推荐了x.ai，说是一个免费的AI助手，还是马斯克搞得。我就去试了试，感觉还不错，所以写了这篇文章来分享一下我的使用心得。 总的来说，x.ai好坏参半。好的地方是它确实免费
+      - paragraph [ref=e189]:
+        - link "打开原文" [ref=e190] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2024/12/01/talk-about-x-ai/
+        - generic [ref=e191] [cursor=pointer]: 展开正文
+    - generic [ref=e192]:
+      - checkbox "展开正文" [ref=e193]
+      - heading "如何在学校安全的玩翻译笔" [level=2] [ref=e194]:
+        - link "如何在学校安全的玩翻译笔" [ref=e195] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2024/03/22/hide-your-scanpen/
+      - paragraph [ref=e196]: "发布: 2024-03-22T02:00:00.000Z 更新: 2025-11-19T03:48:30.673Z"
+      - paragraph [ref=e197]:
+        - generic [ref=e198]: 折腾
+        - generic [ref=e199]: 电子垃圾
+        - generic [ref=e200]: 安卓
+        - generic [ref=e201]: root
+        - generic [ref=e202]: xposed
+        - generic [ref=e203]: 单词笔
+      - generic [ref=e204]: 此页面最初由我自己发布在
+      - paragraph [ref=e205]:
+        - link "打开原文" [ref=e206] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2024/03/22/hide-your-scanpen/
+        - generic [ref=e207] [cursor=pointer]: 展开正文
+    - generic [ref=e208]:
+      - checkbox "展开正文" [ref=e209]
+      - heading "玩飞一台翻译词典笔（进阶-获取root）" [level=2] [ref=e210]:
+        - link "玩飞一台翻译词典笔（进阶-获取root）" [ref=e211] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2024/02/01/root-on-scanpen/
+      - paragraph [ref=e212]: "发布: 2024-02-01T06:55:00.000Z 更新: 2025-11-19T03:48:30.674Z"
+      - paragraph [ref=e213]:
+        - generic [ref=e214]: 折腾
+        - generic [ref=e215]: 电子垃圾
+        - generic [ref=e216]: 安卓
+        - generic [ref=e217]: root
+        - generic [ref=e218]: 单词笔
+      - generic [ref=e219]: 此页面最初由我自己发布在
+      - paragraph [ref=e220]:
+        - link "打开原文" [ref=e221] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2024/02/01/root-on-scanpen/
+        - generic [ref=e222] [cursor=pointer]: 展开正文
+    - generic [ref=e223]:
+      - checkbox "展开正文" [ref=e224]
+      - heading "玩飞一台翻译词典笔（非root方案）" [level=2] [ref=e225]:
+        - link "玩飞一台翻译词典笔（非root方案）" [ref=e226] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2023/10/01/play-on-scanpen/
+      - paragraph [ref=e227]: "发布: 2023-10-01T08:52:00.000Z 更新: 2025-11-19T03:48:30.673Z"
+      - paragraph [ref=e228]:
+        - generic [ref=e229]: 折腾
+        - generic [ref=e230]: 电子垃圾
+        - generic [ref=e231]: 安卓
+        - generic [ref=e232]: root
+        - generic [ref=e233]: 单词笔
+      - generic [ref=e234]: 此页面最初由我自己发布在
+      - paragraph [ref=e235]:
+        - link "打开原文" [ref=e236] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2023/10/01/play-on-scanpen/
+        - generic [ref=e237] [cursor=pointer]: 展开正文
+    - generic [ref=e238]:
+      - checkbox "展开正文" [ref=e239]
+      - heading "Markdown 渲染测试" [level=2] [ref=e240]:
+        - link "Markdown 渲染测试" [ref=e241] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2023/08/22/markdown-test-full/
+      - paragraph [ref=e242]: "发布: 2023-08-21T18:13:04.000Z 更新: 2025-11-19T03:48:30.673Z"
+      - generic [ref=e243]: 普通的markdown渲染测试，包含各种语法。
+      - paragraph [ref=e244]:
+        - link "打开原文" [ref=e245] [cursor=pointer]:
+          - /url: https://blog.stevezmt.top/2023/08/22/markdown-test-full/
+        - generic [ref=e246] [cursor=pointer]: 展开正文
+    - paragraph [ref=e247]: 这是机器可读的订阅源。复制当前地址到 RSS 阅读器即可订阅。

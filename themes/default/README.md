@@ -81,9 +81,7 @@ footer_text:
 license:
 
 gallery:
-  fancybox_css: //cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css
-  fancybox_js: //cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js
-  jquery_js: //cdn.bootcdn.net/ajax/libs/jquery/3.3.1/jquery.min.js
+  lightbox: builtin
   lazyload_js: //cdn.bootcdn.net/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js
 busuanzi:
   site: false
@@ -137,7 +135,7 @@ comment:
 - **since** - Start year, use a 4-digit number.
 - **footer_text** - Additional text in footer, such as the record information. Support `<a>` tag.
 - **license** - License description of the article. Support `<a>` tag.
-- **gallery** - CDN links of `fancybox` plugin used on Gallery page.
+- **gallery** - Gallery image settings. The image viewer is the built-in lightbox.
 - **busuanzi** - Use `busuanzi` plugin to count website visits.
 - **qrcode** - Qrcode for articles. if use `plugin`, `hexo-helper-qrcode` plugin is needed.
 - **donate** - Use your payment qrcode or link to receive donations. Set with `name` and `link`.
@@ -173,6 +171,6 @@ layout: custom  # Make the page available for custom styles.
 
 > `Sticky Post`: Use with the plugin [`hexo-generator-topindex`](https://github.com/amlove2/hexo-generator-topindex) or update the official plugin [`hexo-generator-index`](https://github.com/hexojs/hexo-generator-index) to version 2.0.0, posts can be pinned to the top of index page.
 
-> `Fancybox`: Set the `fancybox` class on the `<img>` tag in the post to enable the picture to popup, and the `center-block` class to center the picture.
+> `Lightbox`: Article images and gallery photos use the built-in lightbox. Use the `center-block` class to center an article image.
 
 **Recommended**: This theme works better with the parser [`hexo-renderer-markdown`](https://github.com/niemingzhao/hexo-renderer-markdown).

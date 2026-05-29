@@ -164,6 +164,33 @@
       try{ var el = document.createElement('div'); el.style.width = 'calc(100% - 10px)'; return !!el.style.width; }catch(e){return false; }
     }
 
+    function encodeParam(value){
+      try{ return encodeURIComponent(value); }catch(e){}
+      try{ return escape(value); }catch(e){}
+      return '';
+    }
+
+    function makeContentUrl(url, id, title){
+      var q = '';
+      function add(name, value){
+        var encoded;
+        if(!value) return;
+        encoded = encodeParam(value);
+        if(!encoded) return;
+        q += (q ? '&' : '') + name + '=' + encoded;
+      }
+      add('url', url || id);
+      add('href', url);
+      add('id', id);
+      add('title', title);
+      return '/k/content.html' + (q ? ('?' + q) : '');
+    }
+
+    function rememberContentUrl(url){
+      if(!url) return;
+      try{ document.cookie = 'k_last_url=' + encodeParam(url) + '; path=/k'; }catch(e){}
+    }
+
     function renderEntries(doc){
 
       var entries = (doc.getElementsByTagName && doc.getElementsByTagName('entry')) || [];
@@ -206,6 +233,7 @@
           a.className = 'item';
           a.setAttribute('data-id', id);
           a.setAttribute('data-href', href);
+          a.setAttribute('data-url', href);
           a.setAttribute('role','link');
           a.appendChild(document.createTextNode(title));
 
@@ -241,19 +269,14 @@
           li.appendChild(button);
           listEl.appendChild(li);
 
-          button.onclick = function(evt){
+          function openEntry(evt){
             try{ if(evt && evt.preventDefault) evt.preventDefault(); }catch(e){}
-
-            var params = [];
-            try{ if(id) params.push('id=' + encodeURIComponent(id)); }catch(e){}
-            try{ if(href) params.push('href=' + encodeURIComponent(href)); }catch(e){}
-            try{ if(title) params.push('title=' + encodeURIComponent(title)); }catch(e){}
-            var q = params.length? ('?' + params.join('&')) : '';
-            var target = '/k/content.html' + q;
-
-            location.href = target;
+            rememberContentUrl(href || id);
+            location.href = makeContentUrl(href, id, title);
             return false;
-          };
+          }
+
+          button.onclick = openEntry;
         })(entries[i]);
       }
     }

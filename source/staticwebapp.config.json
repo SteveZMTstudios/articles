@@ -1,4 +1,20 @@
 {
+  "routes": [
+    {
+      "route": "/atom.xml",
+      "headers": {
+        "content-type": "application/xml; charset=utf-8",
+        "cache-control": "public, max-age=0, must-revalidate"
+      }
+    },
+    {
+      "route": "/feed.xsl",
+      "headers": {
+        "content-type": "application/xml; charset=utf-8",
+        "cache-control": "public, max-age=0, must-revalidate"
+      }
+    }
+  ],
   "globalHeaders": {
     "Strict-Transport-Security": "max-age=0"
   },

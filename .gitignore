@@ -15,3 +15,4 @@ output/
 .npm-cache/
 
 .env    
+.agents

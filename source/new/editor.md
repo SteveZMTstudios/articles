@@ -1,12 +1,17 @@
 ---
 title: 博客编辑器
 date: false
-layout: page
+layout: custom
 comments: false
 excerpt: markdown 博客编辑器
 ---
 
 <style>
+    main#main {
+        animation: none !important;
+        transform: none !important;
+    }
+
     /* Dark Mode Adaptation */
     .editor-drag-active {
         background-color: rgba(0, 0, 0, 0.05) !important;
@@ -55,6 +60,77 @@ excerpt: markdown 博客编辑器
     #editor-card .mdui-menu .mdui-typo a:before {
         height: 0px !important;
     }
+
+    .editor-field-menu,
+    .editor-tool-menu {
+        max-height: min(300px, calc(100vh - 32px));
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .editor-tool-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .editor-tool-menu a {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .editor-article-card .mdui-card-media > img {
+        max-height: 240px;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+    }
+
+    .editor-article-card .mdui-card-menu .mdui-menu img {
+        width: 246px;
+        height: 246px;
+        display: block;
+    }
+
+    .editor-preview-body {
+        min-height: 100%;
+    }
+
+    .editor-preview-body .center-block {
+        display: block !important;
+        margin-right: auto !important;
+        margin-left: auto !important;
+    }
+
+    .editor-preview-body .text-center {
+        text-align: center !important;
+    }
+
+    .editor-setting-switch {
+        display: inline-flex;
+        align-items: center;
+        min-height: 56px;
+        margin-top: 8px;
+    }
+
+    .editor-select-field {
+        min-height: 64px;
+        padding-top: 8px;
+    }
+
+    .editor-select-label {
+        margin-bottom: 4px;
+        font-size: 12px;
+        line-height: 1.2;
+    }
+
+    @media (max-width: 600px) {
+        .editor-article-card .mdui-card-menu .mdui-menu img {
+            width: 200px;
+            height: 200px;
+        }
+    }
     
     /* Editor Textarea */
     #editor-content {
@@ -65,6 +141,8 @@ excerpt: markdown 博客编辑器
 </style>
 
 <div id="app" class="mdui-container-fluid mdui-p-y-2">
+  <article class="mdui-card mdui-m-b-2 editor-article-card" id="editor-article-preview"></article>
+
   <!-- Toolbar & Config -->
   <div class="mdui-card mdui-p-a-2 mdui-m-b-2">
     <div class="mdui-row">
@@ -85,16 +163,18 @@ excerpt: markdown 博客编辑器
       </div>
     </div>
     <div class="mdui-row">
-       <div class="mdui-col-md-6">
-        <div class="mdui-textfield mdui-textfield-floating-label">
+      <div class="mdui-col-md-6">
+        <div class="mdui-textfield mdui-textfield-floating-label" style="position: relative;">
           <label class="mdui-textfield-label">标签 (逗号分隔)</label>
-          <input class="mdui-textfield-input" type="text" id="post-tags" />
+          <input class="mdui-textfield-input" type="text" id="post-tags" autocomplete="off" />
+          <ul class="mdui-menu editor-field-menu" id="tag-menu"></ul>
         </div>
       </div>
       <div class="mdui-col-md-6">
-        <div class="mdui-textfield mdui-textfield-floating-label">
+        <div class="mdui-textfield mdui-textfield-floating-label" style="position: relative;">
           <label class="mdui-textfield-label">分类 (逗号分隔)</label>
-          <input class="mdui-textfield-input" type="text" id="post-categories" />
+          <input class="mdui-textfield-input" type="text" id="post-categories" autocomplete="off" />
+          <ul class="mdui-menu editor-field-menu" id="category-menu"></ul>
         </div>
       </div>
     </div>
@@ -204,9 +284,34 @@ excerpt: markdown 博客编辑器
                              </div>
                         </div>
                         <div class="mdui-row">
+                             <div class="mdui-col-md-4">
+                                <div class="editor-select-field">
+                                  <div class="editor-select-label mdui-text-color-grey-600">文章语言</div>
+                                  <select class="mdui-select" id="post-lang" mdui-select="{position: 'bottom'}">
+                                    <option value="zh-cn">简体中文</option>
+                                    <option value="en">English</option>
+                                  </select>
+                                </div>
+                             </div>
+                             <div class="mdui-col-md-4">
+                                <label class="mdui-checkbox editor-setting-switch">
+                                    <input type="checkbox" id="post-license-enabled" checked/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    显示版权声明
+                                </label>
+                             </div>
+                             <div class="mdui-col-md-4">
+                                <label class="mdui-checkbox editor-setting-switch">
+                                    <input type="checkbox" id="post-wechat_sync" checked/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    微信同步 (wechat_sync)
+                                </label>
+                             </div>
+                        </div>
+                        <div class="mdui-row" id="license-custom-row">
                              <div class="mdui-col-md-12">
                                 <div class="mdui-textfield mdui-textfield-floating-label">
-                                  <label class="mdui-textfield-label">版权声明 (License) - 留空为默认，填 false 关闭</label>
+                                  <label class="mdui-textfield-label">自定义版权声明 (可选)</label>
                                   <input class="mdui-textfield-input" type="text" id="post-license" />
                                 </div>
                              </div>
@@ -257,23 +362,24 @@ excerpt: markdown 博客编辑器
       <button class="mdui-btn mdui-btn-icon" onclick="setAlign('right')" mdui-tooltip="{content: '右对齐'}"><i class="mdui-icon material-icons">format_align_right</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="clearFormatting()" mdui-tooltip="{content: '清除格式'}"><i class="mdui-icon material-icons">format_clear</i></button>
       <!-- Insert -->
-      <button class="mdui-btn mdui-btn-icon" onclick="insertText('- ', '')" mdui-tooltip="{content: '列表'}"><i class="mdui-icon material-icons">format_list_bulleted</i></button>
-      <button class="mdui-btn mdui-btn-icon" onclick="insertText('[', '](url)')" mdui-tooltip="{content: '链接'}"><i class="mdui-icon material-icons">link</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertList()" mdui-tooltip="{content: '列表'}"><i class="mdui-icon material-icons">format_list_bulleted</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertLink()" mdui-tooltip="{content: '链接'}"><i class="mdui-icon material-icons">link</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="document.getElementById('image-input').click()" mdui-tooltip="{content: '插入图片'}"><i class="mdui-icon material-icons">image</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="insertTable()" mdui-tooltip="{content: '表格'}"><i class="mdui-icon material-icons">grid_on</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="insertText('```\n', '\n```')" mdui-tooltip="{content: '代码块'}"><i class="mdui-icon material-icons">code</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertDetails()" mdui-tooltip="{content: '折叠块'}"><i class="mdui-icon material-icons">unfold_more</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="insertText('\n<\!-- more -->\n', '')" mdui-tooltip="{content: '插入摘要分隔符'}"><i class="mdui-icon material-icons">more_horiz</i></button>
       <div class="mdui-toolbar-spacer"></div>
       <!-- View -->
       <button class="mdui-btn mdui-btn-icon" onclick="toggleFullscreen()" mdui-tooltip="{content: '全屏模式'}"><i class="mdui-icon material-icons" id="fullscreen-icon">fullscreen</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="togglePreview()" mdui-tooltip="{content: '切换预览'}"><i class="mdui-icon material-icons">visibility</i></button>
       <!-- Menus (Must be siblings of triggers) -->
-      <ul class="mdui-menu" id="font-size-menu">
+      <ul class="mdui-menu editor-tool-menu" id="font-size-menu">
         <li class="mdui-menu-item"><a style="font-size:12px" href="javascript:;" onclick="setFontSize('12px')">12px (小)</a></li>
         <li class="mdui-menu-item"><a style="font-size:14px" href="javascript:;" onclick="setFontSize('14px')">14px (正常)</a></li>
         <li class="mdui-menu-item"><a style="font-size:16px" href="javascript:;" onclick="setFontSize('16px')">16px (中)</a></li>
         <li class="mdui-menu-item"><a style="font-size:20px" href="javascript:;" onclick="setFontSize('20px')">20px (大)</a></li>
-            <li class="mdui-menu-item mdui-p-a-2" style="min-width: 200px; max-width: 240px;">
+            <li class="mdui-menu-item mdui-p-a-2" style=" max-width: 240px;">
                 <div class="mdui-typo-caption mdui-text-color-grey-600 mdui-text-center">自定义大小</div>
                 <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
                     <label class="mdui-slider mdui-slider-discrete" style="width: 90%; margin: 0 auto;">
@@ -282,10 +388,8 @@ excerpt: markdown 博客编辑器
                     <div class="mdui-text-center mdui-text-color-grey-600" id="custom-font-size-val" style="width: 100%;">16px</div>
                 </div>
             </li>
-            <div class="mdui-text-center" id="custom-font-size-val">16px</div>
-        </li>
       </ul>
-      <ul class="mdui-menu" id="text-color-menu">
+      <ul class="mdui-menu editor-tool-menu" id="text-color-menu">
         <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#F44336')" class="mdui-text-color-red">● Red</a></li>
         <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#E91E63')" class="mdui-text-color-pink">● Pink</a></li>
         <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#9C27B0')" class="mdui-text-color-purple">● Purple</a></li>
@@ -317,7 +421,7 @@ excerpt: markdown 博客编辑器
       <div class="mdui-col-xs-12 mdui-p-a-0" id="editor-col" style="height: 100%;">
         <textarea id="editor-content" class="mdui-p-a-2" style="width: 100%; height: 100%; border: none; resize: none; outline: none; font-family: monospace; font-size: 14px; line-height: 1.5; overflow-y: auto;" placeholder="撰写你的想法..."></textarea>
       </div>
-      <div class="mdui-col-xs-12 mdui-p-a-2 markdown-body mdui-typo" id="preview-content" style="height: 100%; overflow-y: auto; display: none;">
+      <div class="mdui-col-xs-12 mdui-p-a-2" id="preview-content" style="height: 100%; overflow-y: auto; display: none;">
         <!-- Preview will be rendered here -->
       </div>
     </div>
@@ -335,8 +439,10 @@ excerpt: markdown 博客编辑器
 <script>
 // --- State & Config ---
 let imageAssets = {}; // In-memory cache of images: { filename: Blob }
+let previewObjectUrls = [];
 const DB_KEY_CONTENT = 'blog_editor_content';
 const DB_KEY_IMAGES = 'blog_editor_images';
+const DEFAULT_POST_AUTHOR = 'Steve ZMT';
 
 // --- History Management ---
 let historyStack = [];
@@ -419,8 +525,18 @@ function redo() {
 // --- Initialization ---
 document.addEventListener('DOMContentLoaded', async () => {
     // Initialize Menus
-    new mdui.Menu('#font-size-btn', '#font-size-menu', { covered: false, fixed: false,position: 'bottom', align:'right',gutter: 32 });
-    new mdui.Menu('#text-color-btn', '#text-color-menu', { covered: false, fixed: false, position: 'bottom', align:'right', gutter: 32 });
+    const toolbarMenus = [
+        initFloatingMenu('#font-size-btn', '#font-size-menu', { align: 'auto' }),
+        initFloatingMenu('#text-color-btn', '#text-color-menu', { align: 'auto' })
+    ];
+    const editorToolbar = document.querySelector('#editor-card > .mdui-toolbar');
+    if (editorToolbar) {
+        editorToolbar.addEventListener('scroll', () => {
+            toolbarMenus.forEach(menu => {
+                if (menu.isOpen()) menu.readjust();
+            });
+        }, { passive: true });
+    }
 
     // Configure Marked Renderer for Image Preview
     const renderer = {
@@ -438,13 +554,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const decodedFilename = decodeURIComponent(filename);
                 
                 if (imageAssets[decodedFilename]) {
-                    const blob = imageAssets[decodedFilename];
-                    const url = URL.createObjectURL(blob);
-                    return `<img src="${url}" alt="${text}" title="${title || ''}" style="max-width: 100%;" />`;
+                    const url = getPreviewImageSrc(href);
+                    return `<img src="${escapeAttribute(url)}" alt="${escapeAttribute(text)}" title="${escapeAttribute(title || '')}" style="max-width: 100%;" />`;
                 }
             }
             // Fallback
-            return `<img src="${href}" alt="${text}"${title ? ` title="${title}"` : ''} style="max-width: 100%;">`;
+            return `<img src="${escapeAttribute(href)}" alt="${escapeAttribute(text)}"${title ? ` title="${escapeAttribute(title)}"` : ''} style="max-width: 100%;">`;
         }
     };
     marked.use({ renderer });
@@ -476,14 +591,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             if(savedContent.author) document.getElementById('post-author').value = savedContent.author;
             if(savedContent.thumbnail) document.getElementById('post-thumbnail').value = savedContent.thumbnail;
             if(savedContent.excerpt) document.getElementById('post-excerpt').value = savedContent.excerpt;
-            if(savedContent.license) document.getElementById('post-license').value = savedContent.license;
+            applyLicenseFrontMatterValue(savedContent.license || '');
+            if(savedContent.lang) document.getElementById('post-lang').value = savedContent.lang;
+            if(savedContent.wechat_sync !== undefined) document.getElementById('post-wechat_sync').checked = savedContent.wechat_sync;
             
             document.getElementById('post-count').checked = savedContent.count !== false;
             document.getElementById('post-share_menu').checked = savedContent.share_menu !== false;
             document.getElementById('post-qrcode').checked = savedContent.qrcode !== false;
             document.getElementById('post-thislink').checked = savedContent.thislink !== false;
 
-            updatePreview();
             mdui.updateTextFields();
         } else {
             // Initialize new UUID if empty
@@ -496,8 +612,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (savedImages) {
             imageAssets = savedImages;
         }
+        updateLicenseVisibility();
+        updatePreview();
     } catch (e) {
         console.error("Failed to load saved state", e);
+        updateLicenseVisibility();
+        updatePreview();
     }
 
     // Initialize History
@@ -513,22 +633,40 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // History Shortcuts & Typing
     editor.addEventListener('keydown', (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+            e.preventDefault();
+            saveState();
+            mdui.snackbar({message: '已保存至本地缓存', position: 'bottom'});
+        } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
             e.preventDefault();
             if (e.shiftKey) redo();
             else undo();
         } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
             e.preventDefault();
             redo();
-        } else if (e.key === ' ' || e.key === 'Enter') {
-             recordHistory();
+        } else if (e.key === 'Enter') {
+            if (!handleMarkdownEnter(e)) recordHistory();
+        } else if (e.key === ' ') {
+            recordHistory();
         }
     });
 
     // Attach auto-save to all other inputs
-    document.querySelectorAll('.mdui-textfield-input, input[type="checkbox"]').forEach(input => {
+    document.querySelectorAll('.mdui-textfield-input, input[type="checkbox"], select').forEach(input => {
         input.addEventListener('input', triggerAutoSave);
         input.addEventListener('change', triggerAutoSave);
+    });
+
+    document.getElementById('post-license-enabled').addEventListener('change', () => {
+        updateLicenseVisibility();
+        triggerAutoSave();
+    });
+
+    ['post-title', 'post-slug', 'post-date', 'post-author', 'post-thumbnail', 'post-count', 'post-qrcode', 'post-share_menu'].forEach(id => {
+        const input = document.getElementById(id);
+        if (!input) return;
+        input.addEventListener('input', updatePreview);
+        input.addEventListener('change', updatePreview);
     });
     
     // const editor = document.getElementById('editor-content'); // Already defined above
@@ -542,7 +680,180 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('thumbnail-input').addEventListener('change', handleThumbnailSelect);
     // Zip Input Listener
     document.getElementById('zip-input').addEventListener('change', handleZipImport);
+    
+    // Fetch Tags and Categories
+    initTaxonomyMenus();
 });
+
+// --- UI Helpers ---
+function escapeHtml(value) {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function escapeAttribute(value) {
+    return escapeHtml(value);
+}
+
+function dispatchInputValue(input, value) {
+    input.value = value;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+    const textfield = input.closest('.mdui-textfield');
+    if (textfield) mdui.updateTextFields(textfield);
+}
+
+function appendTag(tag) {
+    const input = document.getElementById('post-tags');
+    let vals = input.value.split(',').map(s => s.trim()).filter(Boolean);
+    if (!vals.includes(tag)) vals.push(tag);
+    dispatchInputValue(input, vals.join(', '));
+    input.focus();
+}
+
+function appendCategory(cat) {
+    const input = document.getElementById('post-categories');
+    let vals = input.value.split(',').map(s => s.trim()).filter(Boolean);
+    if (!vals.includes(cat)) vals.push(cat);
+    dispatchInputValue(input, vals.join(', '));
+    input.focus();
+}
+
+function createTaxonomyMenuItem(label, onSelect) {
+    const li = document.createElement('li');
+    const link = document.createElement('a');
+    li.className = 'mdui-menu-item';
+    link.href = 'javascript:;';
+    link.className = 'mdui-ripple';
+    link.textContent = label;
+    link.addEventListener('click', () => onSelect(label));
+    li.appendChild(link);
+    return li;
+}
+
+function fillTaxonomyMenu(menu, values, onSelect) {
+    menu.innerHTML = '';
+    values.forEach(value => {
+        if (!value) return;
+        menu.appendChild(createTaxonomyMenuItem(value, onSelect));
+    });
+}
+
+async function initTaxonomyMenus() {
+    try {
+        const res = await fetch('/search.xml', { credentials: 'same-origin' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(await res.text(), 'application/xml');
+        if (xml.querySelector('parsererror')) {
+            throw new Error('Invalid search index XML');
+        }
+
+        const tags = Array.from(xml.querySelectorAll('tags > tag'))
+            .map(node => node.textContent.trim())
+            .filter(Boolean)
+            .sort((a, b) => a.localeCompare(b, 'zh-Hans-CN'));
+        const categories = Array.from(xml.querySelectorAll('categories > category'))
+            .map(node => node.textContent.trim())
+            .filter(Boolean)
+            .sort((a, b) => a.localeCompare(b, 'zh-Hans-CN'));
+
+        const uniqueTags = Array.from(new Set(tags));
+        const uniqueCategories = Array.from(new Set(categories));
+
+        if (uniqueTags.length) {
+            fillTaxonomyMenu(document.getElementById('tag-menu'), uniqueTags, appendTag);
+            initFloatingMenu('#post-tags', '#tag-menu', { align: 'left' });
+        }
+
+        if (uniqueCategories.length) {
+            fillTaxonomyMenu(document.getElementById('category-menu'), uniqueCategories, appendCategory);
+            initFloatingMenu('#post-categories', '#category-menu', { align: 'left' });
+        }
+    } catch (err) {
+        console.error('Failed to fetch tags and categories', err);
+    }
+}
+
+function initFloatingMenu(anchorSelector, menuSelector, options = {}) {
+    const anchor = document.querySelector(anchorSelector);
+    const menu = document.querySelector(menuSelector);
+    if (!anchor || !menu) return null;
+
+    const proxy = document.createElement('span');
+    proxy.setAttribute('aria-hidden', 'true');
+    proxy.style.cssText = 'position: fixed; width: 0; height: 0; left: 0; top: 0; pointer-events: none;';
+    document.body.appendChild(proxy);
+    document.body.appendChild(menu);
+
+    const instance = new mdui.Menu(proxy, menu, Object.assign({
+        covered: false,
+        fixed: true,
+        position: 'bottom',
+        align: 'left',
+        gutter: 8
+    }, options));
+
+    const syncProxy = () => {
+        const rect = anchor.getBoundingClientRect();
+        proxy.style.left = `${rect.left}px`;
+        proxy.style.top = `${rect.top}px`;
+        proxy.style.width = `${rect.width}px`;
+        proxy.style.height = `${rect.height}px`;
+    };
+
+    anchor.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        syncProxy();
+        instance.toggle();
+    });
+
+    const readjust = instance.readjust.bind(instance);
+    instance.readjust = () => {
+        syncProxy();
+        readjust();
+    };
+
+    window.addEventListener('scroll', () => {
+        if (instance.isOpen()) instance.readjust();
+    }, { passive: true });
+
+    return instance;
+}
+
+async function insertLink() {
+    try {
+        const text = await navigator.clipboard.readText();
+        if (text && /^https?:\/\//i.test(text)) {
+            insertText('[', `](${text})`);
+            return;
+        }
+    } catch (e) {
+        console.warn("Clipboard access denied or failed", e);
+    }
+    insertText('[', '](url)');
+}
+
+async function insertDetails() {
+    let clipboardText = "展开";
+    try {
+        const text = await navigator.clipboard.readText();
+        if (text) clipboardText = text;
+    } catch (e) {
+        console.warn("Clipboard access denied or failed", e);
+    }
+    insertText(`<details markdown="1">\n<summary>${clipboardText}</summary>\n\n`, '\n\n</details>');
+}
+
+function insertList() {
+    insertText('- ', '');
+}
 
 // --- Core Functions ---
 
@@ -551,10 +862,208 @@ function generateUUID() {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
 
+function deterministicMaterial(seed) {
+    seed = String(seed || '');
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+        hash = ((hash << 5) - hash + seed.charCodeAt(i)) | 0;
+    }
+    return `/images/random/material-${Math.abs(hash % 19) + 1}.png`;
+}
+
+function getPreviewImageSrc(src) {
+    if (!src) return '';
+    const filename = decodeURIComponent(src.split('/').pop() || '');
+    const blob = imageAssets[filename];
+    if (!blob) return src;
+    const objectUrl = URL.createObjectURL(blob);
+    previewObjectUrls.push(objectUrl);
+    return objectUrl;
+}
+
+function releasePreviewObjectUrls() {
+    previewObjectUrls.forEach(url => URL.revokeObjectURL(url));
+    previewObjectUrls = [];
+}
+
+function getPreviewDate() {
+    const rawDate = document.getElementById('post-date').value.trim();
+    const sourceDate = rawDate || new Date();
+    const date = sourceDate instanceof Date ? sourceDate : new Date(sourceDate.replace(' ', 'T'));
+    if (Number.isNaN(date.getTime())) return rawDate;
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+function getPreviewThumbnail() {
+    const thumbnail = document.getElementById('post-thumbnail').value.trim();
+    if (thumbnail) return getPreviewImageSrc(thumbnail);
+
+    const seed = document.getElementById('post-slug').value
+        || document.getElementById('post-title').value
+        || 'editor-preview';
+    return deterministicMaterial(seed);
+}
+
+function getPreviewSlug() {
+    return document.getElementById('post-slug').value.trim() || 'editor-preview';
+}
+
+function getPreviewPermalink() {
+    return `${window.location.origin}/p/${encodeURIComponent(getPreviewSlug())}/`;
+}
+
+function buildQrCodeUrl(value) {
+    return `//api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(value)}`;
+}
+
+function buildPreviewShareMenu(title, permalink, thumbnail) {
+    const encodedTitle = encodeURIComponent(title);
+    const encodedPermalink = encodeURIComponent(permalink);
+    const encodedThumb = encodeURIComponent(thumbnail);
+
+    return `
+        <ul class="mdui-menu" id="editor-preview-share-menu">
+            <li class="mdui-menu-item">
+                <a href="javascript:void(0);" class="mdui-ripple" onclick="copyToClipboard('${escapeAttribute(permalink)}');">复制链接</a>
+            </li>
+            <li class="mdui-menu-item">
+                <a href="//service.weibo.com/share/share.php?appkey=&title=${encodedTitle}&url=${encodedPermalink}&pic=${encodedThumb}&searchPic=false&style=simple" target="_blank" class="mdui-ripple">微博</a>
+            </li>
+            <li class="mdui-menu-item">
+                <a href="//twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedPermalink}&via=${encodeURIComponent(DEFAULT_POST_AUTHOR)}" target="_blank" class="mdui-ripple">Twitter</a>
+            </li>
+            <li class="mdui-menu-item">
+                <a href="//www.facebook.com/sharer/sharer.php?u=${encodedPermalink}" target="_blank" class="mdui-ripple">Facebook</a>
+            </li>
+            <li class="mdui-menu-item">
+                <a href="//connect.qq.com/widget/shareqq/index.html?site=${encodeURIComponent(document.title)}&title=${encodedTitle}&pics=${encodedThumb}&url=${encodedPermalink}" target="_blank" class="mdui-ripple">QQ</a>
+            </li>
+            <li class="mdui-menu-item">
+                <a href="//telegram.me/share/url?url=${encodedPermalink}&text=${encodedTitle}" target="_blank" class="mdui-ripple">Telegram</a>
+            </li>
+            <li class="mdui-menu-item">
+                <a href="javascript:void(0);" class="mdui-ripple" onclick="sharePageviaSystem();">系统分享</a>
+            </li>
+        </ul>
+    `;
+}
+
+function buildArticleHeaderHtml() {
+    const title = document.getElementById('post-title').value.trim() || 'Untitled';
+    const author = document.getElementById('post-author').value.trim() || DEFAULT_POST_AUTHOR;
+    const thumbnail = getPreviewThumbnail();
+    const previewDate = getPreviewDate();
+    const permalink = getPreviewPermalink();
+    const showCount = document.getElementById('post-count').checked;
+    const showQrcode = document.getElementById('post-qrcode').checked;
+    const showShareMenu = document.getElementById('post-share_menu').checked;
+
+    return `
+        <header class="mdui-card-media">
+            <img src="${escapeAttribute(thumbnail)}" no-lazy fetchpriority="high" width="1280" height="720" decoding="async" alt="${escapeAttribute(title)}">
+            <div class="mdui-card-media-covered">
+                <div class="mdui-card-primary">
+                    <div class="mdui-card-primary-title">
+                        <h1 style="margin: 0; font-size: inherit; font-weight: inherit;">${escapeHtml(title)}</h1>
+                    </div>
+                    <div class="mdui-card-primary-subtitle">
+                        <i class="iconfont" translate="no">&#xe697;</i> ${escapeHtml(previewDate)}
+                        /
+                        <i class="iconfont" translate="no">&#xe601;</i> ${escapeHtml(author)}
+                        ${showCount ? `&nbsp;&nbsp;<span style="display: inline;"><i class="iconfont" translate="no">&#xe7fd;</i> 0</span>` : ''}
+                    </div>
+                </div>
+            </div>
+            <div class="mdui-card-menu">
+                ${showQrcode ? `
+                    <button class="mdui-btn mdui-btn-icon mdui-text-color-white" mdui-menu="{target: '#editor-preview-qrcode', align: 'right'}">
+                        <i class="mdui-icon material-icons" translate="no">devices</i>
+                    </button>
+                    <ul class="mdui-menu" id="editor-preview-qrcode">
+                        <li class="mdui-menu-item" disabled>
+                            <img src="${escapeAttribute(buildQrCodeUrl(permalink))}" alt="QR Code">
+                        </li>
+                    </ul>
+                ` : ''}
+                ${showShareMenu ? `
+                    <button class="mdui-btn mdui-btn-icon mdui-text-color-white" mdui-menu="{target: '#editor-preview-share-menu', align: 'right'}">
+                        <i class="mdui-icon material-icons" translate="no">share</i>
+                    </button>
+                    ${buildPreviewShareMenu(title, permalink, thumbnail)}
+                ` : ''}
+            </div>
+        </header>
+    `;
+}
+
+function buildPreviewBodyHtml(contentHtml) {
+    return `
+        <div class="mdui-typo markdown-body editor-preview-body">
+            ${contentHtml}
+        </div>
+    `;
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        mdui.snackbar({message: '已复制链接!', position: 'top', buttonText: '好'});
+    }, err => {
+        console.error('Could not copy text: ', err);
+    });
+}
+
+function sharePageviaSystem() {
+    const title = document.getElementById('post-title').value.trim() || 'Untitled';
+    const excerpt = document.getElementById('post-excerpt').value.trim();
+    const url = getPreviewPermalink();
+
+    if (navigator.share) {
+        navigator.share({ title, text: excerpt, url }).catch(console.error);
+    } else {
+        mdui.snackbar({message: '您的浏览器不支持此方式。', position: 'top', buttonText: '好吧'});
+    }
+}
+
+function updateLicenseVisibility() {
+    const enabledInput = document.getElementById('post-license-enabled');
+    const customRow = document.getElementById('license-custom-row');
+    if (!enabledInput || !customRow) return;
+
+    customRow.style.display = enabledInput.checked ? 'block' : 'none';
+}
+
+function getLicenseFrontMatterValue() {
+    const enabled = document.getElementById('post-license-enabled').checked;
+    if (!enabled) return 'false';
+    return document.getElementById('post-license').value.trim();
+}
+
+function applyLicenseFrontMatterValue(value) {
+    const enabledInput = document.getElementById('post-license-enabled');
+    const licenseInput = document.getElementById('post-license');
+
+    if (value === 'false') {
+        enabledInput.checked = false;
+        licenseInput.value = '';
+    } else {
+        enabledInput.checked = true;
+        licenseInput.value = value || '';
+    }
+
+    updateLicenseVisibility();
+}
+
 function updatePreview() {
+    releasePreviewObjectUrls();
     const text = document.getElementById('editor-content').value;
     const html = marked.parse(text);
-    document.getElementById('preview-content').innerHTML = html;
+    document.getElementById('editor-article-preview').innerHTML = buildArticleHeaderHtml();
+    document.getElementById('preview-content').innerHTML = buildPreviewBodyHtml(html);
+    mdui.mutation();
 }
 
 async function saveState() {
@@ -572,7 +1081,9 @@ async function saveState() {
         author: document.getElementById('post-author').value,
         thumbnail: document.getElementById('post-thumbnail').value,
         excerpt: document.getElementById('post-excerpt').value,
-        license: document.getElementById('post-license').value,
+        license: getLicenseFrontMatterValue(),
+        lang: document.getElementById('post-lang').value,
+        wechat_sync: document.getElementById('post-wechat_sync').checked,
         count: document.getElementById('post-count').checked,
         share_menu: document.getElementById('post-share_menu').checked,
         qrcode: document.getElementById('post-qrcode').checked,
@@ -612,6 +1123,104 @@ function insertText(before, after) {
     textarea.focus();
     updatePreview();
     triggerAutoSave();
+}
+
+function replaceEditorRange(textarea, start, end, replacement, cursorOffset = replacement.length) {
+    const value = textarea.value;
+    textarea.value = value.substring(0, start) + replacement + value.substring(end);
+    const cursor = start + cursorOffset;
+    textarea.selectionStart = cursor;
+    textarea.selectionEnd = cursor;
+    updatePreview();
+    triggerAutoSave();
+}
+
+function getLineBeforeCursor(textarea) {
+    const cursor = textarea.selectionStart;
+    const value = textarea.value;
+    const lineStart = value.lastIndexOf('\n', cursor - 1) + 1;
+    return {
+        start: lineStart,
+        text: value.substring(lineStart, cursor)
+    };
+}
+
+function getMarkdownLinePrefix(line) {
+    const indentMatch = line.match(/^(\s*)/);
+    const indent = indentMatch ? indentMatch[1] : '';
+    let rest = line.slice(indent.length);
+    let prefix = indent;
+
+    while (true) {
+        const quoteMatch = rest.match(/^(>\s*)/);
+        if (!quoteMatch) break;
+        prefix += quoteMatch[1];
+        rest = rest.slice(quoteMatch[1].length);
+    }
+
+    return { prefix, rest };
+}
+
+function getContinuationMarker(line) {
+    const { prefix, rest } = getMarkdownLinePrefix(line);
+
+    const taskMatch = rest.match(/^([-+*])\s+\[( |x|X)\]\s+(.*)$/);
+    if (taskMatch) {
+        return {
+            prefix,
+            marker: `${taskMatch[1]} [ ] `,
+            content: taskMatch[3]
+        };
+    }
+
+    const unorderedMatch = rest.match(/^([-+*])\s+(.*)$/);
+    if (unorderedMatch) {
+        return {
+            prefix,
+            marker: `${unorderedMatch[1]} `,
+            content: unorderedMatch[2]
+        };
+    }
+
+    const orderedMatch = rest.match(/^(\d+)([.)])\s+(.*)$/);
+    if (orderedMatch) {
+        return {
+            prefix,
+            marker: `${Number(orderedMatch[1]) + 1}${orderedMatch[2]} `,
+            content: orderedMatch[3]
+        };
+    }
+
+    const quoteMatch = line.match(/^(\s*(?:>\s*)+)(.*)$/);
+    if (quoteMatch) {
+        return {
+            prefix: '',
+            marker: quoteMatch[1],
+            content: quoteMatch[2]
+        };
+    }
+
+    return null;
+}
+
+function handleMarkdownEnter(event) {
+    const textarea = event.target;
+    if (textarea.selectionStart !== textarea.selectionEnd) return false;
+
+    const { start, text } = getLineBeforeCursor(textarea);
+    const markerInfo = getContinuationMarker(text);
+    if (!markerInfo) return false;
+
+    event.preventDefault();
+    recordHistory();
+
+    if (markerInfo.content.trim() === '') {
+        replaceEditorRange(textarea, start, textarea.selectionStart, '', 0);
+        return true;
+    }
+
+    replaceEditorRange(textarea, textarea.selectionStart, textarea.selectionEnd, `\n${markerInfo.prefix}${markerInfo.marker}`);
+    return true;
 }
 
 // --- Table Editor ---
@@ -1043,8 +1652,7 @@ async function handleThumbnailSelect(e) {
         imageAssets[filename] = compressedFile;
         
         const imgPath = `/images/blog/${slug}/${filename}`;
-        document.getElementById('post-thumbnail').value = imgPath;
-        mdui.updateTextFields();
+        dispatchInputValue(document.getElementById('post-thumbnail'), imgPath);
         
         mdui.snackbar({message: `头图已处理`});
     } catch (error) {
@@ -1165,7 +1773,8 @@ async function handleZipImport(e) {
             document.getElementById('post-author').value = getVal('author') || '';
             document.getElementById('post-thumbnail').value = getVal('thumbnail') || '';
             document.getElementById('post-excerpt').value = getVal('excerpt') || '';
-            document.getElementById('post-license').value = getVal('license') || '';
+            applyLicenseFrontMatterValue(getVal('license') || '');
+            document.getElementById('post-lang').value = getVal('lang') || 'zh-cn';
             
             document.getElementById('post-count').checked = getVal('count') !== 'false';
             document.getElementById('post-share_menu').checked = getVal('share_menu') !== 'false';
@@ -1179,8 +1788,6 @@ async function handleZipImport(e) {
         
         // Load Images
         imageAssets = {};
-        const imgFolderPrefix = `source/images/blog/${document.getElementById('post-slug').value}/`;
-        
         const imgPromises = [];
         zip.forEach((relativePath, zipEntry) => {
             if (relativePath.startsWith('source/images/blog/') && !zipEntry.dir) {
@@ -1223,7 +1830,9 @@ async function exportPost() {
     const author = document.getElementById('post-author').value;
     const thumbnail = document.getElementById('post-thumbnail').value;
     const excerpt = document.getElementById('post-excerpt').value;
-    const license = document.getElementById('post-license').value;
+    const license = getLicenseFrontMatterValue();
+    const lang = document.getElementById('post-lang').value;
+    const wechat_sync = document.getElementById('post-wechat_sync').checked;
     const count = document.getElementById('post-count').checked;
     const share_menu = document.getElementById('post-share_menu').checked;
     const qrcode = document.getElementById('post-qrcode').checked;
@@ -1248,6 +1857,8 @@ comments: ${comments}
     if(thumbnail) frontMatter += `thumbnail: ${thumbnail}\n`;
     if(excerpt) frontMatter += `excerpt: ${excerpt}\n`;
     if(license) frontMatter += `license: ${license}\n`;
+    if(lang !== 'zh-cn') frontMatter += `lang: ${lang}\n`;
+    if(!wechat_sync) frontMatter += `wechat_sync: false\n`;
     if(!count) frontMatter += `count: false\n`;
     if(!share_menu) frontMatter += `share_menu: false\n`;
     if(!qrcode) frontMatter += `qrcode: false\n`;
@@ -1260,17 +1871,26 @@ comments: ${comments}
     
     // Add Images
     const imgFolder = zip.folder(`source/images/blog/${slug}`);
+    
+    // Extracted target thumbnail filename
+    let thumbnailFilename = '';
+    if (thumbnail && thumbnail.startsWith(`/images/blog/${slug}/`)) {
+        thumbnailFilename = thumbnail.split('/').pop();
+    }
+    
     for (const [filename, blob] of Object.entries(imageAssets)) {
         let shouldInclude = false;
-        if (content.includes(filename)) {
+        
+        // Match in markdown content or explicitly set as thumbnail
+        if (content.includes(filename) || filename === thumbnailFilename) {
             shouldInclude = true;
         } else {
-            // Check if it's an original file whose compressed version is used
+            // Check if it's an original file whose compressed version is used or is the thumbnail
             const lastDotIndex = filename.lastIndexOf('.');
             if (lastDotIndex !== -1) {
                 const nameWithoutExt = filename.substring(0, lastDotIndex);
                 const compressedName = nameWithoutExt + '_compressed.jpg';
-                if (content.includes(compressedName)) {
+                if (content.includes(compressedName) || compressedName === thumbnailFilename) {
                     shouldInclude = true;
                 }
             }
@@ -1298,7 +1918,9 @@ function resetEditor() {
         document.getElementById('post-author').value = '';
         document.getElementById('post-thumbnail').value = '';
         document.getElementById('post-excerpt').value = '';
-        document.getElementById('post-license').value = '';
+        applyLicenseFrontMatterValue('');
+        document.getElementById('post-lang').value = 'zh-cn';
+        document.getElementById('post-wechat_sync').checked = true;
         document.getElementById('editor-content').value = '';
         
         document.getElementById('post-donate').checked = true;
@@ -1411,7 +2033,9 @@ async function submitToGitHub() {
     const author = document.getElementById('post-author').value;
     const thumbnail = document.getElementById('post-thumbnail').value;
     const excerpt = document.getElementById('post-excerpt').value;
-    const license = document.getElementById('post-license').value;
+    const license = getLicenseFrontMatterValue();
+    const lang = document.getElementById('post-lang').value;
+    const wechat_sync = document.getElementById('post-wechat_sync').checked;
     const count = document.getElementById('post-count').checked;
     const share_menu = document.getElementById('post-share_menu').checked;
     const qrcode = document.getElementById('post-qrcode').checked;
@@ -1435,6 +2059,8 @@ comments: ${comments}
     if(thumbnail) frontMatter += `thumbnail: ${thumbnail}\n`;
     if(excerpt) frontMatter += `excerpt: ${excerpt}\n`;
     if(license) frontMatter += `license: ${license}\n`;
+    if(lang !== 'zh-cn') frontMatter += `lang: ${lang}\n`;
+    if(!wechat_sync) frontMatter += `wechat_sync: false\n`;
     if(!count) frontMatter += `count: false\n`;
     if(!share_menu) frontMatter += `share_menu: false\n`;
     if(!qrcode) frontMatter += `qrcode: false\n`;
@@ -1449,9 +2075,15 @@ comments: ${comments}
     });
 
     // 2. Images
+    let thumbnailFilename = '';
+    if (thumbnail && thumbnail.startsWith(`/images/blog/${slug}/`)) {
+        thumbnailFilename = thumbnail.split('/').pop();
+    }
+    
     for (const [filename, blob] of Object.entries(imageAssets)) {
         let shouldInclude = false;
-        if (content.includes(filename)) {
+        
+        if (content.includes(filename) || filename === thumbnailFilename) {
             shouldInclude = true;
         } else {
             // Check if it's an original file whose compressed version is used
@@ -1459,7 +2091,7 @@ comments: ${comments}
             if (lastDotIndex !== -1) {
                 const nameWithoutExt = filename.substring(0, lastDotIndex);
                 const compressedName = nameWithoutExt + '_compressed.jpg';
-                if (content.includes(compressedName)) {
+                if (content.includes(compressedName) || compressedName === thumbnailFilename) {
                     shouldInclude = true;
                 }
             }

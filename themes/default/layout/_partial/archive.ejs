@@ -19,11 +19,71 @@
       
       <% if (Array.isArray(theme.notice)) { %>
         <% var initialNotice = theme.notice.length ? theme.notice[0] : ''; %>
-        <span id="random-notice"><%- initialNotice %></span>
+        <span id="random-notice" aria-live="polite"><noscript><%- initialNotice %></noscript></span>
         <script data-pjax>
           (function() {
             var notices = <%- JSON.stringify(theme.notice) %>;
-            var currentIndex = 0;
+            var currentIndex = -1;
+            var typingTimer = null;
+
+            function randomIndex(excludeIndex) {
+              if (!Array.isArray(notices) || !notices.length) return -1;
+              if (notices.length === 1) return 0;
+
+              var nextIndex = excludeIndex;
+              while (nextIndex === excludeIndex) {
+                nextIndex = Math.floor(Math.random() * notices.length);
+              }
+              return nextIndex;
+            }
+
+            function plainTextFromHtml(html) {
+              var scratch = document.createElement('div');
+              scratch.innerHTML = html || '';
+              return scratch.textContent || scratch.innerText || '';
+            }
+
+            function stopTyping(noticeElement) {
+              if (typingTimer) {
+                clearTimeout(typingTimer);
+                typingTimer = null;
+              }
+              if (noticeElement) noticeElement.classList.remove('notice-typing');
+            }
+
+            function renderNotice(noticeElement, html, animate) {
+              stopTyping(noticeElement);
+
+              var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+              if (!animate || reduceMotion) {
+                noticeElement.innerHTML = html || '';
+                return;
+              }
+
+              var text = plainTextFromHtml(html);
+              if (!text) {
+                noticeElement.innerHTML = html || '';
+                return;
+              }
+
+              var index = 0;
+              noticeElement.textContent = '';
+              noticeElement.classList.add('notice-typing');
+
+              function typeNext() {
+                if (index >= text.length) {
+                  noticeElement.innerHTML = html || '';
+                  stopTyping(noticeElement);
+                  return;
+                }
+
+                noticeElement.textContent += text.charAt(index);
+                index += 1;
+                typingTimer = setTimeout(typeNext, 22 + Math.random() * 28);
+              }
+
+              typeNext();
+            }
 
             window.initNoticeSystem = function() {
               var container = document.getElementById('notice-container');
@@ -31,15 +91,23 @@
               var isHome = window.location.pathname === '/' || window.location.pathname === '/index.html';
               if (!isHome || !container || !noticeElement || !Array.isArray(notices) || !notices.length) return;
 
+              if (!container.dataset.noticeReady) {
+                container.dataset.noticeReady = '1';
+                currentIndex = randomIndex(-1);
+                renderNotice(noticeElement, notices[currentIndex], true);
+              }
+
               if (!container.dataset.noticeBound) {
                 container.dataset.noticeBound = '1';
-                container.addEventListener('click', function() {
+                container.addEventListener('click', function(event) {
+                  var target = event.target && event.target.nodeType === 1 ? event.target : event.target.parentElement;
+                  if (target && target.closest && target.closest('a')) return;
                   if (notices.length <= 1) return;
                   currentIndex = (currentIndex + 1) % notices.length;
                   noticeElement.classList.add('notice-fade-out');
                   setTimeout(function() {
-                    noticeElement.innerHTML = notices[currentIndex];
                     noticeElement.classList.remove('notice-fade-out');
+                    renderNotice(noticeElement, notices[currentIndex], true);
                   }, 120);
                 });
               }
@@ -54,8 +122,13 @@
           })();
           </script>
         <style data-pjax>
-          #random-notice { display:inline-block; line-height:1.45; transition:opacity .18s ease, transform .18s ease; }
+          #random-notice { display:inline-block; min-height:1.45em; line-height:1.45; vertical-align:middle; transition:opacity .18s ease, transform .18s ease; }
           #random-notice.notice-fade-out { opacity:0; transform:translateY(-2px); }
+          #random-notice.notice-typing::after { content:'|'; display:inline-block; margin-left:2px; opacity:.7; animation:notice-caret 1s steps(1) infinite; }
+          @keyframes notice-caret { 50% { opacity:0; } }
+          @media (prefers-reduced-motion: reduce) {
+            #random-notice.notice-typing::after { content:''; animation:none; }
+          }
         </style>
       <% } else { %>
         <%= theme.notice %>

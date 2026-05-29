@@ -51,9 +51,7 @@ footer_text:
 license:
 
 gallery:
-  fancybox_css: //cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css
-  fancybox_js: //cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js
-  jquery_js: //cdn.bootcdn.net/ajax/libs/jquery/3.3.1/jquery.min.js
+  lightbox: builtin
   lazyload_js: //cdn.bootcdn.net/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js
 busuanzi:
   site: false

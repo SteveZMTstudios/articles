@@ -51,9 +51,7 @@ footer_text:
 license:
 
 gallery:
-  fancybox_css: //gcore.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css
-  fancybox_js: //gcore.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js
-  jquery_js: //ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js
+  lightbox: builtin
   lazyload_js: //gcore.jsdelivr.net/npm/jquery-lazyload@1.9.7/jquery.lazyload.min.js
 busuanzi:
   site: false
