@@ -14,7 +14,7 @@ thumbnail: /images/blog/chromeos-fix-captive-portal/thumb_1780016817302.png
 
 一年前多前新入了一个AMD笔记本，算是把老Intel电脑换掉了，而且由于CPU受支持，终于可以装上心心念念的[brunch ChromeOS](https://github.com/sebanc/brunch)。
 
-关于怎么安装这里不必多赘述，它自带的文档写的还挺清楚。需注意如果要保留安全启动的话，最好是linux安装然后禁用mokutil的shim额外验证。
+关于怎么安装这里不必多赘述，它自带的文档写得还挺清楚。需注意如果要保留安全启动的话，最好是linux安装然后禁用mokutil的shim额外验证。
 
 安装完成之后手机上网开[热点](https://github.com/Mygod/VPNHotspot)，网上教程多这里不再讲了。
 
