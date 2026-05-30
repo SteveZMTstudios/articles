@@ -25,7 +25,7 @@ sudo journalctl --since "1 year ago"
 大改了博客框架，尝试塞了个pwa
 
 二月份过年，给k20pro刷win10玩
-![](/images/blog/2025-yearly-summit/img_1765499726821_0.jpg)
+<img src="https://blog.stevezmt.top/images/blog/2025-yearly-summit/img_1765499726821_0.jpg" width="1824" height="1368" alt="" title="">
 
 ~~发布了女装照片~~
 
@@ -60,7 +60,7 @@ huang1111仰卧起坐下来终于是改付费制了
 五月份给我自己的旧设备写了一个[ca证书更新器](https://github.com/SteveZMTstudios/CACert-Sync)
 
 仍然以折腾4s为主
-![](/images/blog/2025-yearly-summit/img_1765499838549_0.jpg)
+<img src="https://blog.stevezmt.top/images/blog/2025-yearly-summit/img_1765499838549_0.jpg" width="1026" height="1824" alt="" title="">
 
 和我聊天的朋友越来越少了
 
@@ -78,12 +78,12 @@ huang1111仰卧起坐下来终于是改付费制了
 但是实在太忙到现在第一份视频也没剪出来
 
 给小度音响刷了机
-![](/images/blog/2025-yearly-summit/img_1765501842575_0.jpg)
+<img src="https://blog.stevezmt.top/images/blog/2025-yearly-summit/img_1765501842575_0.jpg" width="1368" height="1824" alt="" title="">
 
 
 应咕咕华需要vibe了一个[ethtool 广播bitmap计算器](https://link.stevezmt.top/ethtool-advertise-bitmap-calc/)
 
-![](/images/blog/2025-yearly-summit/img_1765499905032_0.jpg)
+<img src="https://blog.stevezmt.top/images/blog/2025-yearly-summit/img_1765499905032_0.jpg" width="1080" height="1440" alt="" title="">
 
 小米跑路解锁开始发扬，要我说早该开始跑路解锁了
 
@@ -100,10 +100,10 @@ huang1111仰卧起坐下来终于是改付费制了
 
 九月份
 刷机顶盒
-![](/images/blog/2025-yearly-summit/img_1765500074609_0.jpg)
+<img src="https://blog.stevezmt.top/images/blog/2025-yearly-summit/img_1765500074609_0.jpg" width="1824" height="1368" alt="" title="">
 
 开始折腾blender
-![](/images/blog/2025-yearly-summit/img_1765500104049_0.png)
+<img src="https://blog.stevezmt.top/images/blog/2025-yearly-summit/img_1765500104049_0.png" width="1562" height="976" alt="" title="">
 
 以及忍不住入了一台GPD Pocket 4
 
@@ -111,35 +111,35 @@ huang1111仰卧起坐下来终于是改付费制了
 面日落果
 
 拍月亮
-![](/images/blog/2025-yearly-summit/img_1765500276426_0.jpg)
+<img src="https://blog.stevezmt.top/images/blog/2025-yearly-summit/img_1765500276426_0.jpg" width="1920" height="1440" alt="" title="">
 
 发现wakeup课程表被卖给作业帮，一怒之下降级安装
 
 玩Noita
-![](/images/blog/2025-yearly-summit/img_1765500440001_0.jpg)
+<img src="https://blog.stevezmt.top/images/blog/2025-yearly-summit/img_1765500440001_0.jpg" width="1824" height="1368" alt="" title="">
 
 真是一对苦命鸳鸯
 
 十一月份
 
 重构博客兼容模式，现在它可以在初代 iPhone 上工作
-![](/images/blog/2025-yearly-summit/img_1765500751773_0.jpg)
+<img src="https://blog.stevezmt.top/images/blog/2025-yearly-summit/img_1765500751773_0.jpg" width="1824" height="1368" alt="" title="">
 突然感觉好好笑
 别人都在适配最新最热的vision pro，
 我还在专门为2003年的产物塞polyfill
 
 cloudflare: boom
-![](/images/blog/2025-yearly-summit/img_1765500911916_0.jpg)
+<img src="https://blog.stevezmt.top/images/blog/2025-yearly-summit/img_1765500911916_0.jpg" width="877" height="1920" alt="" title="">
 <span style="color: #9E9E9E;">此系列文章均不构成投资建议</span>
 
 JP¥114 = CN¥5.14
-![](/images/blog/2025-yearly-summit/img_1765501126192_0.jpg)
+<img src="https://blog.stevezmt.top/images/blog/2025-yearly-summit/img_1765501126192_0.jpg" width="1280" height="996" alt="" title="">
 
 前往上海 Weplay & ZFX 2025
 找着咕咕华和日落果
 
-![](/images/blog/2025-yearly-summit/img_1765501258617_0.jpg)
-![](/images/blog/2025-yearly-summit/img_1765501322509_0.jpg)
+<img src="https://blog.stevezmt.top/images/blog/2025-yearly-summit/img_1765501258617_0.jpg" width="1621" height="1216" alt="" title="">
+<img src="https://blog.stevezmt.top/images/blog/2025-yearly-summit/img_1765501322509_0.jpg" width="1621" height="1216" alt="" title="">
 
 12月份
 
@@ -159,7 +159,11 @@ JP¥114 = CN¥5.14
 希望2026年能稍微正常点
 
 想想还是算了，毕竟“正常”起来我很可能会更不自在。
-![](/images/blog/2025-yearly-summit/img_1765502268000_0.jpg)
+<img src="https://blog.stevezmt.top/images/blog/2025-yearly-summit/img_1765502268000_0.jpg" width="864" height="1184" alt="" title="">
+
+
+
+
 
 
 

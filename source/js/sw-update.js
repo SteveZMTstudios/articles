@@ -4,7 +4,7 @@
 
   var SW_URL = '/service-worker.js';
   var STORAGE_KEY = 'sw_hash_v1';
-  var CHECK_TIMEOUT_MS = 3000; // fallback controllerchange timeout
+  var CHECK_TIMEOUT_MS = 1000; // fallback controllerchange timeout
   var MIN_CHECK_INTERVAL_MS = 10 * 60 * 1000;
   var scheduledCheck = null;
   var lastCheckAt = 0;

@@ -26,7 +26,7 @@ comments: true
 因为x.ai是使用api访问的，因此你可以直接从f-droid上面随便找一个客户端，然后把模型名字、api地址和密钥改掉就可以用了。
 我个人是使用GPTMobile的。
 
-![配置示例图片](/images/blog/talk-about-x-ai/1_compressed.jpg)
+<img src="https://blog.stevezmt.top/images/blog/talk-about-x-ai/1_compressed.jpg" width="976" height="2169" alt="配置示例图片" title="">
 忽略那个系统提示词
 
 如果配置好然后不去瞎动他的话，他还是很正常的：

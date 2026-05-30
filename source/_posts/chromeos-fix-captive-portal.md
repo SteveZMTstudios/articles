@@ -20,7 +20,7 @@ thumbnail: /images/blog/chromeos-fix-captive-portal/thumbnail.jpg
 
 虽然说 ChromeOS 确实比较依赖国际网络，但是一直连着热点还是太耗费流量了。如果接入宽带或者WiFi的话，此时右下角就会提示“已连接，但无法访问互联网”，而且带着让人讨厌的感叹号。
 
-![](/images/blog/chromeos-fix-captive-portal/img_1780017788926_0_compressed.jpg)
+<img src="https://blog.stevezmt.top/images/blog/chromeos-fix-captive-portal/img_1780017788926_0_compressed.jpg" width="820" height="398" alt="" title="">
 
 这篇文章就是讲怎么修复这个感叹号的。
 
@@ -365,7 +365,7 @@ curl https://gist.githubusercontent.com/SteveZMTstudios/e3beeb227b3b4fd31c22f1ce
 
 8. 此时，您会断开所有的网络连接。如果您是有线网络，那么它将自动连接。如果您是WiFi网络（包括手机热点），则可能需要重新连接。
 
-![](/images/blog/chromeos-fix-captive-portal/img_1780021043487_0_compressed.jpg)
+<img src="https://blog.stevezmt.top/images/blog/chromeos-fix-captive-portal/img_1780021043487_0_compressed.jpg" width="654" height="327" alt="" title="">
 
 如果您无法控制WiFi网络，则可能需要重启您的设备。
 
@@ -394,7 +394,11 @@ ChromeOS 和 Chromebook 似乎又要成为 Google 的弃子了，哎
 
 本文撰写自 ChromeOS 148。
 
-![](/images/blog/chromeos-fix-captive-portal/img_1780021024542_0_compressed.jpg)
+<img src="https://blog.stevezmt.top/images/blog/chromeos-fix-captive-portal/img_1780021024542_0_compressed.jpg" width="1600" height="999" alt="" title="">
+
+
+
+
 
 
 

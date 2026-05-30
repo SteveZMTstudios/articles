@@ -114,7 +114,7 @@ categories:
 
 链接悬停提示写法：[Title](https://a.com "hint")
 
-![图片链接](https://commonmark.org/help/images/favicon.png)
+<img src="https://commonmark.org/help/images/favicon.png" width="144" height="144" alt="图片链接" title="">
 
 ![图片链接带脚注][2]
 
@@ -703,11 +703,11 @@ Markdown 风格的嵌入，使用 **\!\[AltText\|100x100\]\(https://url/to/image
 >
 > 行内代码：`Class<?> class = MyClass.class;`
 >
-> 图片：![图片链接](https://commonmark.org/help/images/favicon.png)
+> 图片：<img src="https://commonmark.org/help/images/favicon.png" width="144" height="144" alt="图片链接" title="">
 
 > [!error] 标题内公式 $a^2+b^2=c^2$，标题内代码 `Hello world!`
 
-> [!cite] 标题内图片：![图片链接](https://commonmark.org/help/images/favicon.png)图片后文字
+> [!cite] 标题内图片：<img src="https://commonmark.org/help/images/favicon.png" width="144" height="144" alt="图片链接" title="">图片后文字
 
 > [!question] Can callouts be nested?
 > > [!todo] Yes!, they can.
@@ -762,7 +762,7 @@ Microsoft Learn 还支持自定义 Markdown 扩展。
 
 可以使用普通的 `<img>` 标签指定图片的高度与宽度：
 
-<img src="https://commonmark.org/help/images/favicon.png" width="30%">
+<img src="https://commonmark.org/help/images/favicon.png" width="144" height="144" alt="" title="">
 
 ### 一般标签
 

@@ -5,6 +5,7 @@
   "scripts": {
     "build": "hexo generate",
     "clean": "hexo clean",
+    "format:images": "node scripts/format-markdown-images.js",
     "deploy": "hexo deploy",
     "deploy:firebase": "npm run build && npx firebase deploy --only hosting --project your-project-id",
     "server": "hexo server",

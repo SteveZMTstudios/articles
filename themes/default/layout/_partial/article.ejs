@@ -61,6 +61,7 @@
     <%- tagcloud({min_font: 16, max_font: 35, amount: 9999, color: true, start_color: '#3f51b5', end_color: '#ff4081'}) %>
   </article>
 <% } else if (page.layout === 'custom') { %>
+  <script>window.SITE_ORIGIN = '<%- config.url %>';</script>
   <%- page.content %>
 <% } else { %>
   <style>#main article .mdui-card-content .center-block{display:block!important;margin-right:auto!important;margin-left:auto!important}</style>
@@ -91,7 +92,7 @@
           </ul>
         <% } %>
         <% if (page.share_menu !== false) { %>
-          <button class="mdui-btn mdui-btn-icon mdui-text-color-white" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="mdui-icon material-icons" translate="no">share</i></button>
+          <button id="share_menu_trigger" type="button" class="mdui-btn mdui-btn-icon mdui-text-color-white" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="mdui-icon material-icons" translate="no">share</i></button>
           <ul class="mdui-menu" id="share_menu">
             <li class="mdui-menu-item">
               <a href="javascript:void(0);" class="mdui-ripple" onclick="copyToClipboard('<%- page.permalink %>');"><%= __('share.copy_link') %></a>
@@ -128,7 +129,7 @@
               <a href="//telegram.me/share/url?url=<%- page.permalink %>&text=<%= page.title %>" target="_blank" class="mdui-ripple"><%= __('share.telegram') %></a>
             </li>
             <li class="mdui-menu-item">
-              <a href="javascript:void(0);" class="mdui-ripple" onclick="sharePageviaSystem();"><%= __('share.system') %></a>
+              <a href="javascript:void(0);" class="mdui-ripple" onclick="sharePageviaSystem(false);"><%= __('share.system') %></a>
             </li>
 
             <%
@@ -138,19 +139,67 @@
               }
             %>
             <script data-pjax>
-              function sharePageviaSystem() {
+              function openShareMenu() {
+                var trigger = document.getElementById('share_menu_trigger');
+                if (!trigger) {
+                  return;
+                }
+
+                var menu = window.$ ? $(trigger).data('_mdui_menu') : null;
+                if (!menu && window.mdui && typeof mdui.Menu === 'function') {
+                  try {
+                    menu = new mdui.Menu(trigger, '#share_menu', {align: 'right'});
+                    if (window.$) {
+                      $(trigger).data('_mdui_menu', menu);
+                    }
+                  } catch (err) {
+                    console.error(err);
+                    return;
+                  }
+                }
+
+                if (menu && typeof menu.open === 'function') {
+                  menu.open();
+                }
+              }
+
+              function sharePageviaSystem(fallbackToMenu) {
                 if (navigator.share) {
-                  navigator.share({
+                  return navigator.share({
                     title: '<%= page.title %>',
                     text: <%- JSON.stringify(shareText) %>,
                     url: '<%- page.permalink %>'
                   }).then(() => {
                     mdui.snackbar({message: '感谢分享！', position: 'top'});
-                  }).catch(console.error);
+                  }).catch(function(err) {
+                    if (fallbackToMenu) {
+                      openShareMenu();
+                      return;
+                    }
+                    console.error(err);
+                  });
                 } else {
+                  if (fallbackToMenu) {
+                    openShareMenu();
+                    return;
+                  }
                   mdui.snackbar({message: '您的浏览器不支持此方式。', position: 'top', buttonText: '好吧'});
                 }
               }
+
+              (function bindShareButton(){
+                var trigger = document.getElementById('share_menu_trigger');
+                if (!trigger || trigger.dataset.shareBound === '1') {
+                  return;
+                }
+
+                trigger.dataset.shareBound = '1';
+                trigger.addEventListener('click', function(event) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  sharePageviaSystem(true);
+                });
+              })();
             </script>
           </ul>
         <% } %>

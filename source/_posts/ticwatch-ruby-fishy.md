@@ -26,7 +26,7 @@ comments: true
 <!-- more -->
 
 
-![](/images/blog/ticwatch-ruby-fishy/img_1774589894803_0_compressed.jpg)
+<img src="https://blog.stevezmt.top/images/blog/ticwatch-ruby-fishy/img_1774589894803_0_compressed.jpg" width="900" height="1600" alt="" title="">
 
 就这样，史蒂夫蒸馒头的一周完全被毁掉了...
 
@@ -41,7 +41,7 @@ comments: true
 
 看看公交卡包，ok `CPLC为空`
 
-![](/images/blog/ticwatch-ruby-fishy/img_1774592441246_0_compressed.jpg)
+<img src="https://blog.stevezmt.top/images/blog/ticwatch-ruby-fishy/img_1774592441246_0_compressed.jpg" width="899" height="1600" alt="" title="">
 
 门禁卡也一样写不进去。
 
@@ -88,7 +88,7 @@ Current Battery Service state:
 
 把固件dump出来之后，找到了[国际版的固件](https://wear.onetm.ovh/en/OneOSWear/downloads/rubyfish)，开刷
 
-![](/images/blog/ticwatch-ruby-fishy/img_1774592140291_0_compressed.jpg)
+<img src="https://blog.stevezmt.top/images/blog/ticwatch-ruby-fishy/img_1774592140291_0_compressed.jpg" width="927" height="632" alt="" title="">
 
 即使找到了包我也依旧踌躇，如果这确实是没有esim的ticwatch pro 3 ultra，那它的设备代号就应该是`rubyfish`,然而呢？
 
@@ -96,12 +96,12 @@ Current Battery Service state:
 ```bash
 adb shell
 ```
-![](/images/blog/ticwatch-ruby-fishy/img_1774592356780_0_compressed.jpg)
+<img src="https://blog.stevezmt.top/images/blog/ticwatch-ruby-fishy/img_1774592356780_0_compressed.jpg" width="1600" height="900" alt="" title="">
 
 ```bash
 fastboot getvar all
 ```
-![](/images/blog/ticwatch-ruby-fishy/img_1774592473967_0_compressed.jpg)
+<img src="https://blog.stevezmt.top/images/blog/ticwatch-ruby-fishy/img_1774592473967_0_compressed.jpg" width="1600" height="900" alt="" title="">
 
 怎么看怎么不像。以防圈外人不懂，product不对通常不能通刷，会出大问题。
 
@@ -163,7 +163,7 @@ adb sideload update.zip
 
 然后千万不要动线。稍等一会等电脑上显示 `Total xfer: 2.xx`字样，手表显示`Install From ADB complete`之后，就可以重启到系统体验wearos3了。
 
-![](/images/blog/ticwatch-ruby-fishy/img_1774684145065_0_compressed.jpg)
+<img src="https://blog.stevezmt.top/images/blog/ticwatch-ruby-fishy/img_1774684145065_0_compressed.jpg" width="1279" height="1112" alt="" title="">
 
 btw手机最好root过，因为要装[unlock-cn-gms模块](https://github.com/fei-ke/unlock-cn-gms)，不然手机没法和手表配对
 
@@ -255,7 +255,7 @@ adb shell cmd activity set-standby-bucket com.google.android.tts rare
 
 ok，ramdisk 没有在boot里面。
 
-![](/images/blog/ticwatch-ruby-fishy/img_1774686118247_0_compressed.jpg)
+<img src="https://blog.stevezmt.top/images/blog/ticwatch-ruby-fishy/img_1774686118247_0_compressed.jpg" width="1600" height="1199" alt="" title="">
 
 完全没有问题，patch recovery就好了。
 
@@ -265,7 +265,7 @@ recovery一进系统就会被`/vendor/bin/install-recovery.sh`还原
 
 但是我就不明白了，我都修改那么多字节了怎么FEC还能纠错回来的啊
 
-![](/images/blog/ticwatch-ruby-fishy/img_1774686265039_0_compressed.jpg)
+<img src="https://blog.stevezmt.top/images/blog/ticwatch-ruby-fishy/img_1774686265039_0_compressed.jpg" width="1280" height="365" alt="" title="">
 
 没话讲，干掉vbmeta
 ```bash
@@ -283,7 +283,11 @@ shizuku_daemon在后台虽然只有30多兆的内存占用，但是还是捉襟�
 
 不过150买个带屏幕的openpgp card，webauthn，oauth，还能测量运动和聊qq刷支付宝，感觉还是比三百多的yubikey划算。
 
-![](/images/blog/ticwatch-ruby-fishy/img_1774686649564_0_compressed.jpg)
+<img src="https://blog.stevezmt.top/images/blog/ticwatch-ruby-fishy/img_1774686649564_0_compressed.jpg" width="1199" height="1600" alt="" title="">
+
+
+
+
 
 
 

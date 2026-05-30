@@ -850,6 +850,23 @@ var $$ = mdui.$;
     } catch (e) {}
   }
 
+  function normalizeArticleImages() {
+    Array.prototype.forEach.call(document.querySelectorAll('#main article .mdui-card-content img[width][height]'), function (img) {
+      if (!img || img.dataset.aspectLocked === '1') return;
+
+      var width = Number(img.getAttribute('width'));
+      var height = Number(img.getAttribute('height'));
+      if (!width || !height || !isFinite(width) || !isFinite(height)) return;
+
+      img.style.maxWidth = '100%';
+      img.style.height = 'auto';
+      if (!img.style.aspectRatio) {
+        img.style.aspectRatio = width + ' / ' + height;
+      }
+      img.dataset.aspectLocked = '1';
+    });
+  }
+
   function runCoreEnhancements(context) {
     searchState.resource = context.searchResource || searchState.resource;
     formatExternalLinks();
@@ -865,6 +882,7 @@ var $$ = mdui.$;
     try {
       fixMduiDialogs();
       fixFixedElements();
+      normalizeArticleImages();
       if (window.mdui && typeof mdui.mutation === 'function') {
         mdui.mutation();
       }

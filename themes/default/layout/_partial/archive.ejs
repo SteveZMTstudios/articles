@@ -79,7 +79,7 @@
 
                 noticeElement.textContent += text.charAt(index);
                 index += 1;
-                typingTimer = setTimeout(typeNext, 22 + Math.random() * 28);
+                typingTimer = setTimeout(typeNext, 25 + Math.random() * 32);
               }
 
               typeNext();
@@ -103,7 +103,8 @@
                   var target = event.target && event.target.nodeType === 1 ? event.target : event.target.parentElement;
                   if (target && target.closest && target.closest('a')) return;
                   if (notices.length <= 1) return;
-                  currentIndex = (currentIndex + 1) % notices.length;
+                  //currentIndex = (currentIndex + 1) % notices.length;
+                  currentIndex = randomIndex(currentIndex);
                   noticeElement.classList.add('notice-fade-out');
                   setTimeout(function() {
                     noticeElement.classList.remove('notice-fade-out');
@@ -124,7 +125,7 @@
         <style data-pjax>
           #random-notice { display:inline-block; min-height:1.45em; line-height:1.45; vertical-align:middle; transition:opacity .18s ease, transform .18s ease; }
           #random-notice.notice-fade-out { opacity:0; transform:translateY(-2px); }
-          #random-notice.notice-typing::after { content:'|'; display:inline-block; margin-left:2px; opacity:.7; animation:notice-caret 1s steps(1) infinite; }
+          #random-notice.notice-typing::after { content:'_'; display:inline-block; margin-left:2px; opacity:.7; animation:notice-caret 1s steps(1) infinite; }
           @keyframes notice-caret { 50% { opacity:0; } }
           @media (prefers-reduced-motion: reduce) {
             #random-notice.notice-typing::after { content:''; animation:none; }

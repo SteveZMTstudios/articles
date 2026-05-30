@@ -75,13 +75,13 @@ gpg.exe
 git config --global gpg.program gpg.exe
 ```
 
-![](/images/blog/wsl-gpg.exe/img_1776093416571_0_compressed.jpg)
+<img src="https://blog.stevezmt.top/images/blog/wsl-gpg.exe/img_1776093416571_0_compressed.jpg" width="1600" height="540" alt="" title="">
 
 当然类似`cls` `dir`这种cmd.exe提供的命令不大跑的起来，不过`shutdown.exe`是可以的
 
 同理，你甚至可以`alias adb="adb.exe"`，然后wsl和windows调试同一台设备
 
-![](/images/blog/wsl-gpg.exe/img_1776093550944_0_compressed.jpg)
+<img src="https://blog.stevezmt.top/images/blog/wsl-gpg.exe/img_1776093550944_0_compressed.jpg" width="1100" height="457" alt="" title="">
 
 如果你的工作只是要传递`stdin`和`stdout`就可以了的话，用这个就够了。
 
@@ -233,6 +233,10 @@ git commit -S -m "signed commit via usbipd"
 ## 结语
 
 wsl很可能是~~microslop~~Microsoft这几年为数不多做的还算人事的东西。
+
+
+
+
 
 
 

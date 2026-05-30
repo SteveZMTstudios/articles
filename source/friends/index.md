@@ -28,8 +28,10 @@ qrcode:
 }
 .friend-card .mdui-card-media {
   aspect-ratio: 4 / 3;
+  line-height: 0;
 }
 .friend-card .mdui-card-media img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -81,7 +83,7 @@ qrcode:
     grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
   }
   .friend-card .mdui-card-media {
-  aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 9;
   }
 
 }
@@ -90,7 +92,7 @@ qrcode:
 <div class="friends-container">
   <div class="mdui-card friend-card mdui-hoverable">
     <div class="mdui-card-media">
-        <img src="https://blog.canyie.top/data/image/avatar_new.jpg" alt="残页的小博客" loading="lazy">
+        <img src="https://blog.canyie.top/data/image/avatar_new.jpg" alt="残页的小博客" title="">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">残页的小博客</div>
@@ -105,7 +107,7 @@ qrcode:
   
   <div class="mdui-card friend-card mdui-hoverable">
     <div class="mdui-card-media">
-        <img src="/friends/listder.jpg" alt="listder's blog" loading="lazy">
+        <img src="https://blog.stevezmt.top/friends/listder.jpg" alt="listder&#39;s blog" title="">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">listder's blog</div>
@@ -120,7 +122,7 @@ qrcode:
 
   <div class="mdui-card friend-card mdui-hoverable">
     <div class="mdui-card-media">
-        <img src="https://bu.dusays.com/2024/10/25/671b2438203a6.gif" alt="Elykia" loading="lazy">
+        <img src="https://bu.dusays.com/2024/10/25/671b2438203a6.gif" alt="Elykia" title="">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">Elykia</div>
@@ -166,7 +168,7 @@ qrcode:
 
   <div class="mdui-card friend-card mdui-hoverable">
     <div class="mdui-card-media">
-        <img src="/friends/piowonsler.jpg" alt="TuskedEvening0" loading="lazy">
+        <img src="https://blog.stevezmt.top/friends/piowonsler.jpg" alt="TuskedEvening0" title="">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">TuskedEvening0</div>
@@ -194,24 +196,24 @@ qrcode:
     </div>
   </div> -->
 
-  <!-- <div class="mdui-card friend-card mdui-hoverable">
+  <div class="mdui-card friend-card mdui-hoverable">
     <div class="mdui-card-media">
-        <img src="https://sin.moe/api/v2/objects/avatar/kf9ppqa68kkdxf4rnr.jpeg" alt="🍋小T" loading="lazy">
+        <img src="https://blog.sin.moe/img/avatar.webp" alt="🍋小T" title="">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">🍋小T</div>
-            <div class="mdui-card-primary-subtitle">あなたと居たいままで</div>
+            <div class="mdui-card-primary-subtitle">只恨年少，不知路遥。</div>
           </div>
         </div>
     </div>
     <div class="mdui-card-actions">
-      <a href="https://sin.moe/" target="_blank" class="mdui-btn mdui-ripple mdui-text-color-theme-accent">访问网站</a>
+      <a href="https://blog.sin.moe/" target="_blank" class="mdui-btn mdui-ripple mdui-text-color-theme-accent">访问网站</a>
     </div>
-  </div> -->
+  </div> 
 
   <div class="mdui-card friend-card mdui-hoverable">
     <div class="mdui-card-media">
-        <img src="https://cos.zyglq.cn/static/web-logo.jpg" alt="资源管理器博客" loading="lazy">
+        <img src="https://cos.zyglq.cn/static/web-logo.jpg" alt="资源管理器博客" title="">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">资源管理器博客</div>
@@ -269,6 +271,20 @@ qrcode:
           </div>
         </div>
 
+<div class="mdui-card friend-card mdui-hoverable">
+          <div class="mdui-card-media">
+            <img src="https://blog.lemonice.top/img/avatar.webp" alt="柠" loading="lazy">
+            <div class="mdui-card-media-covered">
+                <div class="mdui-card-primary">
+                  <div class="mdui-card-primary-title">柠</div>
+                  <div class="mdui-card-primary-subtitle">一只没加薄荷的茶味猫猫~</div>
+                </div>
+            </div>
+          </div>
+          <div class="mdui-card-actions">
+            <a href="https://blog.lemonice.top/" target="_blank" class="mdui-btn mdui-ripple mdui-text-color-theme-accent">访问网站</a>
+          </div>
+        </div>
 
 </div>
   <!-- 可以继续添加更多友链卡片 -->
@@ -315,3 +331,7 @@ qrcode:
     <text:html>   // 您可定义希望的样式，参见/friends/index.md
 ]
 ```
+
+
+
+

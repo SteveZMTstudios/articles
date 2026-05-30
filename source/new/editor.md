@@ -4,7 +4,30 @@ date: false
 layout: custom
 comments: false
 excerpt: markdown 博客编辑器
+lazyimage: no
 ---
+
+<!--
+Copyright (c) 2026 史蒂夫ZMT工作室 SteveZMTstudios <https://stevezmt.top>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
 
 <style>
     main#main {
@@ -443,6 +466,7 @@ let previewObjectUrls = [];
 const DB_KEY_CONTENT = 'blog_editor_content';
 const DB_KEY_IMAGES = 'blog_editor_images';
 const DEFAULT_POST_AUTHOR = 'Steve ZMT';
+const SITE_ORIGIN = window.location.origin;
 
 // --- History Management ---
 let historyStack = [];
@@ -555,11 +579,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 
                 if (imageAssets[decodedFilename]) {
                     const url = getPreviewImageSrc(href);
-                    return `<img src="${escapeAttribute(url)}" alt="${escapeAttribute(text)}" title="${escapeAttribute(title || '')}" style="max-width: 100%;" />`;
+                    return `<${'img'} src="${escapeAttribute(url)}" alt="${escapeAttribute(text)}" title="${escapeAttribute(title || '')}" style="max-width: 100%;" />`;
                 }
             }
             // Fallback
-            return `<img src="${escapeAttribute(href)}" alt="${escapeAttribute(text)}"${title ? ` title="${escapeAttribute(title)}"` : ''} style="max-width: 100%;">`;
+            return `<${'img'} src="${escapeAttribute(href)}" alt="${escapeAttribute(text)}"${title ? ` title="${escapeAttribute(title)}"` : ''} style="max-width: 100%;">`;
         }
     };
     marked.use({ renderer });
@@ -613,11 +637,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             imageAssets = savedImages;
         }
         updateLicenseVisibility();
-        updatePreview();
+        updatePreviewAll();
     } catch (e) {
         console.error("Failed to load saved state", e);
         updateLicenseVisibility();
-        updatePreview();
+        updatePreviewAll();
     }
 
     // Initialize History
@@ -665,8 +689,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     ['post-title', 'post-slug', 'post-date', 'post-author', 'post-thumbnail', 'post-count', 'post-qrcode', 'post-share_menu'].forEach(id => {
         const input = document.getElementById(id);
         if (!input) return;
-        input.addEventListener('input', updatePreview);
-        input.addEventListener('change', updatePreview);
+        input.addEventListener('input', updateHeaderPreview);
+        input.addEventListener('change', updateHeaderPreview);
     });
     
     // const editor = document.getElementById('editor-content'); // Already defined above
@@ -697,6 +721,64 @@ function escapeHtml(value) {
 
 function escapeAttribute(value) {
     return escapeHtml(value);
+}
+
+function getEditorSelectionText() {
+    const textarea = document.getElementById('editor-content');
+    if (!textarea) return '';
+    return textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
+}
+
+function getBlobDimensions(blob) {
+    return new Promise((resolve, reject) => {
+        const objectUrl = URL.createObjectURL(blob);
+        const image = new Image();
+
+        image.onload = () => {
+            const dimensions = {
+                width: image.naturalWidth,
+                height: image.naturalHeight
+            };
+            URL.revokeObjectURL(objectUrl);
+            resolve(dimensions);
+        };
+
+        image.onerror = (error) => {
+            URL.revokeObjectURL(objectUrl);
+            reject(error);
+        };
+
+        image.src = objectUrl;
+    });
+}
+
+function buildInsertedImageHtml(src, width, height, alt = '') {
+    return `<${'img'} src="${escapeAttribute(src)}" width="${escapeAttribute(width)}" height="${escapeAttribute(height)}" alt="${escapeAttribute(alt)}" title="">`;
+}
+
+function rewritePreviewImageSources(html) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(`<div id="preview-root">${html}</div>`, 'text/html');
+    const root = doc.getElementById('preview-root');
+    if (!root) return html;
+
+    root.querySelectorAll('img').forEach(img => {
+        const resolvedSrc = getPreviewImageSrc(img.getAttribute('src'));
+        if (resolvedSrc) {
+            img.setAttribute('src', resolvedSrc);
+        }
+        img.setAttribute('no-lazy', '');
+    });
+
+    return root.innerHTML;
+}
+
+function updateHeaderPreview() {
+    const headerPreview = document.getElementById('editor-article-preview');
+    if (!headerPreview) return;
+
+    headerPreview.innerHTML = buildArticleHeaderHtml();
+    mdui.mutation();
 }
 
 function dispatchInputValue(input, value) {
@@ -913,7 +995,7 @@ function getPreviewSlug() {
 }
 
 function getPreviewPermalink() {
-    return `${window.location.origin}/p/${encodeURIComponent(getPreviewSlug())}/`;
+    return `${SITE_ORIGIN}/p/${encodeURIComponent(getPreviewSlug())}/`;
 }
 
 function buildQrCodeUrl(value) {
@@ -1060,10 +1142,15 @@ function applyLicenseFrontMatterValue(value) {
 function updatePreview() {
     releasePreviewObjectUrls();
     const text = document.getElementById('editor-content').value;
-    const html = marked.parse(text);
-    document.getElementById('editor-article-preview').innerHTML = buildArticleHeaderHtml();
-    document.getElementById('preview-content').innerHTML = buildPreviewBodyHtml(html);
+    const html = rewritePreviewImageSources(marked.parse(text));
+    const previewBody = document.getElementById('preview-content');
+    previewBody.innerHTML = buildPreviewBodyHtml(html);
     mdui.mutation();
+}
+
+function updatePreviewAll() {
+    updateHeaderPreview();
+    updatePreview();
 }
 
 async function saveState() {
@@ -1665,6 +1752,7 @@ async function handleThumbnailSelect(e) {
 async function processImageFiles(files) {
     recordHistory();
     const slug = document.getElementById('post-slug').value || 'untitled';
+    const selectedText = getEditorSelectionText();
     
     for (let i = 0; i < files.length; i++) {
         const file = files[i];
@@ -1690,14 +1778,16 @@ async function processImageFiles(files) {
                 initialQuality: 0.5
             };
             const compressedFile = await imageCompression(file, options);
+            const dimensions = await getBlobDimensions(compressedFile);
             
             // Store Compressed
             imageAssets[compressedFilename] = compressedFile;
             
-            // Insert Markdown
+            // Insert HTML image tag
             // Path convention: /images/blog/<slug>/<filename>
-            const imgPath = `/images/blog/${slug}/${compressedFilename}`;
-            insertText(`![](${imgPath})`, '');
+            const imgPath = `${SITE_ORIGIN}/images/blog/${slug}/${compressedFilename}`;
+            const imageHtml = buildInsertedImageHtml(imgPath, dimensions.width, dimensions.height, selectedText);
+            insertText(imageHtml, '');
             
             mdui.snackbar({message: `图片 ${file.name} 已处理并添加`});
         } catch (error) {
@@ -1801,7 +1891,7 @@ async function handleZipImport(e) {
         
         await Promise.all(imgPromises.map(p => p()));
         
-        updatePreview();
+        updatePreviewAll();
         mdui.updateTextFields();
         mdui.snackbar({message: '导入成功'});
         
@@ -1936,7 +2026,7 @@ function resetEditor() {
         imageAssets = {};
         idbKeyval.del(DB_KEY_CONTENT);
         idbKeyval.del(DB_KEY_IMAGES);
-        updatePreview();
+        updatePreviewAll();
         mdui.updateTextFields();
     }
 }
@@ -1996,7 +2086,8 @@ function handleFullscreenChange() {
 }
 
 // --- GitHub Submission ---
-const WORKER_URL = 'https://pr-helper.cf.miniproj.stevezmt.top'; // TODO: Replace with your Worker URL
+const WORKER_URL = 'https://pr-helper.cf.miniproj.stevezmt.top'; 
+// Replace with your Worker URL
 // REPO_OWNER and REPO_NAME are now enforced by the Worker, but we keep them here if needed for other logic or future use.
 // The Worker will ignore these if sent in the body, but for compatibility we can leave them or remove them from the body payload.
 
@@ -2201,3 +2292,7 @@ function blobToBase64(blob) {
     });
 }
 </script>
+
+
+
+

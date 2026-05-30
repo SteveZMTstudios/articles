@@ -1,7 +1,6 @@
 'use strict';
 
 const fs = require('hexo-fs');
-
 const FEED_STYLESHEET_HREF = '/feed.xsl';
 const FEED_STYLESHEET_PI = `<?xml-stylesheet type="text/xsl" href="${FEED_STYLESHEET_HREF}"?>`;
 const FEED_BROWSER_NS = 'https://blog.stevezmt.top/ns/feed-browser';

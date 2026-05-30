@@ -16,7 +16,7 @@ thumbnail:
 
 <!--more-->
 
-![alt text](/images/blog/cloudflare-down/offline_compressed.jpg "Cloudflare 大面积网络中断")
+<img src="https://blog.stevezmt.top/images/blog/cloudflare-down/offline_compressed.jpg" width="935" height="408" alt="alt text" title="Cloudflare 大面积网络中断">
 
 今年的云服务真是多灾多难，先是Google cloud宕机，紧接着就是AWS
 
@@ -44,7 +44,7 @@ Cloudflare作为全球最大的CDN和DNS服务商之一，承载了全球50%以�
 说几件有意思的事
 
 1. 知名互联网检测服务 downdetector.com 因为其使用了cloudflare保护源站导致在全球网络服务崩溃的时候他们也崩溃了.
-2. ![well this is awkward](/images/blog/cloudflare-down/downdetector_compressed.jpg "downdetector 使用 cloudflare 保护源站，结果自己也挂了")
+2. <img src="https://blog.stevezmt.top/images/blog/cloudflare-down/downdetector_compressed.jpg" width="995" height="603" alt="well this is awkward" title="downdetector 使用 cloudflare 保护源站，结果自己也挂了">
 3. Chatgpt.com 也使用 cloudflare 来保护源站，所以可能 cloudflare 工程师也上不了 chatgpt.com 来问AI解决问题
 
 目前客服告知技术工程师清除缓存后再次爆炸，CF企业赔付金额还在增加
@@ -60,7 +60,7 @@ Cloudflare作为全球最大的CDN和DNS服务商之一，承载了全球50%以�
 cloudflare官方已经宣布故障已修复，正在监控中。
 但是cf的NFT已经暴跌了，不知道明天开市怎么样。毕竟CDN服务商维护能把服务维护炸，稳定性大幅下跌。
 
-![](/images/blog/cloudflare-down/thumbnail_compressed.jpg)
+<img src="https://blog.stevezmt.top/images/blog/cloudflare-down/thumbnail_compressed.jpg" width="894" height="348" alt="" title="">
 
 
 <details>
@@ -104,4 +104,8 @@ Nov 18, 2025 - 12:03 UTC
 Investigating - Cloudflare is experiencing an internal service degradation. Some services may be intermittently impacted. We are focused on restoring service. We will update as we are able to remediate. More updates to follow shortly.
 Nov 18, 2025 - 11:48 UTC
 </details>
+
+
+
+
 
