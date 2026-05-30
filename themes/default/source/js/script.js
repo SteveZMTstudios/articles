@@ -858,6 +858,7 @@ var $$ = mdui.$;
       var height = Number(img.getAttribute('height'));
       if (!width || !height || !isFinite(width) || !isFinite(height)) return;
 
+      img.style.display = 'block';
       img.style.maxWidth = '100%';
       img.style.height = 'auto';
       if (!img.style.aspectRatio) {

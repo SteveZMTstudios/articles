@@ -3,11 +3,12 @@
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:atom="http://www.w3.org/2005/Atom"
   xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:notice="http://www.stevezmt.top/ns/notice"
   xmlns:browser="https://blog.stevezmt.top/ns/feed-browser"
-  exclude-result-prefixes="atom content browser">
+  exclude-result-prefixes="atom content notice browser">
 
   <xsl:output method="html" encoding="UTF-8" indent="no"/>
-
+  <xsl:template match="notice:noscript" />
   <xsl:template match="/">
     <html>
       <head>
@@ -17,18 +18,23 @@
         <link rel="stylesheet" type="text/css" href="/feed.css"/>
       </head>
       <body>
-        <div class="feed-actionbar">
+        <div class="feed-actionbar holo-actionBar">
           <div class="feed-actionbar-inner">
-            <span class="feed-actionbar-title">
-              <xsl:choose>
-                <xsl:when test="/*[local-name()='rss']">RSS 预览</xsl:when>
-                <xsl:otherwise>Atom 预览</xsl:otherwise>
-              </xsl:choose>
-            </span>
+            <a href="#" class="feed-actionbar-title-link">
+              <span class="feed-actionbar-title">
+                <img src="/k/rss.png" alt="Feed Icon" class="feed-actionbar-icon"/>
+                <span class="feed-actionbar-title-text">
+                  <xsl:choose>
+                    <xsl:when test="/*[local-name()='rss']">RSS 预览</xsl:when>
+                    <xsl:otherwise>源 预览</xsl:otherwise>
+                  </xsl:choose>
+                </span>
+              </span>
+            </a>
             <span class="feed-actionbar-spacer"></span>
             <a href="/atom.xml">RSS XML</a>
             <a href="/">首页</a>
-            <a href="k">兼容模式</a>
+            <a href="/k/">兼容模式</a>
           </div>
         </div>
         <div class="feed-page">
@@ -59,15 +65,54 @@
               </xsl:if>
             </p>
             <p class="feed-meta">
-              <span style="font-weight: bold;">您正在查看的源包含频繁更新的内容。</span>订阅源后，该源会添加到您的阅读器源列表中。该源的更新信息会自动下载到计算机，通过 Internet Explorer 及其他程序可以查看这些信息。<a href="https://support.microsoft.com/help/73c6e717-7815-4594-98e5-81fa369e951c">进一步了解源。</a>
+              <span style="font-weight: bold;color: #dddddd">您正在查看的源包含频繁更新的内容。</span>订阅源后，该源会添加到您的阅读器源列表中。该源的更新信息会自动下载到计算机，通过 Internet Explorer 及其他程序可以查看这些信息。<a href="https://support.microsoft.com/help/73c6e717-7815-4594-98e5-81fa369e951c">进一步了解源。</a>
             </p>
 
             <p class="feed-tools">
               <a href="/atom.xml">订阅源 XML</a>
+<a id="copy-url-btn" href="#" style="display:none">复制链接</a>
+<script>
+<![CDATA[
+(function(){
+  var a = document.getElementById('copy-url-btn');
+  if (!a) return;
+  a.style.display = 'inline-block';
+  var orig = a.textContent;
+  a.onclick = function(e){
+    e.preventDefault();
+    var url = window.location.href;
+    var done = function(){
+      a.textContent = '复制成功';
+      setTimeout(function(){ a.textContent = orig; }, 3000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done).catch(function(){
+        var t = document.createElement('textarea');
+        t.value = url;
+        t.style.cssText = 'position:fixed;left:-9999px';
+        document.body.appendChild(t);
+        t.select();
+        document.execCommand('copy');
+        document.body.removeChild(t);
+        done();
+      });
+    } else {
+      var t = document.createElement('textarea');
+      t.value = url;
+      t.style.cssText = 'position:fixed;left:-9999px';
+      document.body.appendChild(t);
+      t.select();
+      document.execCommand('copy');
+      document.body.removeChild(t);
+      done();
+    }
+  };
+})();
+]]>
+</script>
               <a href="/">返回站点首页</a>
             </p>
           </div>
-
           <xsl:choose>
             <xsl:when test="/*[local-name()='feed']">
               <xsl:for-each select="/*[local-name()='feed']/*[local-name()='entry']">

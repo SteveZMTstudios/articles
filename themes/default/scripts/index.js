@@ -3,6 +3,12 @@
 const fs = require('hexo-fs');
 const FEED_STYLESHEET_HREF = '/feed.xsl';
 const FEED_STYLESHEET_PI = `<?xml-stylesheet type="text/xsl" href="${FEED_STYLESHEET_HREF}"?>`;
+const FEED_POLYFILL_HREF = '/js/xslt-polyfill.min.js?v=1.0.22';
+const FEED_POLYFILL_BOOTSTRAP = [
+  '<script xmlns="http://www.w3.org/1999/xhtml">window.xsltUsePolyfillAlways = true;</script>',
+  `<script src="${FEED_POLYFILL_HREF}" xmlns="http://www.w3.org/1999/xhtml"></script>`,
+  '<notice:noscript xmlns:notice="http://www.stevezmt.top/ns/notice">⚠ 𝗘𝗥𝗥𝗢𝗥 🅹🅰🆅🅰🆂🅲🆁🅸🅿🆃 ​ 🅳🅸🆂🅰🅱🅻🅴🅳 !! 𝗫𝗦𝗟𝗧 / 𝗝𝗮𝘃𝗮𝗦𝗰𝗿𝗶𝗽𝘁 𝗮𝗿𝗲 𝗱𝗶𝘀𝗮𝗯𝗹𝗲𝗱. 𝗧𝗵𝗶𝘀 𝗳𝗲𝗲𝗱 𝗰𝗮𝗻 𝗼𝗻𝗹𝘆 𝗯𝗲 𝗿𝗲𝗻𝗱𝗲𝗿𝗲𝗱 𝗮𝘀 𝗫𝗠𝗟 𝘀𝗼𝘂𝗿𝗰𝗲, 𝘀𝗼 𝘁𝗵𝗲 𝗳𝘂𝗹𝗹𝘆 𝗳𝗼𝗿𝗺𝗮𝘁𝘁𝗲𝗱 𝗽𝗿𝗲𝘃𝗶𝗲𝘄 𝗶𝘀 𝘂𝗻𝗮𝘃𝗮𝗶𝗹𝗮𝗯𝗹𝗲. Please enable XSLT or JavaScript, or open this feed in a compatible reader. </notice:noscript>'
+].join('\n  ');
 const FEED_BROWSER_NS = 'https://blog.stevezmt.top/ns/feed-browser';
 
 let parseHtmlDocument = null;
@@ -112,6 +118,18 @@ function addFeedStylesheet(xml) {
   }
 
   return `${FEED_STYLESHEET_PI}\n${xml}`;
+}
+
+function addFeedPolyfill(xml) {
+  if (!xml || xml.includes('xsltUsePolyfillAlways') || xml.includes('xslt-polyfill.min.js')) {
+    return xml;
+  }
+
+  if (!/<(?:feed|rss)(?:\s|>)/.test(xml)) {
+    return xml;
+  }
+
+  return xml.replace(/<(feed|rss)\b([^>]*)>/, `<$1$2>\n  ${FEED_POLYFILL_BOOTSTRAP}`);
 }
 
 function decodeFeedText(value) {
@@ -242,9 +260,10 @@ async function after_generate() {
     const xml = await readRoute(path);
     const browserXml = addFeedBrowserHtml(xml);
     const styledXml = addFeedStylesheet(browserXml);
+    const polyfilledXml = addFeedPolyfill(styledXml);
 
-    if (styledXml && styledXml !== xml) {
-      hexo.route.set(path, styledXml);
+    if (polyfilledXml && polyfilledXml !== xml) {
+      hexo.route.set(path, polyfilledXml);
     }
   }));
 }
