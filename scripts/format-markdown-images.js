@@ -1,8 +1,21 @@
+/**
+ * format-markdown-images.js
+ * CLI entry for the Markdown image formatter.
+ *
+ * Usage:
+ *   node scripts/format-markdown-images.js            # format all source/*.md in place
+ *   node scripts/format-markdown-images.js --check    # dry-run; exit 1 if changes needed
+ *   node scripts/format-markdown-images.js --root=DIR # use DIR as project root
+ *
+ * NOTE: guarded by require.main === module, so Hexo's script loader
+ * will NOT auto-execute this during `hexo generate`.
+ */
 'use strict';
 
 const path = require('path');
 const { processMarkdownDirectory } = require('./markdown-image-formatter');
 
+/** Parse CLI arguments: --check, --root <path>, --root=<path> */
 function parseArgs(argv) {
   const options = {
     check: false,
@@ -31,6 +44,10 @@ function parseArgs(argv) {
   return options;
 }
 
+/**
+ * Main entry: scan source/ markdown files, add/replace image dimensions,
+ * and report which files changed.
+ */
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const summary = await processMarkdownDirectory({

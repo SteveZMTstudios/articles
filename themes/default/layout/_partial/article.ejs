@@ -68,7 +68,7 @@
   <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
   <article class="mdui-card mdui-m-b-5">
     <header class="mdui-card-media">
-      <img src="<%- url_for(getArticleThumbnail(page)) %>" no-lazy fetchpriority="high" width="1280" height="720" decoding="async" style="max-height: 240px; width: 100%; aspect-ratio: 16 / 9; object-fit: cover;" alt="<%= page.title %>">
+      <img src="<%- url_for(getArticleThumbnail(page)) %>" fetchpriority="high" width="1280" height="720" decoding="async" style="max-height: 240px; width: 100%; aspect-ratio: 16 / 9; object-fit: cover;" alt="<%= page.title %>">
       <div class="mdui-card-media-covered">
         <div class="mdui-card-primary">
             <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;"><%= page.title %></h1></div>
@@ -549,7 +549,7 @@
                <span class="notbyai-extra" style="background-image: url('/images/extra.svg')" aria-hidden="true"></span>
           -->
           <img src="//mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 1.8em;max-height:1.8em;margin-left: .08em;"><img src="//mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 1.8em;max-height:1.8em;margin-left: .08em;"><img src="//mirrors.creativecommons.org/presskit/icons/nc.svg" alt="" style="max-width: 1.8em;max-height:1.8em;margin-left: .08em;"><img src="//mirrors.creativecommons.org/presskit/icons/sa.svg" alt="" style="max-width: 1.8em;max-height:1.8em;margin-left: .08em;">
-          <a href="//notbyai.fyi"><span class="notbyai-icon" role="img"></span></a>
+          <a href="//notbyai.fyi"><span class="notbyai-icon" role="img" aria-label="真人创作，非 AI 生成"></span></a>
         </div>
         <% } %>
       </div>

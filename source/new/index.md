@@ -7,10 +7,10 @@ donate: false
 license: false
 ---
 
-构建状态：不可用
-部署状态：不可用
+构建状态：<a href="https://github.com/SteveZMTstudios/articles/actions/workflows/static.yml"><img src="https://github.com/SteveZMTstudios/articles/actions/workflows/static.yml/badge.svg"  height="20" alt="Deploy static content to Pages" title=""></a>
+部署状态：<a href="https://github.com/SteveZMTstudios/articles/actions/workflows/hexo-deploy.yml"><img src="https://github.com/SteveZMTstudios/articles/actions/workflows/hexo-deploy.yml/badge.svg"  height="20" alt="Hexo Deploy" title=""></a>
 
-构建检查：不可用
+构建检查：<a href="https://github.com/SteveZMTstudios/articles/actions/workflows/check-pages.yml"><img src="https://github.com/SteveZMTstudios/articles/actions/workflows/check-pages.yml/badge.svg"  height="20" alt="Build Check" title=""></a>
 
 <div style="align: center;">
 <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent mdui-m-r-2" onclick="window.location.href='/new/editor'">

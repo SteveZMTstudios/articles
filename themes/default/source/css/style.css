@@ -13,6 +13,10 @@ body {
   flex-direction: column;
 }
 
+body:not(.mdui-theme-layout-dark) {
+  background-color: #eee !important;
+}
+
 /* Theme transition: smooth color/background changes when switching themes */
 :root {
   --theme-transition-duration: 240ms;
@@ -58,6 +62,34 @@ body {
   -ms-flex: 0 0 auto;
   flex: 0 0 auto;
 }
+
+/* Accessibility */
+#skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: -9999;
+  text-decoration: none;
+}
+#skip-to-content:focus {
+  display: block;
+  position: fixed;
+  left: 16px;
+  top: 16px;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 16px 32px;
+  background-color: yellow;
+  color: black;
+  z-index: 2000;
+  outline: none;
+}
+
+
 
 .mdui-theme-layout-dark #footer[class*='mdui-color-']:not(.mdui-color-transparent) {
   color: #fff !important;
@@ -415,6 +447,13 @@ img.avatar-animation:hover {
   -webkit-user-drag: none;
   float: left;
 }
+.mdui-theme-layout-dark .article_tags-link {
+  color: #b78874;
+}
+
+.mdui-theme-layout-dark .mdui-text-color-brown {
+  color: #b78874 !important;
+}
 
 .article_tags-link:hover {
   background-color: rgba(0, 0, 0, .1);
@@ -494,6 +533,11 @@ img.avatar-animation:hover {
 #comment {
   position: relative;
   z-index: 0;
+}
+@media (max-width: 599px) {
+  #comment {
+    margin: 0 4px; 
+  }
 }
 
 /* Search Style */
@@ -1033,12 +1077,46 @@ img.avatar-animation:hover {
   max-width: 100%;
 }
 
-.mdui-typo img[data-loaded="true"] {
-  display: inline-block;
+img[data-loaded="true"] {
+  animation: fade-in-real 0.3s ease-out forwards;
+}
+@keyframes fade-in-real {
+  0% { 
+    opacity: 0; 
+  }
+  100% { 
+    opacity: 1; 
+  }
+}
+
+
+
+.mdui-typo img[width][height] {
   max-width: 100%;
-  width: auto;
   height: auto;
 }
+
+/* loading.svg prefer-reduced-motion: reduce */
+@media (prefers-reduced-motion: reduce) {
+  img[src="/images/loading.svg"] {
+    /* 1. 用一个巨大的灰色内阴影，把原本 SVG 内部的所有动效彻底覆盖死 */
+    box-shadow: inset 0 0 0 9999px #acacac !important;
+    
+    /* 2. 让这个已经变成纯灰色的 img 整体跑呼吸动画 */
+    animation: external-breathe 2.5s ease-in-out infinite !important;
+  }
+}
+
+@keyframes external-breathe {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.6; }
+}
+
+/*
+ * Article content images: modern browsers derive aspect-ratio from
+ * width/height attributes, so the real-image box is reserved from
+ * the first paint. loading.svg (preserveAspectRatio="none") fills it.
+ */
 
 .mdui-typo pre,
 .mdui-typo .highlight {
@@ -1325,17 +1403,16 @@ img.avatar-animation:hover {
 
 /* Details/summary MDUI Material Animation */
 details {
-  background: rgba(33, 33, 33, 0.08); /* Material 深色风格 */
+  /* background: rgba(33, 33, 33, 0.08); Material 深色风格 */
   border-radius: 4px;
   margin: 16px 0;
   box-shadow: 0 1px 4px 0 rgba(60,60,60,0.04);
-  padding: 0 0 0 0;
   transition: background 0.3s cubic-bezier(.4,0,.2,1);
   overflow: hidden;
 }
 
 details[open] {
-  background: rgba(33, 33, 33, 0.03);
+  background: transparent;
 }
 
 details summary {
@@ -1371,35 +1448,56 @@ details[open] summary::before {
   transform: translateY(-50%) rotate(90deg);
 }
 
-details summary:active,
+/* details summary:active,
 details summary:focus {
   background: rgba(123, 123, 123, 0.04);
-}
+} */
 
 details > *:not(summary) {
-  display: block;
-  box-sizing: border-box;
-  padding: 0 24px 16px 40px;
   color: #444;
 }
 
-details .details-content {
-  /* 允许自定义内容容器 */
-}
+details .details-anim {
+  box-sizing: border-box;
+  display: block;
 
-/* 动画：内容滑入滑出 */
-details[open] > .details-anim {
-  max-height: 1000px;
-  opacity: 1;
-  transform: translateY(0);
-  transition: max-height 0.4s cubic-bezier(.4,0,.2,1), opacity 0.3s cubic-bezier(.4,0,.2,1), transform 0.4s cubic-bezier(.4,0,.2,1);
-}
-details:not([open]) > .details-anim {
+  overflow: hidden;
   max-height: 0;
   opacity: 0;
-  transform: translateY(-16px);
-  transition: max-height 0.3s cubic-bezier(.4,0,.2,1), opacity 0.2s cubic-bezier(.4,0,.2,1), transform 0.3s cubic-bezier(.4,0,.2,1);
-  overflow: hidden;
+  transform: translateY(-8px);
+  transition: max-height 0.35s cubic-bezier(.4,0,.2,1), opacity 0.25s cubic-bezier(.4,0,.2,1), transform 0.35s cubic-bezier(.4,0,.2,1);
+  will-change: max-height, opacity, transform;
+}
+
+details[open] > .details-anim {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+details:not([open]) > .details-anim {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Collapse button at bottom of expanded details */
+.details-collapse-btn {
+  margin: 8px 0 4px;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  color: #757575;
+  opacity: 0.7;
+  transition: opacity 0.25s cubic-bezier(.4,0,.2,1);
+}
+details:not([open]) > .details-collapse-btn {
+  display: none;
+}
+.details-collapse-btn:hover,
+.details-collapse-btn:focus {
+  opacity: 1;
+}
+.mdui-theme-layout-dark .details-collapse-btn {
+  color: #bdbdbd;
 }
 
 /* prefers-reduced-motion 兼容 */
@@ -1415,12 +1513,12 @@ details:not([open]) > .details-anim {
 }
 
 /* 暗色模式适配 */
-.mdui-theme-layout-dark details {
+/* .mdui-theme-layout-dark details {
   background: rgba(0, 0, 0, 0.08);
-}
-.mdui-theme-layout-dark details[open] {
+} */
+/* .mdui-theme-layout-dark details[open] {
   background: rgba(0, 0, 0, 0.10);
-}
+} */
 .mdui-theme-layout-dark details summary {
   color: #fff;
 }
@@ -1433,6 +1531,12 @@ details:not([open]) > .details-anim {
 
 .mdui-card-media-covered {
   background-color: rgba(0, 0, 0, 0.4) !important;
+}
+
+@media (max-width: 1023px) {
+  .mdui-chip {
+    margin-left: 8px;
+  }
 }
 
 /* PJAX Animations */
@@ -1479,7 +1583,7 @@ details:not([open]) > .details-anim {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: #eeeeeea0;
   z-index: 100;
   opacity: 0;
   visibility: hidden;
@@ -1522,7 +1626,7 @@ details:not([open]) > .details-anim {
 }
 
 .mdui-theme-layout-dark .pjax-overlay {
-  background-color: #30303080;
+  background-color: #303030a0;
 }
 
 /* Ensure sidebar is above overlay on desktop */
@@ -1575,3 +1679,4 @@ details:not([open]) > .details-anim {
 :target, #title {
   scroll-margin-top: 80px;
 }
+

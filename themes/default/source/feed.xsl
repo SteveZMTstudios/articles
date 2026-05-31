@@ -126,7 +126,7 @@
             </xsl:otherwise>
           </xsl:choose>
 
-          <p class="feed-note">您正在以可视化的方式直接查看源。<a href="#">返回顶部</a></p>
+          <p class="feed-note">您正在以可视化的方式直接查看源。<a href="#">返回顶部</a><br/>© 框架设计和元素 由 <a href="https://stevezmt.top">Steve ZMT</a> 设计。</p>
         </div>
       </body>
     </html>

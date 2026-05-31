@@ -2,6 +2,7 @@
 <html lang="<%= page.lang %>">
 <%- partial('_partial/head') %>
 <body class="mdui-appbar-with-toolbar mdui-theme-primary-<%= theme.theme_color.primary || 'indigo' %> mdui-theme-accent-<%= theme.theme_color.accent || 'pink' %>">
+  <a id="skip-to-content" href="#main" class="mdui-sr-only" aria-label="<%= __('skip_to_content') %>"><%= __('skip_to_content') %></a>
   <script>
     window.__SITE_ASSET_CONFIG__ = {
       analyticsId: '<%= theme.analytics.google_site_id || "" %>',

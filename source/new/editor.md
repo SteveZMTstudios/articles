@@ -129,6 +129,10 @@ SOFTWARE.
     .editor-preview-body .text-center {
         text-align: center !important;
     }
+    .editor-preview-body img {
+        max-width: 100%;
+        height: auto;
+    }
 
     .editor-setting-switch {
         display: inline-flex;
@@ -463,6 +467,7 @@ SOFTWARE.
 // --- State & Config ---
 let imageAssets = {}; // In-memory cache of images: { filename: Blob }
 let previewObjectUrls = [];
+let _cachedMaterialThumbnail = null; // Cache for deterministic material image
 const DB_KEY_CONTENT = 'blog_editor_content';
 const DB_KEY_IMAGES = 'blog_editor_images';
 const DEFAULT_POST_AUTHOR = 'Steve ZMT';
@@ -773,11 +778,43 @@ function rewritePreviewImageSources(html) {
     return root.innerHTML;
 }
 
+let _lastHeaderHtml = '';
+let _lastHeaderThumbnail = '';
 function updateHeaderPreview() {
     const headerPreview = document.getElementById('editor-article-preview');
     if (!headerPreview) return;
 
-    headerPreview.innerHTML = buildArticleHeaderHtml();
+    const newThumbnail = getPreviewThumbnail();
+
+    // If thumbnail didn't change, update only text fields via DOM — avoids image re-fetch
+    if (_lastHeaderThumbnail && newThumbnail === _lastHeaderThumbnail) {
+        const img = headerPreview.querySelector('header.mdui-card-media > img');
+        const titleEl = headerPreview.querySelector('.mdui-card-primary-title h1');
+        const subtitleEl = headerPreview.querySelector('.mdui-card-primary-subtitle');
+        if (img && titleEl && subtitleEl) {
+            const title = document.getElementById('post-title').value.trim() || 'Untitled';
+            const author = document.getElementById('post-author').value.trim() || DEFAULT_POST_AUTHOR;
+            const previewDate = getPreviewDate();
+            const showCount = document.getElementById('post-count').checked;
+            img.alt = escapeAttribute(title);
+            titleEl.textContent = title;
+            subtitleEl.innerHTML = `<i class="iconfont" translate="no">&#xe697;</i> ${escapeHtml(previewDate)} / <i class="iconfont" translate="no">&#xe601;</i> ${escapeHtml(author)}${showCount ? '&nbsp;&nbsp;<span style="display: inline;"><i class="iconfont" translate="no">&#xe7fd;</i> 0</span>' : ''}`;
+            // Update share menu QR code reference if needed (thumbnail in share URL)
+            // const shareImg = headerPreview.querySelector('#editor-preview-qrcode img');
+            // if (shareImg) {
+            //     shareImg.src = escapeAttribute(buildQrCodeUrl(getPreviewPermalink()));
+            // }
+            return;
+        }
+    }
+
+    // Full rebuild when thumbnail changed or first paint
+    const html = buildArticleHeaderHtml();
+    if (html === _lastHeaderHtml && newThumbnail === _lastHeaderThumbnail) return;
+    _lastHeaderHtml = html;
+    _lastHeaderThumbnail = newThumbnail;
+
+    headerPreview.innerHTML = html;
     mdui.mutation();
 }
 
@@ -982,12 +1019,19 @@ function getPreviewDate() {
 
 function getPreviewThumbnail() {
     const thumbnail = document.getElementById('post-thumbnail').value.trim();
-    if (thumbnail) return getPreviewImageSrc(thumbnail);
+    if (thumbnail) {
+        _cachedMaterialThumbnail = null; // Clear cache when explicit thumbnail is set
+        return getPreviewImageSrc(thumbnail);
+    }
+
+    // Use cached material image if already determined
+    if (_cachedMaterialThumbnail) return _cachedMaterialThumbnail;
 
     const seed = document.getElementById('post-slug').value
         || document.getElementById('post-title').value
         || 'editor-preview';
-    return deterministicMaterial(seed);
+    _cachedMaterialThumbnail = deterministicMaterial(seed);
+    return _cachedMaterialThumbnail;
 }
 
 function getPreviewSlug() {
@@ -999,7 +1043,7 @@ function getPreviewPermalink() {
 }
 
 function buildQrCodeUrl(value) {
-    return `//api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(value)}`;
+    return `${encodeURIComponent(value)}`;
 }
 
 function buildPreviewShareMenu(title, permalink, thumbnail) {
@@ -1067,7 +1111,8 @@ function buildArticleHeaderHtml() {
                     </button>
                     <ul class="mdui-menu" id="editor-preview-qrcode">
                         <li class="mdui-menu-item" disabled>
-                            <img src="${escapeAttribute(buildQrCodeUrl(permalink))}" alt="QR Code">
+                            // <!-- <img src="${escapeAttribute(buildQrCodeUrl(permalink))}" alt="QR Code"> -->
+                            Here will be a QR code when the post upload.
                         </li>
                     </ul>
                 ` : ''}
@@ -2024,6 +2069,9 @@ function resetEditor() {
         document.getElementById('post-thislink').checked = true;
 
         imageAssets = {};
+        _cachedMaterialThumbnail = null;
+        _lastHeaderHtml = '';
+        _lastHeaderThumbnail = '';
         idbKeyval.del(DB_KEY_CONTENT);
         idbKeyval.del(DB_KEY_IMAGES);
         updatePreviewAll();

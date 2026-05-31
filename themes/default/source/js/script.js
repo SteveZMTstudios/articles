@@ -868,6 +868,263 @@ var $$ = mdui.$;
     });
   }
 
+  function animateDetailsBlocks() {
+    Array.prototype.forEach.call(document.querySelectorAll('#main details'), function (details) {
+      if (!details || details.dataset.detailsAnimated === '1') return;
+
+      var summary = null;
+      Array.prototype.forEach.call(details.children, function (child) {
+        if (!summary && child && child.tagName === 'SUMMARY') summary = child;
+      });
+
+      if (!summary) return;
+
+      var panel = summary.nextElementSibling;
+      if (!(panel && panel.classList && panel.classList.contains('details-anim'))) {
+        var contentNodes = [];
+        Array.prototype.forEach.call(details.children, function (child) {
+          if (child !== summary) contentNodes.push(child);
+        });
+
+        if (!contentNodes.length) return;
+
+        panel = document.createElement('div');
+        panel.className = 'details-anim';
+        contentNodes.forEach(function (child) {
+          panel.appendChild(child);
+        });
+        details.appendChild(panel);
+
+        // Collapse button at bottom (outside .details-anim to avoid affecting scrollHeight)
+        var collapseBtn = document.createElement('button');
+        collapseBtn.className = 'mdui-btn mdui-btn-icon mdui-ripple details-collapse-btn';
+        collapseBtn.setAttribute('aria-label', '收起');
+        collapseBtn.title = '收起';
+        collapseBtn.innerHTML = '<i class="mdui-icon material-icons">expand_less</i>';
+        details.appendChild(collapseBtn);
+      }
+
+      details.dataset.detailsAnimated = '1';
+
+      var animating = false;
+      var animatingMode = null;
+      var suppressBeforeToggle = false;
+      var settleTimer = null;
+      var settleDelay = 420;
+
+      var clearSettleTimer = function () {
+        if (!settleTimer) return;
+        clearTimeout(settleTimer);
+        settleTimer = null;
+      };
+
+      var finishOpen = function () {
+        if (animatingMode !== 'open' || !details.open) return;
+        panel.style.maxHeight = 'none';
+        animating = false;
+        animatingMode = null;
+        clearSettleTimer();
+      };
+
+      var finishClose = function () {
+        if (animatingMode !== 'close') return;
+        details.open = false;
+        panel.style.maxHeight = '0px';
+        panel.style.opacity = '0';
+        panel.style.transform = 'translateY(-8px)';
+        animating = false;
+        animatingMode = null;
+        clearSettleTimer();
+      };
+
+      var scheduleSettle = function (mode) {
+        clearSettleTimer();
+        settleTimer = setTimeout(function () {
+          if (mode === 'open') {
+            finishOpen();
+          } else if (mode === 'close') {
+            finishClose();
+          }
+        }, settleDelay);
+      };
+
+      var syncPanel = function (expanded, immediate) {
+        if (!panel) return;
+
+        panel.style.overflow = 'hidden';
+
+        if (expanded) {
+          panel.style.opacity = '1';
+          panel.style.transform = 'translateY(0)';
+          panel.style.maxHeight = immediate ? 'none' : '0px';
+
+          if (immediate) return;
+
+          requestAnimationFrame(function () {
+            panel.style.maxHeight = panel.scrollHeight + 'px';
+          });
+          return;
+        }
+
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+        panel.style.opacity = '1';
+        panel.style.transform = 'translateY(0)';
+        void panel.offsetWidth;
+
+        requestAnimationFrame(function () {
+          panel.style.maxHeight = '0px';
+          panel.style.opacity = '0';
+          panel.style.transform = 'translateY(-8px)';
+        });
+      };
+
+      var openDetails = function () {
+        if (details.open || animating) return;
+        animating = true;
+        animatingMode = 'open';
+        suppressBeforeToggle = true;
+
+        // Try to compute the target height. If scrollHeight is 0 (images/fonts
+        // not rendered yet), wait one animation frame and retry so we get a
+        // meaningful pixel height to animate to. Apply the target max-height
+        // before setting `details.open` to avoid the browser instantly
+        // revealing content and bypassing our transition.
+        var applyOpen = function (targetHeight) {
+          try {
+            panel.style.overflow = 'hidden';
+            // Read current height so the browser snapshots the closed state
+            // before we write the target; otherwise the CSS transition has
+            // no "from" value to animate.
+            void panel.offsetHeight;
+            panel.style.maxHeight = targetHeight + 'px';
+            panel.style.opacity = '1';
+            panel.style.transform = 'translateY(0)';
+            details.open = true;
+            scheduleSettle('open');
+          } catch (e) {
+            // Fallback: directly set open if anything goes wrong
+            details.open = true;
+            finishOpen();
+          }
+        };
+
+        var desired = panel.scrollHeight;
+        if (!desired || desired === 0) {
+          // Wait a frame for layout to settle, then retry once.
+          requestAnimationFrame(function () {
+            var retry = panel.scrollHeight || 0;
+            if (retry && retry > 0) {
+              applyOpen(retry);
+            } else {
+              // Last resort: open immediately without animation.
+              details.open = true;
+              finishOpen();
+            }
+          });
+        } else {
+          applyOpen(desired);
+        }
+      };
+
+      var closeDetails = function () {
+        if (!details.open || animating) return;
+        animating = true;
+        animatingMode = 'close';
+        suppressBeforeToggle = true;
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+        panel.style.opacity = '1';
+        panel.style.transform = 'translateY(0)';
+        scheduleSettle('close');
+        void panel.offsetWidth;
+        requestAnimationFrame(function () {
+          panel.style.maxHeight = '0px';
+          panel.style.opacity = '0';
+          panel.style.transform = 'translateY(-8px)';
+        });
+      };
+
+      if (details.open) {
+        syncPanel(true, true);
+      } else {
+        syncPanel(false, true);
+      }
+
+      // Some environments (or other scripts) may leave the CSS rule
+      // `max-height: 0` in place. Force an inline maxHeight to reflect the
+      // actual `details.open` state so the visual matches the attribute.
+      requestAnimationFrame(function () {
+        try {
+          panel.style.maxHeight = details.open ? 'none' : '0px';
+        } catch (e) {}
+      });
+
+      if (details.dataset.detailsAnimatedBound === '1') return;
+      details.dataset.detailsAnimatedBound = '1';
+
+      panel.addEventListener('transitionend', function (event) {
+        if (event.propertyName !== 'max-height') return;
+        if (animatingMode === 'open' && details.open) {
+          finishOpen();
+        } else if (animatingMode === 'close') {
+          finishClose();
+        }
+      });
+
+      // Always add capture-phase handlers on the summary to reliably intercept
+      // user clicks/keyboard interactions. Some environments' `beforetoggle`
+      // may be unreliable, so capture handlers guarantee we run animation code
+      // before the native toggle can occur.
+      var summaryUserToggleHandler = function (event) {
+        if (event.defaultPrevented) return;
+        event.preventDefault();
+        if (animating) return;
+        if (details.open) {
+          closeDetails();
+        } else {
+          openDetails();
+        }
+      };
+
+      summary.addEventListener('click', summaryUserToggleHandler, true);
+      summary.addEventListener('keydown', function (event) {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        summaryUserToggleHandler(event);
+      }, true);
+
+      // Collapse button (outside .details-anim)
+      var collapseBtn = details.querySelector('.details-collapse-btn');
+      if (collapseBtn) {
+        collapseBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (!animating && details.open) closeDetails();
+        });
+      }
+
+      // Also listen to beforetoggle when available to handle programmatic
+      // toggles and to clear the suppress flag if needed.
+      if ('onbeforetoggle' in details) {
+        details.addEventListener('beforetoggle', function (event) {
+          if (suppressBeforeToggle) {
+            // Clear the flag and allow the programmatic toggle to proceed
+            suppressBeforeToggle = false;
+            return;
+          }
+
+          // If we reach here, a toggle was initiated by something other than
+          // our capture handlers (rare). Prevent the native toggle and use
+          // our animation routines to keep behavior consistent.
+          event.preventDefault();
+          if (details.open) {
+            closeDetails();
+          } else {
+            openDetails();
+          }
+        });
+      }
+    });
+  }
+
   function runCoreEnhancements(context) {
     searchState.resource = context.searchResource || searchState.resource;
     formatExternalLinks();
@@ -884,34 +1141,34 @@ var $$ = mdui.$;
       fixMduiDialogs();
       fixFixedElements();
       normalizeArticleImages();
-      if (window.mdui && typeof mdui.mutation === 'function') {
-        mdui.mutation();
+      animateDetailsBlocks();
+      if (window.mdui && typeof window.mdui.mutation === 'function') {
+        window.mdui.mutation();
       }
-    } catch (e) {}
+      normalizeReloadScroll();
+      persistScrollPosition();
+      scheduleGotopUpdate();
+    } catch (e) {
+      console.error(e);
+    }
 
-    normalizeReloadScroll();
-    persistScrollPosition();
-    scheduleGotopUpdate();
+    if (context.hasComments) {
+      loadCommentsNow();
+    }
   }
 
   function handlePagePhase(event) {
-    var detail = event.detail || {};
-    var context = detail.context || getPageContext();
+    var detail = event && event.detail ? event.detail : {};
+    var stage = detail.stage || '';
 
-    if (detail.stage === 'after-visible') {
+    if (stage === 'after-visible') {
       trackAnalyticsPageView();
       refreshBusuanzi();
       return;
     }
 
-    if (detail.stage === 'idle-preload') {
-      if (context.searchResource && (!context.isPost || document.visibilityState === 'visible')) {
-        ensureSearchIndex({ silent: true }).catch(function () {});
-      }
-
-      if (context.hasComments) {
-        loadCommentsNow();
-      }
+    if (stage === 'idle-preload') {
+      trackAnalyticsPageView();
     }
   }
 

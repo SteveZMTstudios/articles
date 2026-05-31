@@ -49,17 +49,7 @@
   function triggerSkipWaiting(){
     navigator.serviceWorker.getRegistration().then(function(reg){
       if(!reg){ location.reload(); return; }
-      if(reg.waiting){
-        reg.waiting.postMessage('SKIP_WAITING');
-      } else if(reg.installing){
-        // wait for it to become waiting
-        var installing = reg.installing;
-        installing.addEventListener('statechange', function(){
-          if(installing.state === 'installed' && reg.waiting){
-            reg.waiting.postMessage('SKIP_WAITING');
-          }
-        });
-      }
+      // Attach reload listener early to avoid missing a fast controllerchange
       var reloaded = false;
       var reloadIfNeeded = function(){
         if(reloaded) return; reloaded = true;
@@ -67,6 +57,20 @@
       };
       navigator.serviceWorker.addEventListener('controllerchange', reloadIfNeeded);
       setTimeout(reloadIfNeeded, CHECK_TIMEOUT_MS); // fallback
+
+      try {
+        if(reg.waiting){
+          reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        } else if(reg.installing){
+          // wait for it to become waiting
+          var installing = reg.installing;
+          installing.addEventListener('statechange', function(){
+            if(installing.state === 'installed' && reg.waiting){
+              reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+            }
+          });
+        }
+      } catch(e){ /* ignore messaging errors */ }
     });
   }
 

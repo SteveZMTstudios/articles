@@ -253,13 +253,32 @@ function addFeedBrowserHtml(xml) {
   return changed ? ensureFeedBrowserNamespace(enriched) : xml;
 }
 
+function addAtomContentType(xml) {
+  if (!xml || !/<feed(?:\s|>)/.test(xml) || xml.includes('<content type=')) {
+    return xml;
+  }
+
+  let changed = false;
+  const enriched = xml.replace(/<content(\b[^>]*)>([\s\S]*?)<\/content>/g, (match, attrs, body) => {
+    if (/\btype\s*=/.test(attrs) || !/(<\/?[a-zA-Z][^>]*>|<!\[CDATA\[)/.test(body)) {
+      return match;
+    }
+
+    changed = true;
+    return `<content${attrs} type="html">${body}</content>`;
+  });
+
+  return changed ? enriched : xml;
+}
+
 async function after_generate() {
   const paths = getFeedPaths();
 
   await Promise.all(paths.map(async path => {
     const xml = await readRoute(path);
     const browserXml = addFeedBrowserHtml(xml);
-    const styledXml = addFeedStylesheet(browserXml);
+    const typedXml = addAtomContentType(browserXml);
+    const styledXml = addFeedStylesheet(typedXml);
     const polyfilledXml = addFeedPolyfill(styledXml);
 
     if (polyfilledXml && polyfilledXml !== xml) {

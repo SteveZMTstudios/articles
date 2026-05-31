@@ -24,12 +24,17 @@
     .holo-list li .item{color:inherit;text-decoration:none;display:block}
   </style> -->
   <style>
+    #skip-to-content{position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden}
+    #skip-to-content:focus{position:sticky;height:auto;overflow:visible;background:blue;color:#fff;padding:30px;z-index:1001;margin-top:30px}
     /* 限制兼容模式页面宽度以利于阅读 */
     .k-container{padding:10px;max-width:900px;margin:0 auto}
+    .k-toggle{margin:10px 0;font-size:13px}
+    .k-toggle label{cursor:pointer;display:inline-flex;align-items:center}
     footer{margin-top:20px;font-size:12px;color:#aaaaaa;text-align:center;border-top:1px solid #6c6c6c;padding-top:10px}
   </style>
 </head>
 <body>
+  <a href="#app" id="skip-to-content">跳到内容</a>
   <header class="holo-actionBar">
     <button class="holo-title" onclick="window.open('index.html', '_self');" style="line-height:21px;">
       <img src="/k/kicon.png" />
@@ -74,6 +79,7 @@
     <p>部分博客内嵌脚本特性可能无法使用。</p>
     <p><a href="//browser-update.org/update-browser.html">更新浏览器（推荐）</a>以获取最佳体验和页面优化。或<a href="/?persist_no_k=1">仍然访问完整版</a></p>
     <p><button onclick="location.href='/about/?persist_no_k=1'">关于</button><button onclick="location.href='/friends/?persist_no_k=1'">友链</button><button onclick="location.href='/timeline/?persist_no_k=1'">时间线</button><button onclick="location.href='/atom.xml'">RSS订阅</button><button onclick="location.href='http://stevezmt.top'">主站</button> <button onclick="location.href='//key.stevezmt.top/'">GPG密钥</button><button onclick="location.href='mailto:admin@stevezmt.top'">电子邮件到 admin@stevezmt.top</button> </p>
+    <p class="k-toggle"><label><input id="no-image-mode" type="checkbox"><span>无图模式</span></label></p>
     <div id="app">
       <div id="status" class="loading">正在加载文章…</div>
       <ul id="list" class="holo-list" role="list"></ul>
@@ -115,6 +121,8 @@
     var status = document.getElementById('status');
     var listEl = document.getElementById('list');
     var contentEl = document.getElementById('content');
+    var noImageModeInput = document.getElementById('no-image-mode');
+    var noImageMode = false;
 
     function createXHR(){
       if(window.XMLHttpRequest) return new XMLHttpRequest();
@@ -174,6 +182,50 @@
       return '';
     }
 
+    function decodeParam(value){
+      value = String(value || '').replace(/\+/g, '%20');
+      try{ return decodeURIComponent(value); }catch(e){}
+      try{ return unescape(value); }catch(e){}
+      return value;
+    }
+
+    function readCookie(name){
+      var parts = String(document.cookie || '').split(';');
+      for(var i=0;i<parts.length;i++){
+        var item = parts[i];
+        while(item.charAt(0)===' ') item = item.substring(1);
+        if(item.indexOf(name + '=')===0) return decodeParam(item.substring(name.length + 1));
+      }
+      return '';
+    }
+
+    function writeCookie(name, value){
+      try{ document.cookie = name + '=' + encodeParam(value) + '; path=/'; }catch(e){}
+    }
+
+    function boolFromString(value){
+      value = String(value || '').toLowerCase();
+      return value==='1' || value==='true' || value==='yes' || value==='on';
+    }
+
+    function setNoImageMode(enabled){
+      noImageMode = !!enabled;
+      if(noImageModeInput) noImageModeInput.checked = noImageMode;
+      writeCookie('k_no_img', noImageMode ? '1' : '0');
+    }
+
+    function isNoImageMode(){
+      return !!noImageMode;
+    }
+
+    function initNoImageModeToggle(){
+      setNoImageMode(boolFromString(readCookie('k_no_img')));
+      if(!noImageModeInput) return;
+      var onChange = function(){ setNoImageMode(!!noImageModeInput.checked); };
+      try{ noImageModeInput.addEventListener('change', onChange, false); }
+      catch(e){ noImageModeInput.onclick = onChange; }
+    }
+
     function makeContentUrl(url, id, title){
       var q = '';
       function add(name, value){
@@ -187,6 +239,7 @@
       add('href', url);
       add('id', id);
       add('title', title);
+      if(isNoImageMode()) add('noimg', '1');
       return '/k/content.html' + (q ? ('?' + q) : '');
     }
 
@@ -336,6 +389,7 @@
     }
 
 
+    initNoImageModeToggle();
     if(document.readyState==='loading'){
       try{ document.addEventListener('DOMContentLoaded', loadFeed, false); }catch(e){ window.onload = loadFeed; }
     } else loadFeed();
