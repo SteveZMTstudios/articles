@@ -168,7 +168,7 @@
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title"><%= post.title %></div>
-            <div class="mdui-card-primary-subtitle"><i class="iconfont" translate="no">&#xe697;</i> <%- date(post.date) %> / <i class="iconfont" translate="no">&#xe601;</i> <%= post.author || config.author %></div>
+            <div class="mdui-card-primary-subtitle"><i class="mdui-icon material-icons" translate="no">today</i> <%- date(post.date) %> / <i class="mdui-icon material-icons" translate="no">person</i> <%= post.author || config.author %></div>
           </div>
         </div>
         <% if (post.sticky || post.top) { %>

@@ -19,7 +19,6 @@ module.exports = {
       'images/notbyai-cn-dark.svg',
       'images/notbyai-cn-light.svg',
       'icons/material-icons/MaterialIcons-Regular.woff2',
-      'icons/custom-icons/iconfont.woff2',
       'fonts/roboto/*.woff2',
     ],
     // 忽略所有查询参数，避免同源资源因参数不同重复缓存

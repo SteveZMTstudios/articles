@@ -905,7 +905,7 @@ var $$ = mdui.$;
 
         collapseButton = document.createElement('button');
         collapseButton.type = 'button';
-        collapseButton.className = 'mdui-btn mdui-btn-dense mdui-ripple mdui-btn-icon details-collapse-btn';
+        collapseButton.className = 'mdui-btn mdui-btn-dense mdui-ripple details-collapse-btn';
         // collapseButton.textContent = '收起';
         collapseButton.innerHTML = '<i class="mdui-icon material-icons">keyboard_arrow_up</i>';
         collapseWrap.appendChild(collapseButton);

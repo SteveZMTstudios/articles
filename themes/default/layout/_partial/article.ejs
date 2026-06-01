@@ -72,7 +72,7 @@
       <div class="mdui-card-media-covered">
         <div class="mdui-card-primary">
             <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;"><%= page.title %></h1></div>
-          <div class="mdui-card-primary-subtitle"><i class="iconfont" translate="no">&#xe697;</i> <%- date(page.date) %> / <i class="iconfont" translate="no">&#xe601;</i> <%= page.author || config.author %><% if (theme.busuanzi.page && page.count !== false ) { %> &nbsp;&nbsp; <span id="busuanzi_container_page_pv" style="display: none;"><i class="iconfont" translate="no">&#xe7fd;</i> <span id="busuanzi_value_page_pv"></span></span><% } %></div>
+          <div class="mdui-card-primary-subtitle"><i class="mdui-icon material-icons" translate="no">today</i> <%- date(page.date) %> / <i class="mdui-icon material-icons" translate="no">person</i> <%= page.author || config.author %><% if (theme.busuanzi.page && page.count !== false ) { %> &nbsp;&nbsp; <span id="busuanzi_container_page_pv" style="display: none;"><i class="mdui-icon material-icons" translate="no">remove_red_eye</i> <span id="busuanzi_value_page_pv"></span></span><% } %></div>
         </div>
       </div>
       <div class="mdui-card-menu">

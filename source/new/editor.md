@@ -798,7 +798,7 @@ function updateHeaderPreview() {
             const showCount = document.getElementById('post-count').checked;
             img.alt = escapeAttribute(title);
             titleEl.textContent = title;
-            subtitleEl.innerHTML = `<i class="iconfont" translate="no">&#xe697;</i> ${escapeHtml(previewDate)} / <i class="iconfont" translate="no">&#xe601;</i> ${escapeHtml(author)}${showCount ? '&nbsp;&nbsp;<span style="display: inline;"><i class="iconfont" translate="no">&#xe7fd;</i> 0</span>' : ''}`;
+            subtitleEl.innerHTML = `<i class="mdui-icon material-icons" translate="no">today</i> ${escapeHtml(previewDate)} / <i class="mdui-icon material-icons" translate="no">person</i> ${escapeHtml(author)}${showCount ? '&nbsp;&nbsp;<span style="display: inline;"><i class="mdui-icon material-icons" translate="no">remove_red_eye</i> 114</span>' : ''}`;
             // Update share menu QR code reference if needed (thumbnail in share URL)
             // const shareImg = headerPreview.querySelector('#editor-preview-qrcode img');
             // if (shareImg) {
@@ -1097,10 +1097,10 @@ function buildArticleHeaderHtml() {
                         <h1 style="margin: 0; font-size: inherit; font-weight: inherit;">${escapeHtml(title)}</h1>
                     </div>
                     <div class="mdui-card-primary-subtitle">
-                        <i class="iconfont" translate="no">&#xe697;</i> ${escapeHtml(previewDate)}
+                        <i class="mdui-icon material-icons" translate="no">today</i> ${escapeHtml(previewDate)}
                         /
-                        <i class="iconfont" translate="no">&#xe601;</i> ${escapeHtml(author)}
-                        ${showCount ? `&nbsp;&nbsp;<span style="display: inline;"><i class="iconfont" translate="no">&#xe7fd;</i> 0</span>` : ''}
+                        <i class="mdui-icon material-icons" translate="no">person</i> ${escapeHtml(author)}
+                        ${showCount ? `&nbsp;&nbsp;<span style="display: inline;"><i class="mdui-icon material-icons" translate="no">remove_red_eye</i> 114</span>` : ''}
                     </div>
                 </div>
             </div>
