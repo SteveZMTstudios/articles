@@ -616,7 +616,7 @@ var $$ = mdui.$;
 
     var script = document.createElement('script');
     script.id = 'runtime-busuanzi';
-    script.defer = true;
+    script.async = true;
     script.src = src + (src.indexOf('?') === -1 ? '?' : '&') + '_=' + Date.now();
     document.body.appendChild(script);
   }
@@ -894,14 +894,22 @@ var $$ = mdui.$;
           panel.appendChild(child);
         });
         details.appendChild(panel);
+      }
 
-        // Collapse button at bottom (outside .details-anim to avoid affecting scrollHeight)
-        var collapseBtn = document.createElement('button');
-        collapseBtn.className = 'mdui-btn mdui-btn-icon mdui-ripple details-collapse-btn';
-        collapseBtn.setAttribute('aria-label', '收起');
-        collapseBtn.title = '收起';
-        collapseBtn.innerHTML = '<i class="mdui-icon material-icons">expand_less</i>';
-        details.appendChild(collapseBtn);
+      // Reuse MDUI v1 button styles for a lightweight bottom collapse action.
+      var collapseWrap = panel.querySelector('.details-collapse-wrap');
+      var collapseButton = panel.querySelector('.details-collapse-btn');
+      if (!collapseWrap || !collapseButton) {
+        collapseWrap = document.createElement('div');
+        collapseWrap.className = 'details-collapse-wrap';
+
+        collapseButton = document.createElement('button');
+        collapseButton.type = 'button';
+        collapseButton.className = 'mdui-btn mdui-btn-dense mdui-ripple mdui-btn-icon details-collapse-btn';
+        // collapseButton.textContent = '收起';
+        collapseButton.innerHTML = '<i class="mdui-icon material-icons">keyboard_arrow_up</i>';
+        collapseWrap.appendChild(collapseButton);
+        panel.appendChild(collapseWrap);
       }
 
       details.dataset.detailsAnimated = '1';
@@ -956,17 +964,31 @@ var $$ = mdui.$;
         if (expanded) {
           panel.style.opacity = '1';
           panel.style.transform = 'translateY(0)';
-          panel.style.maxHeight = immediate ? 'none' : '0px';
 
-          if (immediate) return;
+          if (immediate) {
+            panel.style.maxHeight = 'none';
+            return;
+          }
+
+          panel.style.maxHeight = '0px';
+          void panel.offsetHeight;
 
           requestAnimationFrame(function () {
-            panel.style.maxHeight = panel.scrollHeight + 'px';
+            panel.style.maxHeight = 'none';
+            var target = panel.scrollHeight;
+            panel.style.maxHeight = '0px';
+            void panel.offsetHeight;
+
+            if (target && target > 0) {
+              panel.style.maxHeight = target + 'px';
+            }
           });
           return;
         }
 
-        panel.style.maxHeight = panel.scrollHeight + 'px';
+        panel.style.maxHeight = 'none';
+        var targetHeight = panel.scrollHeight;
+        panel.style.maxHeight = targetHeight + 'px';
         panel.style.opacity = '1';
         panel.style.transform = 'translateY(0)';
         void panel.offsetWidth;
@@ -983,47 +1005,37 @@ var $$ = mdui.$;
         animating = true;
         animatingMode = 'open';
         suppressBeforeToggle = true;
+        panel.style.overflow = 'hidden';
+        panel.style.maxHeight = '0px';
+        panel.style.opacity = '0';
+        panel.style.transform = 'translateY(-8px)';
 
-        // Try to compute the target height. If scrollHeight is 0 (images/fonts
-        // not rendered yet), wait one animation frame and retry so we get a
-        // meaningful pixel height to animate to. Apply the target max-height
-        // before setting `details.open` to avoid the browser instantly
-        // revealing content and bypassing our transition.
-        var applyOpen = function (targetHeight) {
-          try {
-            panel.style.overflow = 'hidden';
-            // Read current height so the browser snapshots the closed state
-            // before we write the target; otherwise the CSS transition has
-            // no "from" value to animate.
+        details.open = true;
+        scheduleSettle('open');
+
+        // Use two animation frames to make sure the browser commits the
+        // collapsed start state before transitioning to expanded height.
+        requestAnimationFrame(function () {
+          panel.style.maxHeight = '0px';
+          panel.style.opacity = '0';
+          panel.style.transform = 'translateY(-8px)';
+          void panel.offsetHeight;
+
+          requestAnimationFrame(function () {
+            panel.style.maxHeight = 'none';
+            var target = panel.scrollHeight;
+            panel.style.maxHeight = '0px';
             void panel.offsetHeight;
-            panel.style.maxHeight = targetHeight + 'px';
+
+            if (!target || target <= 0) {
+              finishOpen();
+              return;
+            }
+            panel.style.maxHeight = target + 'px';
             panel.style.opacity = '1';
             panel.style.transform = 'translateY(0)';
-            details.open = true;
-            scheduleSettle('open');
-          } catch (e) {
-            // Fallback: directly set open if anything goes wrong
-            details.open = true;
-            finishOpen();
-          }
-        };
-
-        var desired = panel.scrollHeight;
-        if (!desired || desired === 0) {
-          // Wait a frame for layout to settle, then retry once.
-          requestAnimationFrame(function () {
-            var retry = panel.scrollHeight || 0;
-            if (retry && retry > 0) {
-              applyOpen(retry);
-            } else {
-              // Last resort: open immediately without animation.
-              details.open = true;
-              finishOpen();
-            }
           });
-        } else {
-          applyOpen(desired);
-        }
+        });
       };
 
       var closeDetails = function () {
@@ -1091,16 +1103,6 @@ var $$ = mdui.$;
         summaryUserToggleHandler(event);
       }, true);
 
-      // Collapse button (outside .details-anim)
-      var collapseBtn = details.querySelector('.details-collapse-btn');
-      if (collapseBtn) {
-        collapseBtn.addEventListener('click', function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          if (!animating && details.open) closeDetails();
-        });
-      }
-
       // Also listen to beforetoggle when available to handle programmatic
       // toggles and to clear the suppress flag if needed.
       if ('onbeforetoggle' in details) {
@@ -1122,6 +1124,13 @@ var $$ = mdui.$;
           }
         });
       }
+
+      collapseButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (animating || !details.open) return;
+        closeDetails();
+      });
     });
   }
 

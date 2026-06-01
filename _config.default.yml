@@ -98,6 +98,19 @@ banner: /images/banner.png
 avatar: /images/avatar.jpg@128x128.jpg
 rss: /atom.xml
 
+mdui_cdn:
+  css:
+    url: https://s4.zstatic.net/npm/mdui@1.0.2/dist/css/mdui.min.css
+    crossorigin: anonymous
+    integrity: sha384-wuqJ3gKnD2BDa/kF14f6SECESfcvVTsNruuVi3BOAk2mNDIOn/uvHdd+eMK7FY0b
+  js:
+    url: https://s4.zstatic.net/npm/mdui@1.0.2/dist/js/mdui.min.js
+    crossorigin: anonymous
+    integrity: sha384-Iw/ABpFbyL5jmtL3QSGm+kpo+Rnj0Cs4NoQm69VmGC7j4pcv5MbN55KVNMMyB4J6
+
+  
+
+
 email: admin@stevezmt.top
 sns:
   twitter:

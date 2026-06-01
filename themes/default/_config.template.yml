@@ -9,6 +9,16 @@ banner: /images/banner.png
 avatar: /images/avatar.png
 rss: /atom.xml
 
+mdui_cdn:
+  css:
+    url: https://s4.zstatic.net/npm/mdui@1.0.2/dist/css/mdui.min.css
+    crossorigin: ''
+    integrity: ''
+  js:
+    url: https://s4.zstatic.net/npm/mdui@1.0.2/dist/js/mdui.min.js
+    crossorigin: ''
+    integrity: ''
+
 email:
 sns:
   twitter:

@@ -213,6 +213,10 @@
   %>
   <% if (preloadImageHref) { %><link rel="preload" as="image" href="<%- preloadImageHref %>"><% } %>
 
-  <%- css(['css/mdui', 'css/style', 'css/lightbox']) %>
+<link rel="stylesheet" 
+      href="<%= theme.mdui_cdn && theme.mdui_cdn.css && theme.mdui_cdn.css.url ? theme.mdui_cdn.css.url : '/css/mdui.css' %>"
+      <% if (theme.mdui_cdn && theme.mdui_cdn.css && theme.mdui_cdn.css.crossorigin) { %>crossorigin="<%= theme.mdui_cdn && theme.mdui_cdn.css && theme.mdui_cdn.css.crossorigin ? theme.mdui_cdn.css.crossorigin : '' %>"<% } %>
+      <% if (theme.mdui_cdn && theme.mdui_cdn.css && theme.mdui_cdn.css.integrity) { %>integrity="<%= theme.mdui_cdn && theme.mdui_cdn.css && theme.mdui_cdn.css.integrity ? theme.mdui_cdn.css.integrity : '' %>"<% } %>
+      onerror="this.onerror=null; this.href='/css/mdui.css';">  <%- css(['css/style', 'css/lightbox']) %>
   <%- css('custom') %>
 </head>

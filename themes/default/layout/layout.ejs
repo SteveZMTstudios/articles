@@ -46,7 +46,20 @@
       <circle class="progress-ring__circle mdui-text-color-theme-a100" stroke="currentColor" stroke-width="4" fill="transparent" r="26" cx="30" cy="30"/>
     </svg>
   </div>
-  <%- js(['js/mdui', 'js/script', 'js/lightbox', 'js/pjax']) %>
+  <!-- <%- js(['js/mdui', 'js/script', 'js/lightbox', 'js/pjax']) %> -->
+   <script src="<%= theme.mdui_cdn && theme.mdui_cdn.js && theme.mdui_cdn.js.url ? theme.mdui_cdn.js.url : '/js/mdui.js' %>"
+        <% if (theme.mdui_cdn && theme.mdui_cdn.js && theme.mdui_cdn.js.crossorigin) { %>crossorigin="<%= theme.mdui_cdn && theme.mdui_cdn.js && theme.mdui_cdn.js.crossorigin ? theme.mdui_cdn.js.crossorigin : '' %>"<% } %>
+        <% if (theme.mdui_cdn && theme.mdui_cdn.js && theme.mdui_cdn.js.integrity) { %>integrity="<%= theme.mdui_cdn && theme.mdui_cdn.js && theme.mdui_cdn.js.integrity ? theme.mdui_cdn.js.integrity : '' %>"<% } %>
+        onerror="this.onerror=null; this.src='/js/mdui.js';"></script>
+<script>
+  // fallback
+  if (typeof window.mdui === 'undefined') {
+    var script = document.createElement('script');
+    script.src = '/js/mdui.js';
+    document.body.appendChild(script);
+  }
+</script>
+<%- js(['js/script', 'js/lightbox', 'js/pjax']) %>
   <script>
     // Remove initial animation class
     setTimeout(function() {

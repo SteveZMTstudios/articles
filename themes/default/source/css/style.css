@@ -1083,9 +1083,11 @@ img[data-loaded="true"] {
 @keyframes fade-in-real {
   0% { 
     opacity: 0; 
+    filter: brightness(0);
   }
   100% { 
     opacity: 1; 
+    filter: brightness(1);
   }
 }
 
@@ -1406,9 +1408,9 @@ details {
   /* background: rgba(33, 33, 33, 0.08); Material 深色风格 */
   border-radius: 4px;
   margin: 16px 0;
-  box-shadow: 0 1px 4px 0 rgba(60,60,60,0.04);
+  /* box-shadow: 0 1px 4px 0 rgba(60,60,60,0.04); */
   transition: background 0.3s cubic-bezier(.4,0,.2,1);
-  overflow: hidden;
+  overflow: auto;
 }
 
 details[open] {
@@ -1420,12 +1422,13 @@ details summary {
   cursor: pointer;
   outline: none;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 1em;
   color: #212121;
-  padding: 16px 24px 16px 40px;
+  padding: 8px 24px 8px 32px;
   position: relative;
   user-select: none;
   transition: background 0.2s cubic-bezier(.4,0,.2,1);
+
 }
 
 details summary::-webkit-details-marker {
@@ -1433,15 +1436,15 @@ details summary::-webkit-details-marker {
 }
 
 details summary::before {
-  content: '\25B6'; /* ▶ */
+  content: '\e315';
+  font-family: 'Material Icons';
   display: inline-block;
   position: absolute;
-  left: 16px;
+  left: 2px;
   top: 50%;
   transform: translateY(-50%) rotate(0deg);
   transition: transform 0.3s cubic-bezier(.4,0,.2,1);
-  color: #757575;
-  font-size: 1.1em;
+  font-size: 24px;
 }
 
 details[open] summary::before {
@@ -1479,25 +1482,11 @@ details:not([open]) > .details-anim {
   padding-bottom: 0;
 }
 
-/* Collapse button at bottom of expanded details */
+.details-collapse-wrap {
+  text-align: left;
+}
 .details-collapse-btn {
-  margin: 8px 0 4px;
-  width: 36px;
-  height: 36px;
-  min-width: 36px;
-  color: #757575;
-  opacity: 0.7;
-  transition: opacity 0.25s cubic-bezier(.4,0,.2,1);
-}
-details:not([open]) > .details-collapse-btn {
-  display: none;
-}
-.details-collapse-btn:hover,
-.details-collapse-btn:focus {
-  opacity: 1;
-}
-.mdui-theme-layout-dark .details-collapse-btn {
-  color: #bdbdbd;
+  padding: 0 !important;
 }
 
 /* prefers-reduced-motion 兼容 */
@@ -1526,7 +1515,7 @@ details:not([open]) > .details-collapse-btn {
   color: #eee;
 }
 .mdui-theme-layout-dark details summary::before {
-  color: #bdbdbd;
+  color: #fff;
 }
 
 .mdui-card-media-covered {
