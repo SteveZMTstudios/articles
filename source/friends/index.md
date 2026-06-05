@@ -5,6 +5,7 @@ comments: false
 toc: false
 count: false
 date: 1970-01-01 08:00:00
+img_size: unset
 
 layout:
 share_menu:
@@ -32,8 +33,8 @@ qrcode:
 }
 .friend-card .mdui-card-media img {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 100% !important;
+  height: 100% !important;
   object-fit: cover;
 }
 .friend-card .mdui-card-primary {
@@ -92,7 +93,7 @@ qrcode:
 <div class="friends-container">
   <div class="mdui-card friend-card mdui-hoverable">
     <div class="mdui-card-media">
-        <img src="https://blog.canyie.top/data/image/avatar_new.jpg" width="460" height="460" alt="残页的小博客" title="">
+        <img src="https://blog.canyie.top/data/image/avatar_new.jpg" alt="残页的小博客" title="">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">残页的小博客</div>
@@ -107,7 +108,7 @@ qrcode:
   
   <div class="mdui-card friend-card mdui-hoverable">
     <div class="mdui-card-media">
-        <img src="https://blog.stevezmt.top/friends/listder.jpg" width="640" height="640" alt="listder&#39;s blog" title="">
+        <img src="https://blog.stevezmt.top/friends/listder.jpg" alt="listder&#39;s blog" title="">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">listder's blog</div>
@@ -122,7 +123,7 @@ qrcode:
 
   <div class="mdui-card friend-card mdui-hoverable">
     <div class="mdui-card-media">
-        <img src="https://bu.dusays.com/2024/10/25/671b2438203a6.gif" width="1080" height="1080" alt="Elykia" title="">
+        <img src="https://bu.dusays.com/2024/10/25/671b2438203a6.gif" alt="Elykia" title="">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">Elykia</div>
@@ -168,7 +169,7 @@ qrcode:
 
   <div class="mdui-card friend-card mdui-hoverable">
     <div class="mdui-card-media">
-        <img src="https://blog.stevezmt.top/friends/piowonsler.jpg" width="640" height="640" alt="TuskedEvening0" title="">
+        <img src="https://blog.stevezmt.top/friends/piowonsler.jpg" alt="TuskedEvening0" title="">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">TuskedEvening0</div>
@@ -213,7 +214,7 @@ qrcode:
 
   <div class="mdui-card friend-card mdui-hoverable">
     <div class="mdui-card-media">
-        <img src="https://cos.zyglq.cn/static/web-logo.jpg" width="1064" height="1064" alt="资源管理器博客" title="">
+        <img src="https://cos.zyglq.cn/static/web-logo.jpg" alt="资源管理器博客" title="">
         <div class="mdui-card-media-covered">
           <div class="mdui-card-primary">
             <div class="mdui-card-primary-title">资源管理器博客</div>

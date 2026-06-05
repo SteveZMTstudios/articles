@@ -84,16 +84,15 @@ thislink: false
   }
 
   .redirect-mdi-icon {
-    display: inline-block;
-    background-color: currentColor;
-    -webkit-mask-image: var(--mdi-url);
-    mask-image: var(--mdi-url);
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    -webkit-mask-position: center;
-    mask-position: center;
-    -webkit-mask-size: contain;
-    mask-size: contain;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .redirect-mdi-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
   }
 
   .redirect-link-shell {
@@ -312,8 +311,8 @@ thislink: false
         .replace(/'/g, '&#39;');
     }
 
-    const PROBE_TIMEOUT = 5000;
-    const DNS_TIMEOUT = 3500;
+    const PROBE_TIMEOUT = 4000;
+    const DNS_TIMEOUT = 3000;
     const METADATA_TIMEOUT = 3500;
 
     function isIpv4Address(hostname) {
@@ -426,7 +425,43 @@ thislink: false
       });
     }
 
-    async function queryDnsRecord(hostname, recordType) {
+    async function queryDnsRecordFast(hostname) {
+      const endpoint = `http://119.29.29.29/d?dn=${encodeURIComponent(hostname)}.`;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(function () {
+        controller.abort();
+      }, DNS_TIMEOUT);
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'GET',
+          cache: 'no-store',
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          return { success: false, hasAnswer: false, status: null };
+        }
+
+        const text = await response.text();
+        const ipList = text.trim().split(',').filter(function (ip) {
+          return ip && ip.length > 0;
+        });
+
+        return {
+          success: true,
+          hasAnswer: ipList.length > 0,
+          status: ipList.length > 0 ? 0 : 3
+        };
+      } catch (error) {
+        clearTimeout(timeoutId);
+        return { success: false, hasAnswer: false, status: null };
+      }
+    }
+
+    async function queryDnsRecordFallback(hostname, recordType) {
       const endpoint = `https://dns.alidns.com/resolve?name=${encodeURIComponent(hostname)}&type=${recordType}`;
       const controller = new AbortController();
       const timeoutId = setTimeout(function () {
@@ -461,6 +496,15 @@ thislink: false
         clearTimeout(timeoutId);
         return { success: false, hasAnswer: false, status: null };
       }
+    }
+
+    async function queryDnsRecord(hostname, recordType) {
+      const fastResult = await queryDnsRecordFast(hostname);
+      if (fastResult.success) {
+        return fastResult;
+      }
+
+      return queryDnsRecordFallback(hostname, recordType);
     }
 
     async function probeDns(hostname) {
@@ -540,13 +584,22 @@ thislink: false
       }
     }
 
+    const mdiIcons = {
+      'web-clock': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M15 12.5V16.5L18 18.5L18.75 17.25L16.5 15.75V12.5H15M22 12.39C22 12.26 22 12.13 22 12C22 6.5 17.5 2 12 2C6.47 2 2 6.5 2 12C2 17.5 6.5 22 12 22C12.13 22 12.24 22 12.37 21.97C13.43 22.62 14.67 23 16 23C19.86 23 23 19.86 23 16C23 14.68 22.62 13.44 22 12.39M19.76 10.11C19.7 10.07 19.65 10.04 19.59 10H19.74C19.75 10.03 19.75 10.07 19.76 10.11M18.92 8H15.97C15.65 6.75 15.19 5.55 14.59 4.44C16.43 5.07 17.96 6.34 18.92 8M12 4.03C12.83 5.23 13.5 6.57 13.91 8H10.09C10.5 6.57 11.17 5.23 12 4.03M9.66 10H12.41C11.16 10.75 10.15 11.88 9.57 13.24C9.53 12.83 9.5 12.42 9.5 12C9.5 11.32 9.56 10.65 9.66 10M9.4 4.44C8.8 5.55 8.35 6.75 8 8H5.08C6.03 6.34 7.57 5.06 9.4 4.44M4.26 14C4.1 13.36 4 12.69 4 12S4.1 10.64 4.26 10H7.64C7.56 10.66 7.5 11.32 7.5 12S7.56 13.34 7.64 14H4.26M5.08 16H8C8.35 17.25 8.8 18.45 9.4 19.56C7.57 18.93 6.03 17.65 5.08 16M16 21C13.24 21 11 18.76 11 16S13.24 11 16 11 21 13.24 21 16 18.76 21 16 21Z"/></svg>',
+      'lock-check-outline': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M14 15C14 16.11 13.11 17 12 17C10.89 17 10 16.1 10 15C10 13.89 10.89 13 12 13C13.11 13 14 13.9 14 15M13.09 20C13.21 20.72 13.46 21.39 13.81 22H6C4.89 22 4 21.1 4 20V10C4 8.89 4.89 8 6 8H7V6C7 3.24 9.24 1 12 1S17 3.24 17 6V8H18C19.11 8 20 8.9 20 10V13.09C19.67 13.04 19.34 13 19 13C18.66 13 18.33 13.04 18 13.09V10H6V20H13.09M9 8H15V6C15 4.34 13.66 3 12 3S9 4.34 9 6V8M21.34 15.84L17.75 19.43L16.16 17.84L15 19L17.75 22L22.5 17.25L21.34 15.84Z"/></svg>',
+      'lock-alert': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M10 17C11.1 17 12 16.1 12 15C12 13.9 11.1 13 10 13C8.9 13 8 13.9 8 15S8.9 17 10 17M16 8C17.1 8 18 8.9 18 10V20C18 21.1 17.1 22 16 22H4C2.9 22 2 21.1 2 20V10C2 8.9 2.9 8 4 8H5V6C5 3.2 7.2 1 10 1S15 3.2 15 6V8H16M10 3C8.3 3 7 4.3 7 6V8H13V6C13 4.3 11.7 3 10 3M22 13H20V7H22V13M22 17H20V15H22V17Z"/></svg>',
+      'lock-open-alert-outline': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M16 20V10H4V20H16M16 8C17.1 8 18 8.9 18 10V20C18 21.1 17.1 22 16 22H4C2.9 22 2 21.1 2 20V10C2 8.9 2.9 8 4 8H13V6C13 4.3 11.7 3 10 3S7 4.3 7 6H5C5 3.2 7.2 1 10 1S15 3.2 15 6V8H16M10 17C8.9 17 8 16.1 8 15S8.9 13 10 13 12 13.9 12 15 11.1 17 10 17M22 7H20V13H22V7M22 15H20V17H22V15Z"/></svg>',
+      'web-remove': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M16.5 12C16.5 11.32 16.44 10.66 16.36 10H19.74C19.9 10.64 20 11.31 20 12C20 12.37 19.97 12.73 19.92 13.08C20.61 13.18 21.25 13.4 21.84 13.72C21.94 13.16 22 12.59 22 12C22 6.5 17.5 2 12 2C6.47 2 2 6.5 2 12C2 17.5 6.5 22 12 22C12.59 22 13.16 21.94 13.72 21.84C13.26 21 13 20.03 13 19C13 18.71 13.03 18.43 13.07 18.15C12.75 18.78 12.4 19.39 12 19.96C11.17 18.76 10.5 17.43 10.09 16H13.81C14.41 14.96 15.31 14.12 16.4 13.6C16.46 13.07 16.5 12.54 16.5 12M12 4.03C12.83 5.23 13.5 6.57 13.91 8H10.09C10.5 6.57 11.17 5.23 12 4.03M4.26 14C4.1 13.36 4 12.69 4 12S4.1 10.64 4.26 10H7.64C7.56 10.66 7.5 11.32 7.5 12S7.56 13.34 7.64 14H4.26M5.08 16H8C8.35 17.25 8.8 18.45 9.4 19.56C7.57 18.93 6.03 17.65 5.08 16M8 8H5.08C6.03 6.34 7.57 5.06 9.4 4.44C8.8 5.55 8.35 6.75 8 8M14.34 14H9.66C9.56 13.34 9.5 12.68 9.5 12S9.56 10.65 9.66 10H14.34C14.43 10.65 14.5 11.32 14.5 12S14.43 13.34 14.34 14M14.59 4.44C16.43 5.07 17.96 6.34 18.92 8H15.97C15.65 6.75 15.19 5.55 14.59 4.44M20.41 19L22.54 21.12L21.12 22.54L19 20.41L16.88 22.54L15.47 21.12L17.59 19L15.47 16.88L16.88 15.47L19 17.59L21.12 15.47L22.54 16.88L20.41 19Z"/></svg>'
+    };
+
     function buildIconMarkup(icon) {
       if (!icon || icon.type === 'empty') {
         return '<span class="redirect-icon-placeholder" aria-hidden="true"></span>';
       }
 
       if (icon.type === 'mdi') {
-        return `<span class="redirect-mdi-icon" aria-hidden="true" style="--mdi-url:url('./mdi/${escapeHtml(icon.name)}.svg')"></span>`;
+        const svgContent = mdiIcons[icon.name] || '';
+        return `<span class="redirect-mdi-icon" aria-hidden="true">${svgContent}</span>`;
       }
 
       const extraClass = icon.className ? ` ${icon.className}` : '';

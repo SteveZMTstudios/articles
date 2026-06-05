@@ -739,6 +739,14 @@ async function formatMarkdownFile(filePath, options = {}) {
   const hasBom = rawContent.startsWith('\uFEFF');
   const content = hasBom ? rawContent.slice(1) : rawContent;
   const { body, frontMatter, hasFrontMatter } = splitFrontMatter(content);
+
+  if (hasFrontMatter && /^\s*img_size\s*:\s*unset\s*$/m.test(frontMatter)) {
+    return {
+      changed: false,
+      content: hasBom ? `\uFEFF${content}` : content,
+    };
+  }
+
   const transformedBody = await transformMarkdownContent(body, {
     markdownFilePath: filePath,
     rootDir: options.rootDir,
