@@ -47,7 +47,7 @@
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0",
     "markdown-it": "^14.2.0",
-    "mdui": "^2.1.4",
+    "mdui": "^2.1.5",
     "qiniu": "^7.15.2",
     "qrcode": "^1.5.4"
   }
