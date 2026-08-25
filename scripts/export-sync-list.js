@@ -116,9 +116,7 @@ async function exportSyncList() {
   hexo.log.info(`[WeChat Sync] Exported ${postsToSync.length} posts to sync to ${outputFile}`);
 }
 
-// 注册钩子：在 Hexo 生成完成后执行
-hexo.on('generateAfter', function() {
-  exportSyncList.call(this);
-});
+// 注意：已移除 generateAfter 钩子绑定，避免每次 hexo generate 时意外生成或修改 wechat-posts-to-sync.json
+// 同步操作统一由 npm run wechat:sync (scripts/wechat-sync/sync.js) 按需扫描并实时比对微信远端状态执行
 
 module.exports = { exportSyncList };

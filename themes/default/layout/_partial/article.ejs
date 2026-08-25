@@ -647,20 +647,28 @@
     window.__page_has_toc__ = <%= is_post() && page.toc ? 'true' : 'false' %>;
 
     function buildTocFromHeadings() {
-      // 清理旧的容器（如果存在）
+      // 清理旧的事件监听和容器
+      if (window.__tocScrollHandler__) {
+        window.removeEventListener('scroll', window.__tocScrollHandler__);
+        window.__tocScrollHandler__ = null;
+      }
       try {
-        var old = document.getElementById('toc-fab-container');
-        if (old && old.parentNode) old.parentNode.removeChild(old);
+        var oldDesktop = document.getElementById('toc-desktop-container');
+        if (oldDesktop && oldDesktop.parentNode) oldDesktop.parentNode.removeChild(oldDesktop);
+        var oldFab = document.getElementById('toc-fab-container');
+        if (oldFab && oldFab.parentNode) oldFab.parentNode.removeChild(oldFab);
+        var oldMenu = document.getElementById('toc-menu');
+        if (oldMenu && oldMenu.parentNode) oldMenu.parentNode.removeChild(oldMenu);
       } catch(e) {}
 
-      if (!window.__page_has_toc__) return; // 未启用则直接返回
+      if (!window.__page_has_toc__) return;
 
       var content = document.querySelector('#main article .mdui-card-content');
       if (!content) return;
       var headings = content.querySelectorAll('h2, h3, h4, h5, h6');
-      if (!headings || headings.length === 0) return; // 无标题则不展示
+      if (!headings || headings.length === 0) return;
 
-      // 构建 TOC 列表（保持原有 .toc 结构样式）
+      // 构建 TOC 结构
       function getLevel(h){ var t = parseInt(h.tagName.replace('H',''), 10); return isNaN(t)?6:t; }
       var rootOl = document.createElement('ol');
       rootOl.className = 'toc';
@@ -669,12 +677,11 @@
       var olStack = [rootOl];
 
       headings.forEach(function(h){
-        if (!h.id) return; // 没有 id 的标题跳过
+        if (!h.id) return;
         var level = getLevel(h);
-        if (currentLevel === 0) currentLevel = level; // 初始化基准层级
+        if (currentLevel === 0) currentLevel = level;
 
         if (level > currentLevel) {
-          // 下钻：创建子 ol，直到匹配层级
           for (var i = currentLevel; i < level; i++) {
             var childOl = document.createElement('ol');
             childOl.className = 'toc-child';
@@ -686,7 +693,6 @@
           }
           currentLevel = level;
         } else if (level < currentLevel) {
-          // 回退：弹栈到目标层级
           for (var j = currentLevel; j > level; j--) {
             olStack.pop();
           }
@@ -699,6 +705,7 @@
         var a = document.createElement('a');
         a.className = 'toc-link';
         a.href = '#' + encodeURIComponent(h.id);
+        a.title = h.textContent || h.innerText || '';
         var span = document.createElement('span');
         span.className = 'toc-text';
         span.textContent = h.textContent || h.innerText || '';
@@ -707,51 +714,156 @@
         currentOl.appendChild(li);
       });
 
-      // 不生成空 TOC
       if (!rootOl.children.length) return;
 
-      // 生成浮动按钮 + 菜单（保持原有样式）
-      var container = document.createElement('div');
-      container.id = 'toc-fab-container';
-      container.setAttribute('aria-hidden', 'false');
-      container.style.position = 'fixed';
-      container.style.right = '16px';
-      container.style.top = '30%';
-      container.style.zIndex = '4999';
+      // 1. 生成超宽屏贴靠侧边栏目录 (>= 1440px)
+      var desktopRootOl = rootOl.cloneNode(true);
+      var desktopContainer = document.createElement('aside');
+      desktopContainer.id = 'toc-desktop-container';
+
+      var desktopSticky = document.createElement('div');
+      desktopSticky.className = 'toc-desktop-sticky';
+
+      var desktopCard = document.createElement('div');
+      desktopCard.className = 'toc-desktop-card';
+      desktopCard.appendChild(desktopRootOl);
+
+      desktopSticky.appendChild(desktopCard);
+      desktopContainer.appendChild(desktopSticky);
+
+      // 挂载到正文内容卡片内部，使其与正文顶端对齐并在正文范围内固钉滚动
+      content.appendChild(desktopContainer);
+
+      // 2. 生成中窄屏与移动端悬浮按钮 + 菜单 (< 1440px)
+      var fabContainer = document.createElement('div');
+      fabContainer.id = 'toc-fab-container';
+      fabContainer.setAttribute('aria-hidden', 'false');
 
       var btn = document.createElement('button');
+      btn.id = 'toc-fab-btn';
       btn.className = 'mdui-fab mdui-fab-mini mdui-ripple';
-      btn.style.background = '#75757575';
       btn.setAttribute('mdui-menu', "{target: '#toc-menu'}");
       btn.setAttribute('aria-label', '目录');
-      btn.innerHTML = '<i class="mdui-icon material-icons" translate="no">toc<\/i>';
+      btn.innerHTML = '<i class="mdui-icon material-icons" translate="no">toc</i>';
 
       var menu = document.createElement('ul');
       menu.className = 'mdui-menu';
       menu.id = 'toc-menu';
+
       var liWrap = document.createElement('li');
       liWrap.className = 'mdui-menu-item';
       liWrap.setAttribute('disabled', '');
+      liWrap.style.cursor = 'default';
       liWrap.appendChild(rootOl);
       menu.appendChild(liWrap);
 
-      container.appendChild(btn);
-      container.appendChild(menu);
-      document.body.appendChild(container);
+      fabContainer.appendChild(btn);
+      fabContainer.appendChild(menu);
+      document.body.appendChild(fabContainer);
 
-      // 初始化 MDUI 组件
+      menu.addEventListener('open.mdui.menu', function() {
+        btn.classList.add('is-open');
+      });
+      menu.addEventListener('close.mdui.menu', function() {
+        btn.classList.remove('is-open');
+      });
+
+      // 初始化 MDUI
       try { if (window.mdui && typeof mdui.mutation === 'function') mdui.mutation(); } catch(e) {}
 
-      // 点击目录项后关闭菜单（可选优化）
-      menu.addEventListener('click', function(e){
+      // 点击平滑滚动定位（预留 64px AppBar 偏移）
+      function handleTocClick(e) {
         var a = e.target.closest('a.toc-link');
         if (!a) return;
-        // 让 MDUI 菜单关闭
-        try {
-          var inst = mdui.Menu.get(btn);
-          if (inst) inst.close();
-        } catch(e) {}
-      });
+        var href = a.getAttribute('href');
+        if (!href || href.indexOf('#') === -1) return;
+        var targetId = decodeURIComponent(href.slice(href.indexOf('#') + 1));
+        var targetEl = document.getElementById(targetId);
+        if (targetEl) {
+          e.preventDefault();
+          var appbarHeight = 64;
+          var targetTop = targetEl.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - appbarHeight - 16;
+          window.scrollTo({
+            top: Math.max(0, targetTop),
+            behavior: 'smooth'
+          });
+          if (history.pushState) {
+            history.pushState(null, '', '#' + encodeURIComponent(targetId));
+          }
+          // 关闭移动端菜单
+          try {
+            var inst = mdui.Menu.get(btn);
+            if (inst) inst.close();
+          } catch(err) {}
+        }
+      }
+
+      desktopContainer.addEventListener('click', handleTocClick);
+      menu.addEventListener('click', handleTocClick);
+
+      // 阅读位置高亮与滚动跟随 (Scroll Spy)
+      var scrollTicking = false;
+      function updateActiveHeading() {
+        scrollTicking = false;
+        var topOffset = 100;
+        var activeHeading = null;
+        var isBottom = (window.innerHeight + (window.pageYOffset || document.documentElement.scrollTop)) >= (document.documentElement.scrollHeight - 50);
+
+        if (isBottom && headings.length > 0) {
+          activeHeading = headings[headings.length - 1];
+        } else {
+          for (var i = 0; i < headings.length; i++) {
+            var h = headings[i];
+            var rect = h.getBoundingClientRect();
+            if (rect.top <= topOffset) {
+              activeHeading = h;
+            } else {
+              break;
+            }
+          }
+          if (!activeHeading && headings.length > 0) {
+            activeHeading = headings[0];
+          }
+        }
+
+        var activeId = activeHeading && activeHeading.id ? activeHeading.id : '';
+        if (!activeId) return;
+
+        var allTocLinks = document.querySelectorAll('.toc-link');
+        var targetHref = '#' + encodeURIComponent(activeId);
+        var activeDesktopLink = null;
+
+        allTocLinks.forEach(function(link) {
+          if (link.getAttribute('href') === targetHref) {
+            link.classList.add('is-active');
+            if (link.closest('#toc-desktop-container')) {
+              activeDesktopLink = link;
+            }
+          } else {
+            link.classList.remove('is-active');
+          }
+        });
+
+        if (activeDesktopLink && desktopCard) {
+          var linkOffsetTop = activeDesktopLink.offsetTop;
+          var cardScroll = desktopCard.scrollTop;
+          var cardHeight = desktopCard.clientHeight;
+          if (linkOffsetTop < cardScroll || linkOffsetTop > cardScroll + cardHeight - 40) {
+            desktopCard.scrollTop = Math.max(0, linkOffsetTop - cardHeight / 3);
+          }
+        }
+      }
+
+      function onScroll() {
+        if (!scrollTicking) {
+          requestAnimationFrame(updateActiveHeading);
+          scrollTicking = true;
+        }
+      }
+
+      window.__tocScrollHandler__ = onScroll;
+      window.addEventListener('scroll', onScroll, { passive: true });
+      updateActiveHeading();
     }
 
     // 初次与 PJAX 切换后重建
@@ -765,7 +877,7 @@
 <% if (page.prev || page.next) { %>
   <nav id="paginator">
     <% if (page.prev) { %>
-      <a rel="prev" class="extend prev" href="<%- url_for(page.prev.path) %>" style="display:flex;align-items:center;gap:12px;">
+      <a rel="prev" data-pjax-nav="prev" class="extend prev" href="<%- url_for(page.prev.path) %>" style="display:flex;align-items:center;gap:12px;">
         <button aria-label="prev" class="mdui-btn mdui-btn-raised mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons" translate="no">arrow_back</i></button>
         <span style="display:flex;flex-direction:column;align-items:flex-start;">
           <small class=" prev-title-responsive" style="font-size:12px;opacity:.7;">上一篇</small>
@@ -783,7 +895,7 @@
     <% } %>
     <div class="spacer"></div>
     <% if (page.next) { %>
-      <a rel="next" class="extend next" href="<%- url_for(page.next.path) %>" style="display:flex;align-items:center;gap:12px;">
+      <a rel="next" data-pjax-nav="next" class="extend next" href="<%- url_for(page.next.path) %>" style="display:flex;align-items:center;gap:12px;">
         <span style="display:flex;flex-direction:column;align-items:flex-end;text-align:right;">
           <small style="font-size:12px;opacity:.7;">下一篇</small>
           <span style="display:block;"><%= page.next.title %></span>

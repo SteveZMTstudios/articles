@@ -204,7 +204,7 @@ class WeChatAPIClient {
 
   /**
    * 获取所有草稿列表（分页）
-   * 返回 [{ media_id, title, digest, ... }]
+   * 返回 [{ media_id, title, digest, author, update_time, content_source_url, url }]
    */
   async getAllDrafts() {
     const token = await this.getAccessToken();
@@ -214,16 +214,16 @@ class WeChatAPIClient {
 
     try {
       while (true) {
-        const url = `https://api.weixin.qq.com/cgi-bin/draft/getsummary?access_token=${token}`;
+        const url = `https://api.weixin.qq.com/cgi-bin/draft/batchget?access_token=${token}`;
         const result = await this._httpPostJSON(url, {
-          type: 'news',
           offset: offset,
           count: limit,
+          no_content: 1,
         });
 
         if (result.errcode) {
           throw new WeChatAPIError(
-            `Failed to get draft summary: ${result.errmsg}`,
+            `Failed to get draft batch: ${result.errmsg}`,
             result.errcode
           );
         }
@@ -232,22 +232,24 @@ class WeChatAPIClient {
           break;
         }
 
-        // 提取每篇草稿的标题和 media_id
         for (const item of result.item) {
           if (item.content && item.content.news_item && item.content.news_item.length > 0) {
-            const news = item.content.news_item[0];
-            allDrafts.push({
-              media_id: item.media_id,
-              title: news.title,
-              digest: news.digest,
-              author: news.author,
-              create_time: item.create_time,
-            });
+            for (const news of item.content.news_item) {
+              allDrafts.push({
+                media_id: item.media_id,
+                title: news.title,
+                digest: news.digest,
+                author: news.author,
+                content_source_url: news.content_source_url,
+                url: news.url,
+                update_time: item.update_time,
+              });
+            }
           }
         }
 
         offset += limit;
-        if (result.item_count < limit) {
+        if (!result.total_count || offset >= result.total_count || result.item_count < limit) {
           break;
         }
       }
@@ -262,8 +264,8 @@ class WeChatAPIClient {
   }
 
   /**
-   * 获取所有已发布的素材（分页）
-   * 返回 [{ media_id, title, digest, ... }]
+   * 获取所有已发布的文章（分页）
+   * 返回 [{ article_id, media_id, title, digest, author, update_time, content_source_url, url }]
    */
   async getAllPublishedMaterials() {
     const token = await this.getAccessToken();
@@ -273,16 +275,16 @@ class WeChatAPIClient {
 
     try {
       while (true) {
-        const url = `https://api.weixin.qq.com/cgi-bin/material/batchget?access_token=${token}`;
+        const url = `https://api.weixin.qq.com/cgi-bin/freepublish/batchget?access_token=${token}`;
         const result = await this._httpPostJSON(url, {
-          type: 'news',
           offset: offset,
           count: limit,
+          no_content: 1,
         });
 
         if (result.errcode) {
           throw new WeChatAPIError(
-            `Failed to get published materials: ${result.errmsg}`,
+            `Failed to get published materials batch: ${result.errmsg}`,
             result.errcode
           );
         }
@@ -291,22 +293,25 @@ class WeChatAPIClient {
           break;
         }
 
-        // 提取每篇已发布素材的标题和 media_id
         for (const item of result.item) {
           if (item.content && item.content.news_item && item.content.news_item.length > 0) {
-            const news = item.content.news_item[0];
-            allMaterials.push({
-              media_id: item.media_id,
-              title: news.title,
-              digest: news.digest,
-              author: news.author,
-              create_time: item.create_time,
-            });
+            for (const news of item.content.news_item) {
+              allMaterials.push({
+                article_id: item.article_id,
+                media_id: item.article_id,
+                title: news.title,
+                digest: news.digest,
+                author: news.author,
+                content_source_url: news.content_source_url,
+                url: news.url,
+                update_time: item.update_time,
+              });
+            }
           }
         }
 
         offset += limit;
-        if (result.item_count < limit) {
+        if (!result.total_count || offset >= result.total_count || result.item_count < limit) {
           break;
         }
       }

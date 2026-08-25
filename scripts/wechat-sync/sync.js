@@ -1,13 +1,16 @@
 // 微信公众号同步执行器
 // 
 // 流程：
-// 1. 读取清单文件 (.github/wechat-posts-to-sync.json)
-// 2. 初始化微信 API 客户端，进行诊断
-// 3. 对每篇文章：
-//    - 读取并渲染 markdown
-//    - 上传图片到微信素材库，替换 URL
-//    - 创建草稿
-// 4. 生成同步报告与状态文件
+// 1. 扫描 source/_posts/ 目录下所有文章并解析 Front-matter
+// 2. 初始化微信 API 客户端并进行诊断
+// 3. 调用 draft/batchget 与 freepublish/batchget 获取远端已有草稿和已发布文章
+// 4. 实时比对标题与 UUID，精准跳过已同步内容（彻底防止重复上传）
+// 5. 对待同步文章：
+//    - 使用带语法高亮与现代优雅技术风排版引擎渲染 Markdown
+//    - 自动提取外链并生成文末「参考链接」脚注清单
+//    - 上传正文图片到微信素材库并替换 URL
+//    - 上传文章封面并生成草稿
+// 6. 输出同步报告与本地状态文件
 
 'use strict';
 
@@ -16,18 +19,17 @@ const path = require('path');
 const { WeChatAPIClient, WeChatAPIError } = require('./wechat-api');
 const { MarkdownRenderer } = require('./markdown-renderer');
 
-const MANIFEST_FILE = '.github/wechat-posts-to-sync.json';
 const STATE_FILE = '.github/wechat-sync-state.json';
 const REPORT_FILE = '.github/wechat-sync-report.json';
 
 class WeChatSyncExecutor {
-  constructor(config) {
+  constructor(config = {}) {
     this.config = config;
     this.baseDir = config.baseDir || process.cwd();
     this.sourceDir = path.join(this.baseDir, config.sourceDir || 'source');
     this.logger = config.logger || console;
     
-    // 初始化 API 客户端和渲染器
+    // 初始化 API 客户端
     this.apiClient = new WeChatAPIClient({
       appid: config.appid,
       appsecret: config.appsecret,
@@ -36,13 +38,14 @@ class WeChatSyncExecutor {
       timeout: config.timeout || 30000,
     });
 
+    // 初始化微信专用排版渲染器
     this.renderer = new MarkdownRenderer({
       sourceDir: this.sourceDir,
       logger: this.logger,
-      tagWhitelist: config.tagWhitelist,
+      themeColor: config.themeColor || '#0052cc',
     });
 
-    // 初始化统计
+    // 初始化统计报告
     this.report = {
       timestamp: new Date().toISOString(),
       total: 0,
@@ -55,68 +58,51 @@ class WeChatSyncExecutor {
 
     this.syncedUuids = [];
     
-    // 状态管理
+    // 本地状态
     this.state = {
       last_sync_at: null,
       synced_uuids: [],
-      uuid_to_media_id: {}, // uuid -> { media_id, title, status }
+      uuid_to_media_id: {},
     };
     
-    // 微信后台现有稿件缓存（title -> { media_id, status }）
+    // 微信后台现有稿件缓存（title -> { media_id, status, update_time, url }）
     this.wechatTitleMap = {};
     
     // 被强制同步的 uuid 列表
     this.forceUuids = new Set(
-      (process.env.WECHAT_FORCE_UUIDS || '').split(',').filter(Boolean)
+      (process.env.WECHAT_FORCE_UUIDS || '').split(',').map(s => s.trim()).filter(Boolean)
     );
   }
 
   /**
-   * 执行同步
+   * 执行同步全流程
    */
   async execute() {
     this.logger.info('[Sync] Starting WeChat sync process...');
     
     try {
-      // 读取清单文件
-      const manifest = this._readManifest();
-      if (!manifest || !manifest.posts || manifest.posts.length === 0) {
-        this.logger.info('[Sync] No posts to sync');
+      // 1. 诊断 API 连通性与权限
+      await this._diagnose();
+
+      // 2. 扫描微信后台现有草稿和已发布文章
+      await this._scanWeChatExistingContent();
+
+      // 3. 读取待同步文章列表（优先直接扫描本地 source/_posts/）
+      const posts = this._collectPostsFromSource();
+      this.logger.info(`[Sync] Found ${posts.length} eligible posts in local repository`);
+
+      if (posts.length === 0) {
+        this.logger.info('[Sync] No posts found to sync');
         return this._finalize();
       }
 
-      // 从清单中合并配置
-      if (manifest.wechat_config) {
-        const manifestConfig = { ...manifest.wechat_config };
+      this.report.total = posts.length;
 
-        // 避免把 "${VAR}" 这类未解析占位符覆盖掉运行时环境变量
-        if (typeof manifestConfig.author === 'string' && /^\$\{[^}]+\}$/.test(manifestConfig.author)) {
-          delete manifestConfig.author;
-        }
-        if (typeof manifestConfig.origin === 'string' && /^\$\{[^}]+\}$/.test(manifestConfig.origin)) {
-          delete manifestConfig.origin;
-        }
-
-        this.config = {
-          ...this.config,
-          ...manifestConfig,
-        };
-        this.logger.debug('[Sync] Loaded wechat config from manifest');
-      }
-
-      this.report.total = manifest.posts.length;
-
-      // 诊断阶段
-      await this._diagnose();
-
-      // 加载本地状态（uuid -> media_id 映射）
+      // 4. 加载本地状态（用于辅助记录）
       this._loadState();
 
-      // 扫描微信后台现有稿件并建立缓存
-      await this._scanWeChatExistingContent();
-
-      // 同步各文章
-      for (const post of manifest.posts) {
+      // 5. 遍历各文章并执行同步
+      for (const post of posts) {
         await this._syncPost(post);
       }
 
@@ -151,73 +137,193 @@ class WeChatSyncExecutor {
   }
 
   /**
-   * 加载本地状态文件
-   */
-  _loadState() {
-    const stateFilePath = path.join(this.baseDir, STATE_FILE);
-    if (fs.existsSync(stateFilePath)) {
-      try {
-        const content = fs.readFileSync(stateFilePath, 'utf8');
-        const loaded = JSON.parse(content);
-        this.state.last_sync_at = loaded.last_sync_at;
-        this.state.synced_uuids = loaded.synced_uuids || [];
-        this.state.uuid_to_media_id = loaded.uuid_to_media_id || {};
-        this.logger.info(`[Sync] Loaded state from ${STATE_FILE}`);
-      } catch (err) {
-        this.logger.warn(`[Sync] Failed to load state file: ${err.message}`);
-      }
-    }
-  }
-
-  /**
    * 扫描微信后台现有稿件，建立 title 到 media_id 的映射
    */
   async _scanWeChatExistingContent() {
-    this.logger.info('[Sync] Scanning WeChat existing drafts and published materials...');
+    this.logger.info('[Sync] Scanning WeChat existing drafts and published articles...');
 
     try {
-      // 获取所有草稿
+      // 1. 获取所有草稿
       const drafts = await this.apiClient.getAllDrafts();
-      this.logger.debug(`[Sync] Found ${drafts.length} drafts in WeChat`);
+      this.logger.info(`[Sync] Found ${drafts.length} drafts in WeChat draft box`);
       
       for (const draft of drafts) {
-        this.wechatTitleMap[draft.title] = {
-          media_id: draft.media_id,
-          status: 'draft',
-          create_time: draft.create_time,
-        };
+        if (draft.title) {
+          this.wechatTitleMap[draft.title.trim()] = {
+            media_id: draft.media_id,
+            status: 'draft',
+            url: draft.url,
+            content_source_url: draft.content_source_url,
+            update_time: draft.update_time,
+          };
+        }
       }
 
-      // 获取所有已发布素材
+      // 2. 获取所有已发布文章
       const published = await this.apiClient.getAllPublishedMaterials();
-      this.logger.debug(`[Sync] Found ${published.length} published materials in WeChat`);
+      this.logger.info(`[Sync] Found ${published.length} published articles in WeChat`);
       
-      for (const material of published) {
-        this.wechatTitleMap[material.title] = {
-          media_id: material.media_id,
-          status: 'published',
-          create_time: material.create_time,
-        };
+      for (const article of published) {
+        if (article.title) {
+          this.wechatTitleMap[article.title.trim()] = {
+            media_id: article.media_id || article.article_id,
+            status: 'published',
+            url: article.url,
+            content_source_url: article.content_source_url,
+            update_time: article.update_time,
+          };
+        }
       }
 
-      this.logger.info(`[Sync] Total existing articles in WeChat: ${Object.keys(this.wechatTitleMap).length}`);
+      this.logger.info(`[Sync] Total tracked existing articles in WeChat: ${Object.keys(this.wechatTitleMap).length}`);
     } catch (err) {
       this.logger.warn(`[Sync] Failed to scan WeChat content: ${err.message}`);
-      this.logger.warn('[Sync] Will proceed with sync (may create duplicates)');
+      this.logger.warn('[Sync] Will proceed with caution');
     }
   }
 
   /**
-   * 同步单篇文章
+   * 扫描 source/_posts/ 获取所有符合发布条件的博文
+   */
+  _collectPostsFromSource() {
+    const postsDir = path.join(this.sourceDir, '_posts');
+    if (!fs.existsSync(postsDir)) {
+      this.logger.warn(`[Sync] Posts directory not found: ${postsDir}`);
+      return [];
+    }
+
+    const files = fs.readdirSync(postsDir).filter(f => /\.(md|markdown)$/i.test(f));
+    const now = new Date();
+    const posts = [];
+
+    for (const file of files) {
+      const fullPath = path.join(postsDir, file);
+      try {
+        const rawContent = fs.readFileSync(fullPath, 'utf8');
+        const parsed = this._parseFrontMatter(rawContent);
+        if (!parsed) continue;
+
+        const data = parsed.data || {};
+        
+        // 过滤条件：
+        // 1. 显式禁用 wechat_sync: false 则跳过
+        if (data.wechat_sync === false) {
+          continue;
+        }
+
+        // 2. 必须非草稿
+        if (data.draft === true) {
+          continue;
+        }
+
+        // 3. 检查发布时间（支持定时发布，未来时间跳过）
+        const postDate = data.date ? new Date(data.date) : null;
+        if (postDate && postDate > now) {
+          continue;
+        }
+
+        // 4. 标题与 UUID
+        const title = (data.title || path.basename(file, path.extname(file))).trim();
+        const uuid = data.uuid || this._generateSimpleUuid(file);
+
+        // 5. 链接构造
+        const origin = (this.config.origin || 'https://blog.stevezmt.top').replace(/\/$/, '');
+        let permalink = data.permalink || '';
+        if (!permalink && postDate) {
+          const year = postDate.getUTCFullYear();
+          const month = String(postDate.getUTCMonth() + 1).padStart(2, '0');
+          const day = String(postDate.getUTCDate()).padStart(2, '0');
+          const slug = path.basename(file, path.extname(file));
+          permalink = `${origin}/${year}/${month}/${day}/${slug}/`;
+        }
+
+        posts.push({
+          uuid,
+          title,
+          date: postDate ? postDate.toISOString() : '',
+          author: data.author || this.config.author || 'Steve ZMT',
+          categories: Array.isArray(data.categories) ? data.categories : (data.categories ? [data.categories] : []),
+          tags: Array.isArray(data.tags) ? data.tags : (data.tags ? [data.tags] : []),
+          permalink,
+          excerpt: data.excerpt || data.description || '',
+          thumbnail: data.thumbnail || data.cover || '',
+          source_path: path.join('_posts', file).replace(/\\/g, '/'),
+          raw_content: rawContent,
+        });
+      } catch (err) {
+        this.logger.warn(`[Sync] Failed to parse post ${file}: ${err.message}`);
+      }
+    }
+
+    // 按发布日期从旧到新排序（保证发布顺序）
+    posts.sort((a, b) => (new Date(a.date || 0) - new Date(b.date || 0)));
+
+    return posts;
+  }
+
+  /**
+   * 解析 Front-matter
+   */
+  _parseFrontMatter(content) {
+    if (!content) return null;
+    let normalized = content.replace(/^\uFEFF/, '').replace(/^(?:[ \t]*\r?\n)+/, '');
+    const match = normalized.match(/^---[ \t]*\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/);
+    if (!match) {
+      return { data: {}, content: normalized };
+    }
+
+    const yamlStr = match[1];
+    const body = normalized.slice(match[0].length);
+    const data = {};
+
+    // 简单高效的 YAML 键值解析
+    const lines = yamlStr.split(/\r?\n/);
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+
+      const colonIdx = trimmed.indexOf(':');
+      if (colonIdx === -1) continue;
+
+      const key = trimmed.slice(0, colonIdx).trim();
+      let val = trimmed.slice(colonIdx + 1).trim();
+
+      // 去除注释
+      const hashIdx = val.indexOf('#');
+      if (hashIdx !== -1 && !/['"].*#.*['"]/.test(val)) {
+        val = val.slice(0, hashIdx).trim();
+      }
+
+      // 类型转换
+      if (val === 'true') {
+        data[key] = true;
+      } else if (val === 'false') {
+        data[key] = false;
+      } else if (val === 'null' || val === '~') {
+        data[key] = null;
+      } else if (/^-?\d+(\.\d+)?$/.test(val)) {
+        data[key] = Number(val);
+      } else if (val.startsWith('[') && val.endsWith(']')) {
+        data[key] = val.slice(1, -1).split(',').map(s => s.trim().replace(/^['"]|['"]$/g, '')).filter(Boolean);
+      } else {
+        data[key] = val.replace(/^['"]|['"]$/g, '');
+      }
+    }
+
+    return { data, content: body };
+  }
+
+  /**
+   * 同步单篇文章到微信草稿箱
    */
   async _syncPost(post) {
     const { uuid, title, source_path } = post;
     
-    this.logger.info(`[Sync] Processing post: ${title} (uuid: ${uuid})`);
+    this.logger.info(`[Sync] Processing post: "${title}" (uuid: ${uuid})`);
 
     try {
-      // 0. 检查是否已存在于微信后台
-      const existing = this.wechatTitleMap[title];
+      // 0. 远端排重检查：比对文章标题
+      const existing = this.wechatTitleMap[title.trim()];
       const isForced = this.forceUuids.has(uuid);
       
       if (existing && !isForced) {
@@ -226,8 +332,8 @@ class WeChatSyncExecutor {
         );
         this.report.skipped += 1;
         this.report.posts.push({
-          uuid: uuid,
-          title: title,
+          uuid,
+          title,
           status: 'skipped',
           reason: `already_${existing.status}`,
           existing_media_id: existing.media_id,
@@ -235,49 +341,47 @@ class WeChatSyncExecutor {
         return;
       }
 
-      // 如果在强制同步列表中且已存在，删除旧的
+      // 如果在强制同步列表中且已存在草稿，先删除旧草稿
       if (existing && isForced) {
         try {
-          // 只能删除草稿，已发布的无法删除
           if (existing.status === 'draft') {
             await this.apiClient.deleteDraft(existing.media_id);
             this.logger.info(`[Sync]   Deleted old draft: media_id=${existing.media_id}`);
-            delete this.wechatTitleMap[title];
+            delete this.wechatTitleMap[title.trim()];
           } else {
             this.logger.warn(
-              `[Sync]   Cannot delete published material (media_id=${existing.media_id}), will create new draft`
+              `[Sync]   Cannot delete published material (media_id=${existing.media_id}), creating new draft instead`
             );
           }
         } catch (err) {
-          this.logger.warn(`[Sync]   Failed to delete old draft: ${err.message}, will proceed`);
+          this.logger.warn(`[Sync]   Failed to delete old draft: ${err.message}`);
         }
       }
 
-      // 1. 读取并渲染 markdown
+      // 1. 读取并渲染 Markdown
       const { html, images: imagePaths } = this.renderer.readAndRender(source_path);
 
-      // 2. 处理头图
+      // 2. 处理头图 / 封面
       let coverMediaId = null;
-      const thumbnail = post.thumbnail; // 前置条件中的头图
+      const thumbnail = post.thumbnail;
       
       try {
         if (thumbnail) {
           if (thumbnail.startsWith('http://') || thumbnail.startsWith('https://')) {
-            this.logger.warn(`[Sync]   External thumbnail cannot be used as thumb_media_id directly: ${thumbnail}`);
+            this.logger.warn(`[Sync]   External thumbnail cannot be used directly: ${thumbnail}`);
           } else {
-          // 使用文章指定的头图
-          const thumbnailPath = this._resolveSourcePath(thumbnail);
-          if (fs.existsSync(thumbnailPath)) {
-            coverMediaId = await this.apiClient.uploadImage(thumbnailPath);
-            this.logger.info(`[Sync]   Cover uploaded: ${thumbnail} -> media_id=${coverMediaId}`);
-          } else {
-            this.logger.warn(`[Sync]   Thumbnail not found: ${thumbnailPath}, will use random cover`);
-          }
+            const thumbnailPath = this._resolveSourcePath(thumbnail);
+            if (fs.existsSync(thumbnailPath)) {
+              coverMediaId = await this.apiClient.uploadImage(thumbnailPath);
+              this.logger.info(`[Sync]   Cover uploaded: ${thumbnail} -> media_id=${coverMediaId}`);
+            } else {
+              this.logger.warn(`[Sync]   Thumbnail not found: ${thumbnailPath}, will use random cover`);
+            }
           }
         }
         
-        // 如果无头图，使用随机头图
-        if (!coverMediaId && this.config.cover?.use_default_when_missing) {
+        // 如果无头图，使用默认/随机头图
+        if (!coverMediaId && this.config.cover?.use_default_when_missing !== false) {
           const randomCover = await this._getRandomCover();
           if (randomCover) {
             coverMediaId = await this.apiClient.uploadImage(randomCover);
@@ -285,14 +389,12 @@ class WeChatSyncExecutor {
           }
         }
       } catch (err) {
-        // 头图上传失败不中断同步，仅记录警告
         this.logger.warn(`[Sync]   Failed to upload cover: ${err.message}`);
       }
 
-      // 3. 上传正文图片到微信，收集 URL 映射
+      // 3. 上传正文图片到微信素材库，收集 URL 映射
       const imageUrlMap = {};
       for (const imgPath of imagePaths) {
-        // 跳过绝对 URL（如 https://example.com/image.jpg）
         if (imgPath.startsWith('http://') || imgPath.startsWith('https://')) {
           this.logger.debug(`[Sync]   Skipping external image: ${imgPath}`);
           continue;
@@ -302,36 +404,30 @@ class WeChatSyncExecutor {
           const fullImgPath = this._resolveSourcePath(imgPath);
           if (fs.existsSync(fullImgPath)) {
             const wechatImageUrl = await this.apiClient.uploadContentImage(fullImgPath);
-            if (!wechatImageUrl || typeof wechatImageUrl !== 'string') {
-              throw new Error('WeChat content image API returned empty url');
+            if (wechatImageUrl && typeof wechatImageUrl === 'string') {
+              imageUrlMap[imgPath] = wechatImageUrl;
+              this.logger.info(`[Sync]   Image uploaded: ${imgPath} -> ${wechatImageUrl}`);
             }
-            imageUrlMap[imgPath] = wechatImageUrl;
-            this.logger.info(`[Sync]   Image uploaded: ${imgPath} -> ${wechatImageUrl}`);
           } else {
-            this.logger.warn(`[Sync]   Image not found: ${fullImgPath}`);
+            this.logger.warn(`[Sync]   Image file not found: ${fullImgPath}`);
           }
         } catch (err) {
-          // 图片上传失败不阻断整篇文章，仅记录警告
           this.logger.warn(`[Sync]   Failed to upload image ${imgPath}: ${err.message}`);
         }
       }
 
-      // 4. 替换 HTML 中的图片 URL
+      // 4. 替换 HTML 中的图片 URL 为微信 CDN 链接
       let finalHtml = html;
       if (Object.keys(imageUrlMap).length > 0) {
         finalHtml = this.renderer.replaceImageUrls(html, imageUrlMap);
       }
 
-      // 如果还没有封面，回退使用正文第一张本地图
+      // 5. 如果仍然没有封面图，使用正文中第一张本地上传成功的图片作为封面
       if (!coverMediaId) {
         for (const imgPath of imagePaths) {
-          if (imgPath.startsWith('http://') || imgPath.startsWith('https://')) {
-            continue;
-          }
+          if (imgPath.startsWith('http://') || imgPath.startsWith('https://')) continue;
           const localImgPath = this._resolveSourcePath(imgPath);
-          if (!fs.existsSync(localImgPath)) {
-            continue;
-          }
+          if (!fs.existsSync(localImgPath)) continue;
           try {
             coverMediaId = await this.apiClient.uploadImage(localImgPath);
             this.logger.info(`[Sync]   Fallback cover uploaded from content image: media_id=${coverMediaId}`);
@@ -342,81 +438,73 @@ class WeChatSyncExecutor {
         }
       }
 
-      // 5. 添加前缀和后缀
-      const prefix = this.config.article_prefix ? this.config.article_prefix.trim() : '';
-      const suffix = this.config.article_suffix ? this.config.article_suffix.trim() : '';
+      // 6. 添加可选前缀和后缀段落
+      const prefix = (this.config.article_prefix || '').trim();
+      const suffix = (this.config.article_suffix || '').trim();
       
       if (prefix) {
-        finalHtml = `<p>${prefix.replace(/\n/g, '</p><p>')}</p>\n${finalHtml}`;
+        finalHtml = `<p style="margin: 12px 0; color: #6b7280; font-size: 14px;">${prefix.replace(/\n/g, '<br>')}</p>\n${finalHtml}`;
       }
       if (suffix) {
-        finalHtml = `${finalHtml}\n<p>${suffix.replace(/\n/g, '</p><p>')}</p>`;
+        finalHtml = `${finalHtml}\n<p style="margin: 12px 0; color: #6b7280; font-size: 14px;">${suffix.replace(/\n/g, '<br>')}</p>`;
       }
 
-      // 6.5 注入微信端排版样式，避免在公众号内呈现过于扁平
-      if (this.config?.content?.apply_wechat_typography !== false) {
-        finalHtml = this._applyWechatTypography(finalHtml);
-      }
-
-      // 7. 创建草稿
-      const origin = (this.config.origin || '').replace(/\/$/, '');
+      // 7. 组装草稿对象
+      const origin = (this.config.origin || 'https://blog.stevezmt.top').replace(/\/$/, '');
       const permalink = post.permalink || '';
       const contentSourceUrl = /^https?:\/\//i.test(permalink) ? permalink : `${origin}${permalink}`;
       const digest = this._buildDigest(post, title);
-
-      const draftItem = {
-        title: title,
-        author: this.config.author || 'Steve ZMT',
-        digest,
-        show_cover_pic: 1, // 显示正文中的首张图
-        content: finalHtml,
-        content_source_url: contentSourceUrl, // 原文链接
-      };
 
       if (!coverMediaId) {
         throw new Error('No valid cover image available (thumb_media_id is required by WeChat draft API)');
       }
 
-      // 草稿封面必须是永久素材 media_id
-      if (coverMediaId) {
-        draftItem.thumb_media_id = coverMediaId;
-      }
+      const draftItem = {
+        title: title,
+        author: post.author || this.config.author || 'Steve ZMT',
+        digest,
+        show_cover_pic: 1,
+        content: finalHtml,
+        content_source_url: contentSourceUrl,
+        thumb_media_id: coverMediaId,
+      };
 
-      const draftOutcome = await this._createDraftWithFallbacks(draftItem);
-      const draftResult = draftOutcome.result;
+      // 8. 提交新增草稿到微信
+      const draftResult = await this.apiClient.addDraft(draftItem);
+      this.logger.info(`[Sync]   Draft successfully created: media_id=${draftResult.media_id}`);
 
-      if (draftOutcome.mode !== 'normal') {
-        this.logger.warn(`[Sync]   Draft created with fallback mode: ${draftOutcome.mode}`);
-      }
-      this.logger.info(`[Sync]   Draft created: media_id=${draftResult.media_id}`);
-
-      // 8. 记录成功
+      // 9. 记录成功结果
       this.report.succeeded += 1;
       this.report.posts.push({
-        uuid: uuid,
-        title: title,
+        uuid,
+        title,
         status: 'success',
         media_id: draftResult.media_id,
-        content_mode: draftOutcome.mode,
         cover_media_id: coverMediaId,
         images_uploaded: Object.keys(imageUrlMap).length,
       });
 
-      // 更新本地状态：记录 uuid -> media_id 映射
+      // 更新内存映射和本地状态
+      this.wechatTitleMap[title.trim()] = {
+        media_id: draftResult.media_id,
+        status: 'draft',
+        update_time: Math.floor(Date.now() / 1000),
+      };
+
       this.state.uuid_to_media_id[uuid] = {
         media_id: draftResult.media_id,
-        title: title,
+        title,
         status: 'draft',
         synced_at: new Date().toISOString(),
       };
       
       this.syncedUuids.push(uuid);
     } catch (err) {
-      this.logger.error(`[Sync]   Failed: ${err.message}`);
+      this.logger.error(`[Sync]   Failed to sync "${title}": ${err.message}`);
       this.report.failed += 1;
       this.report.posts.push({
-        uuid: uuid,
-        title: title,
+        uuid,
+        title,
         status: 'failed',
         error: err.message,
       });
@@ -439,25 +527,20 @@ class WeChatSyncExecutor {
       ].filter(Boolean);
 
       for (const fullCoverDir of candidateDirs) {
-        if (!fs.existsSync(fullCoverDir)) {
-          continue;
-        }
+        if (!fs.existsSync(fullCoverDir)) continue;
 
         const files = fs.readdirSync(fullCoverDir);
         const imageFiles = files.filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f));
 
-        if (imageFiles.length === 0) {
-          continue;
-        }
+        if (imageFiles.length === 0) continue;
 
-        // 随机选择一张
         const randomFile = imageFiles[Math.floor(Math.random() * imageFiles.length)];
         const randomPath = path.join(fullCoverDir, randomFile);
         this.logger.debug(`[Sync]   Selected random cover: ${randomPath}`);
         return randomPath;
       }
 
-      this.logger.warn(`[Sync]   Random cover directory not found or empty. Tried: ${candidateDirs.join(', ')}`);
+      this.logger.warn(`[Sync]   Random cover directory not found. Tried: ${candidateDirs.join(', ')}`);
       return null;
     } catch (err) {
       this.logger.warn(`[Sync]   Failed to get random cover: ${err.message}`);
@@ -470,45 +553,8 @@ class WeChatSyncExecutor {
     return path.join(this.sourceDir, normalized);
   }
 
-  _applyWechatTypography(html) {
-    let out = html;
-
-    out = this._addTagStyle(out, 'h1', 'margin: 1.2em 0 0.7em; font-size: 1.6em; line-height: 1.45; font-weight: 700;');
-    out = this._addTagStyle(out, 'h2', 'margin: 1.1em 0 0.65em; font-size: 1.35em; line-height: 1.5; font-weight: 700;');
-    out = this._addTagStyle(out, 'h3', 'margin: 1em 0 0.6em; font-size: 1.2em; line-height: 1.55; font-weight: 700;');
-    out = this._addTagStyle(out, 'h4', 'margin: 0.95em 0 0.55em; font-size: 1.1em; line-height: 1.55; font-weight: 700;');
-    out = this._addTagStyle(out, 'p', 'margin: 0.85em 0; line-height: 1.9; word-break: break-word;');
-    out = this._addTagStyle(out, 'ul', 'margin: 0.8em 0; padding-left: 1.45em;');
-    out = this._addTagStyle(out, 'ol', 'margin: 0.8em 0; padding-left: 1.55em;');
-    out = this._addTagStyle(out, 'li', 'margin: 0.35em 0; line-height: 1.85;');
-    out = this._addTagStyle(out, 'img', 'max-width: 100%; height: auto; display: block; margin: 0.9em auto; border-radius: 4px;');
-    out = this._addTagStyle(out, 'pre', 'margin: 0.9em 0; padding: 0.75em 0.85em; background: #f6f8fa; border-radius: 6px; overflow-x: auto; white-space: pre; line-height: 1.6;');
-    out = this._addTagStyle(out, 'code', 'font-family: Menlo, Monaco, Consolas, "Courier New", monospace; font-size: 0.92em;');
-    out = this._addTagStyle(out, 'blockquote', 'margin: 0.9em 0; padding: 0.2em 0.9em; border-left: 3px solid #d0d7de; color: #57606a;');
-
-    return `<section style="font-size: 16px; line-height: 1.9; color: #1f2328; word-break: break-word;">${out}</section>`;
-  }
-
-  _addTagStyle(html, tagName, styleText) {
-    const re = new RegExp(`<${tagName}(\\b[^>]*)>`, 'gi');
-    return html.replace(re, (_, attrs) => `<${tagName}${this._mergeStyleAttr(attrs, styleText)}>`);
-  }
-
-  _mergeStyleAttr(attrs, styleText) {
-    const styleRe = /\sstyle=(['"])(.*?)\1/i;
-    const match = attrs.match(styleRe);
-    if (!match) {
-      return `${attrs} style="${styleText}"`;
-    }
-
-    const merged = `${match[2].trim().replace(/;?$/, ';')} ${styleText}`.trim();
-    return attrs.replace(styleRe, ` style="${merged}"`);
-  }
-
   _buildDigest(post, title) {
     const raw = (post.excerpt || post.description || title || '').toString();
-
-    // 去 HTML 标签并压缩空白，避免 description 非法或超长
     const plain = raw
       .replace(/<[^>]+>/g, ' ')
       .replace(/&nbsp;/gi, ' ')
@@ -518,7 +564,6 @@ class WeChatSyncExecutor {
     const fallback = (title || '').toString().trim();
     const source = plain || fallback || '无摘要';
 
-    // 微信对 digest 有长度限制，按 UTF-8 字节截断更稳妥
     const maxBytes = Number(this.config?.sync?.digest_max_bytes || 120);
     let out = '';
     for (const ch of source) {
@@ -532,167 +577,75 @@ class WeChatSyncExecutor {
     return out || source.slice(0, 30);
   }
 
-  async _createDraftWithFallbacks(draftItem) {
-    const attempts = [
-      {
-        mode: 'normal',
-        content: draftItem.content,
-      },
-      {
-        mode: 'strip-inline-style',
-        content: this._stripInlineStyles(draftItem.content),
-      },
-      {
-        mode: 'plain-safe',
-        content: this._toPlainSafeHtml(draftItem.content),
-      },
-    ];
-
-    let lastError = null;
-
-    for (let i = 0; i < attempts.length; i += 1) {
-      const attempt = attempts[i];
-      try {
-        if (i > 0) {
-          this.logger.warn(`[Sync]   Retrying draft with content fallback: ${attempt.mode}`);
-        }
-        const result = await this.apiClient.addDraft({
-          ...draftItem,
-          content: attempt.content,
-        });
-        return { result, mode: attempt.mode };
-      } catch (err) {
-        lastError = err;
-        const canRetry = i < attempts.length - 1 && this._isInvalidContentError(err);
-        if (!canRetry) {
-          throw err;
-        }
-        this.logger.warn(`[Sync]   Draft rejected as invalid content, preparing next fallback. reason=${err.message}`);
-      }
+  _generateSimpleUuid(filename) {
+    let hash = 0;
+    for (let i = 0; i < filename.length; i++) {
+      hash = ((hash << 5) - hash) + filename.charCodeAt(i);
+      hash |= 0;
     }
-
-    throw lastError || new Error('Failed to create draft with unknown error');
-  }
-
-  _isInvalidContentError(err) {
-    const errcode = Number(err?.errcode);
-    const message = (err?.message || '').toLowerCase();
-    return message.includes('invalid content') || errcode === 47001;
-  }
-
-  _stripInlineStyles(html) {
-    return (html || '')
-      .replace(/\sstyle=(['"])[\s\S]*?\1/gi, '')
-      .replace(/\sclass=(['"])[\s\S]*?\1/gi, '')
-      .replace(/\sid=(['"])[\s\S]*?\1/gi, '')
-      .replace(/\sdata-[\w:-]+=(['"])[\s\S]*?\1/gi, '');
-  }
-
-  _toPlainSafeHtml(html) {
-    const images = [];
-    let text = (html || '').replace(/<!--([\s\S]*?)-->/g, ' ');
-
-    text = text.replace(/<img\s+[^>]*src=(['"])([^'"]+)\1[^>]*>/gi, (_, _q, src) => {
-      images.push(src);
-      return `\n[[WECHAT_IMG_${images.length - 1}]]\n`;
-    });
-
-    text = text
-      .replace(/<\/?(h[1-6]|p|div|blockquote|pre|code|li|ul|ol|table|thead|tbody|tr|th|td|section|article)\b[^>]*>/gi, '\n')
-      .replace(/<br\s*\/?\s*>/gi, '\n')
-      .replace(/<[^>]+>/g, ' ')
-      .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F]/g, ' ')
-      .replace(/\r\n/g, '\n')
-      .replace(/[ \t]+/g, ' ')
-      .replace(/\n{3,}/g, '\n\n')
-      .trim();
-
-    const parts = text.split(/\n\n+/).map(item => item.trim()).filter(Boolean);
-    const paragraphs = parts.map(part => {
-      const escaped = this._escapeHtml(part).replace(/\n/g, '<br>');
-      const withImageSlots = escaped.replace(/\[\[WECHAT_IMG_(\d+)\]\]/g, (_m, idx) => {
-        const src = images[Number(idx)];
-        return src ? `</p><p><img src="${src}" /></p><p>` : '';
-      });
-      return `<p>${withImageSlots}</p>`;
-    });
-
-    let safeHtml = paragraphs.join('\n');
-    if (!safeHtml) {
-      safeHtml = '<p>内容为空</p>';
-    }
-
-    return safeHtml
-      .replace(/<p>\s*<\/p>/g, '')
-      .replace(/(<\/p>\s*<p>){3,}/g, '</p><p>');
-  }
-
-  _escapeHtml(text) {
-    return String(text || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
+    return `post-${Math.abs(hash)}`;
   }
 
   /**
-   * 最终化：生成报告和状态文件
+   * 加载本地状态文件
+   */
+  _loadState() {
+    const stateFilePath = path.join(this.baseDir, STATE_FILE);
+    if (fs.existsSync(stateFilePath)) {
+      try {
+        const content = fs.readFileSync(stateFilePath, 'utf8');
+        const loaded = JSON.parse(content);
+        this.state.last_sync_at = loaded.last_sync_at;
+        this.state.synced_uuids = loaded.synced_uuids || [];
+        this.state.uuid_to_media_id = loaded.uuid_to_media_id || {};
+        this.logger.debug(`[Sync] Loaded state from ${STATE_FILE}`);
+      } catch (err) {
+        this.logger.warn(`[Sync] Failed to load state file: ${err.message}`);
+      }
+    }
+  }
+
+  /**
+   * 生成报告和状态文件
    */
   _finalize() {
-    // 生成同步报告
+    // 写入同步报告
     const reportPath = path.join(this.baseDir, REPORT_FILE);
-    fs.writeFileSync(reportPath, JSON.stringify(this.report, null, 2), 'utf8');
-    this.logger.info(`[Sync] Report written to ${reportPath}`);
+    try {
+      fs.writeFileSync(reportPath, JSON.stringify(this.report, null, 2), 'utf8');
+      this.logger.info(`[Sync] Report written to ${reportPath}`);
+    } catch (e) {
+      this.logger.warn(`[Sync] Failed to write report: ${e.message}`);
+    }
 
-    // 更新状态文件
+    // 更新本地状态文件
     const stateFilePath = path.join(this.baseDir, STATE_FILE);
-    const state = {
-      last_sync_at: new Date().toISOString(),
-      synced_uuids: this.syncedUuids,
-      uuid_to_media_id: this.state.uuid_to_media_id,
-      total_synced: this.syncedUuids.length,
-    };
-    fs.writeFileSync(stateFilePath, JSON.stringify(state, null, 2), 'utf8');
-    this.logger.info(`[Sync] State file updated: ${stateFilePath}`);
+    try {
+      const state = {
+        last_sync_at: new Date().toISOString(),
+        synced_uuids: Array.from(new Set([...(this.state.synced_uuids || []), ...this.syncedUuids])),
+        uuid_to_media_id: this.state.uuid_to_media_id,
+        total_synced: Object.keys(this.state.uuid_to_media_id).length,
+      };
+      fs.writeFileSync(stateFilePath, JSON.stringify(state, null, 2), 'utf8');
+      this.logger.info(`[Sync] State file updated: ${stateFilePath}`);
+    } catch (e) {
+      this.logger.warn(`[Sync] Failed to write state: ${e.message}`);
+    }
 
-    // 输出摘要
-    this.logger.info(`\n[Sync] Summary:`);
-    this.logger.info(`  Total: ${this.report.total}`);
-    this.logger.info(`  Succeeded: ${this.report.succeeded}`);
-    this.logger.info(`  Failed: ${this.report.failed}`);
-    this.logger.info(`  Skipped: ${this.report.skipped}`);
+    // 终端摘要输出
+    this.logger.info(`\n[Sync] ================= Summary =================`);
+    this.logger.info(`  Total eligible posts: ${this.report.total}`);
+    this.logger.info(`  Succeeded:            ${this.report.succeeded}`);
+    this.logger.info(`  Skipped (existing):   ${this.report.skipped}`);
+    this.logger.info(`  Failed:               ${this.report.failed}`);
+    this.logger.info(`=================================================\n`);
 
     if (this.report.failed > 0) {
-      this.logger.warn('[Sync] Some posts failed to sync. Check the report for details.');
-      if (this.report.errors.length > 0) {
-        this.logger.warn('[Sync] Errors:');
-        for (const err of this.report.errors) {
-          this.logger.warn(`  - ${err}`);
-        }
-      }
+      this.logger.warn('[Sync] Some posts failed to sync. Check .github/wechat-sync-report.json for details.');
     }
 
     return this.report;
-  }
-
-  /**
-   * 读取清单文件
-   */
-  _readManifest() {
-    const manifestPath = path.join(this.baseDir, MANIFEST_FILE);
-    
-    if (!fs.existsSync(manifestPath)) {
-      this.logger.warn(`[Sync] Manifest file not found: ${manifestPath}`);
-      return null;
-    }
-
-    try {
-      const content = fs.readFileSync(manifestPath, 'utf8');
-      return JSON.parse(content);
-    } catch (err) {
-      throw new Error(`Failed to read manifest: ${err.message}`);
-    }
   }
 }
 
@@ -707,31 +660,17 @@ async function main() {
     process.exit(1);
   }
 
-  // 默认配置
-  let wechatConfig = {
+  const executor = new WeChatSyncExecutor({
     appid,
     appsecret,
     author: process.env.WECHAT_AUTHOR || 'Steve ZMT',
     origin: process.env.WECHAT_ORIGIN || 'https://blog.stevezmt.top',
-    article_prefix: '',
-    article_suffix: '',
-    cover: {
-      use_default_when_missing: true,
-      default_cover_dir: 'themes/default/source/images/random',
-    },
-    content: {},
-  };
-
-  const executor = new WeChatSyncExecutor({
-    ...wechatConfig,
     baseDir: process.cwd(),
     sourceDir: 'source',
   });
 
   try {
     const report = await executor.execute();
-    
-    // 根据结果退出码
     if (report.failed > 0) {
       process.exit(1);
     } else {
@@ -743,7 +682,6 @@ async function main() {
   }
 }
 
-// 如果直接运行此脚本
 if (require.main === module) {
   main();
 }

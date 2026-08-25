@@ -700,6 +700,7 @@ var $$ = mdui.$;
 
     assetState.commentPromise = Promise.all([
       ensureStylesheet(assets.gitalkCss, 'gitalk-css'),
+      ensureStylesheet(assets.gitalkMduiCss || '/css/gitalk-mdui.css', 'gitalk-mdui-css'),
       ensureScript(assets.gitalkBridgeSrc, 'gitalk-bridge', { defer: true }),
       ensureScript(assets.gitalkSrc, 'gitalk-main', { defer: true })
     ])

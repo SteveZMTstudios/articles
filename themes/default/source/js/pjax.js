@@ -23,6 +23,10 @@ class Pjax {
     if (this.options.debug) console.log('[Pjax]', ...args);
   }
 
+  isReducedMotion() {
+    return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
   init() {
     window.addEventListener('popstate', e => this.onPopState(e));
     document.addEventListener('click', e => this.onLinkClick(e));
@@ -55,13 +59,7 @@ class Pjax {
     // Check for hash links on same page
     const url = new URL(el.href);
     if (url.pathname === window.location.pathname && url.search === window.location.search) {
-      // It's a hash change or same page reload
-      if (url.hash) {
-        // Let browser handle hash
-        return;
-      }
-      // Same page reload, maybe allow PJAX to refresh?
-      // For now, let's prevent default and reload via PJAX
+      if (url.hash) return;
     }
 
     // Close sidebar on mobile
@@ -79,7 +77,8 @@ class Pjax {
     }
 
     e.preventDefault();
-    this.load(el.href);
+    const navDirection = el.dataset.pjaxNav || (el.getAttribute('rel') === 'prev' ? 'prev' : el.getAttribute('rel') === 'next' ? 'next' : null);
+    this.load(el.href, { navDirection });
   }
 
   onPopState(e) {
@@ -100,6 +99,10 @@ class Pjax {
     // Show loading
     this.trigger('pjax:send', { url });
     this.showLoading();
+
+    const isReduced = this.isReducedMotion();
+    const navDirection = opts.navDirection || null;
+    const transitionMode = (navDirection === 'next' || navDirection === 'prev') ? navDirection : 'default';
 
     try {
       const response = await fetch(url, {
@@ -124,10 +127,19 @@ class Pjax {
       const newContent = doc.querySelector(this.options.fragment);
       if (!newContent) throw new Error(`Container ${this.options.fragment} not found in response`);
 
-      // Animation out
-      this.container.classList.add('pjax-out');
-      
-      await new Promise(r => setTimeout(r, opts.duration)); // Wait for animation
+      // Animation out (only played after loading completes)
+      if (!isReduced) {
+        if (transitionMode === 'next') {
+          this.container.classList.add('pjax-slide-left-out');
+        } else if (transitionMode === 'prev') {
+          this.container.classList.add('pjax-slide-right-out');
+        } else {
+          this.container.classList.add('pjax-out');
+        }
+        await new Promise(r => setTimeout(r, opts.duration));
+      }
+
+      if (navigationId !== this.navigationId) return;
 
       // Replace content
       this.syncContainerAttributes(newContent);
@@ -153,12 +165,26 @@ class Pjax {
       }
 
       // Animation in
-      this.container.classList.remove('pjax-out');
-      this.container.classList.add('pjax-in');
-      
-      setTimeout(() => {
-        this.container.classList.remove('pjax-in');
-      }, opts.duration);
+      this.container.classList.remove('pjax-out', 'pjax-slide-left-out', 'pjax-slide-right-out');
+
+      if (!isReduced) {
+        if (transitionMode === 'next') {
+          this.container.classList.add('pjax-slide-left-in');
+          setTimeout(() => {
+            this.container.classList.remove('pjax-slide-left-in');
+          }, opts.duration);
+        } else if (transitionMode === 'prev') {
+          this.container.classList.add('pjax-slide-right-in');
+          setTimeout(() => {
+            this.container.classList.remove('pjax-slide-right-in');
+          }, opts.duration);
+        } else {
+          this.container.classList.add('pjax-in');
+          setTimeout(() => {
+            this.container.classList.remove('pjax-in');
+          }, opts.duration);
+        }
+      }
 
       // Re-init plugins
       this.reinitPlugins();
@@ -196,17 +222,17 @@ class Pjax {
     });
 
     Array.from(newContent.attributes).forEach(attr => {
-      if (attr.name === 'id') return;
-      if (attr.name === 'class') {
-        this.container.className = attr.value;
-        return;
-      }
+      if (attr.name === 'id' || attr.name === 'class') return;
       this.container.setAttribute(attr.name, attr.value);
     });
+
+    const newClasses = (newContent.getAttribute('class') || '')
+      .split(/\s+/)
+      .filter(c => c && !c.startsWith('pjax-'));
+    this.container.className = newClasses.join(' ');
   }
 
   showLoading() {
-    // MDUI progress bar or similar
     let bar = document.querySelector('.pjax-progress');
     const header = document.getElementById('header');
 
@@ -216,7 +242,6 @@ class Pjax {
       bar.innerHTML = '<div class="mdui-progress-indeterminate mdui-color-grey-50"></div>';
     }
 
-    // Move bar to header if possible, otherwise body
     if (header) {
       if (bar.parentNode !== header) {
         header.appendChild(bar);
@@ -227,7 +252,6 @@ class Pjax {
       }
     }
 
-    // Overlay
     let overlay = document.querySelector('.pjax-overlay');
     if (!overlay) {
       overlay = document.createElement('div');
@@ -235,7 +259,6 @@ class Pjax {
       document.body.appendChild(overlay);
     }
 
-    // Ensure loading content exists
     if (!overlay.querySelector('.pjax-loading-content')) {
       overlay.innerHTML = `
         <div class="pjax-loading-content">
@@ -250,13 +273,13 @@ class Pjax {
     if (this.overlayTimer) clearTimeout(this.overlayTimer);
     if (this.loadingTextTimer) clearTimeout(this.loadingTextTimer);
 
-    bar.style.display = 'none';
+    bar.classList.remove('show');
     overlay.classList.remove('show');
     const content = overlay.querySelector('.pjax-loading-content');
     if (content) content.classList.remove('show');
 
     this.progressTimer = setTimeout(() => {
-      bar.style.display = 'block';
+      bar.classList.add('show');
       mdui.mutation();
     }, 120);
 
@@ -279,7 +302,7 @@ class Pjax {
     this.loadingTextTimer = null;
 
     const bar = document.querySelector('.pjax-progress');
-    if (bar) bar.style.display = 'none';
+    if (bar) bar.classList.remove('show');
     
     const overlay = document.querySelector('.pjax-overlay');
     if (overlay) {

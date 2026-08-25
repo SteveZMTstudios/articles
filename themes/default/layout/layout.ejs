@@ -8,6 +8,7 @@
       analyticsId: '<%= theme.analytics.google_site_id || "" %>',
       busuanziSrc: '<%= (theme.busuanzi.site || theme.busuanzi.page) ? theme.busuanzi.busuanzi_js : "" %>',
       gitalkCss: '//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.css',
+      gitalkMduiCss: '<%= url_for("/css/gitalk-mdui.css") %>',
       gitalkSrc: '<%= theme.comment && theme.comment.use === "gitalk" ? (theme.comment.gitalk_js || "//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js") : "" %>',
       gitalkBridgeSrc: '<%= theme.comment && theme.comment.use === "gitalk" ? "//sharepoint.cf.stevezmt.top/js/3rd-party/gitalk-cn.min.js" : "" %>'
     };
@@ -30,7 +31,7 @@
   %>
   <main
     id="main"
-    class="mdui-m-t-5 pjax-in"
+    class="mdui-m-t-5"
     data-page-type="<%= pageType %>"
     data-is-home="<%= is_home() ? '1' : '0' %>"
     data-is-post="<%= is_post() ? '1' : '0' %>"
@@ -60,13 +61,6 @@
   }
 </script>
 <%- js(['js/script', 'js/lightbox', 'js/pjax']) %>
-  <script>
-    // Remove initial animation class
-    setTimeout(function() {
-      var main = document.getElementById('main');
-      if (main) main.classList.remove('pjax-in');
-    }, 300);
-  </script>
   <%- js('custom') %>
   <%- js('js/sw-update') %>
   <script>

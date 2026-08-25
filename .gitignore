@@ -16,3 +16,11 @@ output/
 
 .env    
 .agents
+
+.idea
+
+# WeChat Sync Temporary Files
+.github/wechat-posts-to-sync.json
+.github/wechat-sync-state.json
+.github/wechat-sync-report.json
+.github/wechat-token-cache.json

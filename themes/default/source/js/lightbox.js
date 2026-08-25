@@ -32,6 +32,7 @@
     pointers: new Map(),
     drag: null,
     pinch: null,
+    dragOccurred: false,
     gestureWasPinch: false,
     lastTap: {
       time: 0,
@@ -78,14 +79,14 @@
   }
 
   function createButton(action, label, iconName, extraClass) {
-    return '<button class="site-lightbox__button ' + (extraClass || '') + '" type="button" data-site-lightbox-action="' + action + '" title="' + label + '" aria-label="' + label + '">' + icon(iconName) + '</button>';
+    return '<button class="mdui-btn mdui-btn-icon mdui-ripple site-lightbox__button ' + (extraClass || '') + '" type="button" data-site-lightbox-action="' + action + '" title="' + label + '" aria-label="' + label + '">' + icon(iconName) + '</button>';
   }
 
   function createDom() {
     if (dom.overlay) return;
 
     var overlay = document.createElement('div');
-    overlay.className = 'site-lightbox';
+    overlay.className = 'site-lightbox mdui-theme-layout-dark';
     overlay.hidden = true;
     overlay.setAttribute('role', 'dialog');
     overlay.setAttribute('aria-modal', 'true');
@@ -93,20 +94,28 @@
     overlay.tabIndex = -1;
     overlay.innerHTML = [
       '<div class="site-lightbox__viewport" data-site-lightbox-viewport>',
-      '  <div class="site-lightbox__loader" aria-hidden="true" hidden></div>',
-      '  <img class="site-lightbox__image" alt="" draggable="false">',
-      '  <div class="site-lightbox__error" role="status" hidden>图片加载失败</div>',
-      '</div>',
-      '<div class="site-lightbox__topbar">',
-      '  <div class="site-lightbox__meta">',
-      '    <span class="site-lightbox__counter" aria-live="polite"></span>',
-      '    <span class="site-lightbox__caption"></span>',
+      '  <div class="site-lightbox__loader" aria-hidden="true" hidden>',
+      '    <div class="mdui-spinner site-lightbox__spinner"></div>',
       '  </div>',
-      createButton('close', '关闭', 'close', 'site-lightbox__button--close'),
+      '  <img class="site-lightbox__image" alt="" draggable="false">',
+      '  <div class="site-lightbox__error mdui-shadow-2" role="status" hidden>',
+      '    <i class="mdui-icon material-icons site-lightbox__error-icon">error_outline</i>',
+      '    <span>图片加载失败</span>',
+      '  </div>',
       '</div>',
-      '<button class="site-lightbox__nav site-lightbox__nav--prev" type="button" data-site-lightbox-action="prev" title="上一张" aria-label="上一张">' + icon('chevron_left') + '</button>',
-      '<button class="site-lightbox__nav site-lightbox__nav--next" type="button" data-site-lightbox-action="next" title="下一张" aria-label="下一张">' + icon('chevron_right') + '</button>',
-      '<div class="site-lightbox__toolbar" role="toolbar" aria-label="图片工具">',
+      '<div class="site-lightbox__topbar mdui-appbar mdui-shadow-0">',
+      '  <div class="mdui-toolbar site-lightbox__topbar-inner">',
+      '    <div class="site-lightbox__meta">',
+      '      <span class="site-lightbox__counter mdui-typo-subheading-opacity" aria-live="polite"></span>',
+      '      <span class="site-lightbox__caption mdui-typo-title"></span>',
+      '    </div>',
+      '    <div class="mdui-toolbar-spacer"></div>',
+      '    <button class="mdui-btn mdui-btn-icon mdui-ripple site-lightbox__button site-lightbox__button--close" type="button" data-site-lightbox-action="close" mdui-tooltip="{content: \'关闭\', position: \'bottom\'}" aria-label="关闭">' + icon('close') + '</button>',
+      '  </div>',
+      '</div>',
+      '<button class="mdui-btn mdui-btn-icon mdui-ripple site-lightbox__nav site-lightbox__nav--prev mdui-shadow-4" type="button" data-site-lightbox-action="prev" title="上一张" aria-label="上一张">' + icon('chevron_left') + '</button>',
+      '<button class="mdui-btn mdui-btn-icon mdui-ripple site-lightbox__nav site-lightbox__nav--next mdui-shadow-4" type="button" data-site-lightbox-action="next" title="下一张" aria-label="下一张">' + icon('chevron_right') + '</button>',
+      '<div class="site-lightbox__toolbar mdui-card mdui-shadow-8" role="toolbar" aria-label="图片工具">',
       createButton('zoom-out', '缩小', 'zoom_out'),
       createButton('zoom-in', '放大', 'zoom_in'),
       createButton('reset', '重置', 'center_focus_strong'),
@@ -116,7 +125,7 @@
       createButton('download', '下载', 'file_download'),
       createButton('ocr', 'OCR 文字识别', 'text_fields'),
       '</div>',
-      '<div class="site-lightbox__toast" role="status" aria-live="polite"></div>'
+      '<div class="site-lightbox__toast mdui-shadow-6" role="status" aria-live="polite"></div>'
     ].join('');
 
     document.body.appendChild(overlay);
@@ -134,6 +143,10 @@
     dom.next = overlay.querySelector('[data-site-lightbox-action="next"]');
     dom.close = overlay.querySelector('[data-site-lightbox-action="close"]');
 
+    if (window.mdui && typeof window.mdui.mutation === 'function') {
+      window.mdui.mutation(overlay);
+    }
+
     createOcrDialog();
   }
 
@@ -147,7 +160,7 @@
         '<div class="mdui-dialog-title">OCR 识别结果</div>',
         '<div class="mdui-dialog-content">',
         '  <div class="mdui-textfield">',
-        '    <textarea class="mdui-textfield-input site-lightbox-ocr-dialog__text" rows="10" readonly></textarea>',
+        '    <textarea class="mdui-textfield-input site-lightbox-ocr-dialog__text" rows="10" readonly placeholder="识别到的文字将显示在这里..."></textarea>',
         '  </div>',
         '</div>',
         '<div class="mdui-dialog-actions">',
@@ -156,6 +169,9 @@
         '</div>'
       ].join('');
       document.body.appendChild(dialog);
+      if (window.mdui && typeof window.mdui.mutation === 'function') {
+        window.mdui.mutation(dialog);
+      }
     }
 
     dom.ocrDialog = dialog;
@@ -171,9 +187,8 @@
     addListener(document, 'pjax:success', function () { refresh(document); });
     addListener(window, 'resize', handleResize);
 
-    addListener(dom.overlay, 'click', handleOverlayClick);
-    addListener(dom.toolbar, 'click', handleActionClick);
     addListener(dom.overlay, 'click', handleActionClick);
+    addListener(dom.overlay, 'click', handleOverlayClick);
     addListener(dom.overlay, 'pointermove', handleControlsActivity, { passive: true });
     addListener(dom.overlay, 'pointerdown', handleControlsActivity, { passive: true });
     addListener(dom.overlay, 'focusin', handleControlsActivity);
@@ -312,6 +327,12 @@
 
   function handleOverlayClick(event) {
     if (!state.isOpen) return;
+    // Do not close if this click was part of a drag gesture
+    if (state.dragOccurred) {
+      state.dragOccurred = false;
+      return;
+    }
+    // Only close if clicking on the background viewport area itself
     if (event.target === dom.viewport) {
       if (controlsAreHidden()) {
         showControls();
@@ -369,9 +390,11 @@
 
     event.preventDefault();
     showControls();
+    state.dragOccurred = false;
+
     try {
       dom.viewport.setPointerCapture(event.pointerId);
-    } catch (e) {}
+    } catch (e) { }
 
     state.pointers.set(event.pointerId, {
       x: event.clientX,
@@ -397,6 +420,11 @@
     var pointer = state.pointers.get(event.pointerId);
     pointer.x = event.clientX;
     pointer.y = event.clientY;
+
+    var distMoved = Math.hypot(pointer.x - pointer.startX, pointer.y - pointer.startY);
+    if (distMoved > 4) {
+      state.dragOccurred = true;
+    }
 
     if (state.pointers.size >= 2 && state.pinch) {
       var distance = pointerDistance();
@@ -426,7 +454,7 @@
 
     try {
       dom.viewport.releasePointerCapture(event.pointerId);
-    } catch (e) {}
+    } catch (e) { }
 
     if (state.pointers.size === 0) {
       var wasPinch = state.gestureWasPinch;
@@ -434,6 +462,10 @@
       state.pinch = null;
       state.gestureWasPinch = false;
       dom.image.classList.remove('is-grabbing');
+
+      if (movement > 4) {
+        state.dragOccurred = true;
+      }
 
       if (event.pointerType === 'touch' && !wasPinch && movement < 8) {
         handleTouchTap(event.clientX, event.clientY);
@@ -627,7 +659,7 @@
     if (/^data:image\//i.test(value)) return true;
     try {
       value = new URL(value, document.baseURI).pathname;
-    } catch (e) {}
+    } catch (e) { }
     return /\.(avif|bmp|gif|jpe?g|jfif|png|svg|webp)$/i.test(String(value || '').split(/[?#]/)[0]);
   }
 
@@ -715,7 +747,7 @@
     if (state.lastFocus && typeof state.lastFocus.focus === 'function') {
       try {
         state.lastFocus.focus();
-      } catch (e) {}
+      } catch (e) { }
     }
   }
 
@@ -848,7 +880,7 @@
         if (!isLoadCurrent(token)) return;
         setDisplayedImage(imageInfo, { keepTransform: false });
         return;
-      } catch (e) {}
+      } catch (e) { }
     }
 
     if (!isLoadCurrent(token)) return;
@@ -868,7 +900,7 @@
         if (!isLoadCurrent(token)) return;
         setDisplayedImage(imageInfo, { keepTransform: true });
         return;
-      } catch (e) {}
+      } catch (e) { }
     }
   }
 
@@ -1048,12 +1080,20 @@
   }
 
   function showToast(message, type) {
+    if (window.mdui && typeof window.mdui.snackbar === 'function') {
+      window.mdui.snackbar({
+        message: message,
+        position: 'bottom',
+        timeout: 2000
+      });
+      return;
+    }
     clearTimeout(state.toastTimer);
     dom.toast.textContent = message;
     dom.toast.classList.remove('is-error', 'is-success');
     if (type) dom.toast.classList.add('is-' + type);
     dom.toast.classList.add('is-visible');
-    state.toastTimer = setTimeout(hideToast, 1800);
+    state.toastTimer = setTimeout(hideToast, 2000);
   }
 
   function hideToast() {
@@ -1169,8 +1209,8 @@
       }
 
       var worker = await window.Tesseract.createWorker('chi_sim+eng', 1, {
-        logger: function () {},
-        errorHandler: function () {}
+        logger: function () { },
+        errorHandler: function () { }
       });
 
       try {

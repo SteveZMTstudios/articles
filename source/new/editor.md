@@ -29,6 +29,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
 
+<!-- CodeMirror Styles (Local Theme Bundle) -->
+<link rel="stylesheet" href="/lib/codemirror/codemirror.bundle.css">
+
 <style>
     main#main {
         animation: none !important;
@@ -45,7 +48,7 @@ SOFTWARE.
     
     /* Markdown Preview Dark Mode Fixes */
     .mdui-theme-layout-dark .markdown-body {
-        background-color: #303030 !important; /* Match MDUI dark card */
+        background-color: #424242 !important; /* Match MDUI dark card */
         color: #fff !important;
     }
     .mdui-theme-layout-dark .markdown-body a {
@@ -58,7 +61,7 @@ SOFTWARE.
         background-color: #212121 !important;
     }
     
-    #editor-card .mdui-fullscreen {
+    #editor-card.mdui-fullscreen {
         z-index: 2000; /* Ensure fullscreen editor is above other elements */
     }
     #editor-card .mdui-toolbar {
@@ -159,11 +162,211 @@ SOFTWARE.
         }
     }
     
-    /* Editor Textarea */
-    #editor-content {
-        color: inherit; 
-        background: transparent;
+    /* CodeMirror Core & Theme Enhancements */
+    #editor-container {
+        width: 100%;
+        height: 100%;
+        position: relative;
     }
+    .CodeMirror {
+        width: 100%;
+        height: 100% !important;
+        font-family: Consolas, Monaco, "Roboto Mono", "Courier New", monospace;
+        font-size: 14px;
+        line-height: 1.6;
+        color: inherit;
+        background: transparent;
+        border: none;
+    }
+    .CodeMirror-scroll {
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: auto;
+        box-sizing: border-box;
+    }
+    .CodeMirror-gutters {
+        background: rgba(0, 0, 0, 0.02);
+        border-right: 1px solid rgba(0, 0, 0, 0.08);
+        white-space: nowrap;
+    }
+    .CodeMirror-linenumber {
+        color: #9e9e9e;
+        padding: 0 6px;
+        min-width: 20px;
+        text-align: right;
+    }
+    .CodeMirror-activeline-background {
+        background: rgba(0, 0, 0, 0.04);
+    }
+    .CodeMirror-selected {
+        background: rgba(33, 150, 243, 0.18) !important;
+    }
+    .CodeMirror-focused .CodeMirror-selected {
+        background: rgba(33, 150, 243, 0.25) !important;
+    }
+    .CodeMirror-cursor {
+        border-left: 2px solid #2196f3;
+    }
+    .CodeMirror-dialog {
+        background: #ffffff;
+        color: #212121;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        z-index: 100;
+        font-family: inherit;
+        padding: 6px 12px;
+    }
+    .CodeMirror-dialog input {
+        border: 1px solid #ccc;
+        outline: none;
+        padding: 2px 6px;
+        border-radius: 2px;
+    }
+    .CodeMirror-foldgutter {
+        width: 0.3em;
+    }
+    .CodeMirror-foldgutter-open:after {
+        content: "▾";
+        color: #999;
+    }
+    .CodeMirror-foldgutter-folded:after {
+        content: "▸";
+        color: #2196f3;
+        font-weight: bold;
+    }
+
+    /* Markdown Highlighting */
+    .cm-header { font-weight: bold; color: #1976d2; }
+    .cm-link { color: #0288d1; text-decoration: underline; }
+    .cm-url { color: #78909c; }
+    .cm-quote { color: #388e3c; font-style: italic; }
+    .cm-comment { color: #9e9e9e; font-style: italic; }
+    .cm-strong { font-weight: bold; }
+    .cm-em { font-style: italic; }
+    .cm-strikethrough { text-decoration: line-through; }
+    .cm-tag { color: #e91e63; }
+    .cm-attribute { color: #f57c00; }
+    .cm-string { color: #388e3c; }
+    .cm-formatting-code, .cm-formatting-code-block { color: #7b1fa2; font-weight: bold; }
+
+    /* CodeMirror Dark Mode (Material Darker / VS Code Dark+ Optimized) */
+    .mdui-theme-layout-dark .CodeMirror {
+        color: #e0e0e0;
+        background: #424242 !important;
+    }
+    .mdui-theme-layout-dark .CodeMirror-gutters {
+        background: #383838;
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .mdui-theme-layout-dark .CodeMirror-linenumber {
+        color: #9e9e9e;
+    }
+    .mdui-theme-layout-dark .CodeMirror-activeline-background {
+        background: rgba(255, 255, 255, 0.06);
+    }
+    .mdui-theme-layout-dark .CodeMirror-selected {
+        background: rgba(100, 181, 246, 0.3) !important;
+    }
+    .mdui-theme-layout-dark .CodeMirror-focused .CodeMirror-selected {
+        background: rgba(100, 181, 246, 0.4) !important;
+    }
+    .mdui-theme-layout-dark .CodeMirror-cursor {
+        border-left: 2px solid #64b5f6;
+    }
+    .mdui-theme-layout-dark .CodeMirror-dialog {
+        background: #424242;
+        color: #ffffff;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .mdui-theme-layout-dark .CodeMirror-dialog input {
+        background: #303030;
+        color: #ffffff;
+        border: 1px solid #616161;
+    }
+
+    /* High-contrast Syntax Tokens in Dark Mode */
+    .mdui-theme-layout-dark .CodeMirror span.cm-header,
+    .mdui-theme-layout-dark .CodeMirror .cm-header { color: #64b5f6; font-weight: bold; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-keyword,
+    .mdui-theme-layout-dark .CodeMirror .cm-keyword { color: #c792ea; font-weight: 500; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-atom,
+    .mdui-theme-layout-dark .CodeMirror .cm-atom { color: #f07178; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-number,
+    .mdui-theme-layout-dark .CodeMirror .cm-number { color: #ffb74d; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-def,
+    .mdui-theme-layout-dark .CodeMirror .cm-def { color: #82aaff; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-variable,
+    .mdui-theme-layout-dark .CodeMirror .cm-variable { color: #e0e0e0; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-variable-2,
+    .mdui-theme-layout-dark .CodeMirror .cm-variable-2 { color: #80cbc4; } /* Replaces #05a navy with clear teal/mint */
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-variable-3,
+    .mdui-theme-layout-dark .CodeMirror span.cm-type,
+    .mdui-theme-layout-dark .CodeMirror .cm-variable-3,
+    .mdui-theme-layout-dark .CodeMirror .cm-type { color: #ffd54f; } /* Replaces #085 dark green with gold */
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-property,
+    .mdui-theme-layout-dark .CodeMirror .cm-property { color: #80d8ff; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-operator,
+    .mdui-theme-layout-dark .CodeMirror .cm-operator { color: #89ddff; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-comment,
+    .mdui-theme-layout-dark .CodeMirror .cm-comment { color: #9e9e9e; font-style: italic; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-string,
+    .mdui-theme-layout-dark .CodeMirror span.cm-string-2,
+    .mdui-theme-layout-dark .CodeMirror .cm-string,
+    .mdui-theme-layout-dark .CodeMirror .cm-string-2 { color: #c3e88d; } /* Replaces #a11 & #f50 with crisp lime green */
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-meta,
+    .mdui-theme-layout-dark .CodeMirror span.cm-qualifier,
+    .mdui-theme-layout-dark .CodeMirror .cm-meta,
+    .mdui-theme-layout-dark .CodeMirror .cm-qualifier { color: #ffcb6b; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-builtin,
+    .mdui-theme-layout-dark .CodeMirror .cm-builtin { color: #ff80ab; } /* Replaces #30a dark violet with bright pink */
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-bracket,
+    .mdui-theme-layout-dark .CodeMirror .cm-bracket { color: #cfd8dc; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-tag,
+    .mdui-theme-layout-dark .CodeMirror .cm-tag { color: #f07178; } /* Replaces #170 dark green with coral */
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-attribute,
+    .mdui-theme-layout-dark .CodeMirror .cm-attribute { color: #ffcb6b; } /* Replaces #00c dark blue with amber */
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-hr,
+    .mdui-theme-layout-dark .CodeMirror .cm-hr { color: #757575; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-link,
+    .mdui-theme-layout-dark .CodeMirror .cm-link { color: #80d8ff; text-decoration: underline; } /* Replaces #00c dark blue */
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-url,
+    .mdui-theme-layout-dark .CodeMirror .cm-url { color: #b0bec5; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-quote,
+    .mdui-theme-layout-dark .CodeMirror .cm-quote { color: #aed581; font-style: italic; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-formatting-code,
+    .mdui-theme-layout-dark .CodeMirror span.cm-formatting-code-block,
+    .mdui-theme-layout-dark .CodeMirror .cm-formatting-code,
+    .mdui-theme-layout-dark .CodeMirror .cm-formatting-code-block { color: #ce93d8; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-strong,
+    .mdui-theme-layout-dark .CodeMirror .cm-strong { color: #ffffff; font-weight: bold; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-em,
+    .mdui-theme-layout-dark .CodeMirror .cm-em { color: #f5f5f5; font-style: italic; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-strikethrough,
+    .mdui-theme-layout-dark .CodeMirror .cm-strikethrough { text-decoration: line-through; color: #9e9e9e; }
 
 </style>
 
@@ -184,9 +387,6 @@ SOFTWARE.
           <label class="mdui-textfield-label">标识符</label>
           <input class="mdui-textfield-input" type="text" id="post-slug" />
         </div>
-        <!-- <button class="mdui-btn mdui-btn-icon mdui-ripple mdui-m-l-1 mdui-m-b-1" onclick="toggleDarkMode()" mdui-tooltip="{content: '切换深色模式'}">
-            <i class="mdui-icon material-icons">brightness_4</i>
-        </button> -->
       </div>
     </div>
     <div class="mdui-row">
@@ -350,52 +550,52 @@ SOFTWARE.
     </div>
 
 <div class="mdui-row mdui-m-t-2">
-        <div class="mdui-col-xs-12">
-            <button class="mdui-btn mdui-btn-raised mdui-color-green-600 mdui-ripple mdui-m-r-1" onclick="submitToGitHub()">
-                <i class="mdui-icon material-icons">cloud_upload</i> 发布到 GitHub
-            </button>
-            <button class="mdui-btn mdui-btn-raised mdui-color-theme-accent mdui-ripple" onclick="exportPost()">
-                <i class="mdui-icon material-icons">file_download</i> 导出 ZIP
-            </button>
-            <button class="mdui-btn mdui-btn-raised mdui-ripple" onclick="document.getElementById('zip-input').click()">
-                <i class="mdui-icon material-icons">file_upload</i> 导入 ZIP
-            </button>
-            <button class="mdui-btn mdui-btn-raised mdui-ripple" onclick="resetEditor()">
-                <i class="mdui-icon material-icons">refresh</i> 重置
-            </button>
-            <input type="file" id="zip-input" accept=".zip" style="display: none;" />
-            <input type="file" id="image-input" accept="image/*" multiple style="display: none;" />
-        </div>
+      <div class="mdui-col-xs-12">
+        <button class="mdui-btn mdui-btn-raised mdui-color-green-600 mdui-ripple mdui-m-r-1" onclick="submitToGitHub()">
+          <i class="mdui-icon material-icons">cloud_upload</i> 发布到 GitHub
+        </button>
+        <button class="mdui-btn mdui-btn-raised mdui-color-theme-accent mdui-ripple" onclick="exportPost()">
+          <i class="mdui-icon material-icons">file_download</i> 导出 ZIP
+        </button>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple" onclick="document.getElementById('zip-input').click()">
+          <i class="mdui-icon material-icons">file_upload</i> 导入 ZIP
+        </button>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple" onclick="resetEditor()">
+          <i class="mdui-icon material-icons">refresh</i> 重置
+        </button>
+        <input type="file" id="zip-input" accept=".zip" style="display: none;" />
+        <input type="file" id="image-input" accept="image/*" multiple style="display: none;" />
+      </div>
     </div>
   </div>
 
   <!-- Editor Area -->
-  <div class="mdui-card" id="editor-card" style="height: 70vh; display: flex; flex-direction: column; position: relative;">
+  <div class="mdui-card" id="editor-card" style="height: 70vh; display: flex; flex-direction: column; position: relative; overflow: hidden;">
     <div class="mdui-toolbar" style="flex-shrink: 0; overflow-x: auto; overflow-y: hidden; white-space: nowrap; border-bottom: 1px solid rgba(0,0,0,0.1);">
       <!-- History/General -->
       <button class="mdui-btn mdui-btn-icon" onclick="undo()" mdui-tooltip="{content: '撤销 (Ctrl+Z)'}"><i class="mdui-icon material-icons">undo</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="redo()" mdui-tooltip="{content: '重做 (Ctrl+Y)'}"><i class="mdui-icon material-icons">redo</i></button>
       <!-- Text Style -->
-      <button class="mdui-btn mdui-btn-icon" onclick="insertText('**', '**')" mdui-tooltip="{content: '粗体'}"><i class="mdui-icon material-icons">format_bold</i></button>
-      <button class="mdui-btn mdui-btn-icon" onclick="insertText('*', '*')" mdui-tooltip="{content: '斜体'}"><i class="mdui-icon material-icons">format_italic</i></button>
-      <button class="mdui-btn mdui-btn-icon" onclick="insertText('<u>', '</u>')" mdui-tooltip="{content: '下划线'}"><i class="mdui-icon material-icons">format_underlined</i></button>
-      <button class="mdui-btn mdui-btn-icon" onclick="insertText('~~', '~~')" mdui-tooltip="{content: '删除线'}"><i class="mdui-icon material-icons">format_strikethrough</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('**', '**')" mdui-tooltip="{content: '粗体 (Ctrl+B)'}"><i class="mdui-icon material-icons">format_bold</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('*', '*')" mdui-tooltip="{content: '斜体 (Ctrl+I)'}"><i class="mdui-icon material-icons">format_italic</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('<u>', '</u>')" mdui-tooltip="{content: '下划线 (Ctrl+U)'}"><i class="mdui-icon material-icons">format_underlined</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('~~', '~~')" mdui-tooltip="{content: '删除线 (Ctrl+Shift+X)'}"><i class="mdui-icon material-icons">format_strikethrough</i></button>
       <button class="mdui-btn mdui-btn-icon" id="font-size-btn" mdui-tooltip="{content: '字体大小'}"><i class="mdui-icon material-icons">format_size</i></button>
       <button class="mdui-btn mdui-btn-icon" id="text-color-btn" mdui-tooltip="{content: '文本颜色'}"><i class="mdui-icon material-icons">format_color_text</i></button>
-    <!-- Paragraph Style -->
-      <button class="mdui-btn mdui-btn-icon" onclick="insertText('# ', '')" mdui-tooltip="{content: '标题'}"><i class="mdui-icon material-icons">title</i></button>
+      <!-- Paragraph Style -->
+      <button class="mdui-btn mdui-btn-icon" onclick="insertHeading(1)" mdui-tooltip="{content: '标题 (Ctrl+Alt+1~6)'}"><i class="mdui-icon material-icons">title</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="setAlign('left')" mdui-tooltip="{content: '左对齐'}"><i class="mdui-icon material-icons">format_align_left</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="setAlign('center')" mdui-tooltip="{content: '居中对齐'}"><i class="mdui-icon material-icons">format_align_center</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="setAlign('right')" mdui-tooltip="{content: '右对齐'}"><i class="mdui-icon material-icons">format_align_right</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="clearFormatting()" mdui-tooltip="{content: '清除格式'}"><i class="mdui-icon material-icons">format_clear</i></button>
       <!-- Insert -->
       <button class="mdui-btn mdui-btn-icon" onclick="insertList()" mdui-tooltip="{content: '列表'}"><i class="mdui-icon material-icons">format_list_bulleted</i></button>
-      <button class="mdui-btn mdui-btn-icon" onclick="insertLink()" mdui-tooltip="{content: '链接'}"><i class="mdui-icon material-icons">link</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertLink()" mdui-tooltip="{content: '链接 (Ctrl+K)'}"><i class="mdui-icon material-icons">link</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="document.getElementById('image-input').click()" mdui-tooltip="{content: '插入图片'}"><i class="mdui-icon material-icons">image</i></button>
       <button class="mdui-btn mdui-btn-icon" onclick="insertTable()" mdui-tooltip="{content: '表格'}"><i class="mdui-icon material-icons">grid_on</i></button>
-      <button class="mdui-btn mdui-btn-icon" onclick="insertText('```\n', '\n```')" mdui-tooltip="{content: '代码块'}"><i class="mdui-icon material-icons">code</i></button>
-      <button class="mdui-btn mdui-btn-icon" onclick="insertDetails()" mdui-tooltip="{content: '折叠块'}"><i class="mdui-icon material-icons">unfold_more</i></button>
-      <button class="mdui-btn mdui-btn-icon" onclick="insertText('\n<\!-- more -->\n', '')" mdui-tooltip="{content: '插入摘要分隔符'}"><i class="mdui-icon material-icons">more_horiz</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('```\n', '\n```')" mdui-tooltip="{content: '代码块 (Ctrl+Shift+K)'}"><i class="mdui-icon material-icons">code</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertDetails()" mdui-tooltip="{content: '折叠块 (Ctrl+Shift+D)'}"><i class="mdui-icon material-icons">unfold_more</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('\n<!-- more -->\n', '')" mdui-tooltip="{content: '插入摘要分隔符'}"><i class="mdui-icon material-icons">more_horiz</i></button>
       <div class="mdui-toolbar-spacer"></div>
       <!-- View -->
       <button class="mdui-btn mdui-btn-icon" onclick="toggleFullscreen()" mdui-tooltip="{content: '全屏模式'}"><i class="mdui-icon material-icons" id="fullscreen-icon">fullscreen</i></button>
@@ -406,15 +606,15 @@ SOFTWARE.
         <li class="mdui-menu-item"><a style="font-size:14px" href="javascript:;" onclick="setFontSize('14px')">14px (正常)</a></li>
         <li class="mdui-menu-item"><a style="font-size:16px" href="javascript:;" onclick="setFontSize('16px')">16px (中)</a></li>
         <li class="mdui-menu-item"><a style="font-size:20px" href="javascript:;" onclick="setFontSize('20px')">20px (大)</a></li>
-            <li class="mdui-menu-item mdui-p-a-2" style=" max-width: 240px;">
-                <div class="mdui-typo-caption mdui-text-color-grey-600 mdui-text-center">自定义大小</div>
-                <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
-                    <label class="mdui-slider mdui-slider-discrete" style="width: 90%; margin: 0 auto;">
-                        <input type="range" step="1" min="10" max="60" value="16" style="width: 100%;" oninput="document.getElementById('custom-font-size-val').innerText = this.value + 'px'" onchange="setFontSize(this.value + 'px')"/>
-                    </label>
-                    <div class="mdui-text-center mdui-text-color-grey-600" id="custom-font-size-val" style="width: 100%;">16px</div>
-                </div>
-            </li>
+        <li class="mdui-menu-item mdui-p-a-2" style="max-width: 240px;">
+            <div class="mdui-typo-caption mdui-text-color-grey-600 mdui-text-center">自定义大小</div>
+            <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                <label class="mdui-slider mdui-slider-discrete" style="width: 90%; margin: 0 auto;">
+                    <input type="range" step="1" min="10" max="60" value="16" style="width: 100%;" oninput="document.getElementById('custom-font-size-val').innerText = this.value + 'px'" onchange="setFontSize(this.value + 'px')"/>
+                </label>
+                <div class="mdui-text-center mdui-text-color-grey-600" id="custom-font-size-val" style="width: 100%;">16px</div>
+            </div>
+        </li>
       </ul>
       <ul class="mdui-menu editor-tool-menu" id="text-color-menu">
         <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#F44336')" class="mdui-text-color-red">● Red</a></li>
@@ -444,11 +644,11 @@ SOFTWARE.
       </ul>
     </div>
     
-<div class="mdui-row mdui-m-a-0" style="flex: 1; overflow: hidden;">
-      <div class="mdui-col-xs-12 mdui-p-a-0" id="editor-col" style="height: 100%;">
-        <textarea id="editor-content" class="mdui-p-a-2" style="width: 100%; height: 100%; border: none; resize: none; outline: none; font-family: monospace; font-size: 14px; line-height: 1.5; overflow-y: auto;" placeholder="撰写你的想法..."></textarea>
+<div class="editor-workspace" style="flex: 1 1 0; min-height: 0; position: relative; overflow: hidden; display: flex;">
+      <div id="editor-col" style="flex: 1 1 100%; width: 100%; height: 100%; overflow: hidden; position: relative;">
+        <div id="editor-container"></div>
       </div>
-      <div class="mdui-col-xs-12 mdui-p-a-2" id="preview-content" style="height: 100%; overflow-y: auto; display: none;">
+      <div class="mdui-p-a-2 markdown-body" id="preview-content" style="flex: 1 1 100%; width: 100%; height: 100%; overflow-y: auto; display: none; box-sizing: border-box;">
         <!-- Preview will be rendered here -->
       </div>
     </div>
@@ -463,8 +663,12 @@ SOFTWARE.
 <script src="https://gcore.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
 <script src="https://unpkg.com/idb-keyval@6.2.1/dist/umd.js"></script>
 
+<!-- CodeMirror 5 Bundle (Core, Modes & Addons) -->
+<script src="/lib/codemirror/codemirror.bundle.js"></script>
+
 <script>
 // --- State & Config ---
+let cmEditor = null;
 let imageAssets = {}; // In-memory cache of images: { filename: Blob }
 let previewObjectUrls = [];
 let _cachedMaterialThumbnail = null; // Cache for deterministic material image
@@ -473,87 +677,142 @@ const DB_KEY_IMAGES = 'blog_editor_images';
 const DEFAULT_POST_AUTHOR = 'Steve ZMT';
 const SITE_ORIGIN = window.location.origin;
 
-// --- History Management ---
-let historyStack = [];
-let redoStack = [];
-const MAX_HISTORY = 50;
-
-// --- Auto-save & History Timer ---
+// --- Auto-save Timer ---
 let autoSaveTimer;
 function triggerAutoSave() {
     const status = document.getElementById('save-status');
-    status.innerHTML = '<span class="mdui-text-color-grey-500" style="display: flex; align-items: center;"> 正在保存... </span>';
-    clearTimeout(autoSaveTimer);
-    autoSaveTimer = setTimeout(saveState, 2000);
-}
-
-let historyDebounceTimer;
-function triggerHistorySave() {
-    clearTimeout(historyDebounceTimer);
-    historyDebounceTimer = setTimeout(recordHistory, 1000);
-}
-
-function recordHistory() {
-    const editor = document.getElementById('editor-content');
-    const content = editor.value;
-    
-    // Avoid duplicates (only check content)
-    if (historyStack.length > 0) {
-        const last = historyStack[historyStack.length - 1];
-        if (last.content === content) return;
+    if (status) {
+        status.innerHTML = '<span class="mdui-text-color-grey-500" style="display: flex; align-items: center;"> 正在保存... </span>';
     }
+    clearTimeout(autoSaveTimer);
+    autoSaveTimer = setTimeout(saveState, 1500);
+}
 
-    historyStack.push({
-        content: content,
-        selectionStart: editor.selectionStart,
-        selectionEnd: editor.selectionEnd
-    });
-    
-    if (historyStack.length > MAX_HISTORY) historyStack.shift();
-    redoStack = []; // Clear redo on new action
+function getEditorContent() {
+    return cmEditor ? cmEditor.getValue() : '';
+}
+
+function setEditorContent(val) {
+    if (cmEditor) {
+        cmEditor.setValue(val || '');
+        cmEditor.clearHistory();
+    }
+}
+
+function getEditorSelectionText() {
+    return cmEditor ? cmEditor.getSelection() : '';
 }
 
 function undo() {
-    if (historyStack.length === 0) return;
-    
-    const editor = document.getElementById('editor-content');
-    // Save current state to redo
-    redoStack.push({
-        content: editor.value,
-        selectionStart: editor.selectionStart,
-        selectionEnd: editor.selectionEnd
-    });
-    
-    const prev = historyStack.pop();
-    editor.value = prev.content;
-    editor.selectionStart = prev.selectionStart;
-    editor.selectionEnd = prev.selectionEnd;
-    updatePreview();
-    triggerAutoSave(); // Save after undo
+    if (cmEditor) {
+        cmEditor.undo();
+        cmEditor.focus();
+    }
 }
 
 function redo() {
-    if (redoStack.length === 0) return;
-    
-    const editor = document.getElementById('editor-content');
-    // Save current to history
-    historyStack.push({
-        content: editor.value,
-        selectionStart: editor.selectionStart,
-        selectionEnd: editor.selectionEnd
-    });
-    
-    const next = redoStack.pop();
-    editor.value = next.content;
-    editor.selectionStart = next.selectionStart;
-    editor.selectionEnd = next.selectionEnd;
-    updatePreview();
-    triggerAutoSave(); // Save after redo
+    if (cmEditor) {
+        cmEditor.redo();
+        cmEditor.focus();
+    }
 }
 
 // --- Initialization ---
 document.addEventListener('DOMContentLoaded', async () => {
-    // Initialize Menus
+    // Initialize CodeMirror 5
+    const editorMount = document.getElementById('editor-container');
+    cmEditor = CodeMirror(editorMount, {
+        value: '',
+        mode: { name: 'gfm', gitHubSpice: false, highlightFormatting: true },
+        lineNumbers: true,
+        lineWrapping: true,
+        styleActiveLine: true,
+        autoCloseBrackets: true,
+        foldGutter: true,
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+        extraKeys: {
+            "Ctrl-B": () => insertText('**', '**'),
+            "Cmd-B": () => insertText('**', '**'),
+            "Ctrl-I": () => insertText('*', '*'),
+            "Cmd-I": () => insertText('*', '*'),
+            "Ctrl-U": () => insertText('<u>', '</u>'),
+            "Cmd-U": () => insertText('<u>', '</u>'),
+            "Ctrl-Shift-X": () => insertText('~~', '~~'),
+            "Cmd-Shift-X": () => insertText('~~', '~~'),
+            "Alt-Shift-5": () => insertText('~~', '~~'),
+            "Ctrl-K": () => insertLink(),
+            "Cmd-K": () => insertLink(),
+            "Ctrl-Shift-K": () => insertText('```\n', '\n```'),
+            "Cmd-Shift-K": () => insertText('```\n', '\n```'),
+            "Ctrl-Shift-C": () => insertText('```\n', '\n```'),
+            "Cmd-Shift-C": () => insertText('```\n', '\n```'),
+            "Ctrl-Shift-D": () => insertDetails(),
+            "Cmd-Shift-D": () => insertDetails(),
+            "Ctrl-S": () => { saveState(); mdui.snackbar({message: '已保存至本地缓存', position: 'bottom'}); },
+            "Cmd-S": () => { saveState(); mdui.snackbar({message: '已保存至本地缓存', position: 'bottom'}); },
+            "Enter": "newlineAndIndentContinueMarkdownList",
+            "Tab": (cm) => {
+                if (cm.somethingSelected()) {
+                    cm.indentSelection('add');
+                } else {
+                    cm.replaceSelection('    ', 'end');
+                }
+            },
+            "Shift-Tab": (cm) => {
+                cm.indentSelection('subtract');
+            },
+            "Ctrl-Alt-1": () => insertHeading(1),
+            "Ctrl-Alt-2": () => insertHeading(2),
+            "Ctrl-Alt-3": () => insertHeading(3),
+            "Ctrl-Alt-4": () => insertHeading(4),
+            "Ctrl-Alt-5": () => insertHeading(5),
+            "Ctrl-Alt-6": () => insertHeading(6)
+        }
+    });
+
+    // Listen to changes in CodeMirror
+    cmEditor.on('change', () => {
+        updatePreview();
+        triggerAutoSave();
+    });
+
+    // Handle Drag & Drop inside CodeMirror
+    cmEditor.on('dragover', (cm, e) => {
+        e.preventDefault();
+        editorMount.classList.add('editor-drag-active');
+    });
+    cmEditor.on('dragleave', (cm, e) => {
+        e.preventDefault();
+        editorMount.classList.remove('editor-drag-active');
+    });
+    cmEditor.on('drop', (cm, e) => {
+        editorMount.classList.remove('editor-drag-active');
+        const files = e.dataTransfer && e.dataTransfer.files;
+        if (files && files.length) {
+            e.preventDefault();
+            processImageFiles(files);
+        }
+    });
+
+    // Handle Image Paste inside CodeMirror
+    cmEditor.on('paste', (cm, e) => {
+        const items = e.clipboardData && e.clipboardData.items;
+        if (items) {
+            const imageFiles = [];
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type && items[i].type.startsWith('image/')) {
+                    const file = items[i].getAsFile();
+                    if (file) imageFiles.push(file);
+                }
+            }
+            if (imageFiles.length > 0) {
+                e.preventDefault();
+                processImageFiles(imageFiles);
+            }
+        }
+    });
+
+    // Initialize Floating Menus
     const toolbarMenus = [
         initFloatingMenu('#font-size-btn', '#font-size-menu', { align: 'auto' }),
         initFloatingMenu('#text-color-btn', '#text-color-menu', { align: 'auto' })
@@ -562,7 +821,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (editorToolbar) {
         editorToolbar.addEventListener('scroll', () => {
             toolbarMenus.forEach(menu => {
-                if (menu.isOpen()) menu.readjust();
+                if (menu && menu.isOpen()) menu.readjust();
             });
         }, { passive: true });
     }
@@ -570,7 +829,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Configure Marked Renderer for Image Preview
     const renderer = {
         image(href, title, text) {
-            // Compatible with Marked v12+ where arguments are passed as an object
             if (typeof href === 'object' && href !== null) {
                 const token = href;
                 href = token.href;
@@ -587,7 +845,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     return `<${'img'} src="${escapeAttribute(url)}" alt="${escapeAttribute(text)}" title="${escapeAttribute(title || '')}" style="max-width: 100%;" />`;
                 }
             }
-            // Fallback
             return `<${'img'} src="${escapeAttribute(href)}" alt="${escapeAttribute(text)}"${title ? ` title="${escapeAttribute(title)}"` : ''} style="max-width: 100%;">`;
         }
     };
@@ -597,88 +854,51 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (typeof idbKeyval === 'undefined') {
         console.error('idbKeyval library not loaded!');
         mdui.snackbar({message: '自动保存功能不可用 (库加载失败)'});
-        return;
-    }
+    } else {
+        // Load saved state
+        try {
+            const savedContent = await idbKeyval.get(DB_KEY_CONTENT);
+            if (savedContent) {
+                document.getElementById('post-title').value = savedContent.title || '';
+                document.getElementById('post-slug').value = savedContent.slug || '';
+                document.getElementById('post-tags').value = savedContent.tags || '';
+                document.getElementById('post-categories').value = savedContent.categories || '';
+                setEditorContent(savedContent.content || '');
+                
+                // Load advanced settings
+                document.getElementById('post-donate').checked = savedContent.donate !== false;
+                document.getElementById('post-toc').checked = savedContent.toc !== false;
+                document.getElementById('post-comments').checked = savedContent.comments !== false;
+                document.getElementById('post-top').checked = savedContent.top === true;
+                if(savedContent.date) document.getElementById('post-date').value = savedContent.date;
+                
+                if(savedContent.author) document.getElementById('post-author').value = savedContent.author;
+                if(savedContent.thumbnail) document.getElementById('post-thumbnail').value = savedContent.thumbnail;
+                if(savedContent.excerpt) document.getElementById('post-excerpt').value = savedContent.excerpt;
+                applyLicenseFrontMatterValue(savedContent.license || '');
+                if(savedContent.lang) document.getElementById('post-lang').value = savedContent.lang;
+                if(savedContent.wechat_sync !== undefined) document.getElementById('post-wechat_sync').checked = savedContent.wechat_sync;
+                
+                document.getElementById('post-count').checked = savedContent.count !== false;
+                document.getElementById('post-share_menu').checked = savedContent.share_menu !== false;
+                document.getElementById('post-qrcode').checked = savedContent.qrcode !== false;
+                document.getElementById('post-thislink').checked = savedContent.thislink !== false;
 
-    // Load saved state
-    try {
-        const savedContent = await idbKeyval.get(DB_KEY_CONTENT);
-        if (savedContent) {
-            document.getElementById('post-title').value = savedContent.title || '';
-            document.getElementById('post-slug').value = savedContent.slug || '';
-            document.getElementById('post-tags').value = savedContent.tags || '';
-            document.getElementById('post-categories').value = savedContent.categories || '';
-            document.getElementById('editor-content').value = savedContent.content || '';
-            
-            // Load advanced settings
-            document.getElementById('post-donate').checked = savedContent.donate !== false;
-            document.getElementById('post-toc').checked = savedContent.toc !== false;
-            document.getElementById('post-comments').checked = savedContent.comments !== false;
-            document.getElementById('post-top').checked = savedContent.top === true;
-            if(savedContent.date) document.getElementById('post-date').value = savedContent.date;
-            
-            if(savedContent.author) document.getElementById('post-author').value = savedContent.author;
-            if(savedContent.thumbnail) document.getElementById('post-thumbnail').value = savedContent.thumbnail;
-            if(savedContent.excerpt) document.getElementById('post-excerpt').value = savedContent.excerpt;
-            applyLicenseFrontMatterValue(savedContent.license || '');
-            if(savedContent.lang) document.getElementById('post-lang').value = savedContent.lang;
-            if(savedContent.wechat_sync !== undefined) document.getElementById('post-wechat_sync').checked = savedContent.wechat_sync;
-            
-            document.getElementById('post-count').checked = savedContent.count !== false;
-            document.getElementById('post-share_menu').checked = savedContent.share_menu !== false;
-            document.getElementById('post-qrcode').checked = savedContent.qrcode !== false;
-            document.getElementById('post-thislink').checked = savedContent.thislink !== false;
-
-            mdui.updateTextFields();
-        } else {
-            // Initialize new UUID if empty
-            if(!document.getElementById('post-slug').value) {
-                 // Maybe don't auto-fill slug yet, wait for title?
+                mdui.updateTextFields();
             }
+            
+            const savedImages = await idbKeyval.get(DB_KEY_IMAGES);
+            if (savedImages) {
+                imageAssets = savedImages;
+            }
+            updateLicenseVisibility();
+            updatePreviewAll();
+        } catch (e) {
+            console.error("Failed to load saved state", e);
+            updateLicenseVisibility();
+            updatePreviewAll();
         }
-        
-        const savedImages = await idbKeyval.get(DB_KEY_IMAGES);
-        if (savedImages) {
-            imageAssets = savedImages;
-        }
-        updateLicenseVisibility();
-        updatePreviewAll();
-    } catch (e) {
-        console.error("Failed to load saved state", e);
-        updateLicenseVisibility();
-        updatePreviewAll();
     }
-
-    // Initialize History
-    recordHistory();
-
-    // Event Listeners
-    const editor = document.getElementById('editor-content');
-    editor.addEventListener('input', () => {
-        updatePreview();
-        triggerAutoSave();
-        triggerHistorySave();
-    });
-
-    // History Shortcuts & Typing
-    editor.addEventListener('keydown', (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
-            e.preventDefault();
-            saveState();
-            mdui.snackbar({message: '已保存至本地缓存', position: 'bottom'});
-        } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
-            e.preventDefault();
-            if (e.shiftKey) redo();
-            else undo();
-        } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'y') {
-            e.preventDefault();
-            redo();
-        } else if (e.key === 'Enter') {
-            if (!handleMarkdownEnter(e)) recordHistory();
-        } else if (e.key === ' ') {
-            recordHistory();
-        }
-    });
 
     // Attach auto-save to all other inputs
     document.querySelectorAll('.mdui-textfield-input, input[type="checkbox"], select').forEach(input => {
@@ -686,10 +906,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         input.addEventListener('change', triggerAutoSave);
     });
 
-    document.getElementById('post-license-enabled').addEventListener('change', () => {
-        updateLicenseVisibility();
-        triggerAutoSave();
-    });
+    const licenseSwitch = document.getElementById('post-license-enabled');
+    if (licenseSwitch) {
+        licenseSwitch.addEventListener('change', () => {
+            updateLicenseVisibility();
+            triggerAutoSave();
+        });
+    }
 
     ['post-title', 'post-slug', 'post-date', 'post-author', 'post-thumbnail', 'post-count', 'post-qrcode', 'post-share_menu'].forEach(id => {
         const input = document.getElementById(id);
@@ -698,20 +921,88 @@ document.addEventListener('DOMContentLoaded', async () => {
         input.addEventListener('change', updateHeaderPreview);
     });
     
-    // const editor = document.getElementById('editor-content'); // Already defined above
-    editor.addEventListener('dragover', (e) => { e.preventDefault(); e.stopPropagation(); editor.classList.add('editor-drag-active'); });
-    editor.addEventListener('dragleave', (e) => { e.preventDefault(); e.stopPropagation(); editor.classList.remove('editor-drag-active'); });
-    editor.addEventListener('drop', handleDrop);
-    
-    // Image Input Listener
-    document.getElementById('image-input').addEventListener('change', handleImageSelect);
-    // Thumbnail Input Listener
-    document.getElementById('thumbnail-input').addEventListener('change', handleThumbnailSelect);
-    // Zip Input Listener
-    document.getElementById('zip-input').addEventListener('change', handleZipImport);
+    // File inputs
+    const imgInput = document.getElementById('image-input');
+    if (imgInput) imgInput.addEventListener('change', handleImageSelect);
+    const thumbInput = document.getElementById('thumbnail-input');
+    if (thumbInput) thumbInput.addEventListener('change', handleThumbnailSelect);
+    const zipInput = document.getElementById('zip-input');
+    if (zipInput) zipInput.addEventListener('change', handleZipImport);
     
     // Fetch Tags and Categories
     initTaxonomyMenus();
+
+    // --- Gutter line-number click/drag selection (VS Code / Word style) ---
+    // Clicking a line number selects the whole line.
+    // Click-and-drag (or Shift+click) extends the selection across multiple lines.
+    (function initGutterLineSelect(cm) {
+        let dragAnchorLine = null; // the line where the drag started
+
+        // Select a range of whole lines [fromLine, toLine] (inclusive)
+        function selectLines(fromLine, toLine) {
+            const doc = cm.getDoc();
+            const lastLine = Math.max(fromLine, toLine);
+            const firstLine = Math.min(fromLine, toLine);
+            const endCh = doc.getLine(lastLine) !== undefined ? doc.getLine(lastLine).length : 0;
+            // If drag went upward, anchor is bottom of lastLine, head is start of firstLine
+            if (fromLine <= toLine) {
+                doc.setSelection(
+                    { line: firstLine, ch: 0 },
+                    { line: lastLine, ch: endCh }
+                );
+            } else {
+                doc.setSelection(
+                    { line: lastLine, ch: endCh },
+                    { line: firstLine, ch: 0 }
+                );
+            }
+        }
+
+        cm.on('gutterClick', function(cm, lineNum, gutterId, event) {
+            // Only handle clicks on line-number gutter
+            if (gutterId !== 'CodeMirror-linenumbers') return;
+            event.preventDefault();
+
+            if (event.shiftKey && cm.getDoc().somethingSelected()) {
+                // Shift+click: extend selection from current anchor to this line
+                const anchor = cm.getDoc().getCursor('anchor');
+                const anchorLine = anchor.line;
+                selectLines(anchorLine, lineNum);
+                dragAnchorLine = anchorLine;
+            } else {
+                // Normal click: select single line, set drag anchor
+                dragAnchorLine = lineNum;
+                selectLines(lineNum, lineNum);
+            }
+            cm.focus();
+
+            // Capture mousemove on the window to extend selection while dragging
+            function onMouseMove(e) {
+                if (dragAnchorLine === null) return;
+                try {
+                    const rawLine = cm.lineAtHeight(e.clientY, 'window');
+                    const targetLine = Math.max(0, Math.min(rawLine, cm.getDoc().lastLine()));
+                    selectLines(dragAnchorLine, targetLine);
+                } catch (err) {
+                    // Fallback if coordinate is outside
+                }
+            }
+
+            function onMouseUp() {
+                dragAnchorLine = null;
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            }
+
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+    })(cmEditor);
+
+    // Initial resize refresh
+    setTimeout(() => {
+        if (cmEditor) cmEditor.refresh();
+    }, 100);
 });
 
 // --- UI Helpers ---
@@ -726,12 +1017,6 @@ function escapeHtml(value) {
 
 function escapeAttribute(value) {
     return escapeHtml(value);
-}
-
-function getEditorSelectionText() {
-    const textarea = document.getElementById('editor-content');
-    if (!textarea) return '';
-    return textarea.value.substring(textarea.selectionStart, textarea.selectionEnd);
 }
 
 function getBlobDimensions(blob) {
@@ -786,7 +1071,6 @@ function updateHeaderPreview() {
 
     const newThumbnail = getPreviewThumbnail();
 
-    // If thumbnail didn't change, update only text fields via DOM — avoids image re-fetch
     if (_lastHeaderThumbnail && newThumbnail === _lastHeaderThumbnail) {
         const img = headerPreview.querySelector('header.mdui-card-media > img');
         const titleEl = headerPreview.querySelector('.mdui-card-primary-title h1');
@@ -799,16 +1083,10 @@ function updateHeaderPreview() {
             img.alt = escapeAttribute(title);
             titleEl.textContent = title;
             subtitleEl.innerHTML = `<i class="mdui-icon material-icons" translate="no">today</i> ${escapeHtml(previewDate)} / <i class="mdui-icon material-icons" translate="no">person</i> ${escapeHtml(author)}${showCount ? '&nbsp;&nbsp;<span style="display: inline;"><i class="mdui-icon material-icons" translate="no">remove_red_eye</i> 114</span>' : ''}`;
-            // Update share menu QR code reference if needed (thumbnail in share URL)
-            // const shareImg = headerPreview.querySelector('#editor-preview-qrcode img');
-            // if (shareImg) {
-            //     shareImg.src = escapeAttribute(buildQrCodeUrl(getPreviewPermalink()));
-            // }
             return;
         }
     }
 
-    // Full rebuild when thumbnail changed or first paint
     const html = buildArticleHeaderHtml();
     if (html === _lastHeaderHtml && newThumbnail === _lastHeaderThumbnail) return;
     _lastHeaderHtml = html;
@@ -906,9 +1184,22 @@ function initFloatingMenu(anchorSelector, menuSelector, options = {}) {
 
     const proxy = document.createElement('span');
     proxy.setAttribute('aria-hidden', 'true');
-    proxy.style.cssText = 'position: fixed; width: 0; height: 0; left: 0; top: 0; pointer-events: none;';
-    document.body.appendChild(proxy);
-    document.body.appendChild(menu);
+    proxy.style.cssText = 'position: fixed; width: 0; height: 0; left: 0; top: 0; pointer-events: none; z-index: 2100;';
+
+    const editorCard = document.getElementById('editor-card');
+
+    const updateContainer = () => {
+        const isFullscreen = document.fullscreenElement === editorCard || 
+                             document.webkitFullscreenElement === editorCard || 
+                             document.mozFullScreenElement === editorCard || 
+                             document.msFullscreenElement === editorCard;
+        const targetParent = (isFullscreen && editorCard) ? editorCard : document.body;
+        if (proxy.parentNode !== targetParent) targetParent.appendChild(proxy);
+        if (menu.parentNode !== targetParent) targetParent.appendChild(menu);
+        menu.style.zIndex = '2200';
+    };
+
+    updateContainer();
 
     const instance = new mdui.Menu(proxy, menu, Object.assign({
         covered: false,
@@ -919,6 +1210,7 @@ function initFloatingMenu(anchorSelector, menuSelector, options = {}) {
     }, options));
 
     const syncProxy = () => {
+        updateContainer();
         const rect = anchor.getBoundingClientRect();
         proxy.style.left = `${rect.left}px`;
         proxy.style.top = `${rect.top}px`;
@@ -943,14 +1235,23 @@ function initFloatingMenu(anchorSelector, menuSelector, options = {}) {
         if (instance.isOpen()) instance.readjust();
     }, { passive: true });
 
+    document.addEventListener('fullscreenchange', () => {
+        updateContainer();
+        if (instance.isOpen()) instance.readjust();
+    });
+    document.addEventListener('webkitfullscreenchange', () => {
+        updateContainer();
+        if (instance.isOpen()) instance.readjust();
+    });
+
     return instance;
 }
 
 async function insertLink() {
     try {
         const text = await navigator.clipboard.readText();
-        if (text && /^https?:\/\//i.test(text)) {
-            insertText('[', `](${text})`);
+        if (text && /^https?:\/\//i.test(text.trim())) {
+            insertText('[', `](${text.trim()})`);
             return;
         }
     } catch (e) {
@@ -963,7 +1264,9 @@ async function insertDetails() {
     let clipboardText = "展开";
     try {
         const text = await navigator.clipboard.readText();
-        if (text) clipboardText = text;
+        if (text && text.length < 50 && !text.includes('\n')) {
+            clipboardText = text.trim();
+        }
     } catch (e) {
         console.warn("Clipboard access denied or failed", e);
     }
@@ -974,8 +1277,78 @@ function insertList() {
     insertText('- ', '');
 }
 
-// --- Core Functions ---
+// --- Text Operations for CodeMirror ---
+function insertText(before, after = '') {
+    if (!cmEditor) return;
+    const selection = cmEditor.getSelection();
+    if (selection) {
+        cmEditor.replaceSelection(before + selection + after);
+    } else {
+        const cursor = cmEditor.getCursor();
+        cmEditor.replaceRange(before + after, cursor);
+        cmEditor.setCursor({ line: cursor.line, ch: cursor.ch + before.length });
+    }
+    cmEditor.focus();
+}
 
+function insertHeading(level) {
+    if (!cmEditor) return;
+    const cursor = cmEditor.getCursor();
+    const line = cmEditor.getLine(cursor.line);
+    const cleaned = line.replace(/^#{1,6}\s*/, '');
+    const prefix = '#'.repeat(Math.max(1, Math.min(6, level))) + ' ';
+    cmEditor.replaceRange(prefix + cleaned, { line: cursor.line, ch: 0 }, { line: cursor.line, ch: line.length });
+    cmEditor.focus();
+}
+
+function setFontSize(size) {
+    insertText(`<span style="font-size: ${size};">`, '</span>');
+}
+
+function setColor(color) {
+    insertText(`<span style="color: ${color};">`, '</span>');
+}
+
+function setAlign(align) {
+    insertText(`\n<div style="text-align: ${align};">\n`, '\n</div>\n');
+}
+
+function clearFormatting() {
+    if (!cmEditor) return;
+    const selection = cmEditor.getSelection();
+    if (!selection) return;
+    const cleaned = selection
+        .replace(/<\/?(span|div)[^>]*>/gi, '')
+        .replace(/(\*\*|__)(.*?)\1/g, '$2')
+        .replace(/(\*|_)(.*?)\1/g, '$2')
+        .replace(/~~(.*?)~~/g, '$1')
+        .replace(/`{1,3}(.*?)`{1,3}/g, '$1');
+    cmEditor.replaceSelection(cleaned);
+    cmEditor.focus();
+}
+
+function togglePreview() {
+    const editorCol = document.getElementById('editor-col');
+    const previewCol = document.getElementById('preview-content');
+    if (!editorCol || !previewCol) return;
+    
+    if (previewCol.style.display === 'none') {
+        // Show Preview, Hide Editor
+        updatePreview();
+        editorCol.style.display = 'none';
+        previewCol.style.display = 'block';
+    } else {
+        // Show Editor, Hide Preview
+        editorCol.style.display = 'block';
+        previewCol.style.display = 'none';
+        if (cmEditor) {
+            cmEditor.refresh();
+            cmEditor.focus();
+        }
+    }
+}
+
+// --- Core Article Functions ---
 function generateUUID() {
     function s4() { return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1); }
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
@@ -1020,11 +1393,10 @@ function getPreviewDate() {
 function getPreviewThumbnail() {
     const thumbnail = document.getElementById('post-thumbnail').value.trim();
     if (thumbnail) {
-        _cachedMaterialThumbnail = null; // Clear cache when explicit thumbnail is set
+        _cachedMaterialThumbnail = null;
         return getPreviewImageSrc(thumbnail);
     }
 
-    // Use cached material image if already determined
     if (_cachedMaterialThumbnail) return _cachedMaterialThumbnail;
 
     const seed = document.getElementById('post-slug').value
@@ -1111,7 +1483,6 @@ function buildArticleHeaderHtml() {
                     </button>
                     <ul class="mdui-menu" id="editor-preview-qrcode">
                         <li class="mdui-menu-item" disabled>
-                            // <!-- <img src="${escapeAttribute(buildQrCodeUrl(permalink))}" alt="QR Code"> -->
                             Here will be a QR code when the post upload.
                         </li>
                     </ul>
@@ -1186,11 +1557,13 @@ function applyLicenseFrontMatterValue(value) {
 
 function updatePreview() {
     releasePreviewObjectUrls();
-    const text = document.getElementById('editor-content').value;
+    const text = getEditorContent();
     const html = rewritePreviewImageSources(marked.parse(text));
     const previewBody = document.getElementById('preview-content');
-    previewBody.innerHTML = buildPreviewBodyHtml(html);
-    mdui.mutation();
+    if (previewBody) {
+        previewBody.innerHTML = buildPreviewBodyHtml(html);
+        mdui.mutation();
+    }
 }
 
 function updatePreviewAll() {
@@ -1199,12 +1572,14 @@ function updatePreviewAll() {
 }
 
 async function saveState() {
+    if (typeof idbKeyval === 'undefined') return;
+
     const state = {
         title: document.getElementById('post-title').value,
         slug: document.getElementById('post-slug').value,
         tags: document.getElementById('post-tags').value,
         categories: document.getElementById('post-categories').value,
-        content: document.getElementById('editor-content').value,
+        content: getEditorContent(),
         donate: document.getElementById('post-donate').checked,
         toc: document.getElementById('post-toc').checked,
         comments: document.getElementById('post-comments').checked,
@@ -1227,154 +1602,38 @@ async function saveState() {
         await idbKeyval.set(DB_KEY_CONTENT, state);
         await idbKeyval.set(DB_KEY_IMAGES, imageAssets);
         const status = document.getElementById('save-status');
-        const timeStr = new Date().toLocaleTimeString();
-        status.innerHTML = '<span class="mdui-text-color-green-500" style="display: flex; align-items: center; font-weight: bold;"><i class="mdui-icon material-icons" style="font-size: 18px; margin-right: 4px;">done_all</i> 已保存 ' + timeStr + '</span>';
-        
-        setTimeout(() => {
-            status.innerHTML = '<span class="mdui-text-color-grey-500" style="display: flex; align-items: center;"><i class="mdui-icon material-icons" style="font-size: 18px; margin-right: 4px;">done</i> 上次保存 ' + timeStr + '</span>';
-        }, 3000);
+        if (status) {
+            const timeStr = new Date().toLocaleTimeString();
+            status.innerHTML = '<span class="mdui-text-color-green-500" style="display: flex; align-items: center; font-weight: bold;"><i class="mdui-icon material-icons" style="font-size: 18px; margin-right: 4px;">done_all</i> 已保存 ' + timeStr + '</span>';
+            
+            setTimeout(() => {
+                status.innerHTML = '<span class="mdui-text-color-grey-500" style="display: flex; align-items: center;"><i class="mdui-icon material-icons" style="font-size: 18px; margin-right: 4px;">done</i> 上次保存 ' + timeStr + '</span>';
+            }, 3000);
+        }
     } catch (e) {
         console.error("Save failed", e);
-        document.getElementById('save-status').innerHTML = '<span class="mdui-text-color-red-500">保存失败!</span>';
+        const status = document.getElementById('save-status');
+        if (status) status.innerHTML = '<span class="mdui-text-color-red-500">保存失败!</span>';
     }
 }
 
-function insertText(before, after) {
-    recordHistory();
-    const textarea = document.getElementById('editor-content');
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const text = textarea.value;
-    const selection = text.substring(start, end);
-    
-    const newText = before + selection + after;
-    textarea.value = text.substring(0, start) + newText + text.substring(end);
-    
-    textarea.selectionStart = start + before.length;
-    textarea.selectionEnd = start + before.length + selection.length;
-    textarea.focus();
-    updatePreview();
-    triggerAutoSave();
-}
-
-function replaceEditorRange(textarea, start, end, replacement, cursorOffset = replacement.length) {
-    const value = textarea.value;
-    textarea.value = value.substring(0, start) + replacement + value.substring(end);
-    const cursor = start + cursorOffset;
-    textarea.selectionStart = cursor;
-    textarea.selectionEnd = cursor;
-    updatePreview();
-    triggerAutoSave();
-}
-
-function getLineBeforeCursor(textarea) {
-    const cursor = textarea.selectionStart;
-    const value = textarea.value;
-    const lineStart = value.lastIndexOf('\n', cursor - 1) + 1;
-    return {
-        start: lineStart,
-        text: value.substring(lineStart, cursor)
-    };
-}
-
-function getMarkdownLinePrefix(line) {
-    const indentMatch = line.match(/^(\s*)/);
-    const indent = indentMatch ? indentMatch[1] : '';
-    let rest = line.slice(indent.length);
-    let prefix = indent;
-
-    while (true) {
-        const quoteMatch = rest.match(/^(>\s*)/);
-        if (!quoteMatch) break;
-        prefix += quoteMatch[1];
-        rest = rest.slice(quoteMatch[1].length);
-    }
-
-    return { prefix, rest };
-}
-
-function getContinuationMarker(line) {
-    const { prefix, rest } = getMarkdownLinePrefix(line);
-
-    const taskMatch = rest.match(/^([-+*])\s+\[( |x|X)\]\s+(.*)$/);
-    if (taskMatch) {
-        return {
-            prefix,
-            marker: `${taskMatch[1]} [ ] `,
-            content: taskMatch[3]
-        };
-    }
-
-    const unorderedMatch = rest.match(/^([-+*])\s+(.*)$/);
-    if (unorderedMatch) {
-        return {
-            prefix,
-            marker: `${unorderedMatch[1]} `,
-            content: unorderedMatch[2]
-        };
-    }
-
-    const orderedMatch = rest.match(/^(\d+)([.)])\s+(.*)$/);
-    if (orderedMatch) {
-        return {
-            prefix,
-            marker: `${Number(orderedMatch[1]) + 1}${orderedMatch[2]} `,
-            content: orderedMatch[3]
-        };
-    }
-
-    const quoteMatch = line.match(/^(\s*(?:>\s*)+)(.*)$/);
-    if (quoteMatch) {
-        return {
-            prefix: '',
-            marker: quoteMatch[1],
-            content: quoteMatch[2]
-        };
-    }
-
-    return null;
-}
-
-function handleMarkdownEnter(event) {
-    const textarea = event.target;
-    if (textarea.selectionStart !== textarea.selectionEnd) return false;
-
-    const { start, text } = getLineBeforeCursor(textarea);
-    const markerInfo = getContinuationMarker(text);
-    if (!markerInfo) return false;
-
-    event.preventDefault();
-    recordHistory();
-
-    if (markerInfo.content.trim() === '') {
-        replaceEditorRange(textarea, start, textarea.selectionStart, '', 0);
-        return true;
-    }
-
-    replaceEditorRange(textarea, textarea.selectionStart, textarea.selectionEnd, `\n${markerInfo.prefix}${markerInfo.marker}`);
-    return true;
-}
-
-// --- Table Editor ---
+// --- Enhanced Table Editor with Clipboard Parsing ---
 let tableEditorState = {
     rows: 3,
     cols: 3,
-    alignment: [], 
-    data: [], 
-    styles: [] 
+    alignment: ['left', 'left', 'left'], 
+    data: [['Header 1', 'Header 2', 'Header 3'], ['Text', 'Text', 'Text'], ['Text', 'Text', 'Text']], 
+    styles: Array(3).fill().map(() => Array(3).fill({})) 
 };
 let selectedCell = null;
 
 function insertTable() {
-    // 每次都检测并插入到正确父节点
     let dialog = document.getElementById('table-editor-dialog');
-    if (dialog) {
-        // 若已存在，先移除
-        dialog.parentNode && dialog.parentNode.removeChild(dialog);
+    if (dialog && dialog.parentNode) {
+        dialog.parentNode.removeChild(dialog);
     }
     initTableEditor();
 
-    // Reset State
     tableEditorState = {
         rows: 3,
         cols: 3,
@@ -1383,7 +1642,6 @@ function insertTable() {
         styles: Array(3).fill().map(() => Array(3).fill({}))
     };
 
-    // Update UI inputs
     const rowsInput = document.getElementById('table-rows');
     const colsInput = document.getElementById('table-cols');
     if(rowsInput) rowsInput.value = 3;
@@ -1394,60 +1652,61 @@ function insertTable() {
 }
 
 function initTableEditor() {
-    // Inject Styles
-    const style = document.createElement('style');
-    style.innerHTML = `
-        #table-editor-grid {
-            display: grid;
-            gap: 8px;
-            overflow: auto;
-            max-height: 400px;
-            padding: 10px;
-            background: rgba(0,0,0,0.02);
-            border: 1px solid rgba(0,0,0,0.1);
-        }
-        .table-cell-input, .table-col-control {
-            width: 100%;
-            min-width: 80px;
-            box-sizing: border-box;
-        }
-        .table-cell-input {
-            border: 1px solid rgba(0,0,0,0.1);
-            padding: 8px;
-            border-radius: 4px;
-            background: #fff;
-            transition: all 0.2s;
-        }
-        .table-cell-input:focus {
-            border-color: var(--color-theme-accent);
-            box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
-        }
-        .table-col-control {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            padding: 8px;
-            background: rgba(0,0,0,0.05);
-            border-radius: 4px;
-            user-select: none;
-        }
-        .table-col-control:hover {
-            background: rgba(0,0,0,0.1);
-        }
-        .mdui-theme-layout-dark .table-cell-input {
-            background: #424242;
-            border-color: rgba(255,255,255,0.1);
-            color: #fff;
-        }
-        .mdui-theme-layout-dark #table-editor-grid {
-            background: rgba(255,255,255,0.02);
-            border-color: rgba(255,255,255,0.1);
-        }
-    `;
-    document.head.appendChild(style);
+    if (!document.getElementById('table-editor-style')) {
+        const style = document.createElement('style');
+        style.id = 'table-editor-style';
+        style.innerHTML = `
+            #table-editor-grid {
+                display: grid;
+                gap: 8px;
+                overflow: auto;
+                max-height: 400px;
+                padding: 10px;
+                background: rgba(0,0,0,0.02);
+                border: 1px solid rgba(0,0,0,0.1);
+            }
+            .table-cell-input, .table-col-control {
+                width: 100%;
+                min-width: 80px;
+                box-sizing: border-box;
+            }
+            .table-cell-input {
+                border: 1px solid rgba(0,0,0,0.1);
+                padding: 8px;
+                border-radius: 4px;
+                background: #fff;
+                transition: all 0.2s;
+            }
+            .table-cell-input:focus {
+                border-color: var(--color-theme-accent);
+                box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+            }
+            .table-col-control {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                padding: 8px;
+                background: rgba(0,0,0,0.05);
+                border-radius: 4px;
+                user-select: none;
+            }
+            .table-col-control:hover {
+                background: rgba(0,0,0,0.1);
+            }
+            .mdui-theme-layout-dark .table-cell-input {
+                background: #424242;
+                border-color: rgba(255,255,255,0.1);
+                color: #fff;
+            }
+            .mdui-theme-layout-dark #table-editor-grid {
+                background: rgba(255,255,255,0.02);
+                border-color: rgba(255,255,255,0.1);
+            }
+        `;
+        document.head.appendChild(style);
+    }
 
-    // Inject Dialog HTML
     const dialogHtml = `
     <div class="mdui-dialog" id="table-editor-dialog" style="max-width: 95vw; width: 900px;">
         <div class="mdui-dialog-title">插入表格</div>
@@ -1471,6 +1730,9 @@ function initTableEditor() {
                     <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-ripple mdui-color-theme-accent" id="table-update-dim">
                         <i class="mdui-icon material-icons mdui-icon-left">grid_on</i> 应用网格
                     </button>
+                    <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-ripple mdui-m-l-1" id="table-paste-btn" type="button" mdui-tooltip="{content: '从剪贴板读取并自动解析 HTML/Excel/TSV/Markdown 表格'}">
+                        <i class="mdui-icon material-icons mdui-icon-left">content_paste</i> 粘贴表格
+                    </button>
                 </div>
             </div>
 
@@ -1491,7 +1753,7 @@ function initTableEditor() {
                     <i class="mdui-icon material-icons">format_clear</i>
                  </button>
                  <div class="mdui-toolbar-spacer"></div>
-                 <span class="mdui-typo-caption mdui-text-color-grey-600">点击列头切换对齐方式</span>
+                 <span class="mdui-typo-caption mdui-text-color-grey-600">点击列头切换对齐 / 支持 Ctrl+V 快捷粘贴表格</span>
             </div>
 
             <!-- Grid -->
@@ -1504,28 +1766,215 @@ function initTableEditor() {
         </div>
     </div>
     `;
-    
 
     const div = document.createElement('div');
     div.innerHTML = dialogHtml;
-    // 判断是否全屏，将对话框插入到全屏元素内，否则插入body
+    
     let parent = document.body;
-    // 兼容各浏览器全屏API
     const fullscreenElem = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
     if (fullscreenElem && fullscreenElem.id === 'editor-card') {
         parent = fullscreenElem;
     }
     parent.appendChild(div.firstElementChild);
 
-    // Event Listeners
     document.getElementById('table-update-dim').addEventListener('click', () => {
         const r = parseInt(document.getElementById('table-rows').value) || 1;
         const c = parseInt(document.getElementById('table-cols').value) || 1;
         updateTableDims(r, c);
     });
-    
+
+    document.getElementById('table-paste-btn').addEventListener('click', parseAndLoadClipboardTable);
     document.getElementById('apply-style-btn').addEventListener('click', applyStyleToSelected);
     document.getElementById('clear-style-btn').addEventListener('click', clearStyleSelected);
+
+    // Support Ctrl+V paste inside dialog
+    const dialogElem = document.getElementById('table-editor-dialog');
+    if (dialogElem) {
+        dialogElem.addEventListener('paste', (e) => {
+            // If focused on an input inside dialog, allow normal text editing unless entire table is copied
+            const target = e.target;
+            const clipboardData = e.clipboardData;
+            if (!clipboardData) return;
+            const html = clipboardData.getData('text/html');
+            const text = clipboardData.getData('text/plain');
+            if ((html && html.includes('<table')) || (text && (text.includes('\t') || (text.includes('|') && text.includes('\n'))))) {
+                e.preventDefault();
+                parseAndApplyTableData(html, text);
+            }
+        });
+    }
+}
+
+async function parseAndLoadClipboardTable() {
+    try {
+        let text = '';
+        let html = '';
+        if (navigator.clipboard && navigator.clipboard.read) {
+            try {
+                const items = await navigator.clipboard.read();
+                for (const item of items) {
+                    if (item.types.includes('text/html')) {
+                        const blob = await item.getType('text/html');
+                        html = await blob.text();
+                    }
+                    if (item.types.includes('text/plain')) {
+                        const blob = await item.getType('text/plain');
+                        text = await blob.text();
+                    }
+                }
+            } catch (e) {
+                text = await navigator.clipboard.readText();
+            }
+        } else if (navigator.clipboard && navigator.clipboard.readText) {
+            text = await navigator.clipboard.readText();
+        }
+
+        if (!html && !text) {
+            mdui.snackbar({ message: '剪贴板为空或未授予读取权限' });
+            return;
+        }
+
+        parseAndApplyTableData(html, text);
+    } catch (err) {
+        console.error('Failed to read table from clipboard', err);
+        mdui.snackbar({ message: `读取剪贴板失败: ${err.message}` });
+    }
+}
+
+function parseAndApplyTableData(html, text) {
+    let parsed = null;
+    if (html && html.includes('<table')) {
+        parsed = parseHtmlTable(html);
+    }
+    if (!parsed && text) {
+        parsed = parseTextTable(text);
+    }
+
+    if (parsed && parsed.data.length > 0 && parsed.cols > 0) {
+        tableEditorState.rows = parsed.rows;
+        tableEditorState.cols = parsed.cols;
+        tableEditorState.data = parsed.data;
+        tableEditorState.alignment = parsed.alignment || Array(parsed.cols).fill('left');
+        tableEditorState.styles = parsed.styles || Array(parsed.rows).fill().map(() => Array(parsed.cols).fill({}));
+
+        const rowsInput = document.getElementById('table-rows');
+        const colsInput = document.getElementById('table-cols');
+        if (rowsInput) rowsInput.value = parsed.rows;
+        if (colsInput) colsInput.value = parsed.cols;
+
+        renderTableEditor();
+        updateTableDims(parsed.rows, parsed.cols);
+        mdui.snackbar({ message: `已成功读取剪贴板表格 (${parsed.rows} 行 x ${parsed.cols} 列)` });
+    } else {
+        mdui.snackbar({ message: '未能识别剪贴板中的表格内容' });
+    }
+}
+
+function parseHtmlTable(html) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const table = doc.querySelector('table');
+    if (!table) return null;
+
+    const trs = Array.from(table.querySelectorAll('tr'));
+    if (!trs.length) return null;
+
+    const data = [];
+    const styles = [];
+    let maxCols = 0;
+
+    trs.forEach((tr) => {
+        const rowData = [];
+        const rowStyles = [];
+        const cells = Array.from(tr.querySelectorAll('th, td'));
+        if (cells.length > maxCols) maxCols = cells.length;
+
+        cells.forEach((cell) => {
+            rowData.push(cell.innerText.trim());
+            const cellStyle = {};
+            const fg = cell.style.color;
+            const bg = cell.style.backgroundColor;
+            if (fg) cellStyle.color = fg;
+            if (bg) cellStyle.bg = bg;
+            rowStyles.push(cellStyle);
+        });
+
+        data.push(rowData);
+        styles.push(rowStyles);
+    });
+
+    data.forEach((row, i) => {
+        while (row.length < maxCols) {
+            row.push('');
+            styles[i].push({});
+        }
+    });
+
+    return {
+        rows: data.length,
+        cols: maxCols,
+        data: data,
+        styles: styles,
+        alignment: Array(maxCols).fill('left')
+    };
+}
+
+function parseTextTable(text) {
+    const lines = text.trim().split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    if (!lines.length) return null;
+
+    // Check Markdown table
+    if (lines.length >= 2 && lines.some(l => l.includes('|'))) {
+        const mdRows = [];
+        let alignments = [];
+        lines.forEach(line => {
+            if (/^\|?(\s*:?-+:?\s*\|)+\s*:?-+:?\s*\|?$/.test(line)) {
+                const parts = line.replace(/^\|/, '').replace(/\|$/, '').split('|').map(s => s.trim());
+                alignments = parts.map(p => {
+                    if (p.startsWith(':') && p.endsWith(':')) return 'center';
+                    if (p.endsWith(':')) return 'right';
+                    return 'left';
+                });
+                return;
+            }
+            if (line.includes('|')) {
+                const cells = line.replace(/^\|/, '').replace(/\|$/, '').split('|').map(c => c.trim().replace(/\\\|/g, '|'));
+                mdRows.push(cells);
+            }
+        });
+
+        if (mdRows.length) {
+            let maxCols = Math.max(...mdRows.map(r => r.length));
+            mdRows.forEach(r => { while (r.length < maxCols) r.push(''); });
+            while (alignments.length < maxCols) alignments.push('left');
+            return {
+                rows: mdRows.length,
+                cols: maxCols,
+                data: mdRows,
+                styles: Array(mdRows.length).fill().map(() => Array(maxCols).fill({})),
+                alignment: alignments
+            };
+        }
+    }
+
+    // Check TSV or CSV
+    const isTSV = lines.some(l => l.includes('\t'));
+    const delimiter = isTSV ? '\t' : (lines.some(l => l.includes(',')) ? ',' : null);
+
+    if (delimiter) {
+        const data = lines.map(l => l.split(delimiter).map(c => c.trim().replace(/^"|"$/g, '')));
+        let maxCols = Math.max(...data.map(r => r.length));
+        data.forEach(r => { while (r.length < maxCols) r.push(''); });
+        return {
+            rows: data.length,
+            cols: maxCols,
+            data: data,
+            styles: Array(data.length).fill().map(() => Array(maxCols).fill({})),
+            alignment: Array(maxCols).fill('left')
+        };
+    }
+
+    return null;
 }
 
 function updateTableDims(rows, cols) {
@@ -1554,17 +2003,14 @@ function updateTableDims(rows, cols) {
     
     renderTableEditor();
 
-    // Resize Dialog to fit content
     const dialog = document.getElementById('table-editor-dialog');
     if (dialog) {
         const winW = window.innerWidth;
         const winH = window.innerHeight;
         
-        // Calculate optimal width: cols * 120px (min-width 80 + padding) + extra for dialog padding
         let newW = Math.max(600, cols * 120 + 60);
         if (newW > winW * 0.95) newW = winW * 0.95;
         
-        // Calculate optimal height: rows * 60px + header/footer/controls (~250px)
         let newH = Math.max(500, rows * 60 + 250);
         if (newH > winH * 0.9) newH = winH * 0.9;
         
@@ -1576,7 +2022,6 @@ function updateTableDims(rows, cols) {
             content.style.height = newH + 'px';
         }
         
-        // Trigger MDUI update to re-center
         mdui.mutation();
         window.dispatchEvent(new Event('resize'));
     }
@@ -1584,10 +2029,10 @@ function updateTableDims(rows, cols) {
 
 function renderTableEditor() {
     const grid = document.getElementById('table-editor-grid');
+    if (!grid) return;
     grid.style.gridTemplateColumns = `repeat(${tableEditorState.cols}, 1fr)`;
     grid.innerHTML = '';
 
-    // Render Column Controls
     for(let j=0; j<tableEditorState.cols; j++) {
         const align = tableEditorState.alignment[j];
         let icon = 'format_align_left';
@@ -1602,7 +2047,6 @@ function renderTableEditor() {
         grid.appendChild(colHeader);
     }
 
-    // Render Cells
     for(let i=0; i<tableEditorState.rows; i++) {
         for(let j=0; j<tableEditorState.cols; j++) {
             const cell = document.createElement('input');
@@ -1653,16 +2097,14 @@ function clearStyleSelected() {
 
 function confirmInsertTable() {
     let md = '';
-    const { rows, cols, data, alignment, styles } = tableEditorState;
+    const { rows, cols, alignment } = tableEditorState;
 
-    // Header Row (Row 0)
     md += '|';
     for(let j=0; j<cols; j++) {
         md += ` ${formatCell(0, j)} |`;
     }
     md += '\n|';
     
-    // Separator Row
     for(let j=0; j<cols; j++) {
         const align = alignment[j];
         if(align === 'left') md += ' :--- |';
@@ -1671,7 +2113,6 @@ function confirmInsertTable() {
     }
     md += '\n';
 
-    // Data Rows
     for(let i=1; i<rows; i++) {
         md += '|';
         for(let j=0; j<cols; j++) {
@@ -1686,7 +2127,6 @@ function confirmInsertTable() {
 
 function formatCell(r, c) {
     let text = tableEditorState.data[r][c] || ' ';
-    // Escape pipes
     text = text.replace(/\|/g, '\\|');
     
     const style = tableEditorState.styles[r][c];
@@ -1700,68 +2140,12 @@ function formatCell(r, c) {
     return text;
 }
 
-function setFontSize(size) {
-    insertText(`<span style="font-size: ${size};">`, '</span>');
-}
-
-function setColor(color) {
-    insertText(`<span style="color: ${color};">`, '</span>');
-}
-
-function setAlign(align) {
-    insertText(`\n<div style="text-align: ${align};">\n`, '\n</div>\n');
-}
-
-function clearFormatting() {
-    recordHistory();
-    const textarea = document.getElementById('editor-content');
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const text = textarea.value;
-    const selection = text.substring(start, end);
-    
-    // Remove span and div tags
-    const newText = selection.replace(/<\/?(span|div)[^>]*>/gi, '');
-    
-    textarea.value = text.substring(0, start) + newText + text.substring(end);
-    
-    textarea.selectionStart = start;
-    textarea.selectionEnd = start + newText.length;
-    textarea.focus();
-    updatePreview();
-    triggerAutoSave();
-}
-
-function togglePreview() {
-    const editorCol = document.getElementById('editor-col');
-    const previewCol = document.getElementById('preview-content');
-    
-    if (previewCol.style.display === 'none') {
-        // Show Preview, Hide Editor
-        editorCol.style.display = 'none';
-        previewCol.style.display = 'block';
-    } else {
-        // Show Editor, Hide Preview
-        editorCol.style.display = 'block';
-        previewCol.style.display = 'none';
-    }
-}
-
-async function handleDrop(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    document.getElementById('editor-content').classList.remove('editor-drag-active');
-    
-    const files = e.dataTransfer.files;
-    if (!files.length) return;
-    await processImageFiles(files);
-}
-
+// --- Image Handling ---
 async function handleImageSelect(e) {
     const files = e.target.files;
     if (!files.length) return;
     await processImageFiles(files);
-    e.target.value = ''; // Reset input
+    e.target.value = '';
 }
 
 async function handleThumbnailSelect(e) {
@@ -1795,7 +2179,6 @@ async function handleThumbnailSelect(e) {
 }
 
 async function processImageFiles(files) {
-    recordHistory();
     const slug = document.getElementById('post-slug').value || 'untitled';
     const selectedText = getEditorSelectionText();
     
@@ -1803,17 +2186,14 @@ async function processImageFiles(files) {
         const file = files[i];
         if (!file.type.startsWith('image/')) continue;
 
-        // Generate base filename
         const ext = file.name.split('.').pop();
         const timestamp = Date.now();
         const baseName = `img_${timestamp}_${i}`;
         const originalFilename = `${baseName}.${ext}`;
         const compressedFilename = `${baseName}_compressed.jpg`;
 
-        // Store Original
         imageAssets[originalFilename] = file;
 
-        // Compress
         try {
             const options = {
                 maxSizeMB: 0.5,
@@ -1825,11 +2205,8 @@ async function processImageFiles(files) {
             const compressedFile = await imageCompression(file, options);
             const dimensions = await getBlobDimensions(compressedFile);
             
-            // Store Compressed
             imageAssets[compressedFilename] = compressedFile;
             
-            // Insert HTML image tag
-            // Path convention: /images/blog/<slug>/<filename>
             const imgPath = `${SITE_ORIGIN}/images/blog/${slug}/${compressedFilename}`;
             const imageHtml = buildInsertedImageHtml(imgPath, dimensions.width, dimensions.height, selectedText);
             insertText(imageHtml, '');
@@ -1843,16 +2220,14 @@ async function processImageFiles(files) {
     updatePreview();
 }
 
+// --- Import & Export ---
 async function handleZipImport(e) {
     const file = e.target.files[0];
     if (!file) return;
-    
-    recordHistory();
 
     try {
         const zip = await JSZip.loadAsync(file);
         
-        // Find .md file
         let mdFile = null;
         let mdContent = '';
         
@@ -1868,7 +2243,6 @@ async function handleZipImport(e) {
         
         mdContent = await mdFile.async('string');
         
-        // Parse Front Matter
         const fmRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
         const match = mdContent.match(fmRegex);
         
@@ -1876,7 +2250,6 @@ async function handleZipImport(e) {
             const fmText = match[1];
             const content = match[2];
             
-            // Simple YAML parser (assuming standard format generated by this tool)
             const getVal = (key) => {
                 const regex = new RegExp(`^${key}:\\s*(.*)$`, 'm');
                 const m = fmText.match(regex);
@@ -1890,8 +2263,6 @@ async function handleZipImport(e) {
             };
 
             document.getElementById('post-title').value = getVal('title') || '';
-            // Slug from filename or title? Better from filename if possible, but here we rely on user input or existing.
-            // Let's try to extract slug from zip path: source/_posts/slug.md
             const slugMatch = mdFile.name.match(/source\/_posts\/(.*)\.md/);
             document.getElementById('post-slug').value = slugMatch ? slugMatch[1] : (getVal('title') || '');
             
@@ -1902,7 +2273,6 @@ async function handleZipImport(e) {
             document.getElementById('post-donate').checked = getVal('donate') !== 'false';
             document.getElementById('post-toc').checked = getVal('toc') !== 'false';
             document.getElementById('post-comments').checked = getVal('comments') !== 'false';
-            // top is usually not there unless true
             document.getElementById('post-top').checked = getVal('top') === 'true';
             
             document.getElementById('post-author').value = getVal('author') || '';
@@ -1916,12 +2286,11 @@ async function handleZipImport(e) {
             document.getElementById('post-qrcode').checked = getVal('qrcode') !== 'false';
             document.getElementById('post-thislink').checked = getVal('thislink') !== 'false';
 
-            document.getElementById('editor-content').value = content.trim();
+            setEditorContent(content.trim());
         } else {
-            document.getElementById('editor-content').value = mdContent;
+            setEditorContent(mdContent);
         }
         
-        // Load Images
         imageAssets = {};
         const imgPromises = [];
         zip.forEach((relativePath, zipEntry) => {
@@ -1954,7 +2323,7 @@ async function exportPost() {
     const slug = document.getElementById('post-slug').value || 'untitled';
     const tags = document.getElementById('post-tags').value.split(',').map(t => t.trim()).filter(t => t);
     const categories = document.getElementById('post-categories').value.split(',').map(c => c.trim()).filter(c => c);
-    const content = document.getElementById('editor-content').value;
+    const content = getEditorContent();
     
     const donate = document.getElementById('post-donate').checked;
     const toc = document.getElementById('post-toc').checked;
@@ -1973,7 +2342,6 @@ async function exportPost() {
     const qrcode = document.getElementById('post-qrcode').checked;
     const thislink = document.getElementById('post-thislink').checked;
 
-    // Generate Front Matter
     const dateStr = customDate || new Date().toISOString().replace('T', ' ').substring(0, 19);
     const uuid = generateUUID();
     
@@ -2001,13 +2369,10 @@ comments: ${comments}
     
     frontMatter += `---\n\n${content}\n`;
 
-    // Add Post File
     zip.file(`source/_posts/${slug}.md`, frontMatter);
     
-    // Add Images
     const imgFolder = zip.folder(`source/images/blog/${slug}`);
     
-    // Extracted target thumbnail filename
     let thumbnailFilename = '';
     if (thumbnail && thumbnail.startsWith(`/images/blog/${slug}/`)) {
         thumbnailFilename = thumbnail.split('/').pop();
@@ -2016,11 +2381,9 @@ comments: ${comments}
     for (const [filename, blob] of Object.entries(imageAssets)) {
         let shouldInclude = false;
         
-        // Match in markdown content or explicitly set as thumbnail
         if (content.includes(filename) || filename === thumbnailFilename) {
             shouldInclude = true;
         } else {
-            // Check if it's an original file whose compressed version is used or is the thumbnail
             const lastDotIndex = filename.lastIndexOf('.');
             if (lastDotIndex !== -1) {
                 const nameWithoutExt = filename.substring(0, lastDotIndex);
@@ -2036,7 +2399,6 @@ comments: ${comments}
         }
     }
     
-    // Generate Zip
     const contentZip = await zip.generateAsync({type:"blob"});
     saveAs(contentZip, `${slug}-blog-post.zip`);
     
@@ -2056,7 +2418,7 @@ function resetEditor() {
         applyLicenseFrontMatterValue('');
         document.getElementById('post-lang').value = 'zh-cn';
         document.getElementById('post-wechat_sync').checked = true;
-        document.getElementById('editor-content').value = '';
+        setEditorContent('');
         
         document.getElementById('post-donate').checked = true;
         document.getElementById('post-toc').checked = true;
@@ -2072,8 +2434,10 @@ function resetEditor() {
         _cachedMaterialThumbnail = null;
         _lastHeaderHtml = '';
         _lastHeaderThumbnail = '';
-        idbKeyval.del(DB_KEY_CONTENT);
-        idbKeyval.del(DB_KEY_IMAGES);
+        if (typeof idbKeyval !== 'undefined') {
+            idbKeyval.del(DB_KEY_CONTENT);
+            idbKeyval.del(DB_KEY_IMAGES);
+        }
         updatePreviewAll();
         mdui.updateTextFields();
     }
@@ -2087,32 +2451,34 @@ function toggleFullscreen() {
     const elem = document.getElementById('editor-card');
     const icon = document.getElementById('fullscreen-icon');
     
-    if (!document.fullscreenElement) {
+    if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
         if (elem.requestFullscreen) {
             elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { /* Safari */
+        } else if (elem.webkitRequestFullscreen) {
             elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* IE11 */
+        } else if (elem.msRequestFullscreen) {
             elem.msRequestFullscreen();
         }
-        icon.innerText = 'fullscreen_exit';
-        elem.style.height = '100vh'; // Force full height
+        if (icon) icon.innerText = 'fullscreen_exit';
+        elem.style.height = '100vh';
         elem.style.borderRadius = '0';
     } else {
         if (document.exitFullscreen) {
             document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) { /* Safari */
+        } else if (document.webkitExitFullscreen) {
             document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) { /* IE11 */
+        } else if (document.msExitFullscreen) {
             document.msExitFullscreen();
         }
-        icon.innerText = 'fullscreen';
-        elem.style.height = '70vh'; // Restore original height
+        if (icon) icon.innerText = 'fullscreen';
+        elem.style.height = '70vh';
         elem.style.borderRadius = '';
     }
+    setTimeout(() => {
+        if (cmEditor) cmEditor.refresh();
+    }, 100);
 }
 
-// Listen for fullscreen change events (e.g. user presses Esc)
 document.addEventListener('fullscreenchange', handleFullscreenChange);
 document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
 document.addEventListener('mozfullscreenchange', handleFullscreenChange);
@@ -2123,21 +2489,25 @@ function handleFullscreenChange() {
     const icon = document.getElementById('fullscreen-icon');
     
     if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
-        icon.innerText = 'fullscreen';
-        elem.style.height = '70vh';
-        elem.style.borderRadius = '';
+        if (icon) icon.innerText = 'fullscreen';
+        if (elem) {
+            elem.style.height = '70vh';
+            elem.style.borderRadius = '';
+        }
     } else {
-        icon.innerText = 'fullscreen_exit';
-        elem.style.height = '100vh';
-        elem.style.borderRadius = '0';
+        if (icon) icon.innerText = 'fullscreen_exit';
+        if (elem) {
+            elem.style.height = '100vh';
+            elem.style.borderRadius = '0';
+        }
     }
+    setTimeout(() => {
+        if (cmEditor) cmEditor.refresh();
+    }, 100);
 }
 
 // --- GitHub Submission ---
 const WORKER_URL = 'https://pr-helper.cf.miniproj.stevezmt.top'; 
-// Replace with your Worker URL
-// REPO_OWNER and REPO_NAME are now enforced by the Worker, but we keep them here if needed for other logic or future use.
-// The Worker will ignore these if sent in the body, but for compatibility we can leave them or remove them from the body payload.
 
 async function submitToGitHub() {
     const token = localStorage.getItem('github_token');
@@ -2152,16 +2522,14 @@ async function submitToGitHub() {
     const defaultMsg = `发布 ${slug}`;
     
     const message = await showCommitDialog(defaultMsg);
-    if (!message) return; // User cancelled
+    if (!message) return;
 
-    // Prepare files
     const files = [];
     
-    // 1. Markdown
     const title = document.getElementById('post-title').value || 'Untitled';
     const tags = document.getElementById('post-tags').value.split(',').map(t => t.trim()).filter(t => t);
     const categories = document.getElementById('post-categories').value.split(',').map(c => c.trim()).filter(c => c);
-    const content = document.getElementById('editor-content').value;
+    const content = getEditorContent();
     
     const donate = document.getElementById('post-donate').checked;
     const toc = document.getElementById('post-toc').checked;
@@ -2213,7 +2581,6 @@ comments: ${comments}
         encoding: 'utf-8'
     });
 
-    // 2. Images
     let thumbnailFilename = '';
     if (thumbnail && thumbnail.startsWith(`/images/blog/${slug}/`)) {
         thumbnailFilename = thumbnail.split('/').pop();
@@ -2225,7 +2592,6 @@ comments: ${comments}
         if (content.includes(filename) || filename === thumbnailFilename) {
             shouldInclude = true;
         } else {
-            // Check if it's an original file whose compressed version is used
             const lastDotIndex = filename.lastIndexOf('.');
             if (lastDotIndex !== -1) {
                 const nameWithoutExt = filename.substring(0, lastDotIndex);
@@ -2246,7 +2612,6 @@ comments: ${comments}
         }
     }
 
-    // Send to Worker
     const snackbar = mdui.snackbar({message: '正在提交到 GitHub...', timeout: 0});
     
     try {
@@ -2257,7 +2622,6 @@ comments: ${comments}
                 token,
                 files,
                 message
-                // owner and repo are removed from payload as they are enforced by server
             })
         });
         
@@ -2340,7 +2704,3 @@ function blobToBase64(blob) {
     });
 }
 </script>
-
-
-
-

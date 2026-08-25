@@ -1,12 +1,12 @@
-
+'use strict';
 
 /**
- * 本地诊断脚本
+ * 微信公众号同步 - 本地排版与配置诊断脚本
  * 
  * 用途：
- * - 验证清单生成的正确性
- * - 验证 Markdown 渲染和 HTML 清洗
- * - 验证图片提取，无需真实的微信凭据
+ * - 验证 Markdown 渲染、语法高亮与微信排版内联样式
+ * - 验证图片引用提取与外链脚注生成
+ * - 验证文章解析，无需真实的微信凭据
  * 
  * 用法：
  *   npm run wechat:diagnose
@@ -14,86 +14,75 @@
  *   node scripts/wechat-sync/diagnose.js
  */
 
-'use strict';
-
 const fs = require('fs');
 const path = require('path');
 const { MarkdownRenderer } = require('./markdown-renderer');
 
-const baseDir = process.cwd();
-const manifestFile = path.join(baseDir, '.github/wechat-posts-to-sync.json');
+function runDiagnosis() {
+  const baseDir = process.cwd();
+  const sourceDir = path.join(baseDir, 'source');
+  const postsDir = path.join(sourceDir, '_posts');
 
-console.log(`
+  console.log(`
 ╔════════════════════════════════════════════════════════════╗
 ║          WeChat Sync - Local Diagnosis Report              ║
 ╚════════════════════════════════════════════════════════════╝
 `);
 
-// 1. 检查清单文件
-console.log('📋 Checking manifest file...');
-if (!fs.existsSync(manifestFile)) {
-  console.error(`❌ Manifest file not found: ${manifestFile}`);
-  console.error('   Run "npm run build" first to generate the manifest.');
-  process.exit(1);
-}
-
-const manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
-console.log(`✅ Found manifest with ${manifest.total_posts} posts`);
-
-if (manifest.total_posts === 0) {
-  console.warn('⚠️  No posts to sync');
-  process.exit(0);
-}
-
-// 2. 测试 Markdown 渲染
-console.log('\n📝 Testing Markdown rendering on first 3 posts...');
-const renderer = new MarkdownRenderer({
-  sourceDir: path.join(baseDir, 'source'),
-  logger: console,
-});
-
-for (let i = 0; i < Math.min(3, manifest.posts.length); i++) {
-  const post = manifest.posts[i];
-  try {
-    console.log(`\n  Post ${i + 1}: "${post.title}"`);
-    const { html, images } = renderer.readAndRender(post.source_path);
-    console.log(`    ✅ Rendered HTML: ${html.length} chars`);
-    console.log(`    ✅ Found images: ${images.length}`);
-    
-    if (images.length > 0) {
-      images.forEach(img => {
-        console.log(`       - ${img}`);
-      });
-    }
-    
-    // 验证 HTML 清洗
-    if (html.includes('<script>') || html.includes('<style>')) {
-      console.warn(`    ⚠️  HTML contains unsafe tags`);
-    } else {
-      console.log(`    ✅ HTML sanitized (no scripts/styles)`);
-    }
-  } catch (err) {
-    console.error(`    ❌ Error: ${err.message}`);
+  if (!fs.existsSync(postsDir)) {
+    console.error(`❌ Posts directory not found: ${postsDir}`);
+    process.exit(1);
   }
+
+  const files = fs.readdirSync(postsDir).filter(f => /\.(md|markdown)$/i.test(f));
+  console.log(`📋 Found ${files.length} posts in source/_posts/`);
+
+  if (files.length === 0) {
+    console.warn('⚠️  No posts found');
+    process.exit(0);
+  }
+
+  // 测试 Markdown 渲染
+  console.log('\n📝 Testing Markdown & Typography rendering on first 3 posts...');
+  const renderer = new MarkdownRenderer({
+    sourceDir: sourceDir,
+    logger: console,
+  });
+
+  const testCount = Math.min(3, files.length);
+  for (let i = 0; i < testCount; i++) {
+    const file = files[i];
+    try {
+      console.log(`\n  Post ${i + 1}: "${file}"`);
+      const { html, images } = renderer.readAndRender(path.join('_posts', file));
+      console.log(`    ✅ Rendered HTML: ${html.length} chars`);
+      console.log(`    ✅ Found images: ${images.length}`);
+      
+      if (images.length > 0) {
+        images.slice(0, 3).forEach(img => {
+          console.log(`       - ${img}`);
+        });
+        if (images.length > 3) {
+          console.log(`       ... and ${images.length - 3} more`);
+        }
+      }
+
+      // 验证样式与脚注
+      const hasFootnotes = html.includes('参考链接');
+      const hasCodeHighlight = html.includes('color: #');
+      console.log(`    ✅ Code highlighting: ${hasCodeHighlight ? 'Active' : 'None'}`);
+      console.log(`    ✅ Footnotes generated: ${hasFootnotes ? 'Yes' : 'No'}`);
+    } catch (err) {
+      console.error(`    ❌ Error: ${err.message}`);
+    }
+  }
+
+  console.log(`\n✨ Diagnosis passed. Ready for WeChat sync!`);
 }
 
-// 3. 统计信息
-console.log(`\n📊 Summary:`);
-console.log(`  Total posts to sync: ${manifest.total_posts}`);
+// 仅在直接执行该脚本时运行，防止 Hexo 启动时自动触发
+if (require.main === module) {
+  runDiagnosis();
+}
 
-const totalImages = manifest.posts.reduce((sum, p) => sum + (p.images ? p.images.length : 0), 0);
-console.log(`  Total images to upload: ${totalImages}`);
-
-const withExcerpt = manifest.posts.filter(p => p.excerpt).length;
-console.log(`  Posts with excerpt: ${withExcerpt}`);
-
-const withCategories = manifest.posts.filter(p => p.categories && p.categories.length > 0).length;
-console.log(`  Posts with categories: ${withCategories}`);
-
-// 4. 诊断结论
-console.log(`\n✨ Diagnosis passed. Ready for WeChat sync!`);
-console.log(`\nNext steps:`);
-console.log(`  1. Set WECHAT_APPID and WECHAT_APPSECRET environment variables`);
-console.log(`  2. Configure IP whitelist in WeChat Developer Platform`);
-console.log(`  3. Run: npm run wechat:sync`);
-console.log(`\nOr set up GitHub Secrets and run the workflow.`);
+module.exports = { runDiagnosis };
