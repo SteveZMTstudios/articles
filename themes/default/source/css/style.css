@@ -966,10 +966,8 @@ img.avatar-animation:hover {
 }
 
 #toc-fab-btn {
-  background-color: rgba(39, 163, 235, 0.231);
-
   pointer-events: auto;
-  transform: translateX(50%) rotate(180deg);
+  transform: translateX(35%) rotate(180deg);
   transform-origin: center center;
   transition: transform .28s cubic-bezier(0.4, 0, 0.2, 1), box-shadow .28s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
@@ -978,7 +976,8 @@ img.avatar-animation:hover {
 #toc-fab-btn:hover,
 #toc-fab-btn:focus,
 #toc-fab-btn.is-open {
-  transform: translateX(0) rotate(0deg);
+  transform: translateX(0) rotate(180deg);
+  /* transform: translateX(0); */
 }
 
 #toc-menu {
