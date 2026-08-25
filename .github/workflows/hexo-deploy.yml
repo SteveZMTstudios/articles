@@ -28,6 +28,31 @@ jobs:
       WECHAT_APPSECRET: ${{ secrets.WECHAT_APPSECRET }}
 
     steps:
+
+    - name: Detect GitHub Actions Runner IP
+      id: detect-ip
+      if: ${{ env.WECHAT_APPID != '' && env.WECHAT_APPSECRET != '' }}
+      run: |
+        RUNNER_IP=$(curl -s https://api.ipify.org)
+        echo "runner_ip=$RUNNER_IP" >> $GITHUB_OUTPUT
+        echo ""
+        echo "=========================================="
+        echo "⚠️  WeChat IP Whitelist Required"
+        echo "=========================================="
+        echo ""
+        echo "Current GitHub Actions Runner IP: $RUNNER_IP"
+        echo ""
+        echo "Action Required (Next 3 minutes):"
+        echo "1. Log in to WeChat Developer Platform at https://developers.weixin.qq.com/platform"
+        echo "2. Navigate: My Services → Official Account → Development Keys"
+        echo "3. Find API IP Whitelist section and click Add"
+        echo "4. Enter this IP: $RUNNER_IP"
+        echo "5. Save and wait for this workflow to auto-retry in 3 minutes"
+        echo ""
+        echo "⏳  Workflow will automatically retry sync after 3 minutes."
+        echo "=========================================="
+        echo ""
+
     - name: Checkout repository
       uses: actions/checkout@v5
 
@@ -54,29 +79,6 @@ jobs:
         # Use npm ci to install exact versions from package-lock.json for reproducibility
         npm ci || npm install
     
-    - name: Detect GitHub Actions Runner IP
-      id: detect-ip
-      if: ${{ env.WECHAT_APPID != '' && env.WECHAT_APPSECRET != '' }}
-      run: |
-        RUNNER_IP=$(curl -s https://api.ipify.org)
-        echo "runner_ip=$RUNNER_IP" >> $GITHUB_OUTPUT
-        echo ""
-        echo "=========================================="
-        echo "⚠️  WeChat IP Whitelist Required"
-        echo "=========================================="
-        echo ""
-        echo "Current GitHub Actions Runner IP: $RUNNER_IP"
-        echo ""
-        echo "Action Required (Next 3 minutes):"
-        echo "1. Log in to WeChat Developer Platform"
-        echo "2. Navigate: My Services → Official Account → Development Keys"
-        echo "3. Find API IP Whitelist section and click Add"
-        echo "4. Enter this IP: $RUNNER_IP"
-        echo "5. Save and wait for this workflow to auto-retry in 3 minutes"
-        echo ""
-        echo "⏳  Workflow will automatically retry sync after 3 minutes."
-        echo "=========================================="
-        echo ""
 
 
     - name: Install Theme dependencies (if any)

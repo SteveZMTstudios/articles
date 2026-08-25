@@ -101,17 +101,7 @@ class MarkdownRenderer {
         // 清理剩余的未匹配 class
         highlightedCode = highlightedCode.replace(/<span class="hljs-[^"]*">/g, '<span>');
 
-        const displayLang = (lang || 'code').toUpperCase();
-
-        return `<section style="margin: 16px 0; border-radius: 8px; overflow: hidden; background: #282c34; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">` +
-          `<div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 14px; background: #21252b; border-bottom: 1px solid #181a1f; color: #7f848e; font-size: 12px; font-family: Menlo, Monaco, Consolas, monospace;">` +
-          `<span><span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #ff5f56; margin-right: 6px;"></span>` +
-          `<span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #ffbd2e; margin-right: 6px;"></span>` +
-          `<span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #27c93f;"></span></span>` +
-          `<span style="font-weight: 600; text-transform: uppercase; color: #abb2bf;">${displayLang}</span>` +
-          `</div>` +
-          `<pre style="margin: 0; padding: 14px 16px; background: #282c34; overflow-x: auto; font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; font-size: 13px; line-height: 1.65; color: #abb2bf; -webkit-overflow-scrolling: touch; white-space: pre;"><code>${highlightedCode}</code></pre>` +
-          `</section>`;
+        return `<pre style="margin: 14px 0; padding: 12px 14px; background: #282c34; border-radius: 6px; overflow-x: auto; font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: #abb2bf; -webkit-overflow-scrolling: touch; white-space: pre; word-wrap: normal;"><code>${highlightedCode}</code></pre>`;
       },
     });
 
@@ -143,19 +133,7 @@ class MarkdownRenderer {
       // 清理剩余的未匹配 class
       highlightedCode = highlightedCode.replace(/<span class="hljs-[^"]*">/g, '<span>');
 
-      const displayLang = (lang || 'code').toUpperCase();
-
-      return `<section style="margin: 16px 0; border-radius: 8px; overflow: hidden; background: #282c34; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">` +
-        `<div style="display: flex; justify-content: space-between; align-items: center; padding: 7px 14px; background: #21252b; border-bottom: 1px solid #181a1f; color: #7f848e; font-size: 12px; font-family: Menlo, Monaco, Consolas, monospace;">` +
-        `<span>` +
-        `<span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #ff5f56; margin-right: 6px;"></span>` +
-        `<span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #ffbd2e; margin-right: 6px;"></span>` +
-        `<span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #27c93f;"></span>` +
-        `</span>` +
-        `<span style="font-weight: 600; text-transform: uppercase; color: #abb2bf; font-size: 11px;">${displayLang}</span>` +
-        `</div>` +
-        `<pre style="margin: 0; padding: 14px 16px; background: #282c34; overflow-x: auto; font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; font-size: 13px; line-height: 1.65; color: #abb2bf; -webkit-overflow-scrolling: touch; white-space: pre;"><code>${highlightedCode}</code></pre>` +
-        `</section>\n`;
+      return `<pre style="margin: 14px 0; padding: 12px 14px; background: #282c34; border-radius: 6px; overflow-x: auto; font-family: Menlo, Monaco, Consolas, 'Courier New', monospace; font-size: 13px; line-height: 1.6; color: #abb2bf; -webkit-overflow-scrolling: touch; white-space: pre; word-wrap: normal;"><code>${highlightedCode}</code></pre>\n`;
     };
 
     // 自定义渲染规则
@@ -419,9 +397,7 @@ class MarkdownRenderer {
     }
 
     return `\n<section style="margin-top: 36px; padding-top: 18px; border-top: 1px dashed #d0d7de; font-size: 13px; color: #57606a;">` +
-      `<h4 style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #24292f; display: flex; align-items: center;">` +
-      `<span style="display: inline-block; width: 4px; height: 14px; background: ${this.themeColor}; margin-right: 8px; border-radius: 2px;"></span>参考链接` +
-      `</h4>` +
+      `<h4 style="margin: 0 0 12px; font-size: 14px; font-weight: 600; color: #24292f; border-left: 3px solid ${this.themeColor}; padding-left: 8px; line-height: 1.4;">参考链接</h4>` +
       listItems +
       `</section>`;
   }
