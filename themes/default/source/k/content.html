@@ -13,11 +13,17 @@
     window.addEventListener("load",(function(e){var t=Array.prototype.slice.call(document.getElementsByTagName("button")).concat(Array.prototype.slice.call(document.getElementsByTagName("select"))).concat(Array.prototype.slice.call(document.getElementsByTagName("input")));document.querySelectorAll&&(t=t.concat(Array.prototype.slice.call(document.querySelectorAll('*[role="button"]'))));for(var c=["button","select"],a=["button","checkbox","radio","range","reset","submit"],n=0;n<t.length;n++)(-1!==c.indexOf(t[n].tagName.toLowerCase())||-1!==a.indexOf(t[n].type.toLowerCase())||t[n].getAttribute("role")&&"button"===t[n].getAttribute("role").toLowerCase())&&(t[n].addEventListener("touchstart",s,!1),t[n].addEventListener("touchend",l,!1),t[n].addEventListener("touchcancel",l,!1));function s(e){e.srcElement.classList?e.srcElement.classList.add("active"):e.srcElement.className+=" active"}function l(e){e.srcElement.classList?e.srcElement.classList.remove("active"):e.srcElement.className=e.srcElement.className.replace(/\s*active/g,"")}}),!1);
   </script>
   <style>
+    html {
+      -webkit-text-size-adjust: 100%;
+      -moz-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
     #skip-to-content{position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden}
     #skip-to-content:focus{position:sticky;height:auto;overflow:visible;background:blue;color:#fff;padding:30px;z-index:1001;margin-top:30px}
     /* 适配 Holo Dark 的轻度补充 */
     .container{padding:10px;max-width:900px;margin:0 auto}
-    #article{padding:10px}
+    #article{padding:10px;font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%;text-size-adjust:100%}
     .meta{font-size:12px;opacity:.8;margin:6px 0}
     .summary{margin-top:6px;font-size:13px}
     .categories{font-size:12px;opacity:.8;margin-top:6px}
@@ -25,8 +31,9 @@
     #article blockquote{border-left:4px solid #33b5e5;padding-left:10px;margin:10px 0;background:#33b5e52d}
     #article img{max-width:100%;height:auto;display:block;margin:10px auto}
     #article figure{margin:10px auto;max-width:100%;overflow-x:auto}
-    #article pre {background:#7a7a7a2d;color:#ccc;padding:10px;border-radius:4px;margin:10px 0}
-    #article code {background:#7a7a7a2d;color:#ccc;padding:2px 4px;border-radius:4px}
+    #article pre {background:#7a7a7a2d;color:#ccc;padding:10px;border-radius:2px;margin:10px 0;overflow-x:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:14px;line-height:1.5;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+    #article code {background:#7a7a7a2d;color:#ccc;padding:2px 4px;border-radius:2px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;font-size:0.9em;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+    #article pre code {background:transparent;padding:0;font-size:inherit;line-height:inherit}
     #article summary::marker{color:#8adfff}
     footer{font-size:12px;opacity:.8;margin:20px 0;text-align:center;border-top:1px solid #888888;padding-top:10px}
 

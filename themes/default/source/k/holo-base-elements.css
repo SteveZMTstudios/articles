@@ -339,10 +339,19 @@
 	background-color: rgba(51, 181, 229, 0.5);
 }
 
+html {
+	-webkit-text-size-adjust: 100%;
+	-moz-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+}
+
 body {
 	font-family: Roboto, "Droid Sans", sans-serif;
 	margin: 0;
 	padding: 16px;
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
 }
 body:before { /* This is used for the background gradient */
 	z-index: -1000;
@@ -352,6 +361,12 @@ body:before { /* This is used for the background gradient */
 	right: 0;
 	top: 0;
 	bottom: 0;
+}
+
+pre, code, kbd, samp {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
 }
 
 a {

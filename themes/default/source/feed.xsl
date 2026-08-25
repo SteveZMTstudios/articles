@@ -13,121 +13,193 @@
     <html>
       <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"/>
         <title><xsl:value-of select="/*[local-name()='feed']/*[local-name()='title'] | /*[local-name()='rss']/*[local-name()='channel']/*[local-name()='title']"/></title>
         <link rel="stylesheet" type="text/css" href="/feed.css"/>
       </head>
       <body>
-        <div class="feed-actionbar holo-actionBar">
-          <div class="feed-actionbar-inner">
-            <a href="#" class="feed-actionbar-title-link">
-              <span class="feed-actionbar-title">
-                <img src="/k/rss.png" alt="Feed Icon" class="feed-actionbar-icon"/>
-                <span class="feed-actionbar-title-text">
-                  <xsl:choose>
-                    <xsl:when test="/*[local-name()='rss']">RSS 预览</xsl:when>
-                    <xsl:otherwise>源 预览</xsl:otherwise>
-                  </xsl:choose>
-                </span>
-              </span>
-            </a>
-            <span class="feed-actionbar-spacer"></span>
-            <a href="/atom.xml">RSS XML</a>
-            <a href="/">首页</a>
-            <a href="/k/">兼容模式</a>
-          </div>
+        <header class="holo-actionBar">
+          <button class="holo-title holo-up" onclick="location.href='/'">
+            <img src="/k/rss.png" alt="RSS"/>
+            <xsl:choose>
+              <xsl:when test="/*[local-name()='rss']">RSS 预览</xsl:when>
+              <xsl:otherwise>源 预览</xsl:otherwise>
+            </xsl:choose>
+          </button>
+          <button style="float:right;" onclick="location.href='/atom.xml'">RSS XML</button>
+          <button style="float:right;" onclick="location.href='/'">首页</button>
+          <button style="float:right;" onclick="location.href='/k/'">兼容模式</button>
+        </header>
+
+        <div class="k-container">
+          <h1 class="feed-header-title">
+            <xsl:value-of select="/*[local-name()='feed']/*[local-name()='title'] | /*[local-name()='rss']/*[local-name()='channel']/*[local-name()='title']"/>
+          </h1>
+
+          <p class="subtitle" style="margin: 4px 0 8px;">
+            <xsl:value-of select="/*[local-name()='feed']/*[local-name()='subtitle'] | /*[local-name()='rss']/*[local-name()='channel']/*[local-name()='description']"/>
+          </p>
+
+          <p class="meta" style="margin: 4px 0 12px;">
+            最后更新:
+            <xsl:value-of select="/*[local-name()='feed']/*[local-name()='updated'] | /*[local-name()='rss']/*[local-name()='channel']/*[local-name()='lastBuildDate']"/>
+            <xsl:text> | 条目: </xsl:text>
+            <xsl:value-of select="count(/*[local-name()='feed']/*[local-name()='entry'] | /*[local-name()='rss']/*[local-name()='channel']/*[local-name()='item'])"/>
+            <xsl:if test="/*[local-name()='feed']/*[local-name()='author']/*[local-name()='name'] | /*[local-name()='rss']/*[local-name()='channel']/*[local-name()='managingEditor']">
+              <xsl:text> | 发布者: </xsl:text>
+              <xsl:value-of select="/*[local-name()='feed']/*[local-name()='author']/*[local-name()='name'] | /*[local-name()='rss']/*[local-name()='channel']/*[local-name()='managingEditor']"/>
+            </xsl:if>
+          </p>
+
+          <p class="meta" style="margin: 4px 0 12px;">
+            <span>您正在查看的源包含频繁更新的内容。订阅源后，该源会添加到您的阅读器源列表中。该源的更新信息会自动下载到计算机，通过阅读器及其他程序可以查看这些信息。</span>
+            <a href="https://support.microsoft.com/zh-CN/Outlook/what-are-rss-feeds" target="_blank" rel="noopener">进一步了解源。</a>
+          </p>
+
+          <p style="margin: 10px 0 16px;">
+            <button onclick="location.href='/atom.xml'">订阅源 XML</button>
+            <button id="copy-url-btn" style="display:none">复制链接</button>
+            <button onclick="location.href='/'">返回站点首页</button>
+            <button onclick="location.href='/k/'">进入兼容模式</button>
+          </p>
+
+          <ul class="holo-list" role="list">
+            <xsl:choose>
+              <xsl:when test="/*[local-name()='feed']">
+                <xsl:for-each select="/*[local-name()='feed']/*[local-name()='entry']">
+                  <xsl:call-template name="entry"/>
+                </xsl:for-each>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:for-each select="/*[local-name()='rss']/*[local-name()='channel']/*[local-name()='item']">
+                  <xsl:call-template name="entry"/>
+                </xsl:for-each>
+              </xsl:otherwise>
+            </xsl:choose>
+          </ul>
+
+          <footer>
+            <p>您正在以可视化的方式直接查看源。<a href="#">返回顶部</a><br/>© 框架设计和元素 由 <a href="https://stevezmt.top">Steve ZMT</a> 基于 Holo Design 设计。</p>
+          </footer>
         </div>
-        <div class="feed-page">
-          <div class="feed-panel feed-intro">
-            <div class="feed-label">
-              <xsl:choose>
-                <xsl:when test="/*[local-name()='rss']">RSS Feed</xsl:when>
-                <xsl:otherwise>Atom Feed</xsl:otherwise>
-              </xsl:choose>
-            </div>
 
-            <h1 class="feed-title">
-              <xsl:value-of select="/*[local-name()='feed']/*[local-name()='title'] | /*[local-name()='rss']/*[local-name()='channel']/*[local-name()='title']"/>
-            </h1>
+        <script>
+        <![CDATA[
+        (function(){
+          /* Touch active event helper for high compatibility */
+          function addTouchListeners() {
+            var inputElems = Array.prototype.slice.call(document.getElementsByTagName("button")).concat(
+              Array.prototype.slice.call(document.getElementsByTagName("select"))).concat(
+              Array.prototype.slice.call(document.getElementsByTagName("input")));
+            if(document.querySelectorAll) {
+              inputElems = inputElems.concat(
+                Array.prototype.slice.call(document.querySelectorAll("*[role=\"button\"]")));
+            }
+            var elemTypes = ["button", "select"];
+            var inputTypes = ["button", "checkbox", "radio", "range", "reset", "submit"];
+            for(var i = 0; i < inputElems.length; i++) {
+              if(elemTypes.indexOf(inputElems[i].tagName.toLowerCase()) !== -1 ||
+                inputTypes.indexOf(inputElems[i].type.toLowerCase()) !== -1 ||
+                (inputElems[i].getAttribute("role") && inputElems[i].getAttribute("role").toLowerCase() === "button")) {
+                inputElems[i].addEventListener("touchstart", function(e){
+                  if(this.classList) this.classList.add("active"); else this.className += " active";
+                }, false);
+                inputElems[i].addEventListener("touchend", function(e){
+                  if(this.classList) this.classList.remove("active"); else this.className = this.className.replace(/\s*active/g, "");
+                }, false);
+                inputElems[i].addEventListener("touchcancel", function(e){
+                  if(this.classList) this.classList.remove("active"); else this.className = this.className.replace(/\s*active/g, "");
+                }, false);
+              }
+            }
+          }
 
-            <p class="feed-subtitle">
-              <xsl:value-of select="/*[local-name()='feed']/*[local-name()='subtitle'] | /*[local-name()='rss']/*[local-name()='channel']/*[local-name()='description']"/>
-            </p>
+          if (window.addEventListener) {
+            window.addEventListener("load", addTouchListeners, false);
+          } else if (window.attachEvent) {
+            window.attachEvent("onload", addTouchListeners);
+          }
 
-            <p class="feed-meta">
-              最后更新:
-              <xsl:value-of select="/*[local-name()='feed']/*[local-name()='updated'] | /*[local-name()='rss']/*[local-name()='channel']/*[local-name()='lastBuildDate']"/>
-              <xsl:text> | 条目: </xsl:text>
-              <xsl:value-of select="count(/*[local-name()='feed']/*[local-name()='entry'] | /*[local-name()='rss']/*[local-name()='channel']/*[local-name()='item'])"/>
-              <xsl:if test="/*[local-name()='feed']/*[local-name()='author']/*[local-name()='name'] | /*[local-name()='rss']/*[local-name()='channel']/*[local-name()='managingEditor']">
-                | 发布者:
-                <xsl:value-of select="/*[local-name()='feed']/*[local-name()='author']/*[local-name()='name'] | /*[local-name()='rss']/*[local-name()='channel']/*[local-name()='managingEditor']"/>
-              </xsl:if>
-            </p>
-            <p class="feed-meta">
-              <span style="font-weight: bold;color: #dddddd">您正在查看的源包含频繁更新的内容。</span>订阅源后，该源会添加到您的阅读器源列表中。该源的更新信息会自动下载到计算机，通过 Internet Explorer 及其他程序可以查看这些信息。<a href="https://support.microsoft.com/help/73c6e717-7815-4594-98e5-81fa369e951c">进一步了解源。</a>
-            </p>
+          /* Expand / Collapse change event listener for 99% browser compatibility fallback */
+          function handleCheckboxChange(cb) {
+            if (!cb) return;
+            var li = cb.parentNode;
+            while (li && li.tagName && li.tagName.toLowerCase() !== 'li') {
+              li = li.parentNode;
+            }
+            if (li) {
+              if (cb.checked) {
+                if (li.classList) li.classList.add('is-expanded');
+                else if (li.className.indexOf('is-expanded') === -1) li.className += ' is-expanded';
+              } else {
+                if (li.classList) li.classList.remove('is-expanded');
+                else li.className = li.className.replace(/\s*is-expanded/g, '');
+              }
+            }
+          }
 
-            <p class="feed-tools">
-              <a href="/atom.xml">订阅源 XML</a>
-<a id="copy-url-btn" href="#" style="display:none">复制链接</a>
-<script>
-<![CDATA[
-(function(){
-  var a = document.getElementById('copy-url-btn');
-  if (!a) return;
-  a.style.display = 'inline-block';
-  var orig = a.textContent;
-  a.onclick = function(e){
-    e.preventDefault();
-    var url = window.location.href;
-    var done = function(){
-      a.textContent = '复制成功';
-      setTimeout(function(){ a.textContent = orig; }, 3000);
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(url).then(done).catch(function(){
-        var t = document.createElement('textarea');
-        t.value = url;
-        t.style.cssText = 'position:fixed;left:-9999px';
-        document.body.appendChild(t);
-        t.select();
-        document.execCommand('copy');
-        document.body.removeChild(t);
-        done();
-      });
-    } else {
-      var t = document.createElement('textarea');
-      t.value = url;
-      t.style.cssText = 'position:fixed;left:-9999px';
-      document.body.appendChild(t);
-      t.select();
-      document.execCommand('copy');
-      document.body.removeChild(t);
-      done();
-    }
-  };
-})();
-]]>
-</script>
-              <a href="/">返回站点首页</a>
-            </p>
-          </div>
-          <xsl:choose>
-            <xsl:when test="/*[local-name()='feed']">
-              <xsl:for-each select="/*[local-name()='feed']/*[local-name()='entry']">
-                <xsl:call-template name="entry"/>
-              </xsl:for-each>
-            </xsl:when>
-            <xsl:otherwise>
-              <xsl:for-each select="/*[local-name()='rss']/*[local-name()='channel']/*[local-name()='item']">
-                <xsl:call-template name="entry"/>
-              </xsl:for-each>
-            </xsl:otherwise>
-          </xsl:choose>
+          if (document.addEventListener) {
+            document.addEventListener('change', function(e){
+              if (e.target && (e.target.className || '').indexOf('entry-toggle') !== -1) {
+                handleCheckboxChange(e.target);
+              }
+            }, false);
 
-          <p class="feed-note">您正在以可视化的方式直接查看源。<a href="#">返回顶部</a><br/>© 框架设计和元素 由 <a href="https://stevezmt.top">Steve ZMT</a> 设计。</p>
-        </div>
+            document.addEventListener('keydown', function(e) {
+              if ((e.key === 'Enter' || e.key === ' ' || e.keyCode === 13 || e.keyCode === 32) && e.target && e.target.getAttribute && e.target.getAttribute('role') === 'button') {
+                var forId = e.target.getAttribute('for') || e.target.htmlFor;
+                if (forId) {
+                  e.preventDefault();
+                  var cb = document.getElementById(forId);
+                  if (cb) {
+                    cb.checked = !cb.checked;
+                    handleCheckboxChange(cb);
+                  }
+                }
+              }
+            }, false);
+          }
+
+          /* Copy URL Button */
+          var copyBtn = document.getElementById('copy-url-btn');
+          if (copyBtn) {
+            copyBtn.style.display = 'inline-block';
+            var origText = copyBtn.textContent || copyBtn.innerText;
+            copyBtn.onclick = function(e){
+              if (e && e.preventDefault) e.preventDefault();
+              var url = window.location.href;
+              var done = function(){
+                if (copyBtn.textContent) copyBtn.textContent = '复制成功';
+                else copyBtn.innerText = '复制成功';
+                setTimeout(function(){
+                  if (copyBtn.textContent) copyBtn.textContent = origText;
+                  else copyBtn.innerText = origText;
+                }, 3000);
+              };
+              if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(done).catch(function(){
+                  fallbackCopy(url, done);
+                });
+              } else {
+                fallbackCopy(url, done);
+              }
+            };
+          }
+
+          function fallbackCopy(text, cb) {
+            var t = document.createElement('textarea');
+            t.value = text;
+            t.style.cssText = 'position:fixed;left:-9999px';
+            document.body.appendChild(t);
+            t.select();
+            try { document.execCommand('copy'); } catch(err){}
+            document.body.removeChild(t);
+            if (cb) cb();
+          }
+        })();
+        ]]>
+        </script>
       </body>
     </html>
   </xsl:template>
@@ -148,58 +220,47 @@
     </xsl:variable>
     <xsl:variable name="toggle-id" select="concat('entry-', generate-id())"/>
 
-    <div class="entry">
+    <li>
       <input class="entry-toggle" type="checkbox" id="{$toggle-id}"/>
-
-      <h2 class="entry-title">
-        <a href="{normalize-space($entry-url)}">
+      <label class="entry-button" for="{$toggle-id}" role="button" tabindex="0">
+        <div class="item">
           <xsl:value-of select="*[local-name()='title']"/>
-        </a>
-      </h2>
-
-      <p class="entry-meta">
-        发布:
-        <xsl:value-of select="*[local-name()='published'] | *[local-name()='pubDate']"/>
-        <xsl:if test="*[local-name()='updated']">
-          <xsl:text>  更新: </xsl:text>
-          <xsl:value-of select="*[local-name()='updated']"/>
-        </xsl:if>
-      </p>
-
-      <xsl:if test="*[local-name()='category']">
-        <p class="entry-tags">
-          <xsl:for-each select="*[local-name()='category']">
-            <span class="entry-tag">
+        </div>
+        <div class="meta">
+          <xsl:value-of select="*[local-name()='published'] | *[local-name()='pubDate']"/>
+          <xsl:if test="*[local-name()='updated']">
+            <xsl:text> | 更新: </xsl:text>
+            <xsl:value-of select="*[local-name()='updated']"/>
+          </xsl:if>
+        </div>
+        <xsl:if test="*[local-name()='category']">
+          <div class="categories">
+            <xsl:text>分类：</xsl:text>
+            <xsl:for-each select="*[local-name()='category']">
               <xsl:choose>
                 <xsl:when test="@term"><xsl:value-of select="@term"/></xsl:when>
                 <xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
               </xsl:choose>
-            </span>
-          </xsl:for-each>
-        </p>
-      </xsl:if>
-
-      <xsl:if test="*[local-name()='summary'] or *[local-name()='description']">
-        <div class="entry-summary">
-          <xsl:call-template name="clean-text">
-            <xsl:with-param name="text">
-              <xsl:call-template name="strip-html">
-                <xsl:with-param name="text" select="*[local-name()='summary'] | *[local-name()='description']"/>
-              </xsl:call-template>
-            </xsl:with-param>
-          </xsl:call-template>
-        </div>
-      </xsl:if>
-
-      <p class="entry-actions">
-        <a class="entry-original" href="{normalize-space($entry-url)}">打开原文</a>
-        <label class="entry-toggle-label" for="{$toggle-id}">
-          <span class="show-text">展开正文</span>
-          <span class="hide-text">收起正文</span>
-        </label>
-      </p>
-
+              <xsl:if test="position() != last()">, </xsl:if>
+            </xsl:for-each>
+          </div>
+        </xsl:if>
+        <xsl:if test="*[local-name()='summary'] or *[local-name()='description']">
+          <div class="summary">
+            <xsl:call-template name="clean-text">
+              <xsl:with-param name="text">
+                <xsl:call-template name="strip-html">
+                  <xsl:with-param name="text" select="*[local-name()='summary'] | *[local-name()='description']"/>
+                </xsl:call-template>
+              </xsl:with-param>
+            </xsl:call-template>
+          </div>
+        </xsl:if>
+      </label>
       <div class="entry-body">
+        <a class="entry-read-original" role="button" href="{normalize-space($entry-url)}">
+          阅读原文
+        </a>
         <xsl:choose>
           <xsl:when test="*[local-name()='html' and namespace-uri()='https://blog.stevezmt.top/ns/feed-browser']/*">
             <xsl:apply-templates select="*[local-name()='html' and namespace-uri()='https://blog.stevezmt.top/ns/feed-browser']/*/*" mode="html"/>
@@ -225,11 +286,8 @@
             </xsl:call-template>
           </xsl:otherwise>
         </xsl:choose>
-        <p class="entry-actions entry-actions-bottom">
-          <label class="entry-toggle-label" for="{$toggle-id}">收起正文</label>
-        </p>
       </div>
-    </div>
+    </li>
   </xsl:template>
 
   <xsl:template name="emit-html-text">
