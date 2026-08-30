@@ -1,5 +1,6 @@
 ---
 title: 我
+excerpt: 这 SteveZMT 何意味啊
 layout: about
 comments: false
 lazyimage: no
