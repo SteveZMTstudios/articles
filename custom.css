@@ -1,0 +1,31 @@
+/* PJAX 页面切换 */
+/* 目标元素：页面主体 #main */
+#main {
+  -webkit-transition: opacity 320ms cubic-bezier(.2,.8,.2,1), transform 320ms cubic-bezier(.2,.8,.2,1);
+  transition: opacity 320ms cubic-bezier(.2,.8,.2,1), transform 320ms cubic-bezier(.2,.8,.2,1);
+  will-change: opacity, transform;
+}
+
+/* 发起切换：淡出并略微下移 */
+#main.pjax-exit {
+  opacity: 0;
+  transform: translateY(8px) scale(.997);
+  pointer-events: none;
+}
+
+/* 切换完成：淡入并复位 */
+#main.pjax-enter {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* 初始隐藏时的平滑回退（防止闪烁） */
+html.no-js #main {
+  -webkit-transition: none;
+  transition: none;
+}
+
+/* 小屏幕时减少位移，保持体验一致 */
+@media (max-width: 640px) {
+  #main.pjax-exit { transform: translateY(6px) scale(.998); }
+}

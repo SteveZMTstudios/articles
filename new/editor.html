@@ -1,0 +1,3492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="renderer" content="webkit">
+  
+
+  <script>
+    (function() {
+      try {
+        var LOC = window.location;
+        var path = LOC.pathname || '/';
+        if (path === '/k' || path.indexOf('/k/') === 0 || /[?&]compat=1/.test(LOC.search) || /[?&]nocompat=1/.test(LOC.search)) return;
+
+  var ua = navigator.userAgent || '';
+  var isBot = /Googlebot|Bingbot|Baiduspider|Bytespider|360Spider|Sogou|YandexBot|DuckDuckBot|Slurp|facebookexternalhit|Twitterbot|msnbot/i.test(ua);
+  function getQueryParam(name) {
+    try {
+      if (window.URLSearchParams) {
+        var sp = new URLSearchParams(LOC.search);
+        return sp.get(name);
+      }
+    } catch (e) {}
+    try {
+      var qs = (LOC.search || '').replace(/^\?/, '');
+      var pairs = qs.split('&');
+      for (var i = 0; i < pairs.length; i++) {
+        var p = pairs[i];
+        if (!p) continue;
+        var idx = p.indexOf('=');
+        var k = idx === -1 ? decodeURIComponent(p) : decodeURIComponent(p.slice(0, idx));
+        var v = idx === -1 ? '' : decodeURIComponent(p.slice(idx+1));
+        if (k === name) return v;
+      }
+    } catch (e) {}
+    return null;
+  }
+  var persistNoK = getQueryParam('persist_no_k') === '1';
+
+        function lacks(feature) { return !feature; }
+        var missingFeatures = [];
+        if (lacks(window.Promise)) missingFeatures.push('Promise');
+        if (lacks(window.fetch)) missingFeatures.push('fetch');
+        if (lacks(Object.assign)) missingFeatures.push('Object.assign');
+        if (lacks(Array.prototype.find)) missingFeatures.push('Array.find');
+        if (lacks(document.querySelector)) missingFeatures.push('querySelector');
+        if (lacks(window.addEventListener)) missingFeatures.push('addEventListener');
+        if (lacks(window.IntersectionObserver)) missingFeatures.push('IntersectionObserver');
+        var legacyFeature = (
+          missingFeatures.indexOf('Promise') !== -1 ||
+          missingFeatures.indexOf('querySelector') !== -1 ||
+          missingFeatures.indexOf('addEventListener') !== -1 ||
+          missingFeatures.length >= 2
+        );
+
+  var errorLimit = 8; 
+  var errorCount = 0;
+  function scheduleRedirect(reason) {
+          try {
+            var note = document.createElement('div');
+            note.style.cssText = 'display:none;';
+            note.textContent = 'Compatibility suggestion (/k) triggered: ' + reason;
+            document.documentElement.appendChild(note);
+          } catch (e) {}
+
+          if (window.__compat_redirected) return;
+
+          try {
+            if (!window.__compat_banner_shown) {
+              window.__compat_banner_shown = true;
+              var banner = document.createElement('div');
+              banner.style.cssText = 'background:#ff9800;color:#000;padding:8px;font-size:13px;text-align:center;position:relative;z-index:9999;';
+              banner.innerHTML = '浏览器可能不完全支持本站功能（'+reason+'）请访问 <a href="/k?compat=1&from='+encodeURIComponent(path)+'&reason='+encodeURIComponent(reason)+'">兼容视图</a>以正常阅览。';
+              try { document.documentElement.insertBefore(banner, document.documentElement.firstChild); }
+              catch(e) { document.body && document.body.insertBefore(banner, document.body.firstChild); }
+            }
+          } catch (e) {}
+          console.log('Compatibility suggestion (/k) triggered:', reason);
+          console.log('Missing features:', missingFeatures.join(', '));
+          console.log('Error count:', errorCount);
+          console.log('Is bot:', isBot);
+          console.log('Persist no_k:', persistNoK);
+          
+
+          setTimeout(function() {
+            try {
+              if (isBot || persistNoK) {
+                return;
+              }
+              if (window.__compat_redirected) return; window.__compat_redirected = true;
+              var target = '/k?compat=1&from=' + encodeURIComponent(path) + '&reason=' + encodeURIComponent(reason);
+              try { window.stop && window.stop(); } catch(e){}
+              LOC.replace(target);
+            } catch (e) {}
+          }, 500);
+        }
+
+        window.addEventListener('error', function(e) {
+          try {
+            var el = e && e.target;
+            var isResource = el && el.tagName && (el.tagName === 'SCRIPT' || el.tagName === 'LINK' || el.tagName === 'IMG');
+            if (!isResource) {
+              console.log('Runtime error detected ('+errorCount+'):', e.message, 'at', e.filename + ':' + e.lineno + ':' + e.colno);
+              errorCount++;
+              if (errorCount >= errorLimit) scheduleRedirect('runtime_error_'+errorCount);
+            }
+          } catch(err){}
+        }, true);
+
+        window.addEventListener('unhandledrejection', function(e) {
+          try {
+            errorCount++;
+            if (errorCount >= errorLimit) scheduleRedirect('unhandledrejection_'+errorCount);
+          } catch (err) {}
+        });
+
+        setTimeout(function() {
+          if (!window.mdui && !window.__compat_redirected && (legacyFeature || errorCount > 0)) {
+            scheduleRedirect('timeout_no_core_lib');
+          }
+        }, 20000);
+
+        if (legacyFeature) {
+          scheduleRedirect('legacy_feature');
+        }
+      } catch (e) {
+      }
+    })();
+  </script>
+  <noscript>
+    
+    <!-- <meta http-equiv="refresh" content="2; url=/k?compat=1&noscript=1" /> -->
+    <div style="background:#ff9800;color:#000;padding:8px;font-size:13px;text-align:center;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" style="vertical-align:middle;width:1.5em;height:1.5em;"><path d="M791-55 280-566l-87 87 183 183-56 56L80-480l143-143L55-791l57-57 736 736-57 57Zm-54-282-57-57 87-87-183-183 56-56 240 240-143 143Z"/></svg>
+      关键错误: 浏览器未启用Javascript。绝大多数功能都将无法正确运作。
+      <a href="https://www.enable-javascript.com/" target="_blank">了解如何启用Javascript</a>
+      <a href="/atom.xml" style="margin-left:16px;">访问源视图</a>
+    </div>
+  </noscript>
+
+  
+  <title>博客编辑器 | 老史尬侃 - Steve ZMT &#39;s Blog</title>
+
+  <link rel="shortcut icon" href="/images/favicon.png">
+  <link rel="alternate" href="/atom.xml" title="老史尬侃 - Steve ZMT 's Blog" type="application/atom+xml">
+  <meta name="description" content="markdown 博客编辑器">
+<meta property="og:type" content="website">
+<meta property="og:title" content="博客编辑器">
+<meta property="og:url" content="https://blog.stevezmt.top/new/editor.html">
+<meta property="og:site_name" content="老史尬侃 - Steve ZMT &#39;s Blog">
+<meta property="og:description" content="markdown 博客编辑器">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.stevezmt.top/new/$%7BescapeAttribute(thumbnail)%7D">
+<meta property="article:published_time" content="2026-08-30T07:46:59.052Z">
+<meta property="article:modified_time" content="2026-08-30T07:46:59.052Z">
+<meta property="article:author" content="Steve ZMT">
+<meta property="article:tag" content="SteveZMT">
+<meta property="article:tag" content="blog">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="史蒂夫ZMT">
+<meta property="article:tag" content="随笔">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.stevezmt.top/new/$%7BescapeAttribute(thumbnail)%7D">
+
+  <meta name="keywords" content="blog,博客,随笔,SteveZMT,史蒂夫ZMT">
+  <meta name="format-detection" content="telephone=no,email=no">
+  <meta name="theme-color" content="#448AFF">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="老史尬侃 - Steve ZMT &#39;s Blog">
+  <meta name="msapplication-starturl" content="https://blog.stevezmt.top/new/editor.html">
+  <meta name="msapplication-navbutton-color" content="#448AFF">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="老史尬侃 - Steve ZMT &#39;s Blog">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="apple-touch-icon" href="/images/favicon.png">
+  <link rel="dns-prefetch" href="/" />
+  <link rel="manifest" href="/manifest.json">
+
+  
+    <link rel="canonical" href="https://blog.stevezmt.top/new/editor.html">
+  
+
+  
+  
+
+
+  
+  
+
+  
+  
+
+<link rel="stylesheet" 
+      href="https://s4.zstatic.net/npm/mdui@1.0.2/dist/css/mdui.min.css"
+      crossorigin="anonymous"
+      integrity="sha384-wuqJ3gKnD2BDa/kF14f6SECESfcvVTsNruuVi3BOAk2mNDIOn/uvHdd+eMK7FY0b"
+      onerror="this.onerror=null; this.href='/css/mdui.css';">  
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/lightbox.css">
+
+  
+<link rel="stylesheet" href="/custom.css">
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body class="mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-blue">
+  <a id="skip-to-content" href="#main" class="mdui-sr-only" aria-label="跳转到内容">跳转到内容</a>
+  <script>
+    window.__SITE_ASSET_CONFIG__ = {
+      analyticsId: 'G-T404DHJEEZ',
+      busuanziSrc: '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js',
+      gitalkCss: '//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.css',
+      gitalkMduiCss: '/css/gitalk-mdui.css',
+      gitalkSrc: '//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js',
+      gitalkBridgeSrc: '//sharepoint.cf.stevezmt.top/js/3rd-party/gitalk-cn.min.js'
+    };
+  </script>
+  <script>
+    var dark = localStorage.getItem("mdui-theme-layout-dark");
+    var light = localStorage.getItem("mdui-theme-layout-light");
+    if (dark || (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches && !light)) {
+      document.getElementsByTagName("body")[0].className+=" mdui-theme-layout-dark";
+    }
+  </script>
+  <script>var a=localStorage.getItem("mdui-drawer-close");if(!a){document.getElementsByTagName("body")[0].className+=" mdui-drawer-body-left"};</script>
+  <header id="header" class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide mdui-appbar-inset">
+  <div id="banner" class="mdui-toolbar mdui-color-theme">
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="mdui-icon material-icons" translate="no">menu</i></a>
+    <a href="/" class="mdui-typo-headline">老史尬侃 - Steve ZMT &#39;s Blog</a>
+    <div class="mdui-toolbar-spacer"></div>
+    
+
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: '搜索'}"><i class="mdui-icon material-icons" translate="no">search</i></a>
+    <!-- Open RSS Feed -->
+    <a href="/atom.xml" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'RSS'}"><i class="mdui-icon material-icons" translate="no">rss_feed</i></a> 
+    <!-- Copy RSS Feed To Clipboard --><!--
+    
+      <a href="javascript:void(0);" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'RSS'}" onclick="copyRssToClipboard('https://blog.stevezmt.top/atom.xml')">
+        <i class="mdui-icon material-icons" translate="no">rss_feed</i>
+      </a>
+      <script data-pjax>
+        function copyRssToClipboard(text) {
+          navigator.clipboard.writeText(text).then(function() {
+            mdui.snackbar({
+              message: '已将RSS订阅链接复制到剪贴板!',
+              position: 'right-top',
+              buttonText: '好',
+            });
+          }, function(err) {
+            console.error('Could not copy text: ', err);
+            mdu.snackbar({
+              message: '复制RSS订阅链接失败!',
+              position: 'right-top',
+            });
+          });
+        }
+      </script>
+      
+    -->
+  </div>
+</header>
+<div class="mdui-dialog" id="search">
+  <script data-pjax>
+
+    (function() {
+      var searchDialog = document.getElementById('search');
+      if (!searchDialog) return;
+      var typingLock = false;
+      var searchInput = searchDialog.querySelector('input[type="search"]');
+      if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+          if (typingLock) return;
+          typingLock = true;
+          setTimeout(function() { typingLock = false; }, 500);
+        });
+      }
+
+      searchDialog.addEventListener('closed.mdui.dialog', function() {
+        typingLock = false;
+      });
+    })();
+
+  </script>
+  
+    <div class="search-form">
+      <input type="search"  id="search-input" name="search" class="search-form-input" placeholder="搜索...">
+    </div>
+    <div class="search-result" data-resource="/search.xml" aria-live="polite"></div>
+    
+  
+</div>
+
+  
+  <main
+    id="main"
+    class="mdui-m-t-5"
+    data-page-type="generic"
+    data-is-home="0"
+    data-is-post="0"
+    data-has-comments="0"
+    data-has-toc="0"
+    data-search-resource="/search.xml"
+  >
+
+  <script>window.SITE_ORIGIN = 'https://blog.stevezmt.top';</script>
+  <!--
+Copyright (c) 2026 史蒂夫ZMT工作室 SteveZMTstudios <https://stevezmt.top>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+
+<!-- CodeMirror Styles (Local Theme Bundle) -->
+<link rel="stylesheet" href="/lib/codemirror/codemirror.bundle.css">
+
+<style>
+    main#main {
+        animation: none !important;
+        transform: none !important;
+    }
+
+    /* Dark Mode Adaptation */
+    .editor-drag-active {
+        background-color: rgba(0, 0, 0, 0.05) !important;
+    }
+    .mdui-theme-layout-dark .editor-drag-active {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+    }
+    
+    /* Markdown Preview Dark Mode Fixes */
+    .mdui-theme-layout-dark .markdown-body {
+        background-color: #424242 !important; /* Match MDUI dark card */
+        color: #fff !important;
+    }
+    .mdui-theme-layout-dark .markdown-body a {
+        color: #64b5f6 !important;
+    }
+    .mdui-theme-layout-dark .markdown-body code {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+    .mdui-theme-layout-dark .markdown-body pre {
+        background-color: #212121 !important;
+    }
+    
+    #editor-card.mdui-fullscreen {
+        z-index: 2000; /* Ensure fullscreen editor is above other elements */
+    }
+    #editor-card .mdui-toolbar {
+        background-color: inherit; /* Match card background */
+    }
+    #editor-card ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    #editor-card .mdui-menu {
+        max-height: 300px;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    #editor-card .mdui-menu a {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    #editor-card .mdui-menu .mdui-typo a:before {
+        height: 0px !important;
+    }
+
+    .editor-field-menu,
+    .editor-tool-menu {
+        max-height: min(300px, calc(100vh - 32px));
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .editor-tool-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .editor-tool-menu a {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .editor-article-card .mdui-card-media > img {
+        max-height: 240px;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+    }
+
+    .editor-article-card .mdui-card-menu .mdui-menu img {
+        width: 246px;
+        height: 246px;
+        display: block;
+    }
+
+    .editor-preview-body {
+        min-height: 100%;
+    }
+
+    .editor-preview-body .center-block {
+        display: block !important;
+        margin-right: auto !important;
+        margin-left: auto !important;
+    }
+
+    .editor-preview-body .text-center {
+        text-align: center !important;
+    }
+    .editor-preview-body img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .editor-setting-switch {
+        display: inline-flex;
+        align-items: center;
+        min-height: 56px;
+        margin-top: 8px;
+    }
+
+    .editor-select-field {
+        min-height: 64px;
+        padding-top: 8px;
+    }
+
+    .editor-select-label {
+        margin-bottom: 4px;
+        font-size: 12px;
+        line-height: 1.2;
+    }
+
+    @media (max-width: 600px) {
+        .editor-article-card .mdui-card-menu .mdui-menu img {
+            width: 200px;
+            height: 200px;
+        }
+    }
+    
+    /* CodeMirror Core & Theme Enhancements */
+    #editor-container {
+        width: 100%;
+        height: 100%;
+        position: relative;
+    }
+    .CodeMirror {
+        width: 100%;
+        height: 100% !important;
+        font-family: Consolas, Monaco, "Roboto Mono", "Courier New", monospace;
+        font-size: 14px;
+        line-height: 1.6;
+        color: inherit;
+        background: transparent;
+        border: none;
+    }
+    .CodeMirror-scroll {
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: auto;
+        box-sizing: border-box;
+    }
+    .CodeMirror-gutters {
+        background: rgba(0, 0, 0, 0.02);
+        border-right: 1px solid rgba(0, 0, 0, 0.08);
+        white-space: nowrap;
+    }
+    .CodeMirror-linenumber {
+        color: #9e9e9e;
+        padding: 0 6px;
+        min-width: 20px;
+        text-align: right;
+    }
+    .CodeMirror-activeline-background {
+        background: rgba(0, 0, 0, 0.04);
+    }
+    .CodeMirror-selected {
+        background: rgba(33, 150, 243, 0.18) !important;
+    }
+    .CodeMirror-focused .CodeMirror-selected {
+        background: rgba(33, 150, 243, 0.25) !important;
+    }
+    .CodeMirror-cursor {
+        border-left: 2px solid #2196f3;
+    }
+    .CodeMirror-dialog {
+        background: #ffffff;
+        color: #212121;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        z-index: 100;
+        font-family: inherit;
+        padding: 6px 12px;
+    }
+    .CodeMirror-dialog input {
+        border: 1px solid #ccc;
+        outline: none;
+        padding: 2px 6px;
+        border-radius: 2px;
+    }
+    .CodeMirror-foldgutter {
+        width: 0.3em;
+    }
+    .CodeMirror-foldgutter-open:after {
+        content: "▾";
+        color: #999;
+    }
+    .CodeMirror-foldgutter-folded:after {
+        content: "▸";
+        color: #2196f3;
+        font-weight: bold;
+    }
+
+    /* Markdown Highlighting */
+    .cm-header { font-weight: bold; color: #1976d2; }
+    .cm-link { color: #0288d1; text-decoration: underline; }
+    .cm-url { color: #78909c; }
+    .cm-quote { color: #388e3c; font-style: italic; }
+    .cm-comment { color: #9e9e9e; font-style: italic; }
+    .cm-strong { font-weight: bold; }
+    .cm-em { font-style: italic; }
+    .cm-strikethrough { text-decoration: line-through; }
+    .cm-tag { color: #e91e63; }
+    .cm-attribute { color: #f57c00; }
+    .cm-string { color: #388e3c; }
+    .cm-formatting-code, .cm-formatting-code-block { color: #7b1fa2; font-weight: bold; }
+
+    /* CodeMirror Dark Mode (Material Darker / VS Code Dark+ Optimized) */
+    .mdui-theme-layout-dark .CodeMirror {
+        color: #e0e0e0;
+        background: #424242 !important;
+    }
+    .mdui-theme-layout-dark .CodeMirror-gutters {
+        background: #383838;
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .mdui-theme-layout-dark .CodeMirror-linenumber {
+        color: #9e9e9e;
+    }
+    .mdui-theme-layout-dark .CodeMirror-activeline-background {
+        background: rgba(255, 255, 255, 0.06);
+    }
+    .mdui-theme-layout-dark .CodeMirror-selected {
+        background: rgba(100, 181, 246, 0.3) !important;
+    }
+    .mdui-theme-layout-dark .CodeMirror-focused .CodeMirror-selected {
+        background: rgba(100, 181, 246, 0.4) !important;
+    }
+    .mdui-theme-layout-dark .CodeMirror-cursor {
+        border-left: 2px solid #64b5f6;
+    }
+    .mdui-theme-layout-dark .CodeMirror-dialog {
+        background: #424242;
+        color: #ffffff;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .mdui-theme-layout-dark .CodeMirror-dialog input {
+        background: #303030;
+        color: #ffffff;
+        border: 1px solid #616161;
+    }
+
+    /* High-contrast Syntax Tokens in Dark Mode */
+    .mdui-theme-layout-dark .CodeMirror span.cm-header,
+    .mdui-theme-layout-dark .CodeMirror .cm-header { color: #64b5f6; font-weight: bold; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-keyword,
+    .mdui-theme-layout-dark .CodeMirror .cm-keyword { color: #c792ea; font-weight: 500; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-atom,
+    .mdui-theme-layout-dark .CodeMirror .cm-atom { color: #f07178; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-number,
+    .mdui-theme-layout-dark .CodeMirror .cm-number { color: #ffb74d; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-def,
+    .mdui-theme-layout-dark .CodeMirror .cm-def { color: #82aaff; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-variable,
+    .mdui-theme-layout-dark .CodeMirror .cm-variable { color: #e0e0e0; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-variable-2,
+    .mdui-theme-layout-dark .CodeMirror .cm-variable-2 { color: #80cbc4; } /* Replaces #05a navy with clear teal/mint */
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-variable-3,
+    .mdui-theme-layout-dark .CodeMirror span.cm-type,
+    .mdui-theme-layout-dark .CodeMirror .cm-variable-3,
+    .mdui-theme-layout-dark .CodeMirror .cm-type { color: #ffd54f; } /* Replaces #085 dark green with gold */
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-property,
+    .mdui-theme-layout-dark .CodeMirror .cm-property { color: #80d8ff; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-operator,
+    .mdui-theme-layout-dark .CodeMirror .cm-operator { color: #89ddff; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-comment,
+    .mdui-theme-layout-dark .CodeMirror .cm-comment { color: #9e9e9e; font-style: italic; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-string,
+    .mdui-theme-layout-dark .CodeMirror span.cm-string-2,
+    .mdui-theme-layout-dark .CodeMirror .cm-string,
+    .mdui-theme-layout-dark .CodeMirror .cm-string-2 { color: #c3e88d; } /* Replaces #a11 & #f50 with crisp lime green */
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-meta,
+    .mdui-theme-layout-dark .CodeMirror span.cm-qualifier,
+    .mdui-theme-layout-dark .CodeMirror .cm-meta,
+    .mdui-theme-layout-dark .CodeMirror .cm-qualifier { color: #ffcb6b; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-builtin,
+    .mdui-theme-layout-dark .CodeMirror .cm-builtin { color: #ff80ab; } /* Replaces #30a dark violet with bright pink */
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-bracket,
+    .mdui-theme-layout-dark .CodeMirror .cm-bracket { color: #cfd8dc; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-tag,
+    .mdui-theme-layout-dark .CodeMirror .cm-tag { color: #f07178; } /* Replaces #170 dark green with coral */
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-attribute,
+    .mdui-theme-layout-dark .CodeMirror .cm-attribute { color: #ffcb6b; } /* Replaces #00c dark blue with amber */
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-hr,
+    .mdui-theme-layout-dark .CodeMirror .cm-hr { color: #757575; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-link,
+    .mdui-theme-layout-dark .CodeMirror .cm-link { color: #80d8ff; text-decoration: underline; } /* Replaces #00c dark blue */
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-url,
+    .mdui-theme-layout-dark .CodeMirror .cm-url { color: #b0bec5; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-quote,
+    .mdui-theme-layout-dark .CodeMirror .cm-quote { color: #aed581; font-style: italic; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-formatting-code,
+    .mdui-theme-layout-dark .CodeMirror span.cm-formatting-code-block,
+    .mdui-theme-layout-dark .CodeMirror .cm-formatting-code,
+    .mdui-theme-layout-dark .CodeMirror .cm-formatting-code-block { color: #ce93d8; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-strong,
+    .mdui-theme-layout-dark .CodeMirror .cm-strong { color: #ffffff; font-weight: bold; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-em,
+    .mdui-theme-layout-dark .CodeMirror .cm-em { color: #f5f5f5; font-style: italic; }
+    
+    .mdui-theme-layout-dark .CodeMirror span.cm-strikethrough,
+    .mdui-theme-layout-dark .CodeMirror .cm-strikethrough { text-decoration: line-through; color: #9e9e9e; }
+
+</style>
+
+<div id="app" class="mdui-container-fluid mdui-p-y-2">
+  <article class="mdui-card mdui-m-b-2 editor-article-card" id="editor-article-preview"></article>
+
+  <!-- Toolbar & Config -->
+  <div class="mdui-card mdui-p-a-2 mdui-m-b-2">
+    <div class="mdui-row">
+      <div class="mdui-col-md-6">
+        <div class="mdui-textfield mdui-textfield-floating-label">
+          <label class="mdui-textfield-label">文章标题</label>
+          <input class="mdui-textfield-input" type="text" id="post-title" />
+        </div>
+      </div>
+      <div class="mdui-col-md-6" style="display: flex; align-items: flex-end;">
+        <div class="mdui-textfield mdui-textfield-floating-label" style="flex: 1;">
+          <label class="mdui-textfield-label">标识符</label>
+          <input class="mdui-textfield-input" type="text" id="post-slug" />
+        </div>
+      </div>
+    </div>
+    <div class="mdui-row">
+      <div class="mdui-col-md-6">
+        <div class="mdui-textfield mdui-textfield-floating-label" style="position: relative;">
+          <label class="mdui-textfield-label">标签 (逗号分隔)</label>
+          <input class="mdui-textfield-input" type="text" id="post-tags" autocomplete="off" />
+          <ul class="mdui-menu editor-field-menu" id="tag-menu"></ul>
+        </div>
+      </div>
+      <div class="mdui-col-md-6">
+        <div class="mdui-textfield mdui-textfield-floating-label" style="position: relative;">
+          <label class="mdui-textfield-label">分类 (逗号分隔)</label>
+          <input class="mdui-textfield-input" type="text" id="post-categories" autocomplete="off" />
+          <ul class="mdui-menu editor-field-menu" id="category-menu"></ul>
+        </div>
+      </div>
+    </div>
+    <div class="mdui-row mdui-m-t-1">
+        <div class="mdui-col-xs-12">
+            <div class="mdui-panel" mdui-panel>
+                <div class="mdui-panel-item">
+                    <div class="mdui-panel-item-header">
+                        <div class="mdui-panel-item-title">高级设置 (Front-matter)</div>
+                        <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                    </div>
+                    <div class="mdui-panel-item-body">
+                        <div class="mdui-row">
+                            <div class="mdui-col-md-3 mdui-col-xs-6">
+                                <label class="mdui-checkbox">
+                                    <input type="checkbox" id="post-donate" checked/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    开启打赏
+                                </label>
+                            </div>
+                            <div class="mdui-col-md-3 mdui-col-xs-6">
+                                <label class="mdui-checkbox">
+                                    <input type="checkbox" id="post-toc" checked/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    显示目录
+                                </label>
+                            </div>
+                            <div class="mdui-col-md-3 mdui-col-xs-6">
+                                <label class="mdui-checkbox">
+                                    <input type="checkbox" id="post-comments" checked/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    开启评论
+                                </label>
+                            </div>
+                            <div class="mdui-col-md-3 mdui-col-xs-6">
+                                <label class="mdui-checkbox">
+                                    <input type="checkbox" id="post-top"/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    置顶文章
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mdui-row mdui-m-t-1">
+                             <div class="mdui-col-md-6">
+                                <div class="mdui-textfield mdui-textfield-floating-label">
+                                  <label class="mdui-textfield-label">自定义日期 (YYYY-MM-DD HH:mm:ss)</label>
+                                  <input class="mdui-textfield-input" type="text" id="post-date" />
+                                </div>
+                             </div>
+                             <div class="mdui-col-md-6">
+                                <div class="mdui-textfield mdui-textfield-floating-label">
+                                  <label class="mdui-textfield-label">作者 (Author)</label>
+                                  <input class="mdui-textfield-input" type="text" id="post-author" />
+                                </div>
+                             </div>
+                        </div>
+                        <div class="mdui-row">
+                             <div class="mdui-col-md-6">
+                                <div class="mdui-textfield mdui-textfield-floating-label">
+                                  <label class="mdui-textfield-label">头图 URL (Thumbnail)</label>
+                                  <input class="mdui-textfield-input" type="text" id="post-thumbnail" />
+                                </div>
+                             </div>
+                             <div class="mdui-col-md-6" style="display: flex; align-items: flex-end;">
+                                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-m-b-1" onclick="document.getElementById('thumbnail-input').click()">
+                                    <i class="mdui-icon material-icons">image</i> 上传头图
+                                </button>
+                                <input type="file" id="thumbnail-input" accept="image/*" style="display: none;" />
+                             </div>
+                        </div>
+                        <div class="mdui-row">
+                            <div class="mdui-col-md-3 mdui-col-xs-6">
+                                <label class="mdui-checkbox">
+                                    <input type="checkbox" id="post-count" checked/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    阅读统计
+                                </label>
+                            </div>
+                            <div class="mdui-col-md-3 mdui-col-xs-6">
+                                <label class="mdui-checkbox">
+                                    <input type="checkbox" id="post-share_menu" checked/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    分享菜单
+                                </label>
+                            </div>
+                            <div class="mdui-col-md-3 mdui-col-xs-6">
+                                <label class="mdui-checkbox">
+                                    <input type="checkbox" id="post-qrcode" checked/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    二维码
+                                </label>
+                            </div>
+                            <div class="mdui-col-md-3 mdui-col-xs-6">
+                                <label class="mdui-checkbox">
+                                    <input type="checkbox" id="post-thislink" checked/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    页尾链接
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mdui-row">
+                             <div class="mdui-col-md-12">
+                                <div class="mdui-textfield mdui-textfield-floating-label">
+                                  <label class="mdui-textfield-label">摘要 (Excerpt) - 覆盖自动抓取的摘要</label>
+                                  <textarea class="mdui-textfield-input" id="post-excerpt"></textarea>
+                                </div>
+                             </div>
+                        </div>
+                        <div class="mdui-row">
+                             <div class="mdui-col-md-4">
+                                <div class="editor-select-field">
+                                  <div class="editor-select-label mdui-text-color-grey-600">文章语言</div>
+                                  <select class="mdui-select" id="post-lang" mdui-select="{position: 'bottom'}">
+                                    <option value="zh-cn">简体中文</option>
+                                    <option value="en">English</option>
+                                  </select>
+                                </div>
+                             </div>
+                             <div class="mdui-col-md-4">
+                                <label class="mdui-checkbox editor-setting-switch">
+                                    <input type="checkbox" id="post-license-enabled" checked/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    显示版权声明
+                                </label>
+                             </div>
+                             <div class="mdui-col-md-4">
+                                <label class="mdui-checkbox editor-setting-switch">
+                                    <input type="checkbox" id="post-wechat_sync" checked/>
+                                    <i class="mdui-checkbox-icon"></i>
+                                    微信同步 (wechat_sync)
+                                </label>
+                             </div>
+                        </div>
+                        <div class="mdui-row" id="license-custom-row">
+                             <div class="mdui-col-md-12">
+                                <div class="mdui-textfield mdui-textfield-floating-label">
+                                  <label class="mdui-textfield-label">自定义版权声明 (可选)</label>
+                                  <input class="mdui-textfield-input" type="text" id="post-license" />
+                                </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="mdui-row mdui-m-t-2">
+      <div class="mdui-col-xs-12">
+        <button class="mdui-btn mdui-btn-raised mdui-color-green-600 mdui-ripple mdui-m-r-1" onclick="submitToGitHub()">
+          <i class="mdui-icon material-icons">cloud_upload</i> 发布到 GitHub
+        </button>
+        <button class="mdui-btn mdui-btn-raised mdui-color-theme-accent mdui-ripple" onclick="exportPost()">
+          <i class="mdui-icon material-icons">file_download</i> 导出 ZIP
+        </button>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple" onclick="document.getElementById('zip-input').click()">
+          <i class="mdui-icon material-icons">file_upload</i> 导入 ZIP
+        </button>
+        <button class="mdui-btn mdui-btn-raised mdui-ripple" onclick="resetEditor()">
+          <i class="mdui-icon material-icons">refresh</i> 重置
+        </button>
+        <input type="file" id="zip-input" accept=".zip" style="display: none;" />
+        <input type="file" id="image-input" accept="image/*" multiple style="display: none;" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Editor Area -->
+  <div class="mdui-card" id="editor-card" style="height: 70vh; display: flex; flex-direction: column; position: relative; overflow: hidden;">
+    <div class="mdui-toolbar" style="flex-shrink: 0; overflow-x: auto; overflow-y: hidden; white-space: nowrap; border-bottom: 1px solid rgba(0,0,0,0.1);">
+      <!-- History/General -->
+      <button class="mdui-btn mdui-btn-icon" onclick="undo()" mdui-tooltip="{content: '撤销 (Ctrl+Z)'}"><i class="mdui-icon material-icons">undo</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="redo()" mdui-tooltip="{content: '重做 (Ctrl+Y)'}"><i class="mdui-icon material-icons">redo</i></button>
+      <!-- Text Style -->
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('**', '**')" mdui-tooltip="{content: '粗体 (Ctrl+B)'}"><i class="mdui-icon material-icons">format_bold</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('*', '*')" mdui-tooltip="{content: '斜体 (Ctrl+I)'}"><i class="mdui-icon material-icons">format_italic</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('<u>', '</u>')" mdui-tooltip="{content: '下划线 (Ctrl+U)'}"><i class="mdui-icon material-icons">format_underlined</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('~~', '~~')" mdui-tooltip="{content: '删除线 (Ctrl+Shift+X)'}"><i class="mdui-icon material-icons">format_strikethrough</i></button>
+      <button class="mdui-btn mdui-btn-icon" id="font-size-btn" mdui-tooltip="{content: '字体大小'}"><i class="mdui-icon material-icons">format_size</i></button>
+      <button class="mdui-btn mdui-btn-icon" id="text-color-btn" mdui-tooltip="{content: '文本颜色'}"><i class="mdui-icon material-icons">format_color_text</i></button>
+      <!-- Paragraph Style -->
+      <button class="mdui-btn mdui-btn-icon" onclick="insertHeading(1)" mdui-tooltip="{content: '标题 (Ctrl+Alt+1~6)'}"><i class="mdui-icon material-icons">title</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="setAlign('left')" mdui-tooltip="{content: '左对齐'}"><i class="mdui-icon material-icons">format_align_left</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="setAlign('center')" mdui-tooltip="{content: '居中对齐'}"><i class="mdui-icon material-icons">format_align_center</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="setAlign('right')" mdui-tooltip="{content: '右对齐'}"><i class="mdui-icon material-icons">format_align_right</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="clearFormatting()" mdui-tooltip="{content: '清除格式'}"><i class="mdui-icon material-icons">format_clear</i></button>
+      <!-- Insert -->
+      <button class="mdui-btn mdui-btn-icon" onclick="insertList()" mdui-tooltip="{content: '列表'}"><i class="mdui-icon material-icons">format_list_bulleted</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertLink()" mdui-tooltip="{content: '链接 (Ctrl+K)'}"><i class="mdui-icon material-icons">link</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="document.getElementById('image-input').click()" mdui-tooltip="{content: '插入图片'}"><i class="mdui-icon material-icons">image</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertTable()" mdui-tooltip="{content: '表格'}"><i class="mdui-icon material-icons">grid_on</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('```\n', '\n```')" mdui-tooltip="{content: '代码块 (Ctrl+Shift+K)'}"><i class="mdui-icon material-icons">code</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertDetails()" mdui-tooltip="{content: '折叠块 (Ctrl+Shift+D)'}"><i class="mdui-icon material-icons">unfold_more</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="insertText('\n<!-- more -->\n', '')" mdui-tooltip="{content: '插入摘要分隔符'}"><i class="mdui-icon material-icons">more_horiz</i></button>
+      <div class="mdui-toolbar-spacer"></div>
+      <!-- View -->
+      <button class="mdui-btn mdui-btn-icon" onclick="toggleFullscreen()" mdui-tooltip="{content: '全屏模式'}"><i class="mdui-icon material-icons" id="fullscreen-icon">fullscreen</i></button>
+      <button class="mdui-btn mdui-btn-icon" onclick="togglePreview()" mdui-tooltip="{content: '切换预览'}"><i class="mdui-icon material-icons">visibility</i></button>
+      <!-- Menus (Must be siblings of triggers) -->
+      <ul class="mdui-menu editor-tool-menu" id="font-size-menu">
+        <li class="mdui-menu-item"><a style="font-size:12px" href="javascript:;" onclick="setFontSize('12px')">12px (小)</a></li>
+        <li class="mdui-menu-item"><a style="font-size:14px" href="javascript:;" onclick="setFontSize('14px')">14px (正常)</a></li>
+        <li class="mdui-menu-item"><a style="font-size:16px" href="javascript:;" onclick="setFontSize('16px')">16px (中)</a></li>
+        <li class="mdui-menu-item"><a style="font-size:20px" href="javascript:;" onclick="setFontSize('20px')">20px (大)</a></li>
+        <li class="mdui-menu-item mdui-p-a-2" style="max-width: 240px;">
+            <div class="mdui-typo-caption mdui-text-color-grey-600 mdui-text-center">自定义大小</div>
+            <div style="display: flex; flex-direction: column; align-items: center; width: 100%;">
+                <label class="mdui-slider mdui-slider-discrete" style="width: 90%; margin: 0 auto;">
+                    <input type="range" step="1" min="10" max="60" value="16" style="width: 100%;" oninput="document.getElementById('custom-font-size-val').innerText = this.value + 'px'" onchange="setFontSize(this.value + 'px')"/>
+                </label>
+                <div class="mdui-text-center mdui-text-color-grey-600" id="custom-font-size-val" style="width: 100%;">16px</div>
+            </div>
+        </li>
+      </ul>
+      <ul class="mdui-menu editor-tool-menu" id="text-color-menu">
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#F44336')" class="mdui-text-color-red">● Red</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#E91E63')" class="mdui-text-color-pink">● Pink</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#9C27B0')" class="mdui-text-color-purple">● Purple</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#2196F3')" class="mdui-text-color-blue">● Blue</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#00BCD4')" class="mdui-text-color-cyan">● Cyan</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#4CAF50')" class="mdui-text-color-green">● Green</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#FFEB3B')" class="mdui-text-color-yellow">● Yellow</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#FF9800')" class="mdui-text-color-orange">● Orange</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#9E9E9E')" class="mdui-text-color-grey">● Grey</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#000000')" class="mdui-text-color-black">● Black</a></li>
+        <li class="mdui-menu-item"><a href="javascript:;" onclick="setColor('#FFFFFF')" class="mdui-text-color-white mdui-color-grey-800">● White</a></li>
+        <li class="mdui-divider"></li>
+        <li class="mdui-menu-item mdui-p-a-1">
+            <div class="mdui-row mdui-valign mdui-m-0">
+                <div class="mdui-col-xs-8 mdui-p-0">
+                    <input type="color" id="custom-color-input" value="#000000" style="width: 100%; height: 30px; border: none; cursor: pointer; background: transparent;">
+                </div>
+                <div class="mdui-col-xs-4 mdui-p-0 mdui-text-right">
+                    <button class="mdui-btn mdui-btn-icon mdui-btn-dense mdui-ripple" onclick="setColor(document.getElementById('custom-color-input').value)" mdui-tooltip="{content: '应用颜色'}">
+                        <i class="mdui-icon material-icons">check</i>
+                    </button>
+                </div>
+            </div>
+        </li>
+      </ul>
+    </div>
+    
+<div class="editor-workspace" style="flex: 1 1 0; min-height: 0; position: relative; overflow: hidden; display: flex;">
+      <div id="editor-col" style="flex: 1 1 100%; width: 100%; height: 100%; overflow: hidden; position: relative;">
+        <div id="editor-container"></div>
+      </div>
+      <div class="mdui-p-a-2 markdown-body" id="preview-content" style="flex: 1 1 100%; width: 100%; height: 100%; overflow-y: auto; display: none; box-sizing: border-box;">
+        <!-- Preview will be rendered here -->
+      </div>
+    </div>
+    <div id="save-status" style="position: absolute; bottom: 16px; right: 24px; font-size: 12px; pointer-events: none; z-index: 10;"></div>
+  </div>
+</div>
+
+<!-- Dependencies -->
+<script src="https://gcore.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://gcore.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script src="https://gcore.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+<script src="https://gcore.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+<script src="https://unpkg.com/idb-keyval@6.2.1/dist/umd.js"></script>
+
+<!-- CodeMirror 5 Bundle (Core, Modes & Addons) -->
+<script src="/lib/codemirror/codemirror.bundle.js"></script>
+
+<script>
+// --- State & Config ---
+let cmEditor = null;
+let imageAssets = {}; // In-memory cache of images: { filename: Blob }
+let previewObjectUrls = [];
+let _cachedMaterialThumbnail = null; // Cache for deterministic material image
+const DB_KEY_CONTENT = 'blog_editor_content';
+const DB_KEY_IMAGES = 'blog_editor_images';
+const DEFAULT_POST_AUTHOR = 'Steve ZMT';
+const SITE_ORIGIN = window.location.origin;
+
+// --- Auto-save Timer ---
+let autoSaveTimer;
+function triggerAutoSave() {
+    const status = document.getElementById('save-status');
+    if (status) {
+        status.innerHTML = '<span class="mdui-text-color-grey-500" style="display: flex; align-items: center;"> 正在保存... </span>';
+    }
+    clearTimeout(autoSaveTimer);
+    autoSaveTimer = setTimeout(saveState, 1500);
+}
+
+function getEditorContent() {
+    return cmEditor ? cmEditor.getValue() : '';
+}
+
+function setEditorContent(val) {
+    if (cmEditor) {
+        cmEditor.setValue(val || '');
+        cmEditor.clearHistory();
+    }
+}
+
+function getEditorSelectionText() {
+    return cmEditor ? cmEditor.getSelection() : '';
+}
+
+function undo() {
+    if (cmEditor) {
+        cmEditor.undo();
+        cmEditor.focus();
+    }
+}
+
+function redo() {
+    if (cmEditor) {
+        cmEditor.redo();
+        cmEditor.focus();
+    }
+}
+
+// --- Initialization ---
+document.addEventListener('DOMContentLoaded', async () => {
+    // Initialize CodeMirror 5
+    const editorMount = document.getElementById('editor-container');
+    cmEditor = CodeMirror(editorMount, {
+        value: '',
+        mode: { name: 'gfm', gitHubSpice: false, highlightFormatting: true },
+        lineNumbers: true,
+        lineWrapping: true,
+        styleActiveLine: true,
+        autoCloseBrackets: true,
+        foldGutter: true,
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+        extraKeys: {
+            "Ctrl-B": () => insertText('**', '**'),
+            "Cmd-B": () => insertText('**', '**'),
+            "Ctrl-I": () => insertText('*', '*'),
+            "Cmd-I": () => insertText('*', '*'),
+            "Ctrl-U": () => insertText('<u>', '</u>'),
+            "Cmd-U": () => insertText('<u>', '</u>'),
+            "Ctrl-Shift-X": () => insertText('~~', '~~'),
+            "Cmd-Shift-X": () => insertText('~~', '~~'),
+            "Alt-Shift-5": () => insertText('~~', '~~'),
+            "Ctrl-K": () => insertLink(),
+            "Cmd-K": () => insertLink(),
+            "Ctrl-Shift-K": () => insertText('```\n', '\n```'),
+            "Cmd-Shift-K": () => insertText('```\n', '\n```'),
+            "Ctrl-Shift-C": () => insertText('```\n', '\n```'),
+            "Cmd-Shift-C": () => insertText('```\n', '\n```'),
+            "Ctrl-Shift-D": () => insertDetails(),
+            "Cmd-Shift-D": () => insertDetails(),
+            "Ctrl-S": () => { saveState(); mdui.snackbar({message: '已保存至本地缓存', position: 'bottom'}); },
+            "Cmd-S": () => { saveState(); mdui.snackbar({message: '已保存至本地缓存', position: 'bottom'}); },
+            "Enter": "newlineAndIndentContinueMarkdownList",
+            "Tab": (cm) => {
+                if (cm.somethingSelected()) {
+                    cm.indentSelection('add');
+                } else {
+                    cm.replaceSelection('    ', 'end');
+                }
+            },
+            "Shift-Tab": (cm) => {
+                cm.indentSelection('subtract');
+            },
+            "Ctrl-Alt-1": () => insertHeading(1),
+            "Ctrl-Alt-2": () => insertHeading(2),
+            "Ctrl-Alt-3": () => insertHeading(3),
+            "Ctrl-Alt-4": () => insertHeading(4),
+            "Ctrl-Alt-5": () => insertHeading(5),
+            "Ctrl-Alt-6": () => insertHeading(6)
+        }
+    });
+
+    // Listen to changes in CodeMirror
+    cmEditor.on('change', () => {
+        updatePreview();
+        triggerAutoSave();
+    });
+
+    // Handle Drag & Drop inside CodeMirror
+    cmEditor.on('dragover', (cm, e) => {
+        e.preventDefault();
+        editorMount.classList.add('editor-drag-active');
+    });
+    cmEditor.on('dragleave', (cm, e) => {
+        e.preventDefault();
+        editorMount.classList.remove('editor-drag-active');
+    });
+    cmEditor.on('drop', (cm, e) => {
+        editorMount.classList.remove('editor-drag-active');
+        const files = e.dataTransfer && e.dataTransfer.files;
+        if (files && files.length) {
+            e.preventDefault();
+            processImageFiles(files);
+        }
+    });
+
+    // Handle Image Paste inside CodeMirror
+    cmEditor.on('paste', (cm, e) => {
+        const items = e.clipboardData && e.clipboardData.items;
+        if (items) {
+            const imageFiles = [];
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type && items[i].type.startsWith('image/')) {
+                    const file = items[i].getAsFile();
+                    if (file) imageFiles.push(file);
+                }
+            }
+            if (imageFiles.length > 0) {
+                e.preventDefault();
+                processImageFiles(imageFiles);
+            }
+        }
+    });
+
+    // Initialize Floating Menus
+    const toolbarMenus = [
+        initFloatingMenu('#font-size-btn', '#font-size-menu', { align: 'auto' }),
+        initFloatingMenu('#text-color-btn', '#text-color-menu', { align: 'auto' })
+    ];
+    const editorToolbar = document.querySelector('#editor-card > .mdui-toolbar');
+    if (editorToolbar) {
+        editorToolbar.addEventListener('scroll', () => {
+            toolbarMenus.forEach(menu => {
+                if (menu && menu.isOpen()) menu.readjust();
+            });
+        }, { passive: true });
+    }
+
+    // Configure Marked Renderer for Image Preview
+    const renderer = {
+        image(href, title, text) {
+            if (typeof href === 'object' && href !== null) {
+                const token = href;
+                href = token.href;
+                title = token.title;
+                text = token.text;
+            }
+
+            if (typeof href === 'string' && href) {
+                const filename = href.split('/').pop();
+                const decodedFilename = decodeURIComponent(filename);
+                
+                if (imageAssets[decodedFilename]) {
+                    const url = getPreviewImageSrc(href);
+                    return `<${'img'} src="${escapeAttribute(url)}" alt="${escapeAttribute(text)}" title="${escapeAttribute(title || '')}" style="max-width: 100%;" />`;
+                }
+            }
+            return `<${'img'} src="${escapeAttribute(href)}" alt="${escapeAttribute(text)}"${title ? ` title="${escapeAttribute(title)}"` : ''} style="max-width: 100%;">`;
+        }
+    };
+    marked.use({ renderer });
+
+    // Ensure idbKeyval is available
+    if (typeof idbKeyval === 'undefined') {
+        console.error('idbKeyval library not loaded!');
+        mdui.snackbar({message: '自动保存功能不可用 (库加载失败)'});
+    } else {
+        // Load saved state
+        try {
+            const savedContent = await idbKeyval.get(DB_KEY_CONTENT);
+            if (savedContent) {
+                document.getElementById('post-title').value = savedContent.title || '';
+                document.getElementById('post-slug').value = savedContent.slug || '';
+                document.getElementById('post-tags').value = savedContent.tags || '';
+                document.getElementById('post-categories').value = savedContent.categories || '';
+                setEditorContent(savedContent.content || '');
+                
+                // Load advanced settings
+                document.getElementById('post-donate').checked = savedContent.donate !== false;
+                document.getElementById('post-toc').checked = savedContent.toc !== false;
+                document.getElementById('post-comments').checked = savedContent.comments !== false;
+                document.getElementById('post-top').checked = savedContent.top === true;
+                if(savedContent.date) document.getElementById('post-date').value = savedContent.date;
+                
+                if(savedContent.author) document.getElementById('post-author').value = savedContent.author;
+                if(savedContent.thumbnail) document.getElementById('post-thumbnail').value = savedContent.thumbnail;
+                if(savedContent.excerpt) document.getElementById('post-excerpt').value = savedContent.excerpt;
+                applyLicenseFrontMatterValue(savedContent.license || '');
+                if(savedContent.lang) document.getElementById('post-lang').value = savedContent.lang;
+                if(savedContent.wechat_sync !== undefined) document.getElementById('post-wechat_sync').checked = savedContent.wechat_sync;
+                
+                document.getElementById('post-count').checked = savedContent.count !== false;
+                document.getElementById('post-share_menu').checked = savedContent.share_menu !== false;
+                document.getElementById('post-qrcode').checked = savedContent.qrcode !== false;
+                document.getElementById('post-thislink').checked = savedContent.thislink !== false;
+
+                mdui.updateTextFields();
+            }
+            
+            const savedImages = await idbKeyval.get(DB_KEY_IMAGES);
+            if (savedImages) {
+                imageAssets = savedImages;
+            }
+            updateLicenseVisibility();
+            updatePreviewAll();
+        } catch (e) {
+            console.error("Failed to load saved state", e);
+            updateLicenseVisibility();
+            updatePreviewAll();
+        }
+    }
+
+    // Attach auto-save to all other inputs
+    document.querySelectorAll('.mdui-textfield-input, input[type="checkbox"], select').forEach(input => {
+        input.addEventListener('input', triggerAutoSave);
+        input.addEventListener('change', triggerAutoSave);
+    });
+
+    const licenseSwitch = document.getElementById('post-license-enabled');
+    if (licenseSwitch) {
+        licenseSwitch.addEventListener('change', () => {
+            updateLicenseVisibility();
+            triggerAutoSave();
+        });
+    }
+
+    ['post-title', 'post-slug', 'post-date', 'post-author', 'post-thumbnail', 'post-count', 'post-qrcode', 'post-share_menu'].forEach(id => {
+        const input = document.getElementById(id);
+        if (!input) return;
+        input.addEventListener('input', updateHeaderPreview);
+        input.addEventListener('change', updateHeaderPreview);
+    });
+    
+    // File inputs
+    const imgInput = document.getElementById('image-input');
+    if (imgInput) imgInput.addEventListener('change', handleImageSelect);
+    const thumbInput = document.getElementById('thumbnail-input');
+    if (thumbInput) thumbInput.addEventListener('change', handleThumbnailSelect);
+    const zipInput = document.getElementById('zip-input');
+    if (zipInput) zipInput.addEventListener('change', handleZipImport);
+    
+    // Fetch Tags and Categories
+    initTaxonomyMenus();
+
+    // --- Gutter line-number click/drag selection (VS Code / Word style) ---
+    // Clicking a line number selects the whole line.
+    // Click-and-drag (or Shift+click) extends the selection across multiple lines.
+    (function initGutterLineSelect(cm) {
+        let dragAnchorLine = null; // the line where the drag started
+
+        // Select a range of whole lines [fromLine, toLine] (inclusive)
+        function selectLines(fromLine, toLine) {
+            const doc = cm.getDoc();
+            const lastLine = Math.max(fromLine, toLine);
+            const firstLine = Math.min(fromLine, toLine);
+            const endCh = doc.getLine(lastLine) !== undefined ? doc.getLine(lastLine).length : 0;
+            // If drag went upward, anchor is bottom of lastLine, head is start of firstLine
+            if (fromLine <= toLine) {
+                doc.setSelection(
+                    { line: firstLine, ch: 0 },
+                    { line: lastLine, ch: endCh }
+                );
+            } else {
+                doc.setSelection(
+                    { line: lastLine, ch: endCh },
+                    { line: firstLine, ch: 0 }
+                );
+            }
+        }
+
+        cm.on('gutterClick', function(cm, lineNum, gutterId, event) {
+            // Only handle clicks on line-number gutter
+            if (gutterId !== 'CodeMirror-linenumbers') return;
+            event.preventDefault();
+
+            if (event.shiftKey && cm.getDoc().somethingSelected()) {
+                // Shift+click: extend selection from current anchor to this line
+                const anchor = cm.getDoc().getCursor('anchor');
+                const anchorLine = anchor.line;
+                selectLines(anchorLine, lineNum);
+                dragAnchorLine = anchorLine;
+            } else {
+                // Normal click: select single line, set drag anchor
+                dragAnchorLine = lineNum;
+                selectLines(lineNum, lineNum);
+            }
+            cm.focus();
+
+            // Capture mousemove on the window to extend selection while dragging
+            function onMouseMove(e) {
+                if (dragAnchorLine === null) return;
+                try {
+                    const rawLine = cm.lineAtHeight(e.clientY, 'window');
+                    const targetLine = Math.max(0, Math.min(rawLine, cm.getDoc().lastLine()));
+                    selectLines(dragAnchorLine, targetLine);
+                } catch (err) {
+                    // Fallback if coordinate is outside
+                }
+            }
+
+            function onMouseUp() {
+                dragAnchorLine = null;
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            }
+
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+    })(cmEditor);
+
+    // Initial resize refresh
+    setTimeout(() => {
+        if (cmEditor) cmEditor.refresh();
+    }, 100);
+});
+
+// --- UI Helpers ---
+function escapeHtml(value) {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function escapeAttribute(value) {
+    return escapeHtml(value);
+}
+
+function getBlobDimensions(blob) {
+    return new Promise((resolve, reject) => {
+        const objectUrl = URL.createObjectURL(blob);
+        const image = new Image();
+
+        image.onload = () => {
+            const dimensions = {
+                width: image.naturalWidth,
+                height: image.naturalHeight
+            };
+            URL.revokeObjectURL(objectUrl);
+            resolve(dimensions);
+        };
+
+        image.onerror = (error) => {
+            URL.revokeObjectURL(objectUrl);
+            reject(error);
+        };
+
+        image.src = objectUrl;
+    });
+}
+
+function buildInsertedImageHtml(src, width, height, alt = '') {
+    return `<${'img'} src="${escapeAttribute(src)}" width="${escapeAttribute(width)}" height="${escapeAttribute(height)}" alt="${escapeAttribute(alt)}" title="">`;
+}
+
+function rewritePreviewImageSources(html) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(`<div id="preview-root">${html}</div>`, 'text/html');
+    const root = doc.getElementById('preview-root');
+    if (!root) return html;
+
+    root.querySelectorAll('img').forEach(img => {
+        const resolvedSrc = getPreviewImageSrc(img.getAttribute('src'));
+        if (resolvedSrc) {
+            img.setAttribute('src', resolvedSrc);
+        }
+        img.setAttribute('no-lazy', '');
+    });
+
+    return root.innerHTML;
+}
+
+let _lastHeaderHtml = '';
+let _lastHeaderThumbnail = '';
+function updateHeaderPreview() {
+    const headerPreview = document.getElementById('editor-article-preview');
+    if (!headerPreview) return;
+
+    const newThumbnail = getPreviewThumbnail();
+
+    if (_lastHeaderThumbnail && newThumbnail === _lastHeaderThumbnail) {
+        const img = headerPreview.querySelector('header.mdui-card-media > img');
+        const titleEl = headerPreview.querySelector('.mdui-card-primary-title h1');
+        const subtitleEl = headerPreview.querySelector('.mdui-card-primary-subtitle');
+        if (img && titleEl && subtitleEl) {
+            const title = document.getElementById('post-title').value.trim() || 'Untitled';
+            const author = document.getElementById('post-author').value.trim() || DEFAULT_POST_AUTHOR;
+            const previewDate = getPreviewDate();
+            const showCount = document.getElementById('post-count').checked;
+            img.alt = escapeAttribute(title);
+            titleEl.textContent = title;
+            subtitleEl.innerHTML = `<i class="mdui-icon material-icons" translate="no">today</i> ${escapeHtml(previewDate)} / <i class="mdui-icon material-icons" translate="no">person</i> ${escapeHtml(author)}${showCount ? '&nbsp;&nbsp;<span style="display: inline;"><i class="mdui-icon material-icons" translate="no">remove_red_eye</i> 114</span>' : ''}`;
+            return;
+        }
+    }
+
+    const html = buildArticleHeaderHtml();
+    if (html === _lastHeaderHtml && newThumbnail === _lastHeaderThumbnail) return;
+    _lastHeaderHtml = html;
+    _lastHeaderThumbnail = newThumbnail;
+
+    headerPreview.innerHTML = html;
+    mdui.mutation();
+}
+
+function dispatchInputValue(input, value) {
+    input.value = value;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+    const textfield = input.closest('.mdui-textfield');
+    if (textfield) mdui.updateTextFields(textfield);
+}
+
+function appendTag(tag) {
+    const input = document.getElementById('post-tags');
+    let vals = input.value.split(',').map(s => s.trim()).filter(Boolean);
+    if (!vals.includes(tag)) vals.push(tag);
+    dispatchInputValue(input, vals.join(', '));
+    input.focus();
+}
+
+function appendCategory(cat) {
+    const input = document.getElementById('post-categories');
+    let vals = input.value.split(',').map(s => s.trim()).filter(Boolean);
+    if (!vals.includes(cat)) vals.push(cat);
+    dispatchInputValue(input, vals.join(', '));
+    input.focus();
+}
+
+function createTaxonomyMenuItem(label, onSelect) {
+    const li = document.createElement('li');
+    const link = document.createElement('a');
+    li.className = 'mdui-menu-item';
+    link.href = 'javascript:;';
+    link.className = 'mdui-ripple';
+    link.textContent = label;
+    link.addEventListener('click', () => onSelect(label));
+    li.appendChild(link);
+    return li;
+}
+
+function fillTaxonomyMenu(menu, values, onSelect) {
+    menu.innerHTML = '';
+    values.forEach(value => {
+        if (!value) return;
+        menu.appendChild(createTaxonomyMenuItem(value, onSelect));
+    });
+}
+
+async function initTaxonomyMenus() {
+    try {
+        const res = await fetch('/search.xml', { credentials: 'same-origin' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(await res.text(), 'application/xml');
+        if (xml.querySelector('parsererror')) {
+            throw new Error('Invalid search index XML');
+        }
+
+        const tags = Array.from(xml.querySelectorAll('tags > tag'))
+            .map(node => node.textContent.trim())
+            .filter(Boolean)
+            .sort((a, b) => a.localeCompare(b, 'zh-Hans-CN'));
+        const categories = Array.from(xml.querySelectorAll('categories > category'))
+            .map(node => node.textContent.trim())
+            .filter(Boolean)
+            .sort((a, b) => a.localeCompare(b, 'zh-Hans-CN'));
+
+        const uniqueTags = Array.from(new Set(tags));
+        const uniqueCategories = Array.from(new Set(categories));
+
+        if (uniqueTags.length) {
+            fillTaxonomyMenu(document.getElementById('tag-menu'), uniqueTags, appendTag);
+            initFloatingMenu('#post-tags', '#tag-menu', { align: 'left' });
+        }
+
+        if (uniqueCategories.length) {
+            fillTaxonomyMenu(document.getElementById('category-menu'), uniqueCategories, appendCategory);
+            initFloatingMenu('#post-categories', '#category-menu', { align: 'left' });
+        }
+    } catch (err) {
+        console.error('Failed to fetch tags and categories', err);
+    }
+}
+
+function initFloatingMenu(anchorSelector, menuSelector, options = {}) {
+    const anchor = document.querySelector(anchorSelector);
+    const menu = document.querySelector(menuSelector);
+    if (!anchor || !menu) return null;
+
+    const proxy = document.createElement('span');
+    proxy.setAttribute('aria-hidden', 'true');
+    proxy.style.cssText = 'position: fixed; width: 0; height: 0; left: 0; top: 0; pointer-events: none; z-index: 2100;';
+
+    const editorCard = document.getElementById('editor-card');
+
+    const updateContainer = () => {
+        const isFullscreen = document.fullscreenElement === editorCard || 
+                             document.webkitFullscreenElement === editorCard || 
+                             document.mozFullScreenElement === editorCard || 
+                             document.msFullscreenElement === editorCard;
+        const targetParent = (isFullscreen && editorCard) ? editorCard : document.body;
+        if (proxy.parentNode !== targetParent) targetParent.appendChild(proxy);
+        if (menu.parentNode !== targetParent) targetParent.appendChild(menu);
+        menu.style.zIndex = '2200';
+    };
+
+    updateContainer();
+
+    const instance = new mdui.Menu(proxy, menu, Object.assign({
+        covered: false,
+        fixed: true,
+        position: 'bottom',
+        align: 'left',
+        gutter: 8
+    }, options));
+
+    const syncProxy = () => {
+        updateContainer();
+        const rect = anchor.getBoundingClientRect();
+        proxy.style.left = `${rect.left}px`;
+        proxy.style.top = `${rect.top}px`;
+        proxy.style.width = `${rect.width}px`;
+        proxy.style.height = `${rect.height}px`;
+    };
+
+    anchor.addEventListener('click', event => {
+        event.preventDefault();
+        event.stopPropagation();
+        syncProxy();
+        instance.toggle();
+    });
+
+    const readjust = instance.readjust.bind(instance);
+    instance.readjust = () => {
+        syncProxy();
+        readjust();
+    };
+
+    window.addEventListener('scroll', () => {
+        if (instance.isOpen()) instance.readjust();
+    }, { passive: true });
+
+    document.addEventListener('fullscreenchange', () => {
+        updateContainer();
+        if (instance.isOpen()) instance.readjust();
+    });
+    document.addEventListener('webkitfullscreenchange', () => {
+        updateContainer();
+        if (instance.isOpen()) instance.readjust();
+    });
+
+    return instance;
+}
+
+async function insertLink() {
+    try {
+        const text = await navigator.clipboard.readText();
+        if (text && /^https?:\/\//i.test(text.trim())) {
+            insertText('[', `](${text.trim()})`);
+            return;
+        }
+    } catch (e) {
+        console.warn("Clipboard access denied or failed", e);
+    }
+    insertText('[', '](url)');
+}
+
+async function insertDetails() {
+    let clipboardText = "展开";
+    try {
+        const text = await navigator.clipboard.readText();
+        if (text && text.length < 50 && !text.includes('\n')) {
+            clipboardText = text.trim();
+        }
+    } catch (e) {
+        console.warn("Clipboard access denied or failed", e);
+    }
+    insertText(`<details markdown="1">\n<summary>${clipboardText}</summary>\n\n`, '\n\n</details>');
+}
+
+function insertList() {
+    insertText('- ', '');
+}
+
+// --- Text Operations for CodeMirror ---
+function insertText(before, after = '') {
+    if (!cmEditor) return;
+    const selection = cmEditor.getSelection();
+    if (selection) {
+        cmEditor.replaceSelection(before + selection + after);
+    } else {
+        const cursor = cmEditor.getCursor();
+        cmEditor.replaceRange(before + after, cursor);
+        cmEditor.setCursor({ line: cursor.line, ch: cursor.ch + before.length });
+    }
+    cmEditor.focus();
+}
+
+function insertHeading(level) {
+    if (!cmEditor) return;
+    const cursor = cmEditor.getCursor();
+    const line = cmEditor.getLine(cursor.line);
+    const cleaned = line.replace(/^#{1,6}\s*/, '');
+    const prefix = '#'.repeat(Math.max(1, Math.min(6, level))) + ' ';
+    cmEditor.replaceRange(prefix + cleaned, { line: cursor.line, ch: 0 }, { line: cursor.line, ch: line.length });
+    cmEditor.focus();
+}
+
+function setFontSize(size) {
+    insertText(`<span style="font-size: ${size};">`, '</span>');
+}
+
+function setColor(color) {
+    insertText(`<span style="color: ${color};">`, '</span>');
+}
+
+function setAlign(align) {
+    insertText(`\n<div style="text-align: ${align};">\n`, '\n</div>\n');
+}
+
+function clearFormatting() {
+    if (!cmEditor) return;
+    const selection = cmEditor.getSelection();
+    if (!selection) return;
+    const cleaned = selection
+        .replace(/<\/?(span|div)[^>]*>/gi, '')
+        .replace(/(\*\*|__)(.*?)\1/g, '$2')
+        .replace(/(\*|_)(.*?)\1/g, '$2')
+        .replace(/~~(.*?)~~/g, '$1')
+        .replace(/`{1,3}(.*?)`{1,3}/g, '$1');
+    cmEditor.replaceSelection(cleaned);
+    cmEditor.focus();
+}
+
+function togglePreview() {
+    const editorCol = document.getElementById('editor-col');
+    const previewCol = document.getElementById('preview-content');
+    if (!editorCol || !previewCol) return;
+    
+    if (previewCol.style.display === 'none') {
+        // Show Preview, Hide Editor
+        updatePreview();
+        editorCol.style.display = 'none';
+        previewCol.style.display = 'block';
+    } else {
+        // Show Editor, Hide Preview
+        editorCol.style.display = 'block';
+        previewCol.style.display = 'none';
+        if (cmEditor) {
+            cmEditor.refresh();
+            cmEditor.focus();
+        }
+    }
+}
+
+// --- Core Article Functions ---
+function generateUUID() {
+    function s4() { return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1); }
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+}
+
+function deterministicMaterial(seed) {
+    seed = String(seed || '');
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+        hash = ((hash << 5) - hash + seed.charCodeAt(i)) | 0;
+    }
+    return `/images/random/material-${Math.abs(hash % 19) + 1}.png`;
+}
+
+function getPreviewImageSrc(src) {
+    if (!src) return '';
+    const filename = decodeURIComponent(src.split('/').pop() || '');
+    const blob = imageAssets[filename];
+    if (!blob) return src;
+    const objectUrl = URL.createObjectURL(blob);
+    previewObjectUrls.push(objectUrl);
+    return objectUrl;
+}
+
+function releasePreviewObjectUrls() {
+    previewObjectUrls.forEach(url => URL.revokeObjectURL(url));
+    previewObjectUrls = [];
+}
+
+function getPreviewDate() {
+    const rawDate = document.getElementById('post-date').value.trim();
+    const sourceDate = rawDate || new Date();
+    const date = sourceDate instanceof Date ? sourceDate : new Date(sourceDate.replace(' ', 'T'));
+    if (Number.isNaN(date.getTime())) return rawDate;
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+function getPreviewThumbnail() {
+    const thumbnail = document.getElementById('post-thumbnail').value.trim();
+    if (thumbnail) {
+        _cachedMaterialThumbnail = null;
+        return getPreviewImageSrc(thumbnail);
+    }
+
+    if (_cachedMaterialThumbnail) return _cachedMaterialThumbnail;
+
+    const seed = document.getElementById('post-slug').value
+        || document.getElementById('post-title').value
+        || 'editor-preview';
+    _cachedMaterialThumbnail = deterministicMaterial(seed);
+    return _cachedMaterialThumbnail;
+}
+
+function getPreviewSlug() {
+    return document.getElementById('post-slug').value.trim() || 'editor-preview';
+}
+
+function getPreviewPermalink() {
+    return `${SITE_ORIGIN}/p/${encodeURIComponent(getPreviewSlug())}/`;
+}
+
+function buildQrCodeUrl(value) {
+    return `${encodeURIComponent(value)}`;
+}
+
+function buildPreviewShareMenu(title, permalink, thumbnail) {
+    const encodedTitle = encodeURIComponent(title);
+    const encodedPermalink = encodeURIComponent(permalink);
+    const encodedThumb = encodeURIComponent(thumbnail);
+
+    return `
+        <ul class="mdui-menu" id="editor-preview-share-menu">
+            <li class="mdui-menu-item">
+                <a href="javascript:void(0);" class="mdui-ripple" onclick="copyToClipboard('${escapeAttribute(permalink)}');">复制链接</a>
+            </li>
+            <li class="mdui-menu-item">
+                <a href="//service.weibo.com/share/share.php?appkey=&title=${encodedTitle}&url=${encodedPermalink}&pic=${encodedThumb}&searchPic=false&style=simple" target="_blank" class="mdui-ripple">微博</a>
+            </li>
+            <li class="mdui-menu-item">
+                <a href="//twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedPermalink}&via=${encodeURIComponent(DEFAULT_POST_AUTHOR)}" target="_blank" class="mdui-ripple">Twitter</a>
+            </li>
+            <li class="mdui-menu-item">
+                <a href="//www.facebook.com/sharer/sharer.php?u=${encodedPermalink}" target="_blank" class="mdui-ripple">Facebook</a>
+            </li>
+            <li class="mdui-menu-item">
+                <a href="//connect.qq.com/widget/shareqq/index.html?site=${encodeURIComponent(document.title)}&title=${encodedTitle}&pics=${encodedThumb}&url=${encodedPermalink}" target="_blank" class="mdui-ripple">QQ</a>
+            </li>
+            <li class="mdui-menu-item">
+                <a href="//telegram.me/share/url?url=${encodedPermalink}&text=${encodedTitle}" target="_blank" class="mdui-ripple">Telegram</a>
+            </li>
+            <li class="mdui-menu-item">
+                <a href="javascript:void(0);" class="mdui-ripple" onclick="sharePageviaSystem();">系统分享</a>
+            </li>
+        </ul>
+    `;
+}
+
+function buildArticleHeaderHtml() {
+    const title = document.getElementById('post-title').value.trim() || 'Untitled';
+    const author = document.getElementById('post-author').value.trim() || DEFAULT_POST_AUTHOR;
+    const thumbnail = getPreviewThumbnail();
+    const previewDate = getPreviewDate();
+    const permalink = getPreviewPermalink();
+    const showCount = document.getElementById('post-count').checked;
+    const showQrcode = document.getElementById('post-qrcode').checked;
+    const showShareMenu = document.getElementById('post-share_menu').checked;
+
+    return `
+        <header class="mdui-card-media">
+            <img src="${escapeAttribute(thumbnail)}" no-lazy fetchpriority="high" width="1280" height="720" decoding="async" alt="${escapeAttribute(title)}">
+            <div class="mdui-card-media-covered">
+                <div class="mdui-card-primary">
+                    <div class="mdui-card-primary-title">
+                        <h1 style="margin: 0; font-size: inherit; font-weight: inherit;">${escapeHtml(title)}</h1>
+                    </div>
+                    <div class="mdui-card-primary-subtitle">
+                        <i class="mdui-icon material-icons" translate="no">today</i> ${escapeHtml(previewDate)}
+                        /
+                        <i class="mdui-icon material-icons" translate="no">person</i> ${escapeHtml(author)}
+                        ${showCount ? `&nbsp;&nbsp;<span style="display: inline;"><i class="mdui-icon material-icons" translate="no">remove_red_eye</i> 114</span>` : ''}
+                    </div>
+                </div>
+            </div>
+            <div class="mdui-card-menu">
+                ${showQrcode ? `
+                    <button class="mdui-btn mdui-btn-icon mdui-text-color-white" mdui-menu="{target: '#editor-preview-qrcode', align: 'right'}">
+                        <i class="mdui-icon material-icons" translate="no">devices</i>
+                    </button>
+                    <ul class="mdui-menu" id="editor-preview-qrcode">
+                        <li class="mdui-menu-item" disabled>
+                            Here will be a QR code when the post upload.
+                        </li>
+                    </ul>
+                ` : ''}
+                ${showShareMenu ? `
+                    <button class="mdui-btn mdui-btn-icon mdui-text-color-white" mdui-menu="{target: '#editor-preview-share-menu', align: 'right'}">
+                        <i class="mdui-icon material-icons" translate="no">share</i>
+                    </button>
+                    ${buildPreviewShareMenu(title, permalink, thumbnail)}
+                ` : ''}
+            </div>
+        </header>
+    `;
+}
+
+function buildPreviewBodyHtml(contentHtml) {
+    return `
+        <div class="mdui-typo markdown-body editor-preview-body">
+            ${contentHtml}
+        </div>
+    `;
+}
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        mdui.snackbar({message: '已复制链接!', position: 'top', buttonText: '好'});
+    }, err => {
+        console.error('Could not copy text: ', err);
+    });
+}
+
+function sharePageviaSystem() {
+    const title = document.getElementById('post-title').value.trim() || 'Untitled';
+    const excerpt = document.getElementById('post-excerpt').value.trim();
+    const url = getPreviewPermalink();
+
+    if (navigator.share) {
+        navigator.share({ title, text: excerpt, url }).catch(console.error);
+    } else {
+        mdui.snackbar({message: '您的浏览器不支持此方式。', position: 'top', buttonText: '好吧'});
+    }
+}
+
+function updateLicenseVisibility() {
+    const enabledInput = document.getElementById('post-license-enabled');
+    const customRow = document.getElementById('license-custom-row');
+    if (!enabledInput || !customRow) return;
+
+    customRow.style.display = enabledInput.checked ? 'block' : 'none';
+}
+
+function getLicenseFrontMatterValue() {
+    const enabled = document.getElementById('post-license-enabled').checked;
+    if (!enabled) return 'false';
+    return document.getElementById('post-license').value.trim();
+}
+
+function applyLicenseFrontMatterValue(value) {
+    const enabledInput = document.getElementById('post-license-enabled');
+    const licenseInput = document.getElementById('post-license');
+
+    if (value === 'false') {
+        enabledInput.checked = false;
+        licenseInput.value = '';
+    } else {
+        enabledInput.checked = true;
+        licenseInput.value = value || '';
+    }
+
+    updateLicenseVisibility();
+}
+
+function updatePreview() {
+    releasePreviewObjectUrls();
+    const text = getEditorContent();
+    const html = rewritePreviewImageSources(marked.parse(text));
+    const previewBody = document.getElementById('preview-content');
+    if (previewBody) {
+        previewBody.innerHTML = buildPreviewBodyHtml(html);
+        mdui.mutation();
+    }
+}
+
+function updatePreviewAll() {
+    updateHeaderPreview();
+    updatePreview();
+}
+
+async function saveState() {
+    if (typeof idbKeyval === 'undefined') return;
+
+    const state = {
+        title: document.getElementById('post-title').value,
+        slug: document.getElementById('post-slug').value,
+        tags: document.getElementById('post-tags').value,
+        categories: document.getElementById('post-categories').value,
+        content: getEditorContent(),
+        donate: document.getElementById('post-donate').checked,
+        toc: document.getElementById('post-toc').checked,
+        comments: document.getElementById('post-comments').checked,
+        top: document.getElementById('post-top').checked,
+        date: document.getElementById('post-date').value,
+        author: document.getElementById('post-author').value,
+        thumbnail: document.getElementById('post-thumbnail').value,
+        excerpt: document.getElementById('post-excerpt').value,
+        license: getLicenseFrontMatterValue(),
+        lang: document.getElementById('post-lang').value,
+        wechat_sync: document.getElementById('post-wechat_sync').checked,
+        count: document.getElementById('post-count').checked,
+        share_menu: document.getElementById('post-share_menu').checked,
+        qrcode: document.getElementById('post-qrcode').checked,
+        thislink: document.getElementById('post-thislink').checked,
+        timestamp: new Date().getTime()
+    };
+    
+    try {
+        await idbKeyval.set(DB_KEY_CONTENT, state);
+        await idbKeyval.set(DB_KEY_IMAGES, imageAssets);
+        const status = document.getElementById('save-status');
+        if (status) {
+            const timeStr = new Date().toLocaleTimeString();
+            status.innerHTML = '<span class="mdui-text-color-green-500" style="display: flex; align-items: center; font-weight: bold;"><i class="mdui-icon material-icons" style="font-size: 18px; margin-right: 4px;">done_all</i> 已保存 ' + timeStr + '</span>';
+            
+            setTimeout(() => {
+                status.innerHTML = '<span class="mdui-text-color-grey-500" style="display: flex; align-items: center;"><i class="mdui-icon material-icons" style="font-size: 18px; margin-right: 4px;">done</i> 上次保存 ' + timeStr + '</span>';
+            }, 3000);
+        }
+    } catch (e) {
+        console.error("Save failed", e);
+        const status = document.getElementById('save-status');
+        if (status) status.innerHTML = '<span class="mdui-text-color-red-500">保存失败!</span>';
+    }
+}
+
+// --- Enhanced Table Editor with Clipboard Parsing ---
+let tableEditorState = {
+    rows: 3,
+    cols: 3,
+    alignment: ['left', 'left', 'left'], 
+    data: [['Header 1', 'Header 2', 'Header 3'], ['Text', 'Text', 'Text'], ['Text', 'Text', 'Text']], 
+    styles: Array(3).fill().map(() => Array(3).fill({})) 
+};
+let selectedCell = null;
+
+function insertTable() {
+    let dialog = document.getElementById('table-editor-dialog');
+    if (dialog && dialog.parentNode) {
+        dialog.parentNode.removeChild(dialog);
+    }
+    initTableEditor();
+
+    tableEditorState = {
+        rows: 3,
+        cols: 3,
+        alignment: ['left', 'left', 'left'],
+        data: [['Header 1', 'Header 2', 'Header 3'], ['Text', 'Text', 'Text'], ['Text', 'Text', 'Text']],
+        styles: Array(3).fill().map(() => Array(3).fill({}))
+    };
+
+    const rowsInput = document.getElementById('table-rows');
+    const colsInput = document.getElementById('table-cols');
+    if(rowsInput) rowsInput.value = 3;
+    if(colsInput) colsInput.value = 3;
+
+    renderTableEditor();
+    new mdui.Dialog('#table-editor-dialog', { history: false, modal: true }).open();
+}
+
+function initTableEditor() {
+    if (!document.getElementById('table-editor-style')) {
+        const style = document.createElement('style');
+        style.id = 'table-editor-style';
+        style.innerHTML = `
+            #table-editor-grid {
+                display: grid;
+                gap: 8px;
+                overflow: auto;
+                max-height: 400px;
+                padding: 10px;
+                background: rgba(0,0,0,0.02);
+                border: 1px solid rgba(0,0,0,0.1);
+            }
+            .table-cell-input, .table-col-control {
+                width: 100%;
+                min-width: 80px;
+                box-sizing: border-box;
+            }
+            .table-cell-input {
+                border: 1px solid rgba(0,0,0,0.1);
+                padding: 8px;
+                border-radius: 4px;
+                background: #fff;
+                transition: all 0.2s;
+            }
+            .table-cell-input:focus {
+                border-color: var(--color-theme-accent);
+                box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+            }
+            .table-col-control {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                padding: 8px;
+                background: rgba(0,0,0,0.05);
+                border-radius: 4px;
+                user-select: none;
+            }
+            .table-col-control:hover {
+                background: rgba(0,0,0,0.1);
+            }
+            .mdui-theme-layout-dark .table-cell-input {
+                background: #424242;
+                border-color: rgba(255,255,255,0.1);
+                color: #fff;
+            }
+            .mdui-theme-layout-dark #table-editor-grid {
+                background: rgba(255,255,255,0.02);
+                border-color: rgba(255,255,255,0.1);
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    const dialogHtml = `
+    <div class="mdui-dialog" id="table-editor-dialog" style="max-width: 95vw; width: 900px;">
+        <div class="mdui-dialog-title">插入表格</div>
+        <div class="mdui-dialog-content" style="overflow: hidden; display: flex; flex-direction: column; height: 600px; padding-bottom: 0;">
+            
+            <!-- Controls -->
+            <div class="mdui-row mdui-m-b-2">
+                <div class="mdui-col-xs-3">
+                    <div class="mdui-textfield mdui-p-a-0">
+                        <label class="mdui-textfield-label">行数</label>
+                        <input class="mdui-textfield-input" type="number" id="table-rows" value="3" min="1">
+                    </div>
+                </div>
+                <div class="mdui-col-xs-3">
+                    <div class="mdui-textfield mdui-p-a-0">
+                        <label class="mdui-textfield-label">列数</label>
+                        <input class="mdui-textfield-input" type="number" id="table-cols" value="3" min="1">
+                    </div>
+                </div>
+                <div class="mdui-col-xs-6 mdui-valign" style="height: 60px;">
+                    <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-ripple mdui-color-theme-accent" id="table-update-dim">
+                        <i class="mdui-icon material-icons mdui-icon-left">grid_on</i> 应用网格
+                    </button>
+                    <button class="mdui-btn mdui-btn-raised mdui-btn-dense mdui-ripple mdui-m-l-1" id="table-paste-btn" type="button" mdui-tooltip="{content: '从剪贴板读取并自动解析 HTML/Excel/TSV/Markdown 表格'}">
+                        <i class="mdui-icon material-icons mdui-icon-left">content_paste</i> 粘贴表格
+                    </button>
+                </div>
+            </div>
+
+            <!-- Style Toolbar -->
+            <div class="mdui-toolbar mdui-m-b-1" style="min-height: 48px; border-radius: 4px;">
+                 <div class="mdui-valign mdui-m-r-2">
+                    <i class="mdui-icon material-icons mdui-m-r-1">format_color_text</i>
+                    <input type="color" id="cell-fg-color" title="文字颜色" value="#000000" style="height: 24px; width: 40px; border: none; background: none; cursor: pointer;">
+                 </div>
+                 <div class="mdui-valign mdui-m-r-2">
+                    <i class="mdui-icon material-icons mdui-m-r-1">format_color_fill</i>
+                    <input type="color" id="cell-bg-color" title="背景颜色" value="#ffffff" style="height: 24px; width: 40px; border: none; background: none; cursor: pointer;">
+                 </div>
+                 <button class="mdui-btn mdui-btn-icon mdui-ripple" id="apply-style-btn" mdui-tooltip="{content: '应用颜色到选中单元格'}">
+                    <i class="mdui-icon material-icons">check</i>
+                 </button>
+                 <button class="mdui-btn mdui-btn-icon mdui-ripple" id="clear-style-btn" mdui-tooltip="{content: '清除选中单元格样式'}">
+                    <i class="mdui-icon material-icons">format_clear</i>
+                 </button>
+                 <div class="mdui-toolbar-spacer"></div>
+                 <span class="mdui-typo-caption mdui-text-color-grey-600">点击列头切换对齐 / 支持 Ctrl+V 快捷粘贴表格</span>
+            </div>
+
+            <!-- Grid -->
+            <div id="table-editor-grid" class="mdui-typo custom-scroll" style="flex: 1;"></div>
+
+        </div>
+        <div class="mdui-dialog-actions">
+            <button class="mdui-btn mdui-ripple" mdui-dialog-close>取消</button>
+            <button class="mdui-btn mdui-ripple mdui-color-theme-accent" onclick="confirmInsertTable()">插入表格</button>
+        </div>
+    </div>
+    `;
+
+    const div = document.createElement('div');
+    div.innerHTML = dialogHtml;
+    
+    let parent = document.body;
+    const fullscreenElem = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+    if (fullscreenElem && fullscreenElem.id === 'editor-card') {
+        parent = fullscreenElem;
+    }
+    parent.appendChild(div.firstElementChild);
+
+    document.getElementById('table-update-dim').addEventListener('click', () => {
+        const r = parseInt(document.getElementById('table-rows').value) || 1;
+        const c = parseInt(document.getElementById('table-cols').value) || 1;
+        updateTableDims(r, c);
+    });
+
+    document.getElementById('table-paste-btn').addEventListener('click', parseAndLoadClipboardTable);
+    document.getElementById('apply-style-btn').addEventListener('click', applyStyleToSelected);
+    document.getElementById('clear-style-btn').addEventListener('click', clearStyleSelected);
+
+    // Support Ctrl+V paste inside dialog
+    const dialogElem = document.getElementById('table-editor-dialog');
+    if (dialogElem) {
+        dialogElem.addEventListener('paste', (e) => {
+            // If focused on an input inside dialog, allow normal text editing unless entire table is copied
+            const target = e.target;
+            const clipboardData = e.clipboardData;
+            if (!clipboardData) return;
+            const html = clipboardData.getData('text/html');
+            const text = clipboardData.getData('text/plain');
+            if ((html && html.includes('<table')) || (text && (text.includes('\t') || (text.includes('|') && text.includes('\n'))))) {
+                e.preventDefault();
+                parseAndApplyTableData(html, text);
+            }
+        });
+    }
+}
+
+async function parseAndLoadClipboardTable() {
+    try {
+        let text = '';
+        let html = '';
+        if (navigator.clipboard && navigator.clipboard.read) {
+            try {
+                const items = await navigator.clipboard.read();
+                for (const item of items) {
+                    if (item.types.includes('text/html')) {
+                        const blob = await item.getType('text/html');
+                        html = await blob.text();
+                    }
+                    if (item.types.includes('text/plain')) {
+                        const blob = await item.getType('text/plain');
+                        text = await blob.text();
+                    }
+                }
+            } catch (e) {
+                text = await navigator.clipboard.readText();
+            }
+        } else if (navigator.clipboard && navigator.clipboard.readText) {
+            text = await navigator.clipboard.readText();
+        }
+
+        if (!html && !text) {
+            mdui.snackbar({ message: '剪贴板为空或未授予读取权限' });
+            return;
+        }
+
+        parseAndApplyTableData(html, text);
+    } catch (err) {
+        console.error('Failed to read table from clipboard', err);
+        mdui.snackbar({ message: `读取剪贴板失败: ${err.message}` });
+    }
+}
+
+function parseAndApplyTableData(html, text) {
+    let parsed = null;
+    if (html && html.includes('<table')) {
+        parsed = parseHtmlTable(html);
+    }
+    if (!parsed && text) {
+        parsed = parseTextTable(text);
+    }
+
+    if (parsed && parsed.data.length > 0 && parsed.cols > 0) {
+        tableEditorState.rows = parsed.rows;
+        tableEditorState.cols = parsed.cols;
+        tableEditorState.data = parsed.data;
+        tableEditorState.alignment = parsed.alignment || Array(parsed.cols).fill('left');
+        tableEditorState.styles = parsed.styles || Array(parsed.rows).fill().map(() => Array(parsed.cols).fill({}));
+
+        const rowsInput = document.getElementById('table-rows');
+        const colsInput = document.getElementById('table-cols');
+        if (rowsInput) rowsInput.value = parsed.rows;
+        if (colsInput) colsInput.value = parsed.cols;
+
+        renderTableEditor();
+        updateTableDims(parsed.rows, parsed.cols);
+        mdui.snackbar({ message: `已成功读取剪贴板表格 (${parsed.rows} 行 x ${parsed.cols} 列)` });
+    } else {
+        mdui.snackbar({ message: '未能识别剪贴板中的表格内容' });
+    }
+}
+
+function parseHtmlTable(html) {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const table = doc.querySelector('table');
+    if (!table) return null;
+
+    const trs = Array.from(table.querySelectorAll('tr'));
+    if (!trs.length) return null;
+
+    const data = [];
+    const styles = [];
+    let maxCols = 0;
+
+    trs.forEach((tr) => {
+        const rowData = [];
+        const rowStyles = [];
+        const cells = Array.from(tr.querySelectorAll('th, td'));
+        if (cells.length > maxCols) maxCols = cells.length;
+
+        cells.forEach((cell) => {
+            rowData.push(cell.innerText.trim());
+            const cellStyle = {};
+            const fg = cell.style.color;
+            const bg = cell.style.backgroundColor;
+            if (fg) cellStyle.color = fg;
+            if (bg) cellStyle.bg = bg;
+            rowStyles.push(cellStyle);
+        });
+
+        data.push(rowData);
+        styles.push(rowStyles);
+    });
+
+    data.forEach((row, i) => {
+        while (row.length < maxCols) {
+            row.push('');
+            styles[i].push({});
+        }
+    });
+
+    return {
+        rows: data.length,
+        cols: maxCols,
+        data: data,
+        styles: styles,
+        alignment: Array(maxCols).fill('left')
+    };
+}
+
+function parseTextTable(text) {
+    const lines = text.trim().split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    if (!lines.length) return null;
+
+    // Check Markdown table
+    if (lines.length >= 2 && lines.some(l => l.includes('|'))) {
+        const mdRows = [];
+        let alignments = [];
+        lines.forEach(line => {
+            if (/^\|?(\s*:?-+:?\s*\|)+\s*:?-+:?\s*\|?$/.test(line)) {
+                const parts = line.replace(/^\|/, '').replace(/\|$/, '').split('|').map(s => s.trim());
+                alignments = parts.map(p => {
+                    if (p.startsWith(':') && p.endsWith(':')) return 'center';
+                    if (p.endsWith(':')) return 'right';
+                    return 'left';
+                });
+                return;
+            }
+            if (line.includes('|')) {
+                const cells = line.replace(/^\|/, '').replace(/\|$/, '').split('|').map(c => c.trim().replace(/\\\|/g, '|'));
+                mdRows.push(cells);
+            }
+        });
+
+        if (mdRows.length) {
+            let maxCols = Math.max(...mdRows.map(r => r.length));
+            mdRows.forEach(r => { while (r.length < maxCols) r.push(''); });
+            while (alignments.length < maxCols) alignments.push('left');
+            return {
+                rows: mdRows.length,
+                cols: maxCols,
+                data: mdRows,
+                styles: Array(mdRows.length).fill().map(() => Array(maxCols).fill({})),
+                alignment: alignments
+            };
+        }
+    }
+
+    // Check TSV or CSV
+    const isTSV = lines.some(l => l.includes('\t'));
+    const delimiter = isTSV ? '\t' : (lines.some(l => l.includes(',')) ? ',' : null);
+
+    if (delimiter) {
+        const data = lines.map(l => l.split(delimiter).map(c => c.trim().replace(/^"|"$/g, '')));
+        let maxCols = Math.max(...data.map(r => r.length));
+        data.forEach(r => { while (r.length < maxCols) r.push(''); });
+        return {
+            rows: data.length,
+            cols: maxCols,
+            data: data,
+            styles: Array(data.length).fill().map(() => Array(maxCols).fill({})),
+            alignment: Array(maxCols).fill('left')
+        };
+    }
+
+    return null;
+}
+
+function updateTableDims(rows, cols) {
+    const newData = [];
+    const newStyles = [];
+    const newAlign = [];
+
+    for(let i=0; i<rows; i++) {
+        newData[i] = [];
+        newStyles[i] = [];
+        for(let j=0; j<cols; j++) {
+            newData[i][j] = (tableEditorState.data[i] && tableEditorState.data[i][j]) || '';
+            newStyles[i][j] = (tableEditorState.styles[i] && tableEditorState.styles[i][j]) || {};
+        }
+    }
+    
+    for(let j=0; j<cols; j++) {
+        newAlign[j] = tableEditorState.alignment[j] || 'left';
+    }
+
+    tableEditorState.rows = rows;
+    tableEditorState.cols = cols;
+    tableEditorState.data = newData;
+    tableEditorState.styles = newStyles;
+    tableEditorState.alignment = newAlign;
+    
+    renderTableEditor();
+
+    const dialog = document.getElementById('table-editor-dialog');
+    if (dialog) {
+        const winW = window.innerWidth;
+        const winH = window.innerHeight;
+        
+        let newW = Math.max(600, cols * 120 + 60);
+        if (newW > winW * 0.95) newW = winW * 0.95;
+        
+        let newH = Math.max(500, rows * 60 + 250);
+        if (newH > winH * 0.9) newH = winH * 0.9;
+        
+        dialog.style.width = newW + 'px';
+        dialog.style.maxWidth = '95vw';
+        
+        const content = dialog.querySelector('.mdui-dialog-content');
+        if (content) {
+            content.style.height = newH + 'px';
+        }
+        
+        mdui.mutation();
+        window.dispatchEvent(new Event('resize'));
+    }
+}
+
+function renderTableEditor() {
+    const grid = document.getElementById('table-editor-grid');
+    if (!grid) return;
+    grid.style.gridTemplateColumns = `repeat(${tableEditorState.cols}, 1fr)`;
+    grid.innerHTML = '';
+
+    for(let j=0; j<tableEditorState.cols; j++) {
+        const align = tableEditorState.alignment[j];
+        let icon = 'format_align_left';
+        if(align === 'center') icon = 'format_align_center';
+        if(align === 'right') icon = 'format_align_right';
+        
+        const colHeader = document.createElement('div');
+        colHeader.className = 'table-col-control';
+        colHeader.innerHTML = `<i class="mdui-icon material-icons" style="font-size: 18px;">${icon}</i>`;
+        colHeader.title = '切换对齐方式';
+        colHeader.onclick = () => toggleAlign(j);
+        grid.appendChild(colHeader);
+    }
+
+    for(let i=0; i<tableEditorState.rows; i++) {
+        for(let j=0; j<tableEditorState.cols; j++) {
+            const cell = document.createElement('input');
+            cell.className = 'table-cell-input';
+            cell.value = tableEditorState.data[i][j];
+            cell.placeholder = i === 0 ? '标题' : '内容';
+            
+            const style = tableEditorState.styles[i][j];
+            if(style.color) cell.style.color = style.color;
+            if(style.bg) cell.style.backgroundColor = style.bg;
+            
+            cell.onfocus = () => { selectedCell = {r:i, c:j}; };
+            cell.oninput = (e) => { tableEditorState.data[i][j] = e.target.value; };
+            
+            grid.appendChild(cell);
+        }
+    }
+}
+
+function toggleAlign(colIndex) {
+    const aligns = ['left', 'center', 'right'];
+    const current = tableEditorState.alignment[colIndex];
+    const next = aligns[(aligns.indexOf(current) + 1) % 3];
+    tableEditorState.alignment[colIndex] = next;
+    renderTableEditor();
+}
+
+function applyStyleToSelected() {
+    if(!selectedCell) {
+        mdui.snackbar({message: '请先选择一个单元格'});
+        return;
+    }
+    const color = document.getElementById('cell-fg-color').value;
+    const bg = document.getElementById('cell-bg-color').value;
+    
+    tableEditorState.styles[selectedCell.r][selectedCell.c] = {
+        color: color,
+        bg: bg !== '#ffffff' ? bg : null
+    };
+    renderTableEditor();
+}
+
+function clearStyleSelected() {
+    if(!selectedCell) return;
+    tableEditorState.styles[selectedCell.r][selectedCell.c] = {};
+    renderTableEditor();
+}
+
+function confirmInsertTable() {
+    let md = '';
+    const { rows, cols, alignment } = tableEditorState;
+
+    md += '|';
+    for(let j=0; j<cols; j++) {
+        md += ` ${formatCell(0, j)} |`;
+    }
+    md += '\n|';
+    
+    for(let j=0; j<cols; j++) {
+        const align = alignment[j];
+        if(align === 'left') md += ' :--- |';
+        else if(align === 'center') md += ' :---: |';
+        else md += ' ---: |';
+    }
+    md += '\n';
+
+    for(let i=1; i<rows; i++) {
+        md += '|';
+        for(let j=0; j<cols; j++) {
+            md += ` ${formatCell(i, j)} |`;
+        }
+        md += '\n';
+    }
+
+    insertText(md, '');
+    new mdui.Dialog('#table-editor-dialog').close();
+}
+
+function formatCell(r, c) {
+    let text = tableEditorState.data[r][c] || ' ';
+    text = text.replace(/\|/g, '\\|');
+    
+    const style = tableEditorState.styles[r][c];
+    
+    if (style && (style.color || style.bg)) {
+        let styleStr = '';
+        if(style.color) styleStr += `color: ${style.color}; `;
+        if(style.bg) styleStr += `background-color: ${style.bg}; `;
+        return `<span style="${styleStr}">${text}</span>`;
+    }
+    return text;
+}
+
+// --- Image Handling ---
+async function handleImageSelect(e) {
+    const files = e.target.files;
+    if (!files.length) return;
+    await processImageFiles(files);
+    e.target.value = '';
+}
+
+async function handleThumbnailSelect(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const slug = document.getElementById('post-slug').value || 'untitled';
+    
+    try {
+        const options = {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 1920,
+            useWebWorker: true
+        };
+        const compressedFile = await imageCompression(file, options);
+        
+        const ext = file.name.split('.').pop();
+        const filename = `thumb_${Date.now()}.${ext}`;
+        
+        imageAssets[filename] = compressedFile;
+        
+        const imgPath = `/images/blog/${slug}/${filename}`;
+        dispatchInputValue(document.getElementById('post-thumbnail'), imgPath);
+        
+        mdui.snackbar({message: `头图已处理`});
+    } catch (error) {
+        console.error(error);
+        mdui.snackbar({message: `头图处理失败: ${error.message}`});
+    }
+    e.target.value = '';
+}
+
+async function processImageFiles(files) {
+    const slug = document.getElementById('post-slug').value || 'untitled';
+    const selectedText = getEditorSelectionText();
+    
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        if (!file.type.startsWith('image/')) continue;
+
+        const ext = file.name.split('.').pop();
+        const timestamp = Date.now();
+        const baseName = `img_${timestamp}_${i}`;
+        const originalFilename = `${baseName}.${ext}`;
+        const compressedFilename = `${baseName}_compressed.jpg`;
+
+        imageAssets[originalFilename] = file;
+
+        try {
+            const options = {
+                maxSizeMB: 0.5,
+                maxWidthOrHeight: 1600,
+                useWebWorker: true,
+                fileType: 'image/jpeg',
+                initialQuality: 0.5
+            };
+            const compressedFile = await imageCompression(file, options);
+            const dimensions = await getBlobDimensions(compressedFile);
+            
+            imageAssets[compressedFilename] = compressedFile;
+            
+            const imgPath = `${SITE_ORIGIN}/images/blog/${slug}/${compressedFilename}`;
+            const imageHtml = buildInsertedImageHtml(imgPath, dimensions.width, dimensions.height, selectedText);
+            insertText(imageHtml, '');
+            
+            mdui.snackbar({message: `图片 ${file.name} 已处理并添加`});
+        } catch (error) {
+            console.error(error);
+            mdui.snackbar({message: `图片处理失败: ${error.message}`});
+        }
+    }
+    updatePreview();
+}
+
+// --- Import & Export ---
+async function handleZipImport(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+        const zip = await JSZip.loadAsync(file);
+        
+        let mdFile = null;
+        let mdContent = '';
+        
+        zip.forEach((relativePath, zipEntry) => {
+            if (relativePath.endsWith('.md') && relativePath.includes('source/_posts/')) {
+                mdFile = zipEntry;
+            }
+        });
+        
+        if (!mdFile) {
+            throw new Error('未找到文章 Markdown 文件');
+        }
+        
+        mdContent = await mdFile.async('string');
+        
+        const fmRegex = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/;
+        const match = mdContent.match(fmRegex);
+        
+        if (match) {
+            const fmText = match[1];
+            const content = match[2];
+            
+            const getVal = (key) => {
+                const regex = new RegExp(`^${key}:\\s*(.*)$`, 'm');
+                const m = fmText.match(regex);
+                return m ? m[1].trim() : null;
+            };
+            
+            const getArr = (key) => {
+                const val = getVal(key);
+                if (!val) return '';
+                return val.replace(/^\[|\]$/g, '').trim();
+            };
+
+            document.getElementById('post-title').value = getVal('title') || '';
+            const slugMatch = mdFile.name.match(/source\/_posts\/(.*)\.md/);
+            document.getElementById('post-slug').value = slugMatch ? slugMatch[1] : (getVal('title') || '');
+            
+            document.getElementById('post-tags').value = getArr('tags');
+            document.getElementById('post-categories').value = getArr('categories');
+            document.getElementById('post-date').value = getVal('date') || '';
+            
+            document.getElementById('post-donate').checked = getVal('donate') !== 'false';
+            document.getElementById('post-toc').checked = getVal('toc') !== 'false';
+            document.getElementById('post-comments').checked = getVal('comments') !== 'false';
+            document.getElementById('post-top').checked = getVal('top') === 'true';
+            
+            document.getElementById('post-author').value = getVal('author') || '';
+            document.getElementById('post-thumbnail').value = getVal('thumbnail') || '';
+            document.getElementById('post-excerpt').value = getVal('excerpt') || '';
+            applyLicenseFrontMatterValue(getVal('license') || '');
+            document.getElementById('post-lang').value = getVal('lang') || 'zh-cn';
+            
+            document.getElementById('post-count').checked = getVal('count') !== 'false';
+            document.getElementById('post-share_menu').checked = getVal('share_menu') !== 'false';
+            document.getElementById('post-qrcode').checked = getVal('qrcode') !== 'false';
+            document.getElementById('post-thislink').checked = getVal('thislink') !== 'false';
+
+            setEditorContent(content.trim());
+        } else {
+            setEditorContent(mdContent);
+        }
+        
+        imageAssets = {};
+        const imgPromises = [];
+        zip.forEach((relativePath, zipEntry) => {
+            if (relativePath.startsWith('source/images/blog/') && !zipEntry.dir) {
+                imgPromises.push(async () => {
+                    const blob = await zipEntry.async('blob');
+                    const filename = relativePath.split('/').pop();
+                    imageAssets[filename] = blob;
+                });
+            }
+        });
+        
+        await Promise.all(imgPromises.map(p => p()));
+        
+        updatePreviewAll();
+        mdui.updateTextFields();
+        mdui.snackbar({message: '导入成功'});
+        
+    } catch (error) {
+        console.error(error);
+        mdui.snackbar({message: `导入失败: ${error.message}`});
+    }
+    e.target.value = '';
+}
+
+async function exportPost() {
+    const zip = new JSZip();
+    
+    const title = document.getElementById('post-title').value || 'Untitled';
+    const slug = document.getElementById('post-slug').value || 'untitled';
+    const tags = document.getElementById('post-tags').value.split(',').map(t => t.trim()).filter(t => t);
+    const categories = document.getElementById('post-categories').value.split(',').map(c => c.trim()).filter(c => c);
+    const content = getEditorContent();
+    
+    const donate = document.getElementById('post-donate').checked;
+    const toc = document.getElementById('post-toc').checked;
+    const comments = document.getElementById('post-comments').checked;
+    const top = document.getElementById('post-top').checked;
+    const customDate = document.getElementById('post-date').value;
+    
+    const author = document.getElementById('post-author').value;
+    const thumbnail = document.getElementById('post-thumbnail').value;
+    const excerpt = document.getElementById('post-excerpt').value;
+    const license = getLicenseFrontMatterValue();
+    const lang = document.getElementById('post-lang').value;
+    const wechat_sync = document.getElementById('post-wechat_sync').checked;
+    const count = document.getElementById('post-count').checked;
+    const share_menu = document.getElementById('post-share_menu').checked;
+    const qrcode = document.getElementById('post-qrcode').checked;
+    const thislink = document.getElementById('post-thislink').checked;
+
+    const dateStr = customDate || new Date().toISOString().replace('T', ' ').substring(0, 19);
+    const uuid = generateUUID();
+    
+    let frontMatter = `---
+uuid: ${uuid}
+title: ${title}
+date: ${dateStr}
+tags: [${tags.join(', ')}]
+categories: [${categories.join(', ')}]
+donate: ${donate}
+toc: ${toc}
+comments: ${comments}
+`;
+    if(top) frontMatter += `top: true\n`;
+    if(author) frontMatter += `author: ${author}\n`;
+    if(thumbnail) frontMatter += `thumbnail: ${thumbnail}\n`;
+    if(excerpt) frontMatter += `excerpt: ${excerpt}\n`;
+    if(license) frontMatter += `license: ${license}\n`;
+    if(lang !== 'zh-cn') frontMatter += `lang: ${lang}\n`;
+    if(!wechat_sync) frontMatter += `wechat_sync: false\n`;
+    if(!count) frontMatter += `count: false\n`;
+    if(!share_menu) frontMatter += `share_menu: false\n`;
+    if(!qrcode) frontMatter += `qrcode: false\n`;
+    if(!thislink) frontMatter += `thislink: false\n`;
+    
+    frontMatter += `---\n\n${content}\n`;
+
+    zip.file(`source/_posts/${slug}.md`, frontMatter);
+    
+    const imgFolder = zip.folder(`source/images/blog/${slug}`);
+    
+    let thumbnailFilename = '';
+    if (thumbnail && thumbnail.startsWith(`/images/blog/${slug}/`)) {
+        thumbnailFilename = thumbnail.split('/').pop();
+    }
+    
+    for (const [filename, blob] of Object.entries(imageAssets)) {
+        let shouldInclude = false;
+        
+        if (content.includes(filename) || filename === thumbnailFilename) {
+            shouldInclude = true;
+        } else {
+            const lastDotIndex = filename.lastIndexOf('.');
+            if (lastDotIndex !== -1) {
+                const nameWithoutExt = filename.substring(0, lastDotIndex);
+                const compressedName = nameWithoutExt + '_compressed.jpg';
+                if (content.includes(compressedName) || compressedName === thumbnailFilename) {
+                    shouldInclude = true;
+                }
+            }
+        }
+
+        if (shouldInclude) {
+             imgFolder.file(filename, blob);
+        }
+    }
+    
+    const contentZip = await zip.generateAsync({type:"blob"});
+    saveAs(contentZip, `${slug}-blog-post.zip`);
+    
+    mdui.snackbar({message: '导出成功！解压到项目根目录即可。'});
+}
+
+function resetEditor() {
+    if(confirm('确定要清空编辑器吗？未保存的内容将丢失。')) {
+        document.getElementById('post-title').value = '';
+        document.getElementById('post-slug').value = '';
+        document.getElementById('post-tags').value = '';
+        document.getElementById('post-categories').value = '';
+        document.getElementById('post-date').value = '';
+        document.getElementById('post-author').value = '';
+        document.getElementById('post-thumbnail').value = '';
+        document.getElementById('post-excerpt').value = '';
+        applyLicenseFrontMatterValue('');
+        document.getElementById('post-lang').value = 'zh-cn';
+        document.getElementById('post-wechat_sync').checked = true;
+        setEditorContent('');
+        
+        document.getElementById('post-donate').checked = true;
+        document.getElementById('post-toc').checked = true;
+        document.getElementById('post-comments').checked = true;
+        document.getElementById('post-top').checked = false;
+        
+        document.getElementById('post-count').checked = true;
+        document.getElementById('post-share_menu').checked = true;
+        document.getElementById('post-qrcode').checked = true;
+        document.getElementById('post-thislink').checked = true;
+
+        imageAssets = {};
+        _cachedMaterialThumbnail = null;
+        _lastHeaderHtml = '';
+        _lastHeaderThumbnail = '';
+        if (typeof idbKeyval !== 'undefined') {
+            idbKeyval.del(DB_KEY_CONTENT);
+            idbKeyval.del(DB_KEY_IMAGES);
+        }
+        updatePreviewAll();
+        mdui.updateTextFields();
+    }
+}
+
+function toggleDarkMode() {
+    document.body.classList.toggle('mdui-theme-layout-dark');
+}
+
+function toggleFullscreen() {
+    const elem = document.getElementById('editor-card');
+    const icon = document.getElementById('fullscreen-icon');
+    
+    if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
+        }
+        if (icon) icon.innerText = 'fullscreen_exit';
+        elem.style.height = '100vh';
+        elem.style.borderRadius = '0';
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+        if (icon) icon.innerText = 'fullscreen';
+        elem.style.height = '70vh';
+        elem.style.borderRadius = '';
+    }
+    setTimeout(() => {
+        if (cmEditor) cmEditor.refresh();
+    }, 100);
+}
+
+document.addEventListener('fullscreenchange', handleFullscreenChange);
+document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+function handleFullscreenChange() {
+    const elem = document.getElementById('editor-card');
+    const icon = document.getElementById('fullscreen-icon');
+    
+    if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
+        if (icon) icon.innerText = 'fullscreen';
+        if (elem) {
+            elem.style.height = '70vh';
+            elem.style.borderRadius = '';
+        }
+    } else {
+        if (icon) icon.innerText = 'fullscreen_exit';
+        if (elem) {
+            elem.style.height = '100vh';
+            elem.style.borderRadius = '0';
+        }
+    }
+    setTimeout(() => {
+        if (cmEditor) cmEditor.refresh();
+    }, 100);
+}
+
+// --- GitHub Submission ---
+const WORKER_URL = 'https://pr-helper.cf.miniproj.stevezmt.top'; 
+
+async function submitToGitHub() {
+    const token = localStorage.getItem('github_token');
+    if (!token) {
+        if (confirm('需要登录 GitHub 才能提交。是否现在登录？')) {
+            loginWithGitHub();
+        }
+        return;
+    }
+
+    const slug = document.getElementById('post-slug').value || 'untitled';
+    const defaultMsg = `发布 ${slug}`;
+    
+    const message = await showCommitDialog(defaultMsg);
+    if (!message) return;
+
+    const files = [];
+    
+    const title = document.getElementById('post-title').value || 'Untitled';
+    const tags = document.getElementById('post-tags').value.split(',').map(t => t.trim()).filter(t => t);
+    const categories = document.getElementById('post-categories').value.split(',').map(c => c.trim()).filter(c => c);
+    const content = getEditorContent();
+    
+    const donate = document.getElementById('post-donate').checked;
+    const toc = document.getElementById('post-toc').checked;
+    const comments = document.getElementById('post-comments').checked;
+    const top = document.getElementById('post-top').checked;
+    const customDate = document.getElementById('post-date').value;
+    
+    const author = document.getElementById('post-author').value;
+    const thumbnail = document.getElementById('post-thumbnail').value;
+    const excerpt = document.getElementById('post-excerpt').value;
+    const license = getLicenseFrontMatterValue();
+    const lang = document.getElementById('post-lang').value;
+    const wechat_sync = document.getElementById('post-wechat_sync').checked;
+    const count = document.getElementById('post-count').checked;
+    const share_menu = document.getElementById('post-share_menu').checked;
+    const qrcode = document.getElementById('post-qrcode').checked;
+    const thislink = document.getElementById('post-thislink').checked;
+
+    const dateStr = customDate || new Date().toISOString().replace('T', ' ').substring(0, 19);
+    const uuid = generateUUID(); 
+    
+    let frontMatter = `---
+uuid: ${uuid}
+title: ${title}
+date: ${dateStr}
+tags: [${tags.join(', ')}]
+categories: [${categories.join(', ')}]
+donate: ${donate}
+toc: ${toc}
+comments: ${comments}
+`;
+    if(top) frontMatter += `top: true\n`;
+    if(author) frontMatter += `author: ${author}\n`;
+    if(thumbnail) frontMatter += `thumbnail: ${thumbnail}\n`;
+    if(excerpt) frontMatter += `excerpt: ${excerpt}\n`;
+    if(license) frontMatter += `license: ${license}\n`;
+    if(lang !== 'zh-cn') frontMatter += `lang: ${lang}\n`;
+    if(!wechat_sync) frontMatter += `wechat_sync: false\n`;
+    if(!count) frontMatter += `count: false\n`;
+    if(!share_menu) frontMatter += `share_menu: false\n`;
+    if(!qrcode) frontMatter += `qrcode: false\n`;
+    if(!thislink) frontMatter += `thislink: false\n`;
+    
+    frontMatter += `---\n\n${content}\n`;
+    
+    files.push({
+        path: `source/_posts/${slug}.md`,
+        content: frontMatter,
+        encoding: 'utf-8'
+    });
+
+    let thumbnailFilename = '';
+    if (thumbnail && thumbnail.startsWith(`/images/blog/${slug}/`)) {
+        thumbnailFilename = thumbnail.split('/').pop();
+    }
+    
+    for (const [filename, blob] of Object.entries(imageAssets)) {
+        let shouldInclude = false;
+        
+        if (content.includes(filename) || filename === thumbnailFilename) {
+            shouldInclude = true;
+        } else {
+            const lastDotIndex = filename.lastIndexOf('.');
+            if (lastDotIndex !== -1) {
+                const nameWithoutExt = filename.substring(0, lastDotIndex);
+                const compressedName = nameWithoutExt + '_compressed.jpg';
+                if (content.includes(compressedName) || compressedName === thumbnailFilename) {
+                    shouldInclude = true;
+                }
+            }
+        }
+
+        if (shouldInclude) {
+             const base64 = await blobToBase64(blob);
+             files.push({
+                 path: `source/images/blog/${slug}/${filename}`,
+                 content: base64,
+                 encoding: 'base64'
+             });
+        }
+    }
+
+    const snackbar = mdui.snackbar({message: '正在提交到 GitHub...', timeout: 0});
+    
+    try {
+        const response = await fetch(`${WORKER_URL}/submit`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                token,
+                files,
+                message
+            })
+        });
+        
+        const result = await response.json();
+        snackbar.close();
+        
+        if (result.success) {
+            mdui.dialog({
+                title: '提交成功',
+                content: `Pull Request 已创建: <a href="${result.pr_url}" target="_blank">#${result.pr_number}</a>`,
+                buttons: [{text: '确定'}]
+            });
+        } else {
+            throw new Error(result.error || 'Unknown error');
+        }
+    } catch (e) {
+        snackbar.close();
+        console.error(e);
+        mdui.snackbar({message: `提交失败: ${e.message}`});
+    }
+}
+
+function loginWithGitHub() {
+    const width = 600;
+    const height = 700;
+    const left = (screen.width - width) / 2;
+    const top = (screen.height - height) / 2;
+    window.open(`${WORKER_URL}/auth`, 'github_oauth', `width=${width},height=${height},top=${top},left=${left}`);
+}
+
+window.addEventListener('message', (event) => {
+    if (event.data.type === 'github-token') {
+        localStorage.setItem('github_token', event.data.token);
+        mdui.snackbar({message: 'GitHub 登录成功'});
+    }
+});
+
+function showCommitDialog(defaultMsg) {
+    return new Promise((resolve) => {
+        const dialogHtml = `
+            <div class="mdui-dialog" id="commit-dialog">
+                <div class="mdui-dialog-title">提交到 GitHub</div>
+                <div class="mdui-dialog-content">
+                    <div class="mdui-textfield">
+                        <label class="mdui-textfield-label">Commit Message / PR Title</label>
+                        <input class="mdui-textfield-input" type="text" id="commit-message" value="${defaultMsg}"/>
+                    </div>
+                </div>
+                <div class="mdui-dialog-actions">
+                    <button class="mdui-btn mdui-ripple" mdui-dialog-close onclick="window._commitDialogResolve(null)">取消</button>
+                    <button class="mdui-btn mdui-ripple mdui-color-theme-accent" mdui-dialog-close onclick="window._commitDialogResolve(document.getElementById('commit-message').value)">提交</button>
+                </div>
+            </div>
+        `;
+        
+        const div = document.createElement('div');
+        div.innerHTML = dialogHtml;
+        document.body.appendChild(div.firstElementChild);
+        
+        window._commitDialogResolve = (val) => {
+            resolve(val);
+            delete window._commitDialogResolve;
+            const d = document.getElementById('commit-dialog');
+            if(d) d.parentNode.removeChild(d);
+        };
+        
+        new mdui.Dialog('#commit-dialog', {history: false, modal: true}).open();
+    });
+}
+
+function blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64 = reader.result.split(',')[1];
+            resolve(base64);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+    });
+}
+</script>
+
+
+
+
+<script data-pjax>
+  (function(){
+    // 将当前页面是否启用 toc 传给前端逻辑
+    window.__page_has_toc__ = false;
+
+    function buildTocFromHeadings() {
+      // 清理旧的事件监听和容器
+      if (window.__tocScrollHandler__) {
+        window.removeEventListener('scroll', window.__tocScrollHandler__);
+        window.__tocScrollHandler__ = null;
+      }
+      try {
+        var oldDesktop = document.getElementById('toc-desktop-container');
+        if (oldDesktop && oldDesktop.parentNode) oldDesktop.parentNode.removeChild(oldDesktop);
+        var oldFab = document.getElementById('toc-fab-container');
+        if (oldFab && oldFab.parentNode) oldFab.parentNode.removeChild(oldFab);
+        var oldMenu = document.getElementById('toc-menu');
+        if (oldMenu && oldMenu.parentNode) oldMenu.parentNode.removeChild(oldMenu);
+      } catch(e) {}
+
+      if (!window.__page_has_toc__) return;
+
+      var content = document.querySelector('#main article .mdui-card-content');
+      if (!content) return;
+      var headings = content.querySelectorAll('h2, h3, h4, h5, h6');
+      if (!headings || headings.length === 0) return;
+
+      // 构建 TOC 结构
+      function getLevel(h){ var t = parseInt(h.tagName.replace('H',''), 10); return isNaN(t)?6:t; }
+      var rootOl = document.createElement('ol');
+      rootOl.className = 'toc';
+      var currentLevel = 0;
+      var currentOl = rootOl;
+      var olStack = [rootOl];
+
+      headings.forEach(function(h){
+        if (!h.id) return;
+        var level = getLevel(h);
+        if (currentLevel === 0) currentLevel = level;
+
+        if (level > currentLevel) {
+          for (var i = currentLevel; i < level; i++) {
+            var childOl = document.createElement('ol');
+            childOl.className = 'toc-child';
+            var lastLi = currentOl.lastElementChild;
+            if (!lastLi) { lastLi = document.createElement('li'); currentOl.appendChild(lastLi); }
+            lastLi.appendChild(childOl);
+            olStack.push(childOl);
+            currentOl = childOl;
+          }
+          currentLevel = level;
+        } else if (level < currentLevel) {
+          for (var j = currentLevel; j > level; j--) {
+            olStack.pop();
+          }
+          currentOl = olStack[olStack.length - 1] || rootOl;
+          currentLevel = level;
+        }
+
+        var li = document.createElement('li');
+        li.className = 'toc-item toc-level-' + level;
+        var a = document.createElement('a');
+        a.className = 'toc-link';
+        a.href = '#' + encodeURIComponent(h.id);
+        a.title = h.textContent || h.innerText || '';
+        var span = document.createElement('span');
+        span.className = 'toc-text';
+        span.textContent = h.textContent || h.innerText || '';
+        a.appendChild(span);
+        li.appendChild(a);
+        currentOl.appendChild(li);
+      });
+
+      if (!rootOl.children.length) return;
+
+      // 1. 生成超宽屏贴靠侧边栏目录 (>= 1440px)
+      var desktopRootOl = rootOl.cloneNode(true);
+      var desktopContainer = document.createElement('aside');
+      desktopContainer.id = 'toc-desktop-container';
+
+      var desktopSticky = document.createElement('div');
+      desktopSticky.className = 'toc-desktop-sticky';
+
+      var desktopCard = document.createElement('div');
+      desktopCard.className = 'toc-desktop-card';
+      desktopCard.appendChild(desktopRootOl);
+
+      desktopSticky.appendChild(desktopCard);
+      desktopContainer.appendChild(desktopSticky);
+
+      // 挂载到正文内容卡片内部，使其与正文顶端对齐并在正文范围内固钉滚动
+      content.appendChild(desktopContainer);
+
+      // 2. 生成中窄屏与移动端悬浮按钮 + 菜单 (< 1440px)
+      var fabContainer = document.createElement('div');
+      fabContainer.id = 'toc-fab-container';
+      fabContainer.setAttribute('aria-hidden', 'false');
+
+      var btn = document.createElement('button');
+      btn.id = 'toc-fab-btn';
+      btn.className = 'mdui-fab mdui-fab-mini mdui-ripple mdui-color-transparent';
+      btn.setAttribute('mdui-menu', "{target: '#toc-menu'}");
+      btn.setAttribute('aria-label', '目录');
+      btn.innerHTML = '<i class="mdui-icon material-icons" translate="no">toc</i>';
+
+      var menu = document.createElement('ul');
+      menu.className = 'mdui-menu';
+      menu.id = 'toc-menu';
+
+      var liWrap = document.createElement('li');
+      liWrap.className = 'mdui-menu-item';
+      liWrap.setAttribute('disabled', '');
+      liWrap.style.cursor = 'default';
+      liWrap.appendChild(rootOl);
+      menu.appendChild(liWrap);
+
+      fabContainer.appendChild(btn);
+      fabContainer.appendChild(menu);
+      document.body.appendChild(fabContainer);
+
+      menu.addEventListener('open.mdui.menu', function() {
+        btn.classList.add('is-open');
+      });
+      menu.addEventListener('close.mdui.menu', function() {
+        btn.classList.remove('is-open');
+      });
+
+      // 初始化 MDUI
+      try { if (window.mdui && typeof mdui.mutation === 'function') mdui.mutation(); } catch(e) {}
+
+      // 点击平滑滚动定位（预留 64px AppBar 偏移）
+      function handleTocClick(e) {
+        var a = e.target.closest('a.toc-link');
+        if (!a) return;
+        var href = a.getAttribute('href');
+        if (!href || href.indexOf('#') === -1) return;
+        var targetId = decodeURIComponent(href.slice(href.indexOf('#') + 1));
+        var targetEl = document.getElementById(targetId);
+        if (targetEl) {
+          e.preventDefault();
+          var appbarHeight = 64;
+          var targetTop = targetEl.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - appbarHeight - 16;
+          window.scrollTo({
+            top: Math.max(0, targetTop),
+            behavior: 'smooth'
+          });
+          if (history.pushState) {
+            history.pushState(null, '', '#' + encodeURIComponent(targetId));
+          }
+          // 关闭移动端菜单
+          try {
+            var inst = mdui.Menu.get(btn);
+            if (inst) inst.close();
+          } catch(err) {}
+        }
+      }
+
+      desktopContainer.addEventListener('click', handleTocClick);
+      menu.addEventListener('click', handleTocClick);
+
+      // 阅读位置高亮与滚动跟随 (Scroll Spy)
+      var scrollTicking = false;
+      function updateActiveHeading() {
+        scrollTicking = false;
+        var topOffset = 100;
+        var activeHeading = null;
+        var isBottom = (window.innerHeight + (window.pageYOffset || document.documentElement.scrollTop)) >= (document.documentElement.scrollHeight - 50);
+
+        if (isBottom && headings.length > 0) {
+          activeHeading = headings[headings.length - 1];
+        } else {
+          for (var i = 0; i < headings.length; i++) {
+            var h = headings[i];
+            var rect = h.getBoundingClientRect();
+            if (rect.top <= topOffset) {
+              activeHeading = h;
+            } else {
+              break;
+            }
+          }
+          if (!activeHeading && headings.length > 0) {
+            activeHeading = headings[0];
+          }
+        }
+
+        var activeId = activeHeading && activeHeading.id ? activeHeading.id : '';
+        if (!activeId) return;
+
+        var allTocLinks = document.querySelectorAll('.toc-link');
+        var targetHref = '#' + encodeURIComponent(activeId);
+        var activeDesktopLink = null;
+
+        allTocLinks.forEach(function(link) {
+          if (link.getAttribute('href') === targetHref) {
+            link.classList.add('is-active');
+            if (link.closest('#toc-desktop-container')) {
+              activeDesktopLink = link;
+            }
+          } else {
+            link.classList.remove('is-active');
+          }
+        });
+
+        if (activeDesktopLink && desktopCard) {
+          var linkOffsetTop = activeDesktopLink.offsetTop;
+          var cardScroll = desktopCard.scrollTop;
+          var cardHeight = desktopCard.clientHeight;
+          if (linkOffsetTop < cardScroll || linkOffsetTop > cardScroll + cardHeight - 40) {
+            desktopCard.scrollTop = Math.max(0, linkOffsetTop - cardHeight / 3);
+          }
+        }
+      }
+
+      function onScroll() {
+        if (!scrollTicking) {
+          requestAnimationFrame(updateActiveHeading);
+          scrollTicking = true;
+        }
+      }
+
+      window.__tocScrollHandler__ = onScroll;
+      window.addEventListener('scroll', onScroll, { passive: true });
+      updateActiveHeading();
+    }
+
+    // 初次与 PJAX 切换后重建
+    document.addEventListener('DOMContentLoaded', buildTocFromHeadings);
+    document.addEventListener('page:updated', buildTocFromHeadings);
+    document.addEventListener('pjax:complete', buildTocFromHeadings);
+    document.addEventListener('pjax:success', buildTocFromHeadings);
+  })();
+</script>
+<div class="mdui-divider" style="margin-bottom: 39px"></div>
+
+
+</main>
+  <aside id="sidebar" class="mdui-drawer mdui-drawer-full-height">
+  <script data-pjax>var a=localStorage.getItem("mdui-drawer-close");if(a){document.getElementById("sidebar").className+=" mdui-drawer-close"};</script>
+  <div class="mdui-grid-tile">
+    <img no-lazy src="/images/banner.png" style="height: 160px;" alt="">
+    <img no-lazy src="/images/avatar.jpg@128x128.jpg" class="avatar-animation" alt="Avatar" style="position: absolute; top: 10%; left: 24px; width: 64px; height: 64px; border: 2px solid #fff; border-radius: 50%;">
+    <button class="mdui-btn mdui-btn-icon" id="theme-toggle" mdui-tooltip="{content: '切换主题'}" type="button" style="position: absolute; top: 10px; right: 10px;"><i class="mdui-icon material-icons" translate="no" style="color: white;">brightness_4</i></button>
+    <div class="mdui-grid-tile-actions">
+      <div class="mdui-grid-tile-text">
+        <div class="mdui-grid-tile-title">Steve ZMT</div>
+        <div class="mdui-grid-tile-subtitle"><i class="mdui-icon material-icons" translate="no">art_track</i>这家伙叽里咕噜说什么呢。</div>
+      </div>
+      <!--
+      
+        <div class="mdui-grid-tile-buttons">
+          <a href="mailto:admin@stevezmt.top" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'admin@stevezmt.top'}"><i class="mdui-icon material-icons" translate="no">email</i></a>
+        </div>
+       
+      -->
+      
+        <div class="mdui-grid-tile-buttons">
+          <a href="javascript:void(0);" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'admin@stevezmt.top'}" onclick="copyEmailToClipboard('admin@stevezmt.top')">
+            <i class="mdui-icon material-icons" translate="no">email</i>
+          </a>
+        </div>
+        <script data-pjax>
+          function copyEmailToClipboard(email) {
+            navigator.clipboard.writeText(email).then(function() {
+              mdui.snackbar({
+                message: '已将邮箱地址复制到剪贴板!',
+                position: 'left-top',
+                buttonText: '写邮件',
+                onButtonClick: function(){
+                  window.location.href = 'mailto:' + 'admin@stevezmt.top';
+                }
+              });
+            }, function(err) {
+              console.error('Could not copy text: ', err);
+              mdui.snackbar({
+                message: '复制邮箱地址失败!',
+                position: 'right-top',
+              });
+            });
+          }
+        </script>
+
+    </div>
+  </div>
+
+  <div class="mdui-list" mdui-collapse="{accordion: true}">
+    <a href="/" class="mdui-list-item mdui-ripple">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue" translate="no">home</i>
+      <div class="mdui-list-item-content">主页</div>
+    </a>
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-0");if(a){document.getElementsByClassName("mdui-collapse-item")[0].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-deep-orange" translate="no">archive</i>
+        <div class="mdui-list-item-content">归档</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons" translate="no">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/archives/2026/05/">五月 2026<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2026/04/">四月 2026<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2026/03/">三月 2026<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/12/">十二月 2025<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/11/">十一月 2025<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/09/">九月 2025<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/08/">八月 2025<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/01/">一月 2025<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/12/">十二月 2024<span class="mdui-ripple sidebar_archives-count">3</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/03/">三月 2024<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/02/">二月 2024<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2023/10/">十月 2023<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2023/08/">八月 2023<span class="mdui-ripple sidebar_archives-count">1</span></a>
+        
+      </div>
+    </div>
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-1");if(a){document.getElementsByClassName("mdui-collapse-item")[1].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-green" translate="no">class</i>
+        <div class="mdui-list-item-content">分类</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons" translate="no">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/categories/%E6%8A%98%E8%85%BE/">折腾<span class="mdui-ripple sidebar_archives-count">10</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E6%8A%98%E8%85%BE/%E7%94%B5%E5%AD%90%E5%9E%83%E5%9C%BE/">电子垃圾<span class="mdui-ripple sidebar_archives-count">4</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E7%9E%8E%E6%90%9E/">瞎搞<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E7%9E%8E%E8%81%8A/">瞎聊<span class="mdui-ripple sidebar_archives-count">4</span></a>
+        
+      </div>
+    </div>
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-2");if(a){document.getElementsByClassName("mdui-collapse-item")[2].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown" translate="no">bookmark</i>
+        <div class="mdui-list-item-content">标签</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons"translate="no">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/tags/AI/" rel="tag">AI<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/Cloudflare/" rel="tag">Cloudflare<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/ColorOS/" rel="tag">ColorOS<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/KDE/" rel="tag">KDE<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/PXE/" rel="tag">PXE<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/RealmeUI/" rel="tag">RealmeUI<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/chromeos/" rel="tag">chromeos<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/hexo/" rel="tag">hexo<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/iVentoy/" rel="tag">iVentoy<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/linux/" rel="tag">linux<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/openai/" rel="tag">openai<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/root/" rel="tag">root<span class="mdui-ripple sidebar_archives-count">6</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/usb/" rel="tag">usb<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/wsl/" rel="tag">wsl<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/xposed/" rel="tag">xposed<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/yubikey/" rel="tag">yubikey<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E4%B8%8B%E8%BD%BD/" rel="tag">下载<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E4%BA%92%E8%81%94/" rel="tag">互联<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%8D%95%E8%AF%8D%E7%AC%94/" rel="tag">单词笔<span class="mdui-ripple sidebar_archives-count">3</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%AE%89%E5%8D%93/" rel="tag">安卓<span class="mdui-ripple sidebar_archives-count">6</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%BC%80%E6%BA%90/" rel="tag">开源<span class="mdui-ripple sidebar_archives-count">5</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E6%84%8F%E5%A4%96/" rel="tag">意外<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E6%95%85%E9%9A%9C/" rel="tag">故障<span class="mdui-ripple sidebar_archives-count">3</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%BC%95%E5%AF%BC/" rel="tag">网络引导<span class="mdui-ripple sidebar_archives-count">1</span></a>
+        
+      </div>
+    </div>
+    <a href="/about" class="mdui-list-item mdui-ripple">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-purple" translate="no">person</i>
+      <div class="mdui-list-item-content">关于</div>
+    </a>
+  </div>
+
+  <div class="mdui-divider"></div>
+
+  <div class="mdui-list" mdui-collapse="{accordion: true}">
+    
+      <a href="/timeline"  class="mdui-list-item mdui-ripple">时间轴</a>
+    
+      <a href="/tagcloud"  class="mdui-list-item mdui-ripple">标签云</a>
+    
+      <a href="/friends"  class="mdui-list-item mdui-ripple">友情链接</a>
+    
+      <a href="/k" target="_blank" class="mdui-list-item mdui-ripple">兼容视图</a>
+    
+      <a href="https://www.travellings.cn/go.html" target="_blank" class="mdui-list-item mdui-ripple">开往</a>
+    
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-3");if(a){document.getElementsByClassName("mdui-collapse-item")[3].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <div class="mdui-list-item-content">其他链接</div>
+        <i class="mdui-list-item-icon mdui-icon material-icons" translate="no">link</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+          <a href="//stevezmt.top/" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">史蒂夫ZMT 主页</a>
+        
+          <a href="//stevezmt.top/Phigros-history/" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">Phigros 历史版本收集</a>
+        
+          <a href="//rip.stevezmt.top" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">过气项目存档</a>
+        
+        
+      </div>
+    </div>
+  </div>
+</aside>
+
+  
+<footer id="footer" class="mdui-m-t-5 mdui-p-y-3 mdui-color-theme">
+  <div class="mdui-p-y-0 mdui-text-center">
+    
+      <a href="//twitter.com/stevezmtstudios" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Twitter"><svg class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M390.097455 157.370182l170.181818 228.119273 195.525818-228.119273h110.824727L611.851636 454.609455l299.112728 400.942545h-232.727273l-190.836364-255.767273-219.205818 255.767273h-110.824727l278.481454-324.898909-278.481454-373.294546h232.727273z m177.396363 348.974545l-35.723636 41.693091L711.586909 789.061818h66.804364L567.505455 506.356364zM356.736 223.872h-66.816l190.277818 255.045818 35.723637-41.669818-159.185455-213.376z" fill="currentColor"></path></svg></a>
+    
+    
+    
+    
+    
+    
+    
+      <a href="//github.com/stevezmtstudios/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="GitHub"><svg class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M511.6 76.3C264.3 76.2 64 276.4 64 523.5 64 718.9 189.3 885 363.8 946c23.5 5.9 19.9-10.8 19.9-22.2v-77.5c-135.7 15.9-141.2-73.9-150.3-88.9C215 726 171.5 718 184.5 703c30.9-15.9 62.4 4 98.9 57.9 26.4 39.1 77.9 32.5 104 26 5.7-23.5 17.9-44.5 34.7-60.8-140.6-25.2-199.2-111-199.2-213 0-49.5 16.3-95 48.3-131.7-20.4-60.5 1.9-112.3 4.9-120 58.1-5.2 118.5 41.6 123.2 45.3 33-8.9 70.7-13.6 112.9-13.6 42.4 0 80.2 4.9 113.5 13.9 11.3-8.6 67.3-48.8 121.3-43.9 2.9 7.7 24.7 58.3 5.5 118 32.4 36.8 48.9 82.7 48.9 132.3 0 102.2-59 188.1-200 212.9 23.5 23.2 38.1 55.4 38.1 91v112.5c0.8 9 0 17.9 15 17.9 177.1-59.7 304.6-227 304.6-424.1 0-247.2-200.4-447.3-447.5-447.3z" fill="currentColor"></path></svg></a>
+    
+    
+      <a href="//steamcommunity.com/id/stevezmt/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Steam" ><svg t="1733311031811" class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7249" width="24" height="24"><path d="M904 332.571429q0 57.714286-40.857143 98.571428T764.571429 472t-98.571429-40.857143T625.142857 332.571429t40.857143-98.571429T764.571429 193.142857t98.571428 40.857143T904 332.571429z m-440 424q0-59.428571-41.714286-101.142858t-101.142857-41.714285q-15.428571 0-30.857143 3.428571l59.428572 24q44 17.714286 62.571428 60.857143T413.142857 788.571429q-17.714286 44-61.142857 62.285714t-86.857143 0.571428q-12-4.571429-35.428571-14t-34.857143-14q18.285714 34.285714 52 55.142858t74.285714 20.857142q59.428571 0 101.142857-41.714285t41.714286-101.142857z m474.285714-423.428572q0-72-51.142857-123.142857T764 158.857143q-72.571429 0-123.714286 51.142857T589.142857 333.142857q0 72.571429 51.142857 123.428572t123.714286 50.857142q72 0 123.142857-50.857142t51.142857-123.428572z m85.714286 0q0 108-76.285714 184T764 593.142857l-249.714286 182.285714q-6.857143 73.714286-62.285714 124.571429t-130.857143 50.857143q-69.142857 0-122.285714-43.428572t-67.428572-109.714285L0 745.142857V500l222.285714 89.714286q45.142857-27.428571 98.857143-27.428572 7.428571 0 20 1.142857l162.285714-232.571428q1.142857-106.857143 77.428572-182.285714T764 73.142857q107.428571 0 183.714286 76.285714T1024 333.142857z" fill="currentColor" p-id="7250"></path></svg></a>
+    
+    
+    
+      <a href="//www.zhihu.com/people/zhang-xian-sheng-70-9" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Zhihu"><svg class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M572.228571 189.828571V844.571429h68.571429l28.8 81.6L791.2 844.571429h150.285714V189.828571H572.228571z m283.085715 568h-68.457143l-85.828572 57.6-20.342857-57.6h-20.571428V279.2h195.085714v478.628571zM528.114286 483.314286H376.342857c2.4-51.314286 4.914286-119.2 7.542857-197.6h149.6l-0.114285-9.257143c0-0.685714-0.228571-16.8-2.628572-33.257143-2.4-17.142857-7.542857-39.885714-24-39.885714H255.771429c5.028571-23.542857 17.942857-79.657143 33.6-107.2l7.314285-12.8-14.742857-0.8c-0.914286 0-22.4-1.028571-47.314286 12.114285-40.8 21.714286-59.085714 64.457143-67.085714 96.457143-21.028571 83.542857-50.971429 141.6-63.657143 166.4-3.771429 7.314286-6.057143 11.657143-7.085714 14.628572-2.057143 5.6-0.914286 11.2 3.2 14.857143 12 10.857143 43.657143-3.314286 44-3.428572 0.685714-0.342857 1.485714-0.685714 2.514286-1.142857 15.885714-7.2 62.971429-28.571429 79.771428-96.571429h64.8c0.8 36.8 3.542857 158.171429 3.314286 197.6h-161.142857l-2.4 1.714286c-26.4 19.314286-34.857143 72.228571-35.2 74.514286l-1.6 10.514286h190.857143c-14.057143 89.485714-30.285714 129.6-38.857143 145.6-4.228571 8-8.342857 16-12.228572 23.771428-24.342857 48.228571-49.6 98.057143-144.342857 175.542857-4.114286 3.2-8 9.142857-5.485714 15.657143 2.742857 7.2 10.628571 10.4 28.114286 10.4 6.171429 0 13.485714-0.342857 22.171428-1.142857 57.028571-5.028571 115.2-20.571429 154.4-100.114286 19.428571-40.114286 36.228571-81.942857 50.171429-124.457143L494.857143 898.285714l5.714286-13.714285c0.914286-2.171429 21.714286-52.914286 5.828571-109.6l-0.571429-2.057143-123.542857-140.571429-25.142857 18.971429c7.314286-29.828571 12.114286-57.028571 14.285714-81.257143h181.371429v-9.142857c0-45.828571-21.142857-73.028571-21.942857-74.171429l-2.742857-3.428571z" fill="currentColor"></path></svg></a>
+    
+    
+    
+      <a href="//space.bilibili.com/474130186" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="bilibili" ><svg t="1733305965708" class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5876" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="5877" fill="currentColor"></path></svg></a>
+    
+    
+      <a href="tencent://message/?uin=3579946866&Menu=yes" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="QQ"><svg class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M824.8 613.2c-16-51.4-34.4-94.6-62.7-165.3C766.5 262.2 689.3 112 511.5 112 331.7 112 256.2 265.2 261 447.9c-28.4 70.8-46.7 113.7-62.7 165.3-34 109.5-23 154.8-14.6 155.8 18 2.2 70.1-82.4 70.1-82.4 0 49 25.2 112.9 79.8 159-26.4 8.1-85.7 29.9-71.6 53.8 11.4 19.3 196.2 12.3 249.5 6.3 53.3 6 238.1 13 249.5-6.3 14.1-23.8-45.3-45.7-71.6-53.8 54.6-46.2 79.8-110.1 79.8-159 0 0 52.1 84.6 70.1 82.4 8.5-1.1 19.5-46.4-14.5-155.8z" fill="currentColor"></path></svg></a>
+    
+    
+      <a href="//t.me/SteveZMTstudios" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Telegram"><svg t="1733305965708" class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3029" width="24" height="24"><path d="M417.28 795.733333 429.226667 615.253333 756.906667 320C771.413333 306.773333 753.92 300.373333 734.72 311.893333L330.24 567.466667 155.306667 512C117.76 501.333333 117.333333 475.306667 163.84 456.533333L845.226667 193.706667C876.373333 179.626667 906.24 201.386667 894.293333 249.173333L778.24 795.733333C770.133333 834.56 746.666667 843.946667 714.24 826.026667L537.6 695.466667 452.693333 777.813333C442.88 787.626667 434.773333 795.733333 417.28 795.733333Z" p-id="3030" fill="currentColor"></path></svg></a>
+    
+    
+    
+      <a href="//stevezmt.top/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Link"><i class="mdui-icon material-icons" translate="no" style="transform: translate(-12px, -12px) rotate(45deg) ;">link</i></a>
+    
+  </div>
+  <div class="mdui-p-y-1 mdui-text-center" translate="no">
+    Copyright &copy; 2019 - 2026 Steve ZMT<br>
+    由 <a href="//hexo.io/" target="_blank" class="mdui-text-color-theme-accent">Hexo</a> 强力驱动  <a href="//icp.gov.moe/?keyword=20240571" target="_blank" class="mdui-text-color-theme-accent"><img style="height:1.5em;vertical-align:middle;" src="/images/loading.svg" data-original="https://icp.gov.moe/images/ico64.png" alt="萌ICP备20240571号"></a> <a href="//beian.miit.gov.cn/#/Integrated/index" target="_blank" class="mdui-text-color-theme-accent">浙ICP备2025213066号</a>
+    <br>
+      <span id="busuanzi_container_site_pv" style="display: none;"><i class="mdui-icon material-icons" translate="no">remove_red_eye</i> <span id="busuanzi_value_site_pv"></span></span> &nbsp;&nbsp;
+      <span id="busuanzi_container_site_uv" style="display: none;"><i class="mdui-icon material-icons" translate="no">group</i> <span id="busuanzi_value_site_uv"></span></span>
+    
+  </div>
+</footer>
+
+  <div id="gotop-container" class="mdui-fab-fixed mdui-fab-hide">
+    <button id="gotop" class="mdui-fab mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons" translate="no">arrow_upward</i></button>
+    <svg class="progress-ring" width="60" height="60">
+      <circle class="progress-ring__circle mdui-text-color-theme-a100" stroke="currentColor" stroke-width="4" fill="transparent" r="26" cx="30" cy="30"/>
+    </svg>
+  </div>
+  <!-- 
+<script src="/js/mdui.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/lightbox.js"></script>
+<script src="/js/pjax.js"></script>
+ -->
+   <script src="https://s4.zstatic.net/npm/mdui@1.0.2/dist/js/mdui.min.js"
+        crossorigin="anonymous"
+        integrity="sha384-Iw/ABpFbyL5jmtL3QSGm+kpo+Rnj0Cs4NoQm69VmGC7j4pcv5MbN55KVNMMyB4J6"
+        onerror="this.onerror=null; this.src='/js/mdui.js';"></script>
+<script>
+  // fallback
+  if (typeof window.mdui === 'undefined') {
+    var script = document.createElement('script');
+    script.src = '/js/mdui.js';
+    document.body.appendChild(script);
+  }
+</script>
+
+<script src="/js/script.js"></script>
+<script src="/js/lightbox.js"></script>
+<script src="/js/pjax.js"></script>
+
+  
+<script src="/custom.js"></script>
+
+  
+<script src="/js/sw-update.js"></script>
+
+  <script>
+  (function(){
+    if (!('serviceWorker' in navigator)) return;
+    try {
+      navigator.serviceWorker.getRegistrations().then(function(regs){
+        var rootScope = location.origin + '/';
+        var hasRoot = regs.some(function(r){ return r.scope === rootScope; });
+        if (!hasRoot) {
+          navigator.serviceWorker.register('/service-worker.js', {scope: '/'}).then(function(reg){
+            console.log('[sw-fix] registered root service-worker', reg.scope);
+          }).catch(function(err){
+            console.warn('[sw-fix] root register failed', err);
+          });
+        }
+      }).catch(function(e){ console.warn('[sw-fix] getRegistrations failed', e); });
+    } catch(e) { console.warn('[sw-fix] unexpected', e); }
+  })();
+  </script>
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: true,
+                preloadRatio: 1.25,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>

@@ -1,0 +1,1073 @@
+/* ==========================================================================
+   Gitalk MDUI v1 / Material Design 1 Standalone Component Stylesheet
+   ========================================================================== */
+
+/* 1. Base & Typography */
+.gt-container {
+  font-family: Roboto, Noto, Helvetica, Arial, sans-serif !important;
+  color: rgba(0, 0, 0, .87) !important;
+}
+
+.gt-container .gt-svg svg {
+  fill: currentColor;
+}
+
+/* 2. Meta & Counts & User */
+.gt-container .gt-meta {
+  border-bottom: 1px solid rgba(0, 0, 0, .12) !important;
+}
+
+.gt-container .gt-counts {
+  font-weight: 500 !important;
+  color: inherit !important;
+}
+
+.gt-container .gt-link-counts,
+.gt-container .gt-link-project {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  font-weight: 500 !important;
+}
+
+.gt-container .gt-user {
+  font-weight: 500 !important;
+}
+
+.gt-container .gt-user .gt-ico svg {
+  fill: currentColor !important;
+}
+
+.gt-container .gt-version {
+  color: rgba(0, 0, 0, .38) !important;
+}
+
+.gt-container .gt-copyright {
+  border-top: 1px solid rgba(0, 0, 0, .12) !important;
+  color: rgba(0, 0, 0, .38) !important;
+}
+
+/* 3. Popup Menu (MDUI Menu Elevation 8) */
+.gt-container .gt-popup {
+  background: #ffffff !important;
+  border: none !important;
+  border-radius: 2px !important;
+  box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12) !important;
+  padding: 8px 0 !important;
+}
+
+.gt-container .gt-popup .gt-action {
+  color: rgba(0, 0, 0, .87) !important;
+  font-weight: 400 !important;
+  padding: 0.5em 1.25em !important;
+  transition: background-color .2s cubic-bezier(.4,0,.2,1) !important;
+}
+
+.gt-container .gt-popup .gt-action:hover {
+  background-color: rgba(0, 0, 0, .06) !important;
+}
+
+/* 4. Avatars */
+.gt-container .gt-avatar {
+  border-radius: 50% !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,.12), 0 1px 2px rgba(0,0,0,.24) !important;
+  transition: box-shadow .2s cubic-bezier(.4,0,.2,1) !important;
+}
+
+.gt-container .gt-avatar img {
+  border-radius: 50% !important;
+}
+
+/* 5. Editor (MDUI Textfield Style) */
+.gt-container .gt-header-textarea {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, .15) !important;
+  border-radius: 2px !important;
+  color: rgba(0, 0, 0, .87) !important;
+  line-height: 1.6 !important;
+  transition: border-color .2s cubic-bezier(.4,0,.2,1), box-shadow .2s cubic-bezier(.4,0,.2,1), background-color .2s cubic-bezier(.4,0,.2,1) !important;
+}
+
+.gt-container .gt-header-textarea:hover {
+  background-color: #ffffff !important;
+  border-color: rgba(0, 0, 0, .38) !important;
+}
+
+.gt-container .gt-header-preview {
+  background-color: #fafafa !important;
+  border: 1px solid rgba(0, 0, 0, .12) !important;
+  border-radius: 2px !important;
+  color: rgba(0, 0, 0, .87) !important;
+}
+
+.gt-container .gt-header-controls-tip {
+  color: rgba(0, 0, 0, .54) !important;
+  text-decoration: none !important;
+  transition: color .2s cubic-bezier(.4,0,.2,1) !important;
+}
+
+.gt-container .gt-header-controls-tip:hover {
+  text-decoration: underline !important;
+}
+
+/* 6. MDUI Button v1 Material Specifications */
+.gt-container .gt-btn {
+  height: 36px !important;
+  line-height: 36px !important;
+  padding: 0 16px !important;
+  font-weight: 500 !important;
+  letter-spacing: .04em !important;
+  border-radius: 2px !important;
+  cursor: pointer !important;
+  outline: none !important;
+  border: none !important;
+  user-select: none !important;
+  transition: box-shadow .2s cubic-bezier(.4,0,.2,1), background-color .2s cubic-bezier(.4,0,.2,1), opacity .2s cubic-bezier(.4,0,.2,1) !important;
+}
+
+.gt-container .gt-btn-text {
+  font-weight: 500 !important;
+}
+
+/* Preview Button - MDUI Flat / Outlined Button */
+.gt-container .gt-btn-preview {
+  background-color: transparent !important;
+  border: 1px solid rgba(0, 0, 0, .15) !important;
+  color: rgba(0, 0, 0, .87) !important;
+  box-shadow: none !important;
+}
+
+.gt-container .gt-btn-preview:hover {
+  background-color: rgba(0, 0, 0, .05) !important;
+  border-color: rgba(0, 0, 0, .26) !important;
+}
+
+.gt-container .gt-btn-preview:active {
+  background-color: rgba(0, 0, 0, .1) !important;
+}
+
+/* Login, Submit & Loadmore - MDUI Raised Button */
+.gt-container .gt-btn-login,
+.gt-container .gt-btn-public,
+.gt-container .gt-btn-loadmore {
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12) !important;
+}
+
+.gt-container .gt-btn-login:hover,
+.gt-container .gt-btn-public:hover,
+.gt-container .gt-btn-loadmore:hover {
+  box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12) !important;
+  opacity: .94 !important;
+}
+
+.gt-container .gt-btn-login:active,
+.gt-container .gt-btn-public:active,
+.gt-container .gt-btn-loadmore:active {
+  box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12) !important;
+}
+
+/* 7. Comments & MDUI Card Elevation */
+.gt-container .gt-comments-null {
+  color: rgba(0, 0, 0, .54) !important;
+}
+
+.gt-container .gt-comment-content {
+  background-color: #ffffff !important;
+  border-radius: 2px !important;
+  border: 1px solid rgba(0, 0, 0, .08) !important;
+  box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12) !important;
+  transition: box-shadow .2s cubic-bezier(.4,0,.2,1), border-color .2s cubic-bezier(.4,0,.2,1), background-color .2s cubic-bezier(.4,0,.2,1) !important;
+}
+
+.gt-container .gt-comment-content:hover {
+  box-shadow: 0 3px 3px -2px rgba(0,0,0,.2), 0 3px 4px 0 rgba(0,0,0,.14), 0 1px 8px 0 rgba(0,0,0,.12) !important;
+}
+
+.gt-container .gt-comment-username {
+  font-weight: 500 !important;
+  text-decoration: none !important;
+}
+
+.gt-container .gt-comment-text,
+.gt-container .gt-comment-date {
+  color: rgba(0, 0, 0, .54) !important;
+}
+
+.gt-container .gt-comment-like,
+.gt-container .gt-comment-edit,
+.gt-container .gt-comment-reply {
+  color: rgba(0, 0, 0, .54) !important;
+  transition: color .2s cubic-bezier(.4,0,.2,1) !important;
+}
+
+.gt-container .gt-comment-like:hover,
+.gt-container .gt-comment-edit:hover,
+.gt-container .gt-comment-reply:hover {
+  color: rgba(0, 0, 0, .87) !important;
+}
+
+/* MDUI Admin Highlight */
+.gt-container .gt-comment-admin .gt-comment-content {
+  background-color: #fdfdfd !important;
+  border-left: 3px solid currentColor !important;
+}
+
+/* 8. Markdown Body Inside Comments (Light Mode) */
+.gt-container .gt-comment-body {
+  color: rgba(0, 0, 0, .87) !important;
+  line-height: 1.6 !important;
+}
+
+.gt-container .gt-comment-body pre {
+  background-color: #f5f5f5 !important;
+  border-radius: 2px !important;
+  border: 1px solid rgba(0, 0, 0, .06) !important;
+}
+
+.gt-container .gt-comment-body code {
+  background-color: rgba(0, 0, 0, .06) !important;
+  border-radius: 2px !important;
+}
+
+.gt-container .gt-comment-body pre code {
+  background-color: transparent !important;
+}
+
+.gt-container .gt-comment-body blockquote {
+  border-left: 4px solid rgba(0, 0, 0, .24) !important;
+  background-color: rgba(0, 0, 0, .03) !important;
+  color: rgba(0, 0, 0, .6) !important;
+}
+
+.gt-container .gt-comment-body th,
+.gt-container .gt-comment-body td {
+  border: 1px solid rgba(0, 0, 0, .12) !important;
+}
+
+.gt-container .gt-comment-body th {
+  font-weight: 500 !important;
+  background-color: rgba(0, 0, 0, .04) !important;
+}
+
+.gt-container .gt-comment-body tr {
+  background-color: #ffffff !important;
+}
+
+.gt-container .gt-comment-body tr:nth-child(2n) {
+  background-color: #fafafa !important;
+}
+
+.gt-container .gt-comment-body hr {
+  height: 1px !important;
+  background-color: rgba(0, 0, 0, .12) !important;
+  border: none !important;
+}
+
+/* 9. Pagination */
+.gt-container .gt-pagination-link {
+  border-radius: 2px !important;
+  font-weight: 500 !important;
+  color: rgba(0, 0, 0, .87) !important;
+  background-color: transparent !important;
+  transition: background-color .2s cubic-bezier(.4,0,.2,1) !important;
+}
+
+.gt-container .gt-pagination-link:hover {
+  background-color: rgba(0, 0, 0, .08) !important;
+}
+
+/* ==========================================================================
+   10. Gitalk MDUI Primary Theme Colors (19 colors) - Light & Dark Adaptations
+   ========================================================================== */
+.mdui-theme-primary-amber .gt-container .gt-link,
+.mdui-theme-primary-amber .gt-container .gt-counts a,
+.mdui-theme-primary-amber .gt-container .gt-comment-username,
+.mdui-theme-primary-amber .gt-container .gt-comment-body a,
+.mdui-theme-primary-amber .gt-container .gt-header-controls-tip:hover { color: #ffc107 !important; }
+.mdui-theme-primary-amber .gt-container .gt-header-textarea:focus { border-color: #ffc107 !important; box-shadow: 0 0 0 1px #ffc107 !important; }
+.mdui-theme-primary-amber .gt-container .gt-comment-body blockquote { border-left-color: #ffc107 !important; }
+.mdui-theme-primary-amber .gt-container .gt-pagination-link.is-active { background-color: #ffc107 !important; color: rgba(0,0,0,.87) !important; }
+
+.mdui-theme-primary-blue .gt-container .gt-link,
+.mdui-theme-primary-blue .gt-container .gt-counts a,
+.mdui-theme-primary-blue .gt-container .gt-comment-username,
+.mdui-theme-primary-blue .gt-container .gt-comment-body a,
+.mdui-theme-primary-blue .gt-container .gt-header-controls-tip:hover { color: #2196f3 !important; }
+.mdui-theme-primary-blue .gt-container .gt-header-textarea:focus { border-color: #2196f3 !important; box-shadow: 0 0 0 1px #2196f3 !important; }
+.mdui-theme-primary-blue .gt-container .gt-comment-body blockquote { border-left-color: #2196f3 !important; }
+.mdui-theme-primary-blue .gt-container .gt-pagination-link.is-active { background-color: #2196f3 !important; color: #fff !important; }
+
+.mdui-theme-primary-blue-grey .gt-container .gt-link,
+.mdui-theme-primary-blue-grey .gt-container .gt-counts a,
+.mdui-theme-primary-blue-grey .gt-container .gt-comment-username,
+.mdui-theme-primary-blue-grey .gt-container .gt-comment-body a,
+.mdui-theme-primary-blue-grey .gt-container .gt-header-controls-tip:hover { color: #607d8b !important; }
+.mdui-theme-primary-blue-grey .gt-container .gt-header-textarea:focus { border-color: #607d8b !important; box-shadow: 0 0 0 1px #607d8b !important; }
+.mdui-theme-primary-blue-grey .gt-container .gt-comment-body blockquote { border-left-color: #607d8b !important; }
+.mdui-theme-primary-blue-grey .gt-container .gt-pagination-link.is-active { background-color: #607d8b !important; color: #fff !important; }
+
+.mdui-theme-primary-brown .gt-container .gt-link,
+.mdui-theme-primary-brown .gt-container .gt-counts a,
+.mdui-theme-primary-brown .gt-container .gt-comment-username,
+.mdui-theme-primary-brown .gt-container .gt-comment-body a,
+.mdui-theme-primary-brown .gt-container .gt-header-controls-tip:hover { color: #795548 !important; }
+.mdui-theme-primary-brown .gt-container .gt-header-textarea:focus { border-color: #795548 !important; box-shadow: 0 0 0 1px #795548 !important; }
+.mdui-theme-primary-brown .gt-container .gt-comment-body blockquote { border-left-color: #795548 !important; }
+.mdui-theme-primary-brown .gt-container .gt-pagination-link.is-active { background-color: #795548 !important; color: #fff !important; }
+
+.mdui-theme-primary-cyan .gt-container .gt-link,
+.mdui-theme-primary-cyan .gt-container .gt-counts a,
+.mdui-theme-primary-cyan .gt-container .gt-comment-username,
+.mdui-theme-primary-cyan .gt-container .gt-comment-body a,
+.mdui-theme-primary-cyan .gt-container .gt-header-controls-tip:hover { color: #00bcd4 !important; }
+.mdui-theme-primary-cyan .gt-container .gt-header-textarea:focus { border-color: #00bcd4 !important; box-shadow: 0 0 0 1px #00bcd4 !important; }
+.mdui-theme-primary-cyan .gt-container .gt-comment-body blockquote { border-left-color: #00bcd4 !important; }
+.mdui-theme-primary-cyan .gt-container .gt-pagination-link.is-active { background-color: #00bcd4 !important; color: rgba(0,0,0,.87) !important; }
+
+.mdui-theme-primary-deep-orange .gt-container .gt-link,
+.mdui-theme-primary-deep-orange .gt-container .gt-counts a,
+.mdui-theme-primary-deep-orange .gt-container .gt-comment-username,
+.mdui-theme-primary-deep-orange .gt-container .gt-comment-body a,
+.mdui-theme-primary-deep-orange .gt-container .gt-header-controls-tip:hover { color: #ff5722 !important; }
+.mdui-theme-primary-deep-orange .gt-container .gt-header-textarea:focus { border-color: #ff5722 !important; box-shadow: 0 0 0 1px #ff5722 !important; }
+.mdui-theme-primary-deep-orange .gt-container .gt-comment-body blockquote { border-left-color: #ff5722 !important; }
+.mdui-theme-primary-deep-orange .gt-container .gt-pagination-link.is-active { background-color: #ff5722 !important; color: #fff !important; }
+
+.mdui-theme-primary-deep-purple .gt-container .gt-link,
+.mdui-theme-primary-deep-purple .gt-container .gt-counts a,
+.mdui-theme-primary-deep-purple .gt-container .gt-comment-username,
+.mdui-theme-primary-deep-purple .gt-container .gt-comment-body a,
+.mdui-theme-primary-deep-purple .gt-container .gt-header-controls-tip:hover { color: #673ab7 !important; }
+.mdui-theme-primary-deep-purple .gt-container .gt-header-textarea:focus { border-color: #673ab7 !important; box-shadow: 0 0 0 1px #673ab7 !important; }
+.mdui-theme-primary-deep-purple .gt-container .gt-comment-body blockquote { border-left-color: #673ab7 !important; }
+.mdui-theme-primary-deep-purple .gt-container .gt-pagination-link.is-active { background-color: #673ab7 !important; color: #fff !important; }
+
+.mdui-theme-primary-green .gt-container .gt-link,
+.mdui-theme-primary-green .gt-container .gt-counts a,
+.mdui-theme-primary-green .gt-container .gt-comment-username,
+.mdui-theme-primary-green .gt-container .gt-comment-body a,
+.mdui-theme-primary-green .gt-container .gt-header-controls-tip:hover { color: #4caf50 !important; }
+.mdui-theme-primary-green .gt-container .gt-header-textarea:focus { border-color: #4caf50 !important; box-shadow: 0 0 0 1px #4caf50 !important; }
+.mdui-theme-primary-green .gt-container .gt-comment-body blockquote { border-left-color: #4caf50 !important; }
+.mdui-theme-primary-green .gt-container .gt-pagination-link.is-active { background-color: #4caf50 !important; color: #fff !important; }
+
+.mdui-theme-primary-grey .gt-container .gt-link,
+.mdui-theme-primary-grey .gt-container .gt-counts a,
+.mdui-theme-primary-grey .gt-container .gt-comment-username,
+.mdui-theme-primary-grey .gt-container .gt-comment-body a,
+.mdui-theme-primary-grey .gt-container .gt-header-controls-tip:hover { color: #9e9e9e !important; }
+.mdui-theme-primary-grey .gt-container .gt-header-textarea:focus { border-color: #9e9e9e !important; box-shadow: 0 0 0 1px #9e9e9e !important; }
+.mdui-theme-primary-grey .gt-container .gt-comment-body blockquote { border-left-color: #9e9e9e !important; }
+.mdui-theme-primary-grey .gt-container .gt-pagination-link.is-active { background-color: #9e9e9e !important; color: rgba(0,0,0,.87) !important; }
+
+.mdui-theme-primary-indigo .gt-container .gt-link,
+.mdui-theme-primary-indigo .gt-container .gt-counts a,
+.mdui-theme-primary-indigo .gt-container .gt-comment-username,
+.mdui-theme-primary-indigo .gt-container .gt-comment-body a,
+.mdui-theme-primary-indigo .gt-container .gt-header-controls-tip:hover { color: #3f51b5 !important; }
+.mdui-theme-primary-indigo .gt-container .gt-header-textarea:focus { border-color: #3f51b5 !important; box-shadow: 0 0 0 1px #3f51b5 !important; }
+.mdui-theme-primary-indigo .gt-container .gt-comment-body blockquote { border-left-color: #3f51b5 !important; }
+.mdui-theme-primary-indigo .gt-container .gt-pagination-link.is-active { background-color: #3f51b5 !important; color: #fff !important; }
+
+.mdui-theme-primary-light-blue .gt-container .gt-link,
+.mdui-theme-primary-light-blue .gt-container .gt-counts a,
+.mdui-theme-primary-light-blue .gt-container .gt-comment-username,
+.mdui-theme-primary-light-blue .gt-container .gt-comment-body a,
+.mdui-theme-primary-light-blue .gt-container .gt-header-controls-tip:hover { color: #03a9f4 !important; }
+.mdui-theme-primary-light-blue .gt-container .gt-header-textarea:focus { border-color: #03a9f4 !important; box-shadow: 0 0 0 1px #03a9f4 !important; }
+.mdui-theme-primary-light-blue .gt-container .gt-comment-body blockquote { border-left-color: #03a9f4 !important; }
+.mdui-theme-primary-light-blue .gt-container .gt-pagination-link.is-active { background-color: #03a9f4 !important; color: #fff !important; }
+
+.mdui-theme-primary-light-green .gt-container .gt-link,
+.mdui-theme-primary-light-green .gt-container .gt-counts a,
+.mdui-theme-primary-light-green .gt-container .gt-comment-username,
+.mdui-theme-primary-light-green .gt-container .gt-comment-body a,
+.mdui-theme-primary-light-green .gt-container .gt-header-controls-tip:hover { color: #8bc34a !important; }
+.mdui-theme-primary-light-green .gt-container .gt-header-textarea:focus { border-color: #8bc34a !important; box-shadow: 0 0 0 1px #8bc34a !important; }
+.mdui-theme-primary-light-green .gt-container .gt-comment-body blockquote { border-left-color: #8bc34a !important; }
+.mdui-theme-primary-light-green .gt-container .gt-pagination-link.is-active { background-color: #8bc34a !important; color: rgba(0,0,0,.87) !important; }
+
+.mdui-theme-primary-lime .gt-container .gt-link,
+.mdui-theme-primary-lime .gt-container .gt-counts a,
+.mdui-theme-primary-lime .gt-container .gt-comment-username,
+.mdui-theme-primary-lime .gt-container .gt-comment-body a,
+.mdui-theme-primary-lime .gt-container .gt-header-controls-tip:hover { color: #cddc39 !important; }
+.mdui-theme-primary-lime .gt-container .gt-header-textarea:focus { border-color: #cddc39 !important; box-shadow: 0 0 0 1px #cddc39 !important; }
+.mdui-theme-primary-lime .gt-container .gt-comment-body blockquote { border-left-color: #cddc39 !important; }
+.mdui-theme-primary-lime .gt-container .gt-pagination-link.is-active { background-color: #cddc39 !important; color: rgba(0,0,0,.87) !important; }
+
+.mdui-theme-primary-orange .gt-container .gt-link,
+.mdui-theme-primary-orange .gt-container .gt-counts a,
+.mdui-theme-primary-orange .gt-container .gt-comment-username,
+.mdui-theme-primary-orange .gt-container .gt-comment-body a,
+.mdui-theme-primary-orange .gt-container .gt-header-controls-tip:hover { color: #ff9800 !important; }
+.mdui-theme-primary-orange .gt-container .gt-header-textarea:focus { border-color: #ff9800 !important; box-shadow: 0 0 0 1px #ff9800 !important; }
+.mdui-theme-primary-orange .gt-container .gt-comment-body blockquote { border-left-color: #ff9800 !important; }
+.mdui-theme-primary-orange .gt-container .gt-pagination-link.is-active { background-color: #ff9800 !important; color: rgba(0,0,0,.87) !important; }
+
+.mdui-theme-primary-pink .gt-container .gt-link,
+.mdui-theme-primary-pink .gt-container .gt-counts a,
+.mdui-theme-primary-pink .gt-container .gt-comment-username,
+.mdui-theme-primary-pink .gt-container .gt-comment-body a,
+.mdui-theme-primary-pink .gt-container .gt-header-controls-tip:hover { color: #e91e63 !important; }
+.mdui-theme-primary-pink .gt-container .gt-header-textarea:focus { border-color: #e91e63 !important; box-shadow: 0 0 0 1px #e91e63 !important; }
+.mdui-theme-primary-pink .gt-container .gt-comment-body blockquote { border-left-color: #e91e63 !important; }
+.mdui-theme-primary-pink .gt-container .gt-pagination-link.is-active { background-color: #e91e63 !important; color: #fff !important; }
+
+.mdui-theme-primary-purple .gt-container .gt-link,
+.mdui-theme-primary-purple .gt-container .gt-counts a,
+.mdui-theme-primary-purple .gt-container .gt-comment-username,
+.mdui-theme-primary-purple .gt-container .gt-comment-body a,
+.mdui-theme-primary-purple .gt-container .gt-header-controls-tip:hover { color: #9c27b0 !important; }
+.mdui-theme-primary-purple .gt-container .gt-header-textarea:focus { border-color: #9c27b0 !important; box-shadow: 0 0 0 1px #9c27b0 !important; }
+.mdui-theme-primary-purple .gt-container .gt-comment-body blockquote { border-left-color: #9c27b0 !important; }
+.mdui-theme-primary-purple .gt-container .gt-pagination-link.is-active { background-color: #9c27b0 !important; color: #fff !important; }
+
+.mdui-theme-primary-red .gt-container .gt-link,
+.mdui-theme-primary-red .gt-container .gt-counts a,
+.mdui-theme-primary-red .gt-container .gt-comment-username,
+.mdui-theme-primary-red .gt-container .gt-comment-body a,
+.mdui-theme-primary-red .gt-container .gt-header-controls-tip:hover { color: #f44336 !important; }
+.mdui-theme-primary-red .gt-container .gt-header-textarea:focus { border-color: #f44336 !important; box-shadow: 0 0 0 1px #f44336 !important; }
+.mdui-theme-primary-red .gt-container .gt-comment-body blockquote { border-left-color: #f44336 !important; }
+.mdui-theme-primary-red .gt-container .gt-pagination-link.is-active { background-color: #f44336 !important; color: #fff !important; }
+
+.mdui-theme-primary-teal .gt-container .gt-link,
+.mdui-theme-primary-teal .gt-container .gt-counts a,
+.mdui-theme-primary-teal .gt-container .gt-comment-username,
+.mdui-theme-primary-teal .gt-container .gt-comment-body a,
+.mdui-theme-primary-teal .gt-container .gt-header-controls-tip:hover { color: #009688 !important; }
+.mdui-theme-primary-teal .gt-container .gt-header-textarea:focus { border-color: #009688 !important; box-shadow: 0 0 0 1px #009688 !important; }
+.mdui-theme-primary-teal .gt-container .gt-comment-body blockquote { border-left-color: #009688 !important; }
+.mdui-theme-primary-teal .gt-container .gt-pagination-link.is-active { background-color: #009688 !important; color: #fff !important; }
+
+.mdui-theme-primary-yellow .gt-container .gt-link,
+.mdui-theme-primary-yellow .gt-container .gt-counts a,
+.mdui-theme-primary-yellow .gt-container .gt-comment-username,
+.mdui-theme-primary-yellow .gt-container .gt-comment-body a,
+.mdui-theme-primary-yellow .gt-container .gt-header-controls-tip:hover { color: #f57f17 !important; }
+.mdui-theme-primary-yellow .gt-container .gt-header-textarea:focus { border-color: #ffeb3b !important; box-shadow: 0 0 0 1px #ffeb3b !important; }
+.mdui-theme-primary-yellow .gt-container .gt-comment-body blockquote { border-left-color: #ffeb3b !important; }
+.mdui-theme-primary-yellow .gt-container .gt-pagination-link.is-active { background-color: #ffeb3b !important; color: rgba(0,0,0,.87) !important; }
+
+/* ==========================================================================
+   11. Dark Mode Primary Color Enhancements (High-Contrast 200/300 Palette)
+   ========================================================================== */
+.mdui-theme-layout-dark.mdui-theme-primary-amber .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-amber .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-amber .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-amber .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-amber .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-amber .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-amber .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-amber .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-amber .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-amber .gt-container .gt-header-controls-tip:hover { color: #ffe082 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-amber .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-amber .gt-container .gt-comment-body blockquote { border-left-color: #ffe082 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-amber .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-amber .gt-container .gt-header-textarea:focus { border-color: #ffe082 !important; box-shadow: 0 0 0 1px #ffe082 !important; }
+
+.mdui-theme-layout-dark.mdui-theme-primary-blue .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-blue .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-blue .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-blue .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-blue .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-blue .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-blue .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-blue .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-blue .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-blue .gt-container .gt-header-controls-tip:hover { color: #90caf9 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-blue .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-blue .gt-container .gt-comment-body blockquote { border-left-color: #90caf9 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-blue .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-blue .gt-container .gt-header-textarea:focus { border-color: #90caf9 !important; box-shadow: 0 0 0 1px #90caf9 !important; }
+
+.mdui-theme-layout-dark.mdui-theme-primary-blue-grey .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-blue-grey .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-blue-grey .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-blue-grey .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-blue-grey .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-blue-grey .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-blue-grey .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-blue-grey .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-blue-grey .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-blue-grey .gt-container .gt-header-controls-tip:hover { color: #b0bec5 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-blue-grey .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-blue-grey .gt-container .gt-comment-body blockquote { border-left-color: #b0bec5 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-blue-grey .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-blue-grey .gt-container .gt-header-textarea:focus { border-color: #b0bec5 !important; box-shadow: 0 0 0 1px #b0bec5 !important; }
+
+.mdui-theme-layout-dark.mdui-theme-primary-brown .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-brown .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-brown .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-brown .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-brown .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-brown .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-brown .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-brown .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-brown .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-brown .gt-container .gt-header-controls-tip:hover { color: #bcaaa4 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-brown .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-brown .gt-container .gt-comment-body blockquote { border-left-color: #bcaaa4 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-brown .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-brown .gt-container .gt-header-textarea:focus { border-color: #bcaaa4 !important; box-shadow: 0 0 0 1px #bcaaa4 !important; }
+
+.mdui-theme-layout-dark.mdui-theme-primary-cyan .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-cyan .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-cyan .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-cyan .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-cyan .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-cyan .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-cyan .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-cyan .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-cyan .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-cyan .gt-container .gt-header-controls-tip:hover { color: #80deea !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-cyan .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-cyan .gt-container .gt-comment-body blockquote { border-left-color: #80deea !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-cyan .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-cyan .gt-container .gt-header-textarea:focus { border-color: #80deea !important; box-shadow: 0 0 0 1px #80deea !important; }
+
+.mdui-theme-layout-dark.mdui-theme-primary-deep-orange .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-deep-orange .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-deep-orange .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-deep-orange .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-deep-orange .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-deep-orange .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-deep-orange .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-deep-orange .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-deep-orange .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-deep-orange .gt-container .gt-header-controls-tip:hover { color: #ffab91 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-deep-orange .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-deep-orange .gt-container .gt-comment-body blockquote { border-left-color: #ffab91 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-deep-orange .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-deep-orange .gt-container .gt-header-textarea:focus { border-color: #ffab91 !important; box-shadow: 0 0 0 1px #ffab91 !important; }
+
+/* Purple & Deep Purple Dark Mode Contrast Fixes */
+.mdui-theme-layout-dark.mdui-theme-primary-deep-purple .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-deep-purple .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-deep-purple .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-deep-purple .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-deep-purple .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-deep-purple .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-deep-purple .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-deep-purple .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-deep-purple .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-deep-purple .gt-container .gt-header-controls-tip:hover { color: #b388ff !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-deep-purple .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-deep-purple .gt-container .gt-comment-body blockquote { border-left-color: #b388ff !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-deep-purple .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-deep-purple .gt-container .gt-header-textarea:focus { border-color: #b388ff !important; box-shadow: 0 0 0 1px #b388ff !important; }
+
+.mdui-theme-layout-dark.mdui-theme-primary-purple .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-purple .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-purple .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-purple .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-purple .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-purple .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-purple .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-purple .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-purple .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-purple .gt-container .gt-header-controls-tip:hover { color: #ea80fc !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-purple .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-purple .gt-container .gt-comment-body blockquote { border-left-color: #ea80fc !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-purple .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-purple .gt-container .gt-header-textarea:focus { border-color: #ea80fc !important; box-shadow: 0 0 0 1px #ea80fc !important; }
+
+.mdui-theme-layout-dark.mdui-theme-primary-green .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-green .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-green .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-green .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-green .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-green .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-green .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-green .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-green .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-green .gt-container .gt-header-controls-tip:hover { color: #a5d6a7 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-green .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-green .gt-container .gt-comment-body blockquote { border-left-color: #a5d6a7 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-green .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-green .gt-container .gt-header-textarea:focus { border-color: #a5d6a7 !important; box-shadow: 0 0 0 1px #a5d6a7 !important; }
+
+.mdui-theme-layout-dark.mdui-theme-primary-grey .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-grey .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-grey .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-grey .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-grey .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-grey .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-grey .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-grey .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-grey .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-grey .gt-container .gt-header-controls-tip:hover { color: #e0e0e0 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-grey .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-grey .gt-container .gt-comment-body blockquote { border-left-color: #e0e0e0 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-grey .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-grey .gt-container .gt-header-textarea:focus { border-color: #e0e0e0 !important; box-shadow: 0 0 0 1px #e0e0e0 !important; }
+
+.mdui-theme-layout-dark.mdui-theme-primary-indigo .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-indigo .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-indigo .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-indigo .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-indigo .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-indigo .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-indigo .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-indigo .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-indigo .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-indigo .gt-container .gt-header-controls-tip:hover { color: #8c9eff !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-indigo .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-indigo .gt-container .gt-comment-body blockquote { border-left-color: #8c9eff !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-indigo .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-indigo .gt-container .gt-header-textarea:focus { border-color: #8c9eff !important; box-shadow: 0 0 0 1px #8c9eff !important; }
+
+.mdui-theme-layout-dark.mdui-theme-primary-light-blue .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-light-blue .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-light-blue .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-light-blue .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-light-blue .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-light-blue .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-light-blue .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-light-blue .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-light-blue .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-light-blue .gt-container .gt-header-controls-tip:hover { color: #80d8ff !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-light-blue .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-light-blue .gt-container .gt-comment-body blockquote { border-left-color: #80d8ff !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-light-blue .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-light-blue .gt-container .gt-header-textarea:focus { border-color: #80d8ff !important; box-shadow: 0 0 0 1px #80d8ff !important; }
+
+.mdui-theme-layout-dark.mdui-theme-primary-light-green .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-light-green .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-light-green .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-light-green .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-light-green .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-light-green .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-light-green .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-light-green .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-light-green .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-light-green .gt-container .gt-header-controls-tip:hover { color: #c5e1a5 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-light-green .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-light-green .gt-container .gt-comment-body blockquote { border-left-color: #c5e1a5 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-light-green .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-light-green .gt-container .gt-header-textarea:focus { border-color: #c5e1a5 !important; box-shadow: 0 0 0 1px #c5e1a5 !important; }
+
+.mdui-theme-layout-dark.mdui-theme-primary-lime .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-lime .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-lime .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-lime .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-lime .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-lime .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-lime .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-lime .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-lime .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-lime .gt-container .gt-header-controls-tip:hover { color: #f4ff81 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-lime .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-lime .gt-container .gt-comment-body blockquote { border-left-color: #f4ff81 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-lime .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-lime .gt-container .gt-header-textarea:focus { border-color: #f4ff81 !important; box-shadow: 0 0 0 1px #f4ff81 !important; }
+
+.mdui-theme-layout-dark.mdui-theme-primary-orange .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-orange .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-orange .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-orange .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-orange .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-orange .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-orange .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-orange .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-orange .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-orange .gt-container .gt-header-controls-tip:hover { color: #ffd180 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-orange .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-orange .gt-container .gt-comment-body blockquote { border-left-color: #ffd180 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-orange .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-orange .gt-container .gt-header-textarea:focus { border-color: #ffd180 !important; box-shadow: 0 0 0 1px #ffd180 !important; }
+
+.mdui-theme-layout-dark.mdui-theme-primary-pink .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-pink .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-pink .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-pink .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-pink .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-pink .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-pink .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-pink .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-pink .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-pink .gt-container .gt-header-controls-tip:hover { color: #ff80ab !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-pink .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-pink .gt-container .gt-comment-body blockquote { border-left-color: #ff80ab !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-pink .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-pink .gt-container .gt-header-textarea:focus { border-color: #ff80ab !important; box-shadow: 0 0 0 1px #ff80ab !important; }
+
+.mdui-theme-layout-dark.mdui-theme-primary-red .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-red .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-red .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-red .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-red .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-red .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-red .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-red .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-red .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-red .gt-container .gt-header-controls-tip:hover { color: #ff8a80 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-red .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-red .gt-container .gt-comment-body blockquote { border-left-color: #ff8a80 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-red .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-red .gt-container .gt-header-textarea:focus { border-color: #ff8a80 !important; box-shadow: 0 0 0 1px #ff8a80 !important; }
+
+.mdui-theme-layout-dark.mdui-theme-primary-teal .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-teal .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-teal .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-teal .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-teal .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-teal .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-teal .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-teal .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-teal .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-teal .gt-container .gt-header-controls-tip:hover { color: #80cbc4 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-teal .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-teal .gt-container .gt-comment-body blockquote { border-left-color: #80cbc4 !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-teal .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-teal .gt-container .gt-header-textarea:focus { border-color: #80cbc4 !important; box-shadow: 0 0 0 1px #80cbc4 !important; }
+
+.mdui-theme-layout-dark.mdui-theme-primary-yellow .gt-container .gt-link,
+.mdui-theme-layout-dark.mdui-theme-primary-yellow .gt-container .gt-counts a,
+.mdui-theme-layout-dark.mdui-theme-primary-yellow .gt-container .gt-comment-username,
+.mdui-theme-layout-dark.mdui-theme-primary-yellow .gt-container .gt-comment-body a,
+.mdui-theme-layout-dark.mdui-theme-primary-yellow .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto.mdui-theme-primary-yellow .gt-container .gt-link,
+.mdui-theme-layout-auto.mdui-theme-primary-yellow .gt-container .gt-counts a,
+.mdui-theme-layout-auto.mdui-theme-primary-yellow .gt-container .gt-comment-username,
+.mdui-theme-layout-auto.mdui-theme-primary-yellow .gt-container .gt-comment-body a,
+.mdui-theme-layout-auto.mdui-theme-primary-yellow .gt-container .gt-header-controls-tip:hover { color: #fff59d !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-yellow .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto.mdui-theme-primary-yellow .gt-container .gt-comment-body blockquote { border-left-color: #fff59d !important; }
+.mdui-theme-layout-dark.mdui-theme-primary-yellow .gt-container .gt-header-textarea:focus,
+.mdui-theme-layout-auto.mdui-theme-primary-yellow .gt-container .gt-header-textarea:focus { border-color: #fff59d !important; box-shadow: 0 0 0 1px #fff59d !important; }
+
+/* ==========================================================================
+   12. Gitalk MDUI Accent Theme Colors (14 colors)
+   ========================================================================== */
+.mdui-theme-accent-amber .gt-container .gt-btn-login,
+.mdui-theme-accent-amber .gt-container .gt-btn-public,
+.mdui-theme-accent-amber .gt-container .gt-btn-loadmore { background-color: #ffd740 !important; color: rgba(0,0,0,.87) !important; }
+.mdui-theme-accent-amber .gt-container .gt-comment-like.is-active,
+.mdui-theme-accent-amber .gt-container .gt-comment-like.is-active .gt-svg { color: #ffd740 !important; fill: #ffd740 !important; }
+
+.mdui-theme-accent-blue .gt-container .gt-btn-login,
+.mdui-theme-accent-blue .gt-container .gt-btn-public,
+.mdui-theme-accent-blue .gt-container .gt-btn-loadmore { background-color: #448aff !important; color: #fff !important; }
+.mdui-theme-accent-blue .gt-container .gt-comment-like.is-active,
+.mdui-theme-accent-blue .gt-container .gt-comment-like.is-active .gt-svg { color: #448aff !important; fill: #448aff !important; }
+
+.mdui-theme-accent-cyan .gt-container .gt-btn-login,
+.mdui-theme-accent-cyan .gt-container .gt-btn-public,
+.mdui-theme-accent-cyan .gt-container .gt-btn-loadmore { background-color: #18ffff !important; color: rgba(0,0,0,.87) !important; }
+.mdui-theme-accent-cyan .gt-container .gt-comment-like.is-active,
+.mdui-theme-accent-cyan .gt-container .gt-comment-like.is-active .gt-svg { color: #18ffff !important; fill: #18ffff !important; }
+
+.mdui-theme-accent-deep-orange .gt-container .gt-btn-login,
+.mdui-theme-accent-deep-orange .gt-container .gt-btn-public,
+.mdui-theme-accent-deep-orange .gt-container .gt-btn-loadmore { background-color: #ff6e40 !important; color: #fff !important; }
+.mdui-theme-accent-deep-orange .gt-container .gt-comment-like.is-active,
+.mdui-theme-accent-deep-orange .gt-container .gt-comment-like.is-active .gt-svg { color: #ff6e40 !important; fill: #ff6e40 !important; }
+
+.mdui-theme-accent-deep-purple .gt-container .gt-btn-login,
+.mdui-theme-accent-deep-purple .gt-container .gt-btn-public,
+.mdui-theme-accent-deep-purple .gt-container .gt-btn-loadmore { background-color: #7c4dff !important; color: #fff !important; }
+.mdui-theme-accent-deep-purple .gt-container .gt-comment-like.is-active,
+.mdui-theme-accent-deep-purple .gt-container .gt-comment-like.is-active .gt-svg { color: #7c4dff !important; fill: #7c4dff !important; }
+
+.mdui-theme-accent-green .gt-container .gt-btn-login,
+.mdui-theme-accent-green .gt-container .gt-btn-public,
+.mdui-theme-accent-green .gt-container .gt-btn-loadmore { background-color: #69f0ae !important; color: rgba(0,0,0,.87) !important; }
+.mdui-theme-accent-green .gt-container .gt-comment-like.is-active,
+.mdui-theme-accent-green .gt-container .gt-comment-like.is-active .gt-svg { color: #69f0ae !important; fill: #69f0ae !important; }
+
+.mdui-theme-accent-indigo .gt-container .gt-btn-login,
+.mdui-theme-accent-indigo .gt-container .gt-btn-public,
+.mdui-theme-accent-indigo .gt-container .gt-btn-loadmore { background-color: #536dfe !important; color: #fff !important; }
+.mdui-theme-accent-indigo .gt-container .gt-comment-like.is-active,
+.mdui-theme-accent-indigo .gt-container .gt-comment-like.is-active .gt-svg { color: #536dfe !important; fill: #536dfe !important; }
+
+.mdui-theme-accent-light-blue .gt-container .gt-btn-login,
+.mdui-theme-accent-light-blue .gt-container .gt-btn-public,
+.mdui-theme-accent-light-blue .gt-container .gt-btn-loadmore { background-color: #40c4ff !important; color: rgba(0,0,0,.87) !important; }
+.mdui-theme-accent-light-blue .gt-container .gt-comment-like.is-active,
+.mdui-theme-accent-light-blue .gt-container .gt-comment-like.is-active .gt-svg { color: #40c4ff !important; fill: #40c4ff !important; }
+
+.mdui-theme-accent-light-green .gt-container .gt-btn-login,
+.mdui-theme-accent-light-green .gt-container .gt-btn-public,
+.mdui-theme-accent-light-green .gt-container .gt-btn-loadmore { background-color: #b2ff59 !important; color: rgba(0,0,0,.87) !important; }
+.mdui-theme-accent-light-green .gt-container .gt-comment-like.is-active,
+.mdui-theme-accent-light-green .gt-container .gt-comment-like.is-active .gt-svg { color: #b2ff59 !important; fill: #b2ff59 !important; }
+
+.mdui-theme-accent-lime .gt-container .gt-btn-login,
+.mdui-theme-accent-lime .gt-container .gt-btn-public,
+.mdui-theme-accent-lime .gt-container .gt-btn-loadmore { background-color: #eeff41 !important; color: rgba(0,0,0,.87) !important; }
+.mdui-theme-accent-lime .gt-container .gt-comment-like.is-active,
+.mdui-theme-accent-lime .gt-container .gt-comment-like.is-active .gt-svg { color: #eeff41 !important; fill: #eeff41 !important; }
+
+.mdui-theme-accent-orange .gt-container .gt-btn-login,
+.mdui-theme-accent-orange .gt-container .gt-btn-public,
+.mdui-theme-accent-orange .gt-container .gt-btn-loadmore { background-color: #ffab40 !important; color: rgba(0,0,0,.87) !important; }
+.mdui-theme-accent-orange .gt-container .gt-comment-like.is-active,
+.mdui-theme-accent-orange .gt-container .gt-comment-like.is-active .gt-svg { color: #ffab40 !important; fill: #ffab40 !important; }
+
+.mdui-theme-accent-pink .gt-container .gt-btn-login,
+.mdui-theme-accent-pink .gt-container .gt-btn-public,
+.mdui-theme-accent-pink .gt-container .gt-btn-loadmore { background-color: #ff4081 !important; color: #fff !important; }
+.mdui-theme-accent-pink .gt-container .gt-comment-like.is-active,
+.mdui-theme-accent-pink .gt-container .gt-comment-like.is-active .gt-svg { color: #ff4081 !important; fill: #ff4081 !important; }
+
+.mdui-theme-accent-purple .gt-container .gt-btn-login,
+.mdui-theme-accent-purple .gt-container .gt-btn-public,
+.mdui-theme-accent-purple .gt-container .gt-btn-loadmore { background-color: #e040fb !important; color: #fff !important; }
+.mdui-theme-accent-purple .gt-container .gt-comment-like.is-active,
+.mdui-theme-accent-purple .gt-container .gt-comment-like.is-active .gt-svg { color: #e040fb !important; fill: #e040fb !important; }
+
+.mdui-theme-accent-red .gt-container .gt-btn-login,
+.mdui-theme-accent-red .gt-container .gt-btn-public,
+.mdui-theme-accent-red .gt-container .gt-btn-loadmore { background-color: #ff5252 !important; color: #fff !important; }
+.mdui-theme-accent-red .gt-container .gt-comment-like.is-active,
+.mdui-theme-accent-red .gt-container .gt-comment-like.is-active .gt-svg { color: #ff5252 !important; fill: #ff5252 !important; }
+
+.mdui-theme-accent-teal .gt-container .gt-btn-login,
+.mdui-theme-accent-teal .gt-container .gt-btn-public,
+.mdui-theme-accent-teal .gt-container .gt-btn-loadmore { background-color: #64ffda !important; color: rgba(0,0,0,.87) !important; }
+.mdui-theme-accent-teal .gt-container .gt-comment-like.is-active,
+.mdui-theme-accent-teal .gt-container .gt-comment-like.is-active .gt-svg { color: #64ffda !important; fill: #64ffda !important; }
+
+.mdui-theme-accent-yellow .gt-container .gt-btn-login,
+.mdui-theme-accent-yellow .gt-container .gt-btn-public,
+.mdui-theme-accent-yellow .gt-container .gt-btn-loadmore { background-color: #ff0 !important; color: rgba(0,0,0,.87) !important; }
+.mdui-theme-accent-yellow .gt-container .gt-comment-like.is-active,
+.mdui-theme-accent-yellow .gt-container .gt-comment-like.is-active .gt-svg { color: #ff0 !important; fill: #ff0 !important; }
+
+/* ==========================================================================
+   13. Gitalk Dark Mode Adaptation (Meticulous MD1 Specs)
+   ========================================================================== */
+.mdui-theme-layout-dark .gt-container,
+.mdui-theme-layout-auto .gt-container {
+  color: #ffffff !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-meta,
+.mdui-theme-layout-auto .gt-container .gt-meta {
+  border-bottom-color: rgba(255, 255, 255, .12) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-version,
+.mdui-theme-layout-dark .gt-container .gt-copyright,
+.mdui-theme-layout-auto .gt-container .gt-version,
+.mdui-theme-layout-auto .gt-container .gt-copyright {
+  color: rgba(255, 255, 255, .38) !important;
+  border-top-color: rgba(255, 255, 255, .12) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-popup,
+.mdui-theme-layout-auto .gt-container .gt-popup {
+  background: #424242 !important;
+  border: 1px solid rgba(255, 255, 255, .12) !important;
+  box-shadow: 0 5px 5px -3px rgba(0,0,0,.4), 0 8px 10px 1px rgba(0,0,0,.28), 0 3px 14px 2px rgba(0,0,0,.24) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-popup .gt-action,
+.mdui-theme-layout-auto .gt-container .gt-popup .gt-action {
+  color: rgba(255, 255, 255, .87) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-popup .gt-action:hover,
+.mdui-theme-layout-auto .gt-container .gt-popup .gt-action:hover {
+  background-color: rgba(255, 255, 255, .08) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-header-textarea,
+.mdui-theme-layout-auto .gt-container .gt-header-textarea {
+  background-color: #303030 !important;
+  border-color: rgba(255, 255, 255, .2) !important;
+  color: #ffffff !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-header-textarea:hover,
+.mdui-theme-layout-auto .gt-container .gt-header-textarea:hover {
+  background-color: #383838 !important;
+  border-color: rgba(255, 255, 255, .38) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-header-preview,
+.mdui-theme-layout-auto .gt-container .gt-header-preview {
+  background-color: #303030 !important;
+  border-color: rgba(255, 255, 255, .12) !important;
+  color: #ffffff !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-header-controls-tip,
+.mdui-theme-layout-auto .gt-container .gt-header-controls-tip {
+  color: rgba(255, 255, 255, .54) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-header-controls-tip:hover,
+.mdui-theme-layout-auto .gt-container .gt-header-controls-tip:hover {
+  color: #ffffff !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-btn-preview,
+.mdui-theme-layout-auto .gt-container .gt-btn-preview {
+  border-color: rgba(255, 255, 255, .2) !important;
+  color: #ffffff !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-btn-preview:hover,
+.mdui-theme-layout-auto .gt-container .gt-btn-preview:hover {
+  background-color: rgba(255, 255, 255, .08) !important;
+  border-color: rgba(255, 255, 255, .38) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comments-null,
+.mdui-theme-layout-auto .gt-container .gt-comments-null {
+  color: rgba(255, 255, 255, .54) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-content,
+.mdui-theme-layout-auto .gt-container .gt-comment-content {
+  background-color: #424242 !important;
+  border-color: rgba(255, 255, 255, .12) !important;
+  box-shadow: 0 2px 1px -1px rgba(0,0,0,.4), 0 1px 1px 0 rgba(0,0,0,.28), 0 1px 3px 0 rgba(0,0,0,.24) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-content:hover,
+.mdui-theme-layout-auto .gt-container .gt-comment-content:hover {
+  box-shadow: 0 3px 3px -2px rgba(0,0,0,.4), 0 3px 4px 0 rgba(0,0,0,.28), 0 1px 8px 0 rgba(0,0,0,.24) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-content:before,
+.mdui-theme-layout-auto .gt-container .gt-comment-content:before {
+  border-right-color: rgba(255, 255, 255, .12) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-content:after,
+.mdui-theme-layout-auto .gt-container .gt-comment-content:after {
+  border-right-color: #424242 !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-text,
+.mdui-theme-layout-dark .gt-container .gt-comment-date,
+.mdui-theme-layout-auto .gt-container .gt-comment-text,
+.mdui-theme-layout-auto .gt-container .gt-comment-date {
+  color: rgba(255, 255, 255, .54) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-like,
+.mdui-theme-layout-dark .gt-container .gt-comment-edit,
+.mdui-theme-layout-dark .gt-container .gt-comment-reply,
+.mdui-theme-layout-auto .gt-container .gt-comment-like,
+.mdui-theme-layout-auto .gt-container .gt-comment-edit,
+.mdui-theme-layout-auto .gt-container .gt-comment-reply {
+  color: rgba(255, 255, 255, .54) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-like:hover,
+.mdui-theme-layout-dark .gt-container .gt-comment-edit:hover,
+.mdui-theme-layout-dark .gt-container .gt-comment-reply:hover,
+.mdui-theme-layout-auto .gt-container .gt-comment-like:hover,
+.mdui-theme-layout-auto .gt-container .gt-comment-edit:hover,
+.mdui-theme-layout-auto .gt-container .gt-comment-reply:hover {
+  color: #ffffff !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-admin .gt-comment-content,
+.mdui-theme-layout-auto .gt-container .gt-comment-admin .gt-comment-content {
+  background-color: #484848 !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-body,
+.mdui-theme-layout-auto .gt-container .gt-comment-body {
+  color: rgba(255, 255, 255, .87) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-body h1,
+.mdui-theme-layout-dark .gt-container .gt-comment-body h2,
+.mdui-theme-layout-dark .gt-container .gt-comment-body h3,
+.mdui-theme-layout-dark .gt-container .gt-comment-body h4,
+.mdui-theme-layout-dark .gt-container .gt-comment-body h5,
+.mdui-theme-layout-dark .gt-container .gt-comment-body h6,
+.mdui-theme-layout-auto .gt-container .gt-comment-body h1,
+.mdui-theme-layout-auto .gt-container .gt-comment-body h2,
+.mdui-theme-layout-auto .gt-container .gt-comment-body h3,
+.mdui-theme-layout-auto .gt-container .gt-comment-body h4,
+.mdui-theme-layout-auto .gt-container .gt-comment-body h5,
+.mdui-theme-layout-auto .gt-container .gt-comment-body h6 {
+  color: #ffffff !important;
+  border-bottom-color: rgba(255, 255, 255, .12) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-body p,
+.mdui-theme-layout-dark .gt-container .gt-comment-body li,
+.mdui-theme-layout-dark .gt-container .gt-comment-body dl,
+.mdui-theme-layout-dark .gt-container .gt-comment-body strong,
+.mdui-theme-layout-auto .gt-container .gt-comment-body p,
+.mdui-theme-layout-auto .gt-container .gt-comment-body li,
+.mdui-theme-layout-auto .gt-container .gt-comment-body dl,
+.mdui-theme-layout-auto .gt-container .gt-comment-body strong {
+  color: rgba(255, 255, 255, .87) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-body pre,
+.mdui-theme-layout-dark .gt-container .gt-comment-body .highlight pre,
+.mdui-theme-layout-auto .gt-container .gt-comment-body pre,
+.mdui-theme-layout-auto .gt-container .gt-comment-body .highlight pre {
+  background-color: #262626 !important;
+  border: 1px solid rgba(255, 255, 255, .12) !important;
+  color: #ffffff !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-body code,
+.mdui-theme-layout-auto .gt-container .gt-comment-body code {
+  background-color: rgba(255, 255, 255, .12) !important;
+  color: #f0f0f0 !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-body pre code,
+.mdui-theme-layout-auto .gt-container .gt-comment-body pre code {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-body blockquote,
+.mdui-theme-layout-auto .gt-container .gt-comment-body blockquote {
+  background-color: rgba(255, 255, 255, .05) !important;
+  color: rgba(255, 255, 255, .7) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-body table tr,
+.mdui-theme-layout-auto .gt-container .gt-comment-body table tr {
+  background-color: #424242 !important;
+  border-top-color: rgba(255, 255, 255, .12) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-body table tr:nth-child(2n),
+.mdui-theme-layout-auto .gt-container .gt-comment-body table tr:nth-child(2n) {
+  background-color: #383838 !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-body table th,
+.mdui-theme-layout-dark .gt-container .gt-comment-body table td,
+.mdui-theme-layout-auto .gt-container .gt-comment-body table th,
+.mdui-theme-layout-auto .gt-container .gt-comment-body table td {
+  border: 1px solid rgba(255, 255, 255, .12) !important;
+  color: rgba(255, 255, 255, .87) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-body table th,
+.mdui-theme-layout-auto .gt-container .gt-comment-body table th {
+  background-color: rgba(255, 255, 255, .06) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-comment-body hr,
+.mdui-theme-layout-auto .gt-container .gt-comment-body hr {
+  background-color: rgba(255, 255, 255, .12) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-pagination-link,
+.mdui-theme-layout-auto .gt-container .gt-pagination-link {
+  color: rgba(255, 255, 255, .87) !important;
+}
+
+.mdui-theme-layout-dark .gt-container .gt-pagination-link:hover,
+.mdui-theme-layout-auto .gt-container .gt-pagination-link:hover {
+  background-color: rgba(255, 255, 255, .1) !important;
+}

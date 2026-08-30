@@ -1,0 +1,2248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="renderer" content="webkit">
+  
+
+  <script>
+    (function() {
+      try {
+        var LOC = window.location;
+        var path = LOC.pathname || '/';
+        if (path === '/k' || path.indexOf('/k/') === 0 || /[?&]compat=1/.test(LOC.search) || /[?&]nocompat=1/.test(LOC.search)) return;
+
+  var ua = navigator.userAgent || '';
+  var isBot = /Googlebot|Bingbot|Baiduspider|Bytespider|360Spider|Sogou|YandexBot|DuckDuckBot|Slurp|facebookexternalhit|Twitterbot|msnbot/i.test(ua);
+  function getQueryParam(name) {
+    try {
+      if (window.URLSearchParams) {
+        var sp = new URLSearchParams(LOC.search);
+        return sp.get(name);
+      }
+    } catch (e) {}
+    try {
+      var qs = (LOC.search || '').replace(/^\?/, '');
+      var pairs = qs.split('&');
+      for (var i = 0; i < pairs.length; i++) {
+        var p = pairs[i];
+        if (!p) continue;
+        var idx = p.indexOf('=');
+        var k = idx === -1 ? decodeURIComponent(p) : decodeURIComponent(p.slice(0, idx));
+        var v = idx === -1 ? '' : decodeURIComponent(p.slice(idx+1));
+        if (k === name) return v;
+      }
+    } catch (e) {}
+    return null;
+  }
+  var persistNoK = getQueryParam('persist_no_k') === '1';
+
+        function lacks(feature) { return !feature; }
+        var missingFeatures = [];
+        if (lacks(window.Promise)) missingFeatures.push('Promise');
+        if (lacks(window.fetch)) missingFeatures.push('fetch');
+        if (lacks(Object.assign)) missingFeatures.push('Object.assign');
+        if (lacks(Array.prototype.find)) missingFeatures.push('Array.find');
+        if (lacks(document.querySelector)) missingFeatures.push('querySelector');
+        if (lacks(window.addEventListener)) missingFeatures.push('addEventListener');
+        if (lacks(window.IntersectionObserver)) missingFeatures.push('IntersectionObserver');
+        var legacyFeature = (
+          missingFeatures.indexOf('Promise') !== -1 ||
+          missingFeatures.indexOf('querySelector') !== -1 ||
+          missingFeatures.indexOf('addEventListener') !== -1 ||
+          missingFeatures.length >= 2
+        );
+
+  var errorLimit = 8; 
+  var errorCount = 0;
+  function scheduleRedirect(reason) {
+          try {
+            var note = document.createElement('div');
+            note.style.cssText = 'display:none;';
+            note.textContent = 'Compatibility suggestion (/k) triggered: ' + reason;
+            document.documentElement.appendChild(note);
+          } catch (e) {}
+
+          if (window.__compat_redirected) return;
+
+          try {
+            if (!window.__compat_banner_shown) {
+              window.__compat_banner_shown = true;
+              var banner = document.createElement('div');
+              banner.style.cssText = 'background:#ff9800;color:#000;padding:8px;font-size:13px;text-align:center;position:relative;z-index:9999;';
+              banner.innerHTML = '浏览器可能不完全支持本站功能（'+reason+'）请访问 <a href="/k?compat=1&from='+encodeURIComponent(path)+'&reason='+encodeURIComponent(reason)+'">兼容视图</a>以正常阅览。';
+              try { document.documentElement.insertBefore(banner, document.documentElement.firstChild); }
+              catch(e) { document.body && document.body.insertBefore(banner, document.body.firstChild); }
+            }
+          } catch (e) {}
+          console.log('Compatibility suggestion (/k) triggered:', reason);
+          console.log('Missing features:', missingFeatures.join(', '));
+          console.log('Error count:', errorCount);
+          console.log('Is bot:', isBot);
+          console.log('Persist no_k:', persistNoK);
+          
+
+          setTimeout(function() {
+            try {
+              if (isBot || persistNoK) {
+                return;
+              }
+              if (window.__compat_redirected) return; window.__compat_redirected = true;
+              var target = '/k?compat=1&from=' + encodeURIComponent(path) + '&reason=' + encodeURIComponent(reason);
+              try { window.stop && window.stop(); } catch(e){}
+              LOC.replace(target);
+            } catch (e) {}
+          }, 500);
+        }
+
+        window.addEventListener('error', function(e) {
+          try {
+            var el = e && e.target;
+            var isResource = el && el.tagName && (el.tagName === 'SCRIPT' || el.tagName === 'LINK' || el.tagName === 'IMG');
+            if (!isResource) {
+              console.log('Runtime error detected ('+errorCount+'):', e.message, 'at', e.filename + ':' + e.lineno + ':' + e.colno);
+              errorCount++;
+              if (errorCount >= errorLimit) scheduleRedirect('runtime_error_'+errorCount);
+            }
+          } catch(err){}
+        }, true);
+
+        window.addEventListener('unhandledrejection', function(e) {
+          try {
+            errorCount++;
+            if (errorCount >= errorLimit) scheduleRedirect('unhandledrejection_'+errorCount);
+          } catch (err) {}
+        });
+
+        setTimeout(function() {
+          if (!window.mdui && !window.__compat_redirected && (legacyFeature || errorCount > 0)) {
+            scheduleRedirect('timeout_no_core_lib');
+          }
+        }, 20000);
+
+        if (legacyFeature) {
+          scheduleRedirect('legacy_feature');
+        }
+      } catch (e) {
+      }
+    })();
+  </script>
+  <noscript>
+    
+    <!-- <meta http-equiv="refresh" content="2; url=/k?compat=1&noscript=1" /> -->
+    <div style="background:#ff9800;color:#000;padding:8px;font-size:13px;text-align:center;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" style="vertical-align:middle;width:1.5em;height:1.5em;"><path d="M791-55 280-566l-87 87 183 183-56 56L80-480l143-143L55-791l57-57 736 736-57 57Zm-54-282-57-57 87-87-183-183 56-56 240 240-143 143Z"/></svg>
+      关键错误: 浏览器未启用Javascript。绝大多数功能都将无法正确运作。
+      <a href="https://www.enable-javascript.com/" target="_blank">了解如何启用Javascript</a>
+      <a href="/atom.xml" style="margin-left:16px;">访问源视图</a>
+    </div>
+  </noscript>
+
+  
+  <title>即将跳转 | 老史尬侃 - Steve ZMT &#39;s Blog</title>
+
+  <link rel="shortcut icon" href="/images/favicon.png">
+  <link rel="alternate" href="/atom.xml" title="老史尬侃 - Steve ZMT 's Blog" type="application/atom+xml">
+  <meta name="description" content="即将重定向到目标页面...">
+<meta property="og:type" content="website">
+<meta property="og:title" content="即将跳转">
+<meta property="og:url" content="https://blog.stevezmt.top/redirect/index.html">
+<meta property="og:site_name" content="老史尬侃 - Steve ZMT &#39;s Blog">
+<meta property="og:description" content="即将重定向到目标页面...">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-08-30T07:46:59.053Z">
+<meta property="article:modified_time" content="2026-08-30T07:46:59.053Z">
+<meta property="article:author" content="Steve ZMT">
+<meta property="article:tag" content="SteveZMT">
+<meta property="article:tag" content="blog">
+<meta property="article:tag" content="博客">
+<meta property="article:tag" content="史蒂夫ZMT">
+<meta property="article:tag" content="随笔">
+<meta name="twitter:card" content="summary">
+
+  <meta name="keywords" content="blog,博客,随笔,SteveZMT,史蒂夫ZMT">
+  <meta name="format-detection" content="telephone=no,email=no">
+  <meta name="theme-color" content="#448AFF">
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="老史尬侃 - Steve ZMT &#39;s Blog">
+  <meta name="msapplication-starturl" content="https://blog.stevezmt.top/redirect/">
+  <meta name="msapplication-navbutton-color" content="#448AFF">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="老史尬侃 - Steve ZMT &#39;s Blog">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="apple-touch-icon" href="/images/favicon.png">
+  <link rel="dns-prefetch" href="/" />
+  <link rel="manifest" href="/manifest.json">
+
+  
+    <link rel="canonical" href="https://blog.stevezmt.top/redirect/index.html">
+  
+
+  
+  
+
+
+  
+  
+
+  
+  
+
+<link rel="stylesheet" 
+      href="https://s4.zstatic.net/npm/mdui@1.0.2/dist/css/mdui.min.css"
+      crossorigin="anonymous"
+      integrity="sha384-wuqJ3gKnD2BDa/kF14f6SECESfcvVTsNruuVi3BOAk2mNDIOn/uvHdd+eMK7FY0b"
+      onerror="this.onerror=null; this.href='/css/mdui.css';">  
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/lightbox.css">
+
+  
+<link rel="stylesheet" href="/custom.css">
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body class="mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-blue">
+  <a id="skip-to-content" href="#main" class="mdui-sr-only" aria-label="跳转到内容">跳转到内容</a>
+  <script>
+    window.__SITE_ASSET_CONFIG__ = {
+      analyticsId: 'G-T404DHJEEZ',
+      busuanziSrc: '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js',
+      gitalkCss: '//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.css',
+      gitalkMduiCss: '/css/gitalk-mdui.css',
+      gitalkSrc: '//gcore.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js',
+      gitalkBridgeSrc: '//sharepoint.cf.stevezmt.top/js/3rd-party/gitalk-cn.min.js'
+    };
+  </script>
+  <script>
+    var dark = localStorage.getItem("mdui-theme-layout-dark");
+    var light = localStorage.getItem("mdui-theme-layout-light");
+    if (dark || (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches && !light)) {
+      document.getElementsByTagName("body")[0].className+=" mdui-theme-layout-dark";
+    }
+  </script>
+  <script>var a=localStorage.getItem("mdui-drawer-close");if(!a){document.getElementsByTagName("body")[0].className+=" mdui-drawer-body-left"};</script>
+  <header id="header" class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide mdui-appbar-inset">
+  <div id="banner" class="mdui-toolbar mdui-color-theme">
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '#sidebar', swipe: true}"><i class="mdui-icon material-icons" translate="no">menu</i></a>
+    <a href="/" class="mdui-typo-headline">老史尬侃 - Steve ZMT &#39;s Blog</a>
+    <div class="mdui-toolbar-spacer"></div>
+    
+
+    <a href="javascript:;" class="mdui-btn mdui-btn-icon" mdui-dialog="{target: '#search'}" mdui-tooltip="{content: '搜索'}"><i class="mdui-icon material-icons" translate="no">search</i></a>
+    <!-- Open RSS Feed -->
+    <a href="/atom.xml" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'RSS'}"><i class="mdui-icon material-icons" translate="no">rss_feed</i></a> 
+    <!-- Copy RSS Feed To Clipboard --><!--
+    
+      <a href="javascript:void(0);" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'RSS'}" onclick="copyRssToClipboard('https://blog.stevezmt.top/atom.xml')">
+        <i class="mdui-icon material-icons" translate="no">rss_feed</i>
+      </a>
+      <script data-pjax>
+        function copyRssToClipboard(text) {
+          navigator.clipboard.writeText(text).then(function() {
+            mdui.snackbar({
+              message: '已将RSS订阅链接复制到剪贴板!',
+              position: 'right-top',
+              buttonText: '好',
+            });
+          }, function(err) {
+            console.error('Could not copy text: ', err);
+            mdu.snackbar({
+              message: '复制RSS订阅链接失败!',
+              position: 'right-top',
+            });
+          });
+        }
+      </script>
+      
+    -->
+  </div>
+</header>
+<div class="mdui-dialog" id="search">
+  <script data-pjax>
+
+    (function() {
+      var searchDialog = document.getElementById('search');
+      if (!searchDialog) return;
+      var typingLock = false;
+      var searchInput = searchDialog.querySelector('input[type="search"]');
+      if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+          if (typingLock) return;
+          typingLock = true;
+          setTimeout(function() { typingLock = false; }, 500);
+        });
+      }
+
+      searchDialog.addEventListener('closed.mdui.dialog', function() {
+        typingLock = false;
+      });
+    })();
+
+  </script>
+  
+    <div class="search-form">
+      <input type="search"  id="search-input" name="search" class="search-form-input" placeholder="搜索...">
+    </div>
+    <div class="search-result" data-resource="/search.xml" aria-live="polite"></div>
+    
+  
+</div>
+
+  
+  <main
+    id="main"
+    class="mdui-m-t-5"
+    data-page-type="generic"
+    data-is-home="0"
+    data-is-post="0"
+    data-has-comments="0"
+    data-has-toc="0"
+    data-search-resource="/search.xml"
+  >
+
+  <style>#main article .mdui-card-content .center-block{display:block!important;margin-right:auto!important;margin-left:auto!important}</style>
+  <style>#main article .mdui-card-content .text-center{text-align:center!important}</style>
+  <article class="mdui-card mdui-m-b-5">
+    <header class="mdui-card-media">
+      <img src="/images/loading.svg" data-original="/images/random/material-18.png" fetchpriority="high" width="1280" height="720" decoding="async" style="max-height: 240px; width: 100%; aspect-ratio: 16 / 9; object-fit: cover;" alt="即将跳转">
+      <div class="mdui-card-media-covered">
+        <div class="mdui-card-primary">
+            <div class="mdui-card-primary-title"><h1 style="margin: 0; font-size: inherit; font-weight: inherit;">即将跳转</h1></div>
+          <div class="mdui-card-primary-subtitle"><i class="mdui-icon material-icons" translate="no">today</i> 2026-08-30 / <i class="mdui-icon material-icons" translate="no">person</i> Steve ZMT</div>
+        </div>
+      </div>
+      <div class="mdui-card-menu">
+        
+          <button class="mdui-btn mdui-btn-icon mdui-text-color-white" mdui-menu="{target: '#qrcode', align: 'right'}"><i class="mdui-icon material-icons" translate="no">devices</i></button>
+          <ul class="mdui-menu" id="qrcode">
+            
+              <li class="mdui-menu-item"><a class="mdui-text-center mdui-ripple">发送到手机</a></li>
+            
+            <li class="mdui-menu-item" disabled>
+              
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACbElEQVR42u3aQW7kMAwEwPn/p3evAXbH003JihOUT4HhsVU6iAzJ159ffb3w8PDw8PDw8PAexnvF17tffb3zn4/980zytqW14eHh4R3hfThqR8/kd95t0/C7eHh4eAd57w7c5HC/PtCvn0m2I1kbHh4e3pN5CbUNFfm24uHh4f1EXr6IlXIGHh4e3vN5yT/8ydKTN0StrPO1Fjw8PLyYlzeZzv99tL+Hh4eHF/DqkaZRKtwm3N82U4aHh4cX8NY/n5cerjcouR+tBw8PD+9mXl4suP78rjvtk1FKjYeHh7eVt36s56WNfEOX1oCHh4d3M+/6dXky3bbKZuANcQ8PDw9vE69d9PUW5ONWKwn3sEqNh4eHdwNvNhrVpsW7Nm44OoCHh4e3iZc3otrEd+VbbbqPh4eH9wTe3mQ6CT/J1tQpNR4eHt5WXlsCiIoCwThCO5IVFaDx8PDwHsDLA0keTtoEPSkx4+Hh4Z3htY3/trk1S6nzgsWHlBoPDw/vBt4dDa1ZAr0+AouHh4d3kteOpc6KsPk4Vx4e8PDw8M7zZs3+9UO/LWQUd/Dw8PCO8Npm2Cwk5O2uzYEBDw8P7zZeW24YNqjiNthwi/Hw8PAO8mYjBW2oyAPPbNwfDw8P725ee+Xp8mxwKhlLrWfK8PDw8LbyVg7ltoTRFnzzEgYeHh7eeV4eDGaHeFukWBkgwMPDwzvJmx3QbWs/+VY7ooqHh4f3fN76AEEbHpIghIeHh/d8XnuUt8WFttmGh4eHd56XN73ytHg94c4DEh4eHt5J3t7DfWUwq/0VHh4e3nne77vw8PDw8PDw8PAecP0FgzcWEerfz1QAAAAASUVORK5CYII=">
+              
+            </li>
+          </ul>
+        
+        
+          <button id="share_menu_trigger" type="button" class="mdui-btn mdui-btn-icon mdui-text-color-white" mdui-menu="{target: '#share_menu', align: 'right'}"><i class="mdui-icon material-icons" translate="no">share</i></button>
+          <ul class="mdui-menu" id="share_menu">
+            <li class="mdui-menu-item">
+              <a href="javascript:void(0);" class="mdui-ripple" onclick="copyToClipboard('https://blog.stevezmt.top/redirect/index.html');">复制链接</a>
+            </li>
+
+            <script data-pjax>
+              function copyToClipboard(text) {
+                navigator.clipboard.writeText(text).then(function() {
+                  mdui.snackbar({message: '已复制链接!', position: 'top', buttonText: '好'});
+                }, function(err) {
+                  console.error('Could not copy text: ', err);
+                });
+              }
+            </script>
+            <li class="mdui-menu-item">
+              <a href="//service.weibo.com/share/share.php?appkey=&title=即将跳转&url=https://blog.stevezmt.top/redirect/index.html&pic=https://blog.stevezmt.top/images/favicon.png&searchPic=false&style=simple" target="_blank" class="mdui-ripple">分享到 Weibo</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="//twitter.com/intent/tweet?text=即将跳转&url=https://blog.stevezmt.top/redirect/index.html&via=Steve ZMT" target="_blank" class="mdui-ripple">分享到 Twitter</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="//www.facebook.com/sharer/sharer.php?u=https://blog.stevezmt.top/redirect/index.html" target="_blank" class="mdui-ripple">分享到 Facebook</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="//plus.google.com/share?url=https://blog.stevezmt.top/redirect/index.html" target="_blank" class="mdui-ripple">分享到 Google+</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="//www.linkedin.com/shareArticle?mini=true&url=https://blog.stevezmt.top/redirect/index.html&title=即将跳转" target="_blank" class="mdui-ripple">分享到 LinkedIn</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="//connect.qq.com/widget/shareqq/index.html?site=老史尬侃 - Steve ZMT &#39;s Blog&title=即将跳转&pics=https://blog.stevezmt.top/images/favicon.png&url=https://blog.stevezmt.top/redirect/index.html" target="_blank" class="mdui-ripple">分享到 QQ</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="//telegram.me/share/url?url=https://blog.stevezmt.top/redirect/index.html&text=即将跳转" target="_blank" class="mdui-ripple">分享到 Telegram</a>
+            </li>
+            <li class="mdui-menu-item">
+              <a href="javascript:void(0);" class="mdui-ripple" onclick="sharePageviaSystem(false);">更多分享选项</a>
+            </li>
+
+            
+            <script data-pjax>
+              function openShareMenu() {
+                var trigger = document.getElementById('share_menu_trigger');
+                if (!trigger) {
+                  return;
+                }
+
+                var menu = window.$ ? $(trigger).data('_mdui_menu') : null;
+                if (!menu && window.mdui && typeof mdui.Menu === 'function') {
+                  try {
+                    menu = new mdui.Menu(trigger, '#share_menu', {align: 'right'});
+                    if (window.$) {
+                      $(trigger).data('_mdui_menu', menu);
+                    }
+                  } catch (err) {
+                    console.error(err);
+                    return;
+                  }
+                }
+
+                if (menu && typeof menu.open === 'function') {
+                  menu.open();
+                }
+              }
+
+              function sharePageviaSystem(fallbackToMenu) {
+                if (navigator.share) {
+                  return navigator.share({
+                    title: '即将跳转',
+                    text: "即将重定向到目标页面...",
+                    url: 'https://blog.stevezmt.top/redirect/index.html'
+                  }).then(() => {
+                    mdui.snackbar({message: '感谢分享！', position: 'top'});
+                  }).catch(function(err) {
+                    if (fallbackToMenu) {
+                      openShareMenu();
+                      return;
+                    }
+                    console.error(err);
+                  });
+                } else {
+                  if (fallbackToMenu) {
+                    openShareMenu();
+                    return;
+                  }
+                  mdui.snackbar({message: '您的浏览器不支持此方式。', position: 'top', buttonText: '好吧'});
+                }
+              }
+
+              (function bindShareButton(){
+                var trigger = document.getElementById('share_menu_trigger');
+                if (!trigger || trigger.dataset.shareBound === '1') {
+                  return;
+                }
+
+                trigger.dataset.shareBound = '1';
+                trigger.addEventListener('click', function(event) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  sharePageviaSystem(true);
+                });
+              })();
+            </script>
+          </ul>
+        
+      </div>
+    </header>
+    <div class="mdui-card-content mdui-typo">
+      <style>
+  .redirect-card {
+    /* max-width: 840px; */
+    /* margin: 24px auto 0; */
+    /* padding: 28px 20px 24px; */
+    text-align: center;
+  }
+
+  .redirect-hero {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    margin-bottom: 18px;
+    flex-wrap: nowrap;
+  }
+
+  .redirect-hero-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.68);
+    position: relative;
+    flex: 0 0 auto;
+  }
+
+  .mdui-theme-layout-dark .redirect-hero-icon {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  .redirect-hero-icon-linked::after {
+    content: '';
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    border-top: 2px dashed rgba(0, 0, 0, 0.3);
+  }
+
+  .mdui-theme-layout-dark .redirect-hero-icon-linked::after {
+    border-top-color: rgba(255, 255, 255, 0.36);
+  }
+
+  .redirect-hero-icon .mdui-icon,
+  .redirect-hero-icon .redirect-mdi-icon,
+  .redirect-hero-icon .redirect-icon-placeholder {
+    width: 24px;
+    height: 24px;
+  }
+
+  .redirect-hero-icon .mdui-icon {
+    font-size: 24px;
+    line-height: 24px;
+  }
+
+  .redirect-hero-icon .mdui-spinner {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .redirect-icon-placeholder {
+    display: inline-block;
+  }
+
+  .redirect-mdi-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .redirect-mdi-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+
+  .redirect-link-shell {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .redirect-link {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    max-width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.03);
+    color: inherit;
+    text-decoration: none;
+    cursor: copy;
+    line-height: 1.9;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    overflow-wrap: anywhere;
+  }
+
+  .mdui-theme-layout-dark .redirect-link {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .redirect-link:hover {
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  .mdui-theme-layout-dark .redirect-link:hover {
+    background: rgba(255, 255, 255, 0.09);
+  }
+
+  .redirect-link:active {
+    transform: scale(0.995);
+  }
+
+  .redirect-scheme {
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .redirect-scheme.secure {
+    color: #2e7d32;
+  }
+
+  .redirect-scheme.http {
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  .mdui-theme-layout-dark .redirect-scheme.http {
+    color: rgba(255, 255, 255, 0.54);
+  }
+
+  .redirect-scheme.error {
+    color: #c62828;
+    text-decoration: line-through;
+    text-decoration-thickness: 1.5px;
+  }
+
+  .redirect-host {
+    color: rgba(0, 0, 0, 0.78);
+  }
+
+  .mdui-theme-layout-dark .redirect-host {
+    color: rgba(255, 255, 255, 0.84);
+  }
+
+  .redirect-host-subdomain {
+    color: rgba(0, 0, 0, 0.38);
+  }
+
+  .mdui-theme-layout-dark .redirect-host-subdomain {
+    color: rgba(255, 255, 255, 0.42);
+  }
+
+  .redirect-host-main {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    text-decoration-thickness: 1px;
+    font-weight: 500;
+  }
+
+  .redirect-host-port {
+    color: rgba(0, 0, 0, 0.46);
+  }
+
+  .mdui-theme-layout-dark .redirect-host-port {
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .redirect-path {
+    color: rgba(0, 0, 0, 0.72);
+  }
+
+  .mdui-theme-layout-dark .redirect-path {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .redirect-hint {
+    margin-top: 8px;
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  .mdui-theme-layout-dark .redirect-hint {
+    color: rgba(255, 255, 255, 0.58);
+  }
+
+  .redirect-warning {
+    margin-top: 12px;
+  }
+
+  .redirect-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .redirect-actions .mdui-btn .mdui-icon {
+    margin-right: 6px;
+  }
+
+  .redirect-status-hint {
+    margin-top: 14px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .redirect-status-hint.error {
+    color: #c62828;
+  }
+
+  .mdui-theme-layout-dark .redirect-status-hint.error {
+    color: #ef5350;
+  }
+
+  .redirect-status-hint.warning {
+    color: #ef6c00;
+  }
+
+  .mdui-theme-layout-dark .redirect-status-hint.warning {
+    color: #ffa726;
+  }
+
+  .redirect-status-hint.offline {
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  .mdui-theme-layout-dark .redirect-status-hint.offline {
+    color: rgba(255, 255, 255, 0.54);
+  }
+
+  .redirect-loading {
+    padding: 34px 12px 10px;
+  }
+
+  .redirect-empty,
+  .redirect-error {
+    padding: 8px 12px 0;
+  }
+
+  .redirect-loading p,
+  .redirect-empty p,
+  .redirect-error p {
+    margin-top: 6px;
+  }
+
+  @media (max-width: 480px) {
+    .redirect-card {
+      /* padding: 24px 16px 20px; */
+    }
+
+    .redirect-hero {
+      gap: 14px;
+    }
+
+    .redirect-hero-icon {
+      width: 42px;
+      height: 42px;
+    }
+
+    .redirect-hero-icon-linked::after {
+      width: 14px;
+    }
+
+    .redirect-link {
+      padding: 8px 10px;
+      line-height: 1.75;
+    }
+  }
+</style>
+
+<script data-pjax>
+  (function () {
+    function onReady(callback) {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', callback, { once: true });
+        return;
+      }
+
+      callback();
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/\"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    const PROBE_TIMEOUT = 4000;
+    const DNS_TIMEOUT = 3000;
+    const METADATA_TIMEOUT = 3500;
+
+    function isIpv4Address(hostname) {
+      return /^\d{1,3}(?:\.\d{1,3}){3}$/.test(hostname);
+    }
+
+    function isIpv6Address(hostname) {
+      return hostname.includes(':');
+    }
+
+    function buildProtocolUrl(urlObject, protocol) {
+      const nextUrl = new URL(urlObject.href);
+      nextUrl.protocol = `${protocol}:`;
+      return nextUrl;
+    }
+
+    async function fetchWithTimeout(targetHref, method, timeoutMs) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(function () {
+        controller.abort();
+      }, timeoutMs);
+
+      try {
+        const response = await fetch(targetHref, {
+          method: method,
+          mode: 'no-cors',
+          cache: 'no-store',
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        return {
+          reachable: true,
+          status: typeof response.status === 'number' ? response.status : 0
+        };
+      } catch (error) {
+        clearTimeout(timeoutId);
+
+        if (error && error.name === 'AbortError') {
+          return { reachable: false, reason: 'timeout' };
+        }
+
+        return { reachable: false, reason: 'network' };
+      }
+    }
+
+    async function probeProtocol(urlObject, protocol) {
+      const targetUrl = buildProtocolUrl(urlObject, protocol);
+      const headAttempt = await fetchWithTimeout(targetUrl.href, 'HEAD', PROBE_TIMEOUT);
+
+      if (headAttempt.reachable) {
+        return { reachable: true, url: targetUrl, via: 'head' };
+      }
+
+      if (headAttempt.reason === 'timeout') {
+        return { reachable: false, url: targetUrl, reason: 'timeout' };
+      }
+
+      const getAttempt = await fetchWithTimeout(targetUrl.href, 'GET', PROBE_TIMEOUT);
+
+      if (getAttempt.reachable) {
+        return { reachable: true, url: targetUrl, via: 'get' };
+      }
+
+      return {
+        reachable: false,
+        url: targetUrl,
+        reason: getAttempt.reason || headAttempt.reason || 'network'
+      };
+    }
+
+    function probeImage(targetHref) {
+      return new Promise(function (resolve) {
+        const image = new Image();
+        let settled = false;
+        const timeoutId = setTimeout(function () {
+          if (settled) {
+            return;
+          }
+
+          settled = true;
+          image.onload = null;
+          image.onerror = null;
+          resolve({ reachable: false, reason: 'timeout' });
+        }, 2500);
+
+        const finish = function (result) {
+          if (settled) {
+            return;
+          }
+
+          settled = true;
+          clearTimeout(timeoutId);
+          image.onload = null;
+          image.onerror = null;
+          resolve(result);
+        };
+
+        image.onload = function () {
+          finish({ reachable: true, via: 'image' });
+        };
+
+        image.onerror = function () {
+          finish({ reachable: false, reason: 'network' });
+        };
+
+        image.referrerPolicy = 'no-referrer';
+        image.src = `${targetHref}${targetHref.includes('?') ? '&' : '?'}redirect_probe=${Date.now()}`;
+      });
+    }
+
+    async function queryDnsRecordFast(hostname) {
+      const endpoint = `http://119.29.29.29/d?dn=${encodeURIComponent(hostname)}.`;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(function () {
+        controller.abort();
+      }, DNS_TIMEOUT);
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'GET',
+          cache: 'no-store',
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          return { success: false, hasAnswer: false, status: null };
+        }
+
+        const text = await response.text();
+        const ipList = text.trim().split(',').filter(function (ip) {
+          return ip && ip.length > 0;
+        });
+
+        return {
+          success: true,
+          hasAnswer: ipList.length > 0,
+          status: ipList.length > 0 ? 0 : 3
+        };
+      } catch (error) {
+        clearTimeout(timeoutId);
+        return { success: false, hasAnswer: false, status: null };
+      }
+    }
+
+    async function queryDnsRecordFallback(hostname, recordType) {
+      const endpoint = `https://dns.alidns.com/resolve?name=${encodeURIComponent(hostname)}&type=${recordType}`;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(function () {
+        controller.abort();
+      }, DNS_TIMEOUT);
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'GET',
+          cache: 'no-store',
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          return { success: false, hasAnswer: false, status: null };
+        }
+
+        const data = await response.json();
+        const answers = Array.isArray(data.Answer) ? data.Answer : [];
+        const hasAnswer = answers.some(function (answer) {
+          return answer && typeof answer.data === 'string' && answer.data.length > 0;
+        });
+
+        return {
+          success: true,
+          hasAnswer: hasAnswer,
+          status: Number.isFinite(Number(data.Status)) ? Number(data.Status) : null
+        };
+      } catch (error) {
+        clearTimeout(timeoutId);
+        return { success: false, hasAnswer: false, status: null };
+      }
+    }
+
+    async function queryDnsRecord(hostname, recordType) {
+      const fastResult = await queryDnsRecordFast(hostname);
+      if (fastResult.success) {
+        return fastResult;
+      }
+
+      return queryDnsRecordFallback(hostname, recordType);
+    }
+
+    async function probeDns(hostname) {
+      if (!hostname || hostname === 'localhost' || isIpv4Address(hostname) || isIpv6Address(hostname)) {
+        return { resolved: true, source: 'local' };
+      }
+
+      const aRecord = await queryDnsRecord(hostname, 'A');
+      if (aRecord.success && aRecord.hasAnswer) {
+        return { resolved: true, source: 'A' };
+      }
+
+      const aaaaRecord = await queryDnsRecord(hostname, 'AAAA');
+      if (aaaaRecord.success && aaaaRecord.hasAnswer) {
+        return { resolved: true, source: 'AAAA' };
+      }
+
+      const hasDnsResponse = aRecord.success || aaaaRecord.success;
+      const isNxDomain = aRecord.status === 3 || aaaaRecord.status === 3;
+
+      if (!hasDnsResponse) {
+        return { resolved: null, source: 'unknown' };
+      }
+
+      if (isNxDomain) {
+        return { resolved: false, source: 'nxdomain' };
+      }
+
+      return { resolved: false, source: 'empty' };
+    }
+
+    async function probeHttpsDowngrade(urlObject) {
+      if (!urlObject || urlObject.protocol !== 'https:') {
+        return { downgraded: false, finalUrl: null };
+      }
+
+      if (!urlObject.hostname || urlObject.hostname === 'localhost' || isIpv4Address(urlObject.hostname) || isIpv6Address(urlObject.hostname)) {
+        return { downgraded: false, finalUrl: null };
+      }
+
+      const endpoint = `https://api.microlink.io/?url=${encodeURIComponent(urlObject.href)}`;
+      const controller = new AbortController();
+      const timeoutId = setTimeout(function () {
+        controller.abort();
+      }, METADATA_TIMEOUT);
+
+      try {
+        const response = await fetch(endpoint, {
+          method: 'GET',
+          cache: 'no-store',
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          return { downgraded: false, finalUrl: null };
+        }
+
+        const data = await response.json();
+        const resolvedUrl = data && data.status === 'success' && data.data && typeof data.data.url === 'string'
+          ? data.data.url
+          : '';
+
+        if (!resolvedUrl) {
+          return { downgraded: false, finalUrl: null };
+        }
+
+        const finalUrlObject = new URL(resolvedUrl);
+        return {
+          downgraded: finalUrlObject.protocol === 'http:',
+          finalUrl: finalUrlObject
+        };
+      } catch (error) {
+        clearTimeout(timeoutId);
+        return { downgraded: false, finalUrl: null };
+      }
+    }
+
+    const mdiIcons = {
+      'web-clock': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M15 12.5V16.5L18 18.5L18.75 17.25L16.5 15.75V12.5H15M22 12.39C22 12.26 22 12.13 22 12C22 6.5 17.5 2 12 2C6.47 2 2 6.5 2 12C2 17.5 6.5 22 12 22C12.13 22 12.24 22 12.37 21.97C13.43 22.62 14.67 23 16 23C19.86 23 23 19.86 23 16C23 14.68 22.62 13.44 22 12.39M19.76 10.11C19.7 10.07 19.65 10.04 19.59 10H19.74C19.75 10.03 19.75 10.07 19.76 10.11M18.92 8H15.97C15.65 6.75 15.19 5.55 14.59 4.44C16.43 5.07 17.96 6.34 18.92 8M12 4.03C12.83 5.23 13.5 6.57 13.91 8H10.09C10.5 6.57 11.17 5.23 12 4.03M9.66 10H12.41C11.16 10.75 10.15 11.88 9.57 13.24C9.53 12.83 9.5 12.42 9.5 12C9.5 11.32 9.56 10.65 9.66 10M9.4 4.44C8.8 5.55 8.35 6.75 8 8H5.08C6.03 6.34 7.57 5.06 9.4 4.44M4.26 14C4.1 13.36 4 12.69 4 12S4.1 10.64 4.26 10H7.64C7.56 10.66 7.5 11.32 7.5 12S7.56 13.34 7.64 14H4.26M5.08 16H8C8.35 17.25 8.8 18.45 9.4 19.56C7.57 18.93 6.03 17.65 5.08 16M16 21C13.24 21 11 18.76 11 16S13.24 11 16 11 21 13.24 21 16 18.76 21 16 21Z"/></svg>',
+      'lock-check-outline': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M14 15C14 16.11 13.11 17 12 17C10.89 17 10 16.1 10 15C10 13.89 10.89 13 12 13C13.11 13 14 13.9 14 15M13.09 20C13.21 20.72 13.46 21.39 13.81 22H6C4.89 22 4 21.1 4 20V10C4 8.89 4.89 8 6 8H7V6C7 3.24 9.24 1 12 1S17 3.24 17 6V8H18C19.11 8 20 8.9 20 10V13.09C19.67 13.04 19.34 13 19 13C18.66 13 18.33 13.04 18 13.09V10H6V20H13.09M9 8H15V6C15 4.34 13.66 3 12 3S9 4.34 9 6V8M21.34 15.84L17.75 19.43L16.16 17.84L15 19L17.75 22L22.5 17.25L21.34 15.84Z"/></svg>',
+      'lock-alert': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M10 17C11.1 17 12 16.1 12 15C12 13.9 11.1 13 10 13C8.9 13 8 13.9 8 15S8.9 17 10 17M16 8C17.1 8 18 8.9 18 10V20C18 21.1 17.1 22 16 22H4C2.9 22 2 21.1 2 20V10C2 8.9 2.9 8 4 8H5V6C5 3.2 7.2 1 10 1S15 3.2 15 6V8H16M10 3C8.3 3 7 4.3 7 6V8H13V6C13 4.3 11.7 3 10 3M22 13H20V7H22V13M22 17H20V15H22V17Z"/></svg>',
+      'lock-open-alert-outline': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M16 20V10H4V20H16M16 8C17.1 8 18 8.9 18 10V20C18 21.1 17.1 22 16 22H4C2.9 22 2 21.1 2 20V10C2 8.9 2.9 8 4 8H13V6C13 4.3 11.7 3 10 3S7 4.3 7 6H5C5 3.2 7.2 1 10 1S15 3.2 15 6V8H16M10 17C8.9 17 8 16.1 8 15S8.9 13 10 13 12 13.9 12 15 11.1 17 10 17M22 7H20V13H22V7M22 15H20V17H22V15Z"/></svg>',
+      'web-remove': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M16.5 12C16.5 11.32 16.44 10.66 16.36 10H19.74C19.9 10.64 20 11.31 20 12C20 12.37 19.97 12.73 19.92 13.08C20.61 13.18 21.25 13.4 21.84 13.72C21.94 13.16 22 12.59 22 12C22 6.5 17.5 2 12 2C6.47 2 2 6.5 2 12C2 17.5 6.5 22 12 22C12.59 22 13.16 21.94 13.72 21.84C13.26 21 13 20.03 13 19C13 18.71 13.03 18.43 13.07 18.15C12.75 18.78 12.4 19.39 12 19.96C11.17 18.76 10.5 17.43 10.09 16H13.81C14.41 14.96 15.31 14.12 16.4 13.6C16.46 13.07 16.5 12.54 16.5 12M12 4.03C12.83 5.23 13.5 6.57 13.91 8H10.09C10.5 6.57 11.17 5.23 12 4.03M4.26 14C4.1 13.36 4 12.69 4 12S4.1 10.64 4.26 10H7.64C7.56 10.66 7.5 11.32 7.5 12S7.56 13.34 7.64 14H4.26M5.08 16H8C8.35 17.25 8.8 18.45 9.4 19.56C7.57 18.93 6.03 17.65 5.08 16M8 8H5.08C6.03 6.34 7.57 5.06 9.4 4.44C8.8 5.55 8.35 6.75 8 8M14.34 14H9.66C9.56 13.34 9.5 12.68 9.5 12S9.56 10.65 9.66 10H14.34C14.43 10.65 14.5 11.32 14.5 12S14.43 13.34 14.34 14M14.59 4.44C16.43 5.07 17.96 6.34 18.92 8H15.97C15.65 6.75 15.19 5.55 14.59 4.44M20.41 19L22.54 21.12L21.12 22.54L19 20.41L16.88 22.54L15.47 21.12L17.59 19L15.47 16.88L16.88 15.47L19 17.59L21.12 15.47L22.54 16.88L20.41 19Z"/></svg>'
+    };
+
+    function buildIconMarkup(icon) {
+      if (!icon || icon.type === 'empty') {
+        return '<span class="redirect-icon-placeholder" aria-hidden="true"></span>';
+      }
+
+      if (icon.type === 'mdi') {
+        const svgContent = mdiIcons[icon.name] || '';
+        return `<span class="redirect-mdi-icon" aria-hidden="true">${svgContent}</span>`;
+      }
+
+      const extraClass = icon.className ? ` ${icon.className}` : '';
+      return `<i class="mdui-icon material-icons${extraClass}" translate="no">${escapeHtml(icon.name)}</i>`;
+    }
+
+    function buildHeroMarkup(state) {
+      const stateMeta = {
+        loading: {
+          nodes: [
+            { icon: { type: 'empty' } },
+            { icon: { type: 'mdi', name: 'web-clock' } },
+            { icon: { type: 'material', name: 'autorenew', className: 'mdui-spinner' } }
+          ]
+        },
+        secure: {
+          nodes: [
+            { icon: { type: 'material', name: 'account_circle' } },
+            { tone: 'mdui-text-color-green', icon: { type: 'mdi', name: 'lock-check-outline' } },
+            { tone: 'mdui-text-color-blue', icon: { type: 'material', name: 'language' } }
+          ]
+        },
+        certError: {
+          nodes: [
+            { icon: { type: 'material', name: 'account_circle' } },
+            { tone: 'mdui-text-color-red', icon: { type: 'mdi', name: 'lock-alert' } },
+            { tone: 'mdui-text-color-yellow-700', icon: { type: 'material', name: 'warning' } }
+          ]
+        },
+        httpOnly: {
+          nodes: [
+            { icon: { type: 'material', name: 'account_circle' } },
+            { tone: 'mdui-text-color-yellow-700', icon: { type: 'mdi', name: 'lock-open-alert-outline' } },
+            { tone: 'mdui-text-color-blue', icon: { type: 'material', name: 'language' } }
+          ]
+        },
+        unreachable: {
+          nodes: [
+            { icon: { type: 'material', name: 'account_circle' } },
+            { tone: 'mdui-text-color-yellow-700', icon: { type: 'material', name: 'help_outline' } },
+            { tone: 'mdui-text-color-yellow-700', icon: { type: 'mdi', name: 'web-remove' } }
+          ]
+        },
+        invalid: {
+          nodes: [
+            { icon: { type: 'material', name: 'sentiment_neutral' } },
+            { icon: { type: 'material', name: 'error_outline' } },
+            { icon: { type: 'empty' } }
+          ]
+        }
+      };
+
+      const currentMeta = stateMeta[state] || stateMeta.loading;
+      const nodeMarkup = currentMeta.nodes.map(function (node, index) {
+        const linkedClass = index < currentMeta.nodes.length - 1 ? ' redirect-hero-icon-linked' : '';
+        const toneClass = node.tone ? ` ${node.tone}` : '';
+        return `<span class="redirect-hero-icon${linkedClass}${toneClass}">${buildIconMarkup(node.icon)}</span>`;
+      }).join('');
+
+      return `
+        <div class="redirect-hero" aria-hidden="true">
+          ${nodeMarkup}
+        </div>
+      `;
+    }
+
+    function buildSchemeMarkup(state) {
+      if (state === 'secure') {
+        return '<span class="redirect-scheme secure">https://</span>';
+      }
+
+      if (state === 'error') {
+        return '<span class="redirect-scheme error">https://</span>';
+      }
+
+      return '<span class="redirect-scheme http">http://</span>';
+    }
+
+    function buildHostMarkup(urlObject) {
+      const hostname = urlObject.hostname;
+      const port = urlObject.port ? `<span class="redirect-host-port">:${escapeHtml(urlObject.port)}</span>` : '';
+      const isIpv4 = isIpv4Address(hostname);
+      const isIpv6 = isIpv6Address(hostname);
+      const labels = hostname.split('.').filter(Boolean);
+
+      if (labels.length <= 1 || hostname === 'localhost' || isIpv4 || isIpv6) {
+        return `<span class="redirect-host">${escapeHtml(hostname)}${port}</span>`;
+      }
+
+      let registrableCount = 2;
+
+      if (labels.length >= 3) {
+        const lastLabel = labels[labels.length - 1];
+        const secondLastLabel = labels[labels.length - 2];
+
+        if (lastLabel.length === 2 && secondLastLabel.length <= 3) {
+          registrableCount = 3;
+        }
+      }
+
+      registrableCount = Math.min(registrableCount, labels.length);
+
+      const subdomainLabels = labels.slice(0, -registrableCount);
+      const registrableLabels = labels.slice(-registrableCount);
+      const subdomainMarkup = subdomainLabels.length
+        ? `<span class="redirect-host-subdomain">${escapeHtml(subdomainLabels.join('.'))}.</span>`
+        : '';
+
+      return `<span class="redirect-host">${subdomainMarkup}<span class="redirect-host-main">${escapeHtml(registrableLabels.join('.'))}</span>${port}</span>`;
+    }
+
+    function buildPathMarkup(urlObject) {
+      const path = `${urlObject.pathname || '/'}${urlObject.search || ''}${urlObject.hash || ''}`;
+      return `<span class="redirect-path">${escapeHtml(path)}</span>`;
+    }
+
+    function buildLinkMarkup(urlObject, schemeState) {
+      return `
+        <button href="#" id="redirect-copy-link" class="mdui-card mdui-ripple redirect-link" style="text-decoration: none;">
+          ${buildSchemeMarkup(schemeState)}${buildHostMarkup(urlObject)}${buildPathMarkup(urlObject)}
+        </button>
+      `;
+    }
+
+    function renderLoading(targetInfo) {
+      targetInfo.innerHTML = `
+        ${buildHeroMarkup('loading')}
+        <div class="redirect-loading">
+          <p mdui-tooltip="{content: '若加载的时间过长，请刷新网页'}">正在加载链接详细信息...</p>
+        </div>
+      `;
+
+      if (window.mdui && typeof mdui.mutation === 'function') {
+        mdui.mutation();
+      }
+    }
+
+    function renderInvalid(targetInfo, message, shouldAutoClose) {
+      targetInfo.innerHTML = `
+        ${buildHeroMarkup('invalid')}
+        <div class="redirect-error">
+          <p>${escapeHtml(message)}</p>
+          <button id="redirect-back-only" type="button" class="mdui-btn mdui-btn-dense mdui-color-theme-accent mdui-ripple">返回上一页</button>
+        </div>
+      `;
+
+      const backButton = document.getElementById('redirect-back-only');
+      if (backButton) {
+        backButton.addEventListener('click', function () {
+          history.back();
+          window.close();
+        });
+      }
+
+      if (window.mdui && typeof mdui.mutation === 'function') {
+        mdui.mutation();
+      }
+
+      if (shouldAutoClose) {
+        setTimeout(function () {
+          history.back();
+          window.close();
+        }, 3000);
+      }
+    }
+
+    function copyToClipboard(text) {
+      const copyWithFallback = function () {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.setAttribute('readonly', 'readonly');
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      };
+
+      const onSuccess = function () {
+        if (window.mdui && typeof mdui.snackbar === 'function') {
+          mdui.snackbar({ message: '已复制到剪贴板' });
+        }
+      };
+
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text)
+          .then(onSuccess)
+          .catch(function () {
+            copyWithFallback();
+            onSuccess();
+          });
+      }
+
+      try {
+        copyWithFallback();
+        onSuccess();
+      } catch (error) {
+        if (window.mdui && typeof mdui.snackbar === 'function') {
+          mdui.snackbar({ message: '复制失败，请手动复制' });
+        }
+      }
+
+      return Promise.resolve();
+    }
+
+    async function probeHttpReachability(sourceUrl, dnsProbe) {
+      const httpUrl = buildProtocolUrl(sourceUrl, 'http');
+
+      if (window.location.protocol !== 'https:') {
+        const directProbe = await probeProtocol(httpUrl, 'http');
+        return {
+          reachable: directProbe.reachable,
+          url: httpUrl,
+          reason: directProbe.reason || null
+        };
+      }
+
+      const faviconProbe = await probeImage(`${httpUrl.origin}/favicon.ico`);
+      if (faviconProbe.reachable) {
+        return {
+          reachable: true,
+          url: httpUrl,
+          reason: 'favicon'
+        };
+      }
+
+      if (dnsProbe.resolved === true) {
+        return {
+          reachable: true,
+          url: httpUrl,
+          reason: 'dns-fallback'
+        };
+      }
+
+      return {
+        reachable: false,
+        url: httpUrl,
+        reason: faviconProbe.reason || 'network'
+      };
+    }
+
+    async function resolveConnectionState(sourceUrl) {
+      const dnsProbe = await probeDns(sourceUrl.hostname);
+      const httpsProbe = await probeProtocol(sourceUrl, 'https');
+      const httpDisplayUrl = buildProtocolUrl(sourceUrl, 'http');
+
+      if (httpsProbe.reachable) {
+        const downgradeProbe = await probeHttpsDowngrade(httpsProbe.url);
+
+        if (downgradeProbe.downgraded) {
+          return {
+            heroState: 'httpOnly',
+            schemeState: 'http',
+            displayUrl: downgradeProbe.finalUrl || httpDisplayUrl
+          };
+        }
+
+        return {
+          heroState: 'secure',
+          schemeState: 'secure',
+          displayUrl: httpsProbe.url
+        };
+      }
+
+      if (httpsProbe.reason === 'timeout') {
+        return {
+          heroState: 'unreachable',
+          schemeState: 'http',
+          displayUrl: httpDisplayUrl
+        };
+      }
+
+      if (dnsProbe.resolved === false) {
+        return {
+          heroState: 'unreachable',
+          schemeState: 'http',
+          displayUrl: httpDisplayUrl
+        };
+      }
+
+      if (sourceUrl.protocol === 'https:') {
+        return {
+          heroState: 'certError',
+          schemeState: 'error',
+          displayUrl: sourceUrl
+        };
+      }
+
+      const httpProbe = await probeHttpReachability(sourceUrl, dnsProbe);
+      if (httpProbe.reachable) {
+        return {
+          heroState: 'httpOnly',
+          schemeState: 'http',
+          displayUrl: httpProbe.url
+        };
+      }
+
+      return {
+        heroState: 'unreachable',
+        schemeState: 'http',
+        displayUrl: httpProbe.url
+      };
+    }
+
+    function renderSuccess(targetInfo, displayUrl, schemeState, heroState) {
+      let hintMarkup = '';
+      if (heroState === 'certError') {
+        hintMarkup = '<div class="redirect-status-hint error">此网站数字加密证书异常，有数据劫持或中间人攻击风险</div>';
+      } else if (heroState === 'httpOnly') {
+        hintMarkup = '<div class="redirect-status-hint warning">此网站不支持安全连接，正在使用未加密的链接传输</div>';
+      } else if (heroState === 'unreachable') {
+        hintMarkup = '<div class="redirect-status-hint warning">此网站暂时无法连通，可能已离线或当前网络受限</div>';
+      }
+
+      targetInfo.innerHTML = `
+        ${buildHeroMarkup(heroState)}
+        <p>您即将访问以下网站：</p>
+        <p>
+        <div class="redirect-link-shell">
+          ${buildLinkMarkup(displayUrl, schemeState)}
+        </div>
+        ${hintMarkup}
+        </p>
+        <p class="redirect-warning">您将要访问的链接不属于老史尬侃或 stevezmt.top ，请注意您的账号和财产安全。</p>
+
+        <div class="redirect-actions">
+          <button id="redirect-continue" type="button" class="mdui-btn mdui-btn-dense mdui-color-theme-accent mdui-ripple mdui-btn-block"><i class="mdui-icon material-icons" translate="no">open_in_new</i>继续访问</button>
+          <button id="redirect-back" type="button" class="mdui-btn mdui-btn-dense mdui-ripple mdui-btn-block"><i class="mdui-icon material-icons" translate="no">arrow_back</i>返回</button>
+        </div>
+      `;
+
+      if (window.mdui && typeof mdui.mutation === 'function') {
+        mdui.mutation();
+      }
+
+      const copyLink = document.getElementById('redirect-copy-link');
+      if (copyLink) {
+        copyLink.addEventListener('click', function (event) {
+          event.preventDefault();
+          copyToClipboard(displayUrl.href);
+        });
+      }
+
+      const continueButton = document.getElementById('redirect-continue');
+      if (continueButton) {
+        continueButton.addEventListener('click', function () {
+          window.location.href = displayUrl.href;
+        });
+      }
+
+      const backButton = document.getElementById('redirect-back');
+      if (backButton) {
+        backButton.addEventListener('click', function () {
+          history.back();
+          window.close();
+        });
+      }
+    }
+
+    async function initPage() {
+      const targetInfo = document.getElementById('target-info');
+      if (!targetInfo) {
+        return;
+      }
+
+      renderLoading(targetInfo);
+
+      const params = new URLSearchParams(window.location.search);
+      const goto = params.get('goto');
+
+      if (!goto) {
+        renderInvalid(targetInfo, '链接无效，没有传入有效的变量', true);
+        return;
+      }
+
+      try {
+        const sourceUrl = new URL(goto);
+
+        if (sourceUrl.protocol !== 'http:' && sourceUrl.protocol !== 'https:') {
+          renderInvalid(targetInfo, '链接无效，当前仅支持 http / https 链接。', true);
+          return;
+        }
+
+        const connectionState = await resolveConnectionState(sourceUrl);
+        renderSuccess(targetInfo, connectionState.displayUrl, connectionState.schemeState, connectionState.heroState);
+      } catch (error) {
+        renderInvalid(targetInfo, '链接无效，解析的链接不是有效的格式或无法被解析。', true);
+      }
+    }
+
+    onReady(initPage);
+  }());
+</script>
+
+<div id="target-info" class="redirect-card">
+  <div class="redirect-loading">
+    <div class="redirect-hero" aria-hidden="true">
+      <span class="redirect-hero-icon redirect-hero-icon-linked"><span class="redirect-icon-placeholder" aria-hidden="true"></span></span>
+      <span class="redirect-hero-icon redirect-hero-icon-linked"><span class="redirect-mdi-icon" aria-hidden="true" style="--mdi-url:url('./mdi/web-clock.svg')"></span></span>
+      <span class="redirect-hero-icon"><i class="mdui-icon material-icons mdui-spinner mdui-spinner-colorful" translate="no">autorenew</i></span>
+    </div>
+    <p mdui-tooltip="{content: '若加载的时间过长，请刷新网页'}">正在加载链接详细信息...</p>
+  </div>
+</div>
+      <script data-pjax>
+        (function(){
+          function attachCopyButtons(){
+            var blocks = document.querySelectorAll('.mdui-card-content figure.highlight, .mdui-card-content pre');
+            blocks.forEach(function(block){
+
+              if(block.matches('pre') && block.closest('figure.highlight')) return;
+              if(block.querySelector(':scope > .code-toolbar')) return;
+              block.classList.add('codeblock-wrapper');
+              if(!block.style.position || block.style.position === 'static') block.style.position = 'relative';
+              if(block.matches('figure.highlight') && !block.querySelector('figcaption')) {
+                block.classList.add('codeblock-pad-top');
+              }
+              if(block.matches('pre') && !block.closest('figure.highlight')) {
+                block.classList.add('codeblock-pad-top');
+              }
+
+              if(!block.querySelector(':scope > .code-content-wrap')) {
+                var wrap = document.createElement('div');
+                wrap.className = 'code-content-wrap';
+                var toMove = [];
+                Array.from(block.childNodes).forEach(function(n){
+                  if(n.nodeType === 1 && (n.classList && (n.classList.contains('code-toolbar')))) return;
+                  toMove.push(n);
+                });
+                toMove.forEach(function(n){ wrap.appendChild(n); });
+                block.appendChild(wrap);
+
+                requestAnimationFrame(function(){
+                  wrap.style.maxHeight = (wrap.scrollHeight + 8) + 'px';
+                });
+              }
+              var toolbar = document.createElement('div');
+              toolbar.className = 'code-toolbar';
+
+              var copyBtn = document.createElement('button');
+              copyBtn.className = 'copy-btn mdui-btn mdui-ripple';
+              copyBtn.type='button';
+              copyBtn.setAttribute('aria-label','复制代码');
+              copyBtn.innerHTML = '<i class="mdui-icon material-icons" translate="no">content_copy<\/i>';
+              copyBtn.addEventListener('click', function(){ copyText(copyBtn); });
+              toolbar.appendChild(copyBtn);
+
+              var collapseBtn = document.createElement('button');
+              collapseBtn.className = 'collapse-btn mdui-btn mdui-ripple';
+              collapseBtn.type='button';
+              collapseBtn.setAttribute('aria-label','折叠代码');
+              collapseBtn.innerHTML = '<i class="mdui-icon material-icons" translate="no">expand_less<\/i>';
+              collapseBtn.addEventListener('click', function(){ toggleCollapse(block, collapseBtn); });
+              toolbar.appendChild(collapseBtn);
+
+              var lang = detectLanguage(block) || 'Code';
+              var langSpan = document.createElement('span');
+              langSpan.className = 'code-lang-badge';
+              langSpan.textContent = lang;
+              toolbar.appendChild(langSpan);
+              block.appendChild(toolbar);
+            });
+          }
+
+          function bindCodeContentCopy(){
+            var content = document.querySelector('#main article .mdui-card-content');
+            if(!content || content.dataset.codeClickCopyBound === '1') return;
+
+            content.dataset.codeClickCopyBound = '1';
+            content.addEventListener('click', function(event){
+              var target = event.target && event.target.nodeType === 1 ? event.target : event.target.parentElement;
+              if(!target || !target.closest) return;
+
+              var clickedCode = target.closest('code');
+              if(!clickedCode || !content.contains(clickedCode)) return;
+              if(clickedCode.closest('.code-toolbar')) return;
+              if(clickedCode.closest('pre, figure.highlight')) return;
+
+              var text = clickedCode.innerText;
+              if(!text || !text.trim()) {
+                codeClickFeedback(clickedCode, false);
+                return;
+              }
+
+              event.preventDefault();
+              event.stopPropagation();
+
+              writeClipboard(text, function(){
+                codeClickFeedback(clickedCode, true);
+              }, function(err){
+                console.error('Copy failed', err);
+                codeClickFeedback(clickedCode, false);
+              });
+            });
+          }
+
+          function detectLanguage(block){
+            try {
+              var cls = block.className || '';
+              var m = cls.match(/highlight\s+([a-zA-Z0-9_+-]+)/);
+              if(m && m[1]) return normalizeLang(m[1]);
+              var code = block.querySelector('code');
+              if(code){
+                for(var i=0;i<code.classList.length;i++){
+                  var c = code.classList[i];
+                  if(/^language-/.test(c)) return normalizeLang(c.replace(/^language-/,''));
+                  if(/^lang-/.test(c)) return normalizeLang(c.replace(/^lang-/,''));
+                }
+              }
+              return 'Code';
+            } catch(e){ return 'Code'; }
+          }
+
+          function normalizeLang(l){
+            l = l.toLowerCase();
+            var map = {js:'JavaScript',javascript:'JavaScript',ts:'TypeScript',py:'Python',py3:'Python',bash:'Bash',sh:'Shell',shell:'Shell',yml:'YAML',yaml:'YAML',md:'Markdown',markdown:'Markdown',json:'JSON',html:'HTML',css:'CSS',csharp:'C#',cs:'C#',cpp:'C++',c:'C',java:'Java',go:'Go',rust:'Rust'};
+            return map[l] || l.charAt(0).toUpperCase()+l.slice(1);
+          }
+
+          window.copyText = function(el){
+            if(!el) return;
+            var container = el.closest('figure.highlight, pre');
+            if(!container){ feedback(false, el); return; }
+
+            var text = getCodeBlockText(container);
+            if(!text.trim()) { feedback(false, el); return; }
+            writeClipboard(text, function(){ feedback(true, el); }, function(err){ console.error('Copy failed', err); feedback(false, el); });
+          };
+
+          function getCodeBlockText(container){
+            var codeArea = container.querySelector('td.code') || container.querySelector('pre code') || container.querySelector('code');
+            if(!codeArea && container.matches && container.matches('pre')){
+              codeArea = container.querySelector(':scope > .code-content-wrap') || container;
+            }
+            return codeArea ? codeArea.innerText : '';
+          }
+
+          function writeClipboard(text, writeSucceeded, writeFailed){
+            if(navigator.clipboard && navigator.clipboard.writeText){
+              navigator.clipboard.writeText(text).then(writeSucceeded, writeFailed);
+            } else {
+              try {
+                var ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position='fixed';
+                ta.style.top='-1000px';
+                ta.style.opacity='0';
+                document.body.appendChild(ta);
+                ta.select();
+                var ok = document.execCommand('copy');
+                document.body.removeChild(ta);
+                ok?writeSucceeded():writeFailed();
+              } catch(e){ writeFailed(e); }
+            }
+          }
+
+          function feedback(success, el){
+            var icon = el.querySelector('i.mdui-icon');
+            if(success){
+              el.classList.add('copy-success');
+              if(icon) icon.textContent='check_circle';
+              // el._tooltip = new mdui.Tooltip(el, {content: '已复制！', position: 'top'});
+              //el._tooltip.open();
+              } else {
+                el.classList.add('copy-fail');
+                if(icon) icon.textContent='warning';
+                el._tooltip = new mdui.Tooltip(el, {content: '复制失败！', position: 'top'});
+                el._tooltip.open();
+            }
+            clearTimeout(el._copyTimer);
+            el._copyTimer = setTimeout(function(){
+              el.classList.remove('copy-success','copy-fail');
+                if(icon) icon.textContent='content_copy';
+                //el._tooltip.close();
+                //el._tooltip = null;
+            },3000);
+          }
+
+          function codeClickFeedback(el, success){
+            if(!el) return;
+            el.classList.remove('code-copy-success','code-copy-fail');
+            el.classList.add(success ? 'code-copy-success' : 'code-copy-fail');
+            clearTimeout(el._codeClickCopyTimer);
+            el._codeClickCopyTimer = setTimeout(function(){
+              el.classList.remove('code-copy-success','code-copy-fail');
+            }, 900);
+
+            if(window.mdui && mdui.snackbar){
+              mdui.snackbar({message: success ? '已复制代码' : '复制失败', position: 'top', timeout: 1000});
+            }
+          }
+
+          function toggleCollapse(wrapper, btn){
+            if(!wrapper) return;
+            var content = wrapper.querySelector(':scope > .code-content-wrap');
+            if(!content){
+              wrapper.classList.toggle('collapsed');
+              var icon = btn.querySelector('i.mdui-icon');
+              if(wrapper.classList.contains('collapsed')) btn.setAttribute('aria-label','展开代码'); else btn.setAttribute('aria-label','折叠代码');
+              return;
+            }
+            var isCurrentlyCollapsed = wrapper.classList.contains('collapsed');
+            var willCollapse = !isCurrentlyCollapsed;
+            wrapper.classList.toggle('collapsed', willCollapse);
+            btn.setAttribute('aria-label', willCollapse ? '展开代码' : '折叠代码');
+
+
+            var startHeight = content.scrollHeight;
+
+            if(!willCollapse && (content.style.maxHeight === '0px')) {
+
+              content.style.maxHeight = '0px';
+
+              requestAnimationFrame(function(){
+                content.style.maxHeight = (startHeight + 8) + 'px';
+              });
+            } else if(willCollapse) {
+
+
+              content.style.maxHeight = (startHeight + 8) + 'px';
+
+              void content.offsetWidth;
+
+              requestAnimationFrame(function(){
+                requestAnimationFrame(function(){
+                  content.style.maxHeight = '0px';
+                });
+              });
+            } else {
+
+              content.style.maxHeight = (startHeight + 8) + 'px';
+            }
+
+            content.removeEventListener('transitionend', content._collapseHandler || function(){});
+            content._collapseHandler = function(ev){
+              if(ev.propertyName !== 'max-height') return;
+              if(!wrapper.classList.contains('collapsed')){
+
+                content.style.maxHeight = (content.scrollHeight + 8) + 'px';
+              }
+            };
+            content.addEventListener('transitionend', content._collapseHandler);
+          }
+
+          attachCopyButtons();
+          bindCodeContentCopy();
+          document.addEventListener('pjax:complete', attachCopyButtons);
+          document.addEventListener('pjax:success', attachCopyButtons);
+          document.addEventListener('pjax:complete', bindCodeContentCopy);
+          document.addEventListener('pjax:success', bindCodeContentCopy);
+        })();
+      </script>
+      <style data-pjax>
+        /* notbyai icon: placed to the right of the blockquote, centered vertically
+           uses background-image so it responds to CSS color-scheme or body class
+        */
+        .notbyai-wrapper { gap: 12px; display: flex; flex-direction: row; align-items: center; }
+        .notbyai-icons { display:flex; align-items:center; gap:8px; margin-left: auto; }
+        @media (max-width: 768px) {
+          .notbyai-wrapper {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+          .notbyai-icons {
+            margin-left: 0;
+            margin-top: 12px;
+          }
+        }
+        .notbyai-icons .notbyai-icon,
+        .notbyai-icons .notbyai-extra {
+          display: inline-block;
+          width: 9.5121em; /* uniform size for all icons */
+          height: 3em;
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+          flex: 0 0 auto;
+        }
+        /* any extra icons can be added with .notbyai-extra and will appear to the left of the main icon */
+        .notbyai-icons .notbyai-extra { opacity: 0.95; }
+        /* Default (light) main icon */
+        .notbyai-icons .notbyai-icon { background-image: url('/images/notbyai-cn-light.svg'); }
+        /* If page uses mdui dark class on body, switch main icon */
+        body.mdui-theme-layout-dark .notbyai-icons .notbyai-icon { background-image: url('/images/notbyai-cn-dark.svg'); }
+        @media (prefers-color-scheme: dark) {
+          .notbyai-icons .notbyai-icon { background-image: url('/images/notbyai-cn-dark.svg'); }
+        }
+
+        /* Copy button base & layout */
+  .codeblock-wrapper { overflow: hidden;transition: padding-bottom .35s cubic-bezier(.4,0,.2,1);}
+  .codeblock-wrapper.codeblock-pad-top { padding-top: 36px; padding-bottom:0px; }
+  .codeblock-wrapper.collapsed { padding-bottom:8px;transition: padding-bottom .35s cubic-bezier(.4,0,.2,1);  }
+  /* Toolbar */
+  .codeblock-wrapper .code-toolbar { position:absolute; top:6px; left:6px; display:flex; gap:8px; align-items:center; z-index:5; }
+  .codeblock-wrapper .code-toolbar button { background:transparent; border-radius:6px; min-width:36px; height:32px; line-height:32px; padding:0 8px; box-shadow:none; text-transform:none; font-size:18px; display:inline-flex; align-items:center; justify-content:center; color:#000; transition:background-color .25s ease, color .25s ease; }
+  .codeblock-wrapper .code-toolbar button i { font-size:20px; transition: transform .3s ease; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar button { color:#fff; }
+  .codeblock-wrapper .code-toolbar button:hover { background: rgba(0,0,0,0.06); }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar button:hover { background: #ffffff1f; }
+  .codeblock-wrapper .code-toolbar .copy-btn.copy-success { background: #4caf504d;  color: #5ac18fff; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .copy-btn.copy-success { background: #4caf5059; }
+  .codeblock-wrapper .code-toolbar .copy-btn.copy-fail { background: #ffeb3b73; color:#8d6e00; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .copy-btn.copy-fail { background: #ffeb3b8c; }
+  .codeblock-wrapper .code-toolbar .collapse-btn i { transition: transform .3s ease; }
+  .codeblock-wrapper.collapsed .code-toolbar .collapse-btn i { transform: rotate(180deg); }
+  .codeblock-wrapper .code-toolbar .code-lang-badge { font-size:12px; line-height:1; padding:4px 8px; border-radius:6px; background:rgba(0,0,0,0.06); color:#000; user-select:none; cursor:default; opacity:.85; }
+  .mdui-theme-layout-dark .codeblock-wrapper .code-toolbar .code-lang-badge { background:#ffffff24; color:#fff; }
+  .mdui-card-content code { cursor:pointer; }
+  .mdui-card-content pre code,
+  .mdui-card-content figure.highlight code { cursor:inherit; }
+  .mdui-card-content code.code-copy-success { outline:2px solid #4caf50a8; outline-offset:2px; }
+  .mdui-card-content code.code-copy-fail { outline:2px solid #f44336a8; outline-offset:2px; }
+  /* Animated content wrapper */
+  .codeblock-wrapper .code-content-wrap { overflow-x:auto; overflow-y: hidden; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
+  .codeblock-wrapper.collapsed .code-content-wrap { max-height:0 !important; padding-top:0 !important; padding-bottom:0 !important; }
+  /* Avoid hiding toolbar */
+  .codeblock-wrapper.collapsed > .code-toolbar { display:flex !important; }
+        .codeblock-wrapper .copy-btn.copy-success { background: #4caf504d; color:#2e7d32; }
+        .mdui-theme-layout-dark .codeblock-wrapper .copy-btn.copy-success { background: #4caf5059; }
+        .codeblock-wrapper .copy-btn.copy-fail { background: #ffeb3b73; color:#8d6e00; }
+        .mdui-theme-layout-dark .codeblock-wrapper .copy-btn.copy-fail { background: #ffeb3b8c; }
+  /* Legacy compatibility removal of old selectors kept intentionally empty */
+      </style>
+      
+      
+    </div>
+    <footer class="mdui-card-actions">
+      
+      
+    </footer>
+    
+  </article>
+
+
+
+<script data-pjax>
+  (function(){
+    // 将当前页面是否启用 toc 传给前端逻辑
+    window.__page_has_toc__ = false;
+
+    function buildTocFromHeadings() {
+      // 清理旧的事件监听和容器
+      if (window.__tocScrollHandler__) {
+        window.removeEventListener('scroll', window.__tocScrollHandler__);
+        window.__tocScrollHandler__ = null;
+      }
+      try {
+        var oldDesktop = document.getElementById('toc-desktop-container');
+        if (oldDesktop && oldDesktop.parentNode) oldDesktop.parentNode.removeChild(oldDesktop);
+        var oldFab = document.getElementById('toc-fab-container');
+        if (oldFab && oldFab.parentNode) oldFab.parentNode.removeChild(oldFab);
+        var oldMenu = document.getElementById('toc-menu');
+        if (oldMenu && oldMenu.parentNode) oldMenu.parentNode.removeChild(oldMenu);
+      } catch(e) {}
+
+      if (!window.__page_has_toc__) return;
+
+      var content = document.querySelector('#main article .mdui-card-content');
+      if (!content) return;
+      var headings = content.querySelectorAll('h2, h3, h4, h5, h6');
+      if (!headings || headings.length === 0) return;
+
+      // 构建 TOC 结构
+      function getLevel(h){ var t = parseInt(h.tagName.replace('H',''), 10); return isNaN(t)?6:t; }
+      var rootOl = document.createElement('ol');
+      rootOl.className = 'toc';
+      var currentLevel = 0;
+      var currentOl = rootOl;
+      var olStack = [rootOl];
+
+      headings.forEach(function(h){
+        if (!h.id) return;
+        var level = getLevel(h);
+        if (currentLevel === 0) currentLevel = level;
+
+        if (level > currentLevel) {
+          for (var i = currentLevel; i < level; i++) {
+            var childOl = document.createElement('ol');
+            childOl.className = 'toc-child';
+            var lastLi = currentOl.lastElementChild;
+            if (!lastLi) { lastLi = document.createElement('li'); currentOl.appendChild(lastLi); }
+            lastLi.appendChild(childOl);
+            olStack.push(childOl);
+            currentOl = childOl;
+          }
+          currentLevel = level;
+        } else if (level < currentLevel) {
+          for (var j = currentLevel; j > level; j--) {
+            olStack.pop();
+          }
+          currentOl = olStack[olStack.length - 1] || rootOl;
+          currentLevel = level;
+        }
+
+        var li = document.createElement('li');
+        li.className = 'toc-item toc-level-' + level;
+        var a = document.createElement('a');
+        a.className = 'toc-link';
+        a.href = '#' + encodeURIComponent(h.id);
+        a.title = h.textContent || h.innerText || '';
+        var span = document.createElement('span');
+        span.className = 'toc-text';
+        span.textContent = h.textContent || h.innerText || '';
+        a.appendChild(span);
+        li.appendChild(a);
+        currentOl.appendChild(li);
+      });
+
+      if (!rootOl.children.length) return;
+
+      // 1. 生成超宽屏贴靠侧边栏目录 (>= 1440px)
+      var desktopRootOl = rootOl.cloneNode(true);
+      var desktopContainer = document.createElement('aside');
+      desktopContainer.id = 'toc-desktop-container';
+
+      var desktopSticky = document.createElement('div');
+      desktopSticky.className = 'toc-desktop-sticky';
+
+      var desktopCard = document.createElement('div');
+      desktopCard.className = 'toc-desktop-card';
+      desktopCard.appendChild(desktopRootOl);
+
+      desktopSticky.appendChild(desktopCard);
+      desktopContainer.appendChild(desktopSticky);
+
+      // 挂载到正文内容卡片内部，使其与正文顶端对齐并在正文范围内固钉滚动
+      content.appendChild(desktopContainer);
+
+      // 2. 生成中窄屏与移动端悬浮按钮 + 菜单 (< 1440px)
+      var fabContainer = document.createElement('div');
+      fabContainer.id = 'toc-fab-container';
+      fabContainer.setAttribute('aria-hidden', 'false');
+
+      var btn = document.createElement('button');
+      btn.id = 'toc-fab-btn';
+      btn.className = 'mdui-fab mdui-fab-mini mdui-ripple mdui-color-transparent';
+      btn.setAttribute('mdui-menu', "{target: '#toc-menu'}");
+      btn.setAttribute('aria-label', '目录');
+      btn.innerHTML = '<i class="mdui-icon material-icons" translate="no">toc</i>';
+
+      var menu = document.createElement('ul');
+      menu.className = 'mdui-menu';
+      menu.id = 'toc-menu';
+
+      var liWrap = document.createElement('li');
+      liWrap.className = 'mdui-menu-item';
+      liWrap.setAttribute('disabled', '');
+      liWrap.style.cursor = 'default';
+      liWrap.appendChild(rootOl);
+      menu.appendChild(liWrap);
+
+      fabContainer.appendChild(btn);
+      fabContainer.appendChild(menu);
+      document.body.appendChild(fabContainer);
+
+      menu.addEventListener('open.mdui.menu', function() {
+        btn.classList.add('is-open');
+      });
+      menu.addEventListener('close.mdui.menu', function() {
+        btn.classList.remove('is-open');
+      });
+
+      // 初始化 MDUI
+      try { if (window.mdui && typeof mdui.mutation === 'function') mdui.mutation(); } catch(e) {}
+
+      // 点击平滑滚动定位（预留 64px AppBar 偏移）
+      function handleTocClick(e) {
+        var a = e.target.closest('a.toc-link');
+        if (!a) return;
+        var href = a.getAttribute('href');
+        if (!href || href.indexOf('#') === -1) return;
+        var targetId = decodeURIComponent(href.slice(href.indexOf('#') + 1));
+        var targetEl = document.getElementById(targetId);
+        if (targetEl) {
+          e.preventDefault();
+          var appbarHeight = 64;
+          var targetTop = targetEl.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - appbarHeight - 16;
+          window.scrollTo({
+            top: Math.max(0, targetTop),
+            behavior: 'smooth'
+          });
+          if (history.pushState) {
+            history.pushState(null, '', '#' + encodeURIComponent(targetId));
+          }
+          // 关闭移动端菜单
+          try {
+            var inst = mdui.Menu.get(btn);
+            if (inst) inst.close();
+          } catch(err) {}
+        }
+      }
+
+      desktopContainer.addEventListener('click', handleTocClick);
+      menu.addEventListener('click', handleTocClick);
+
+      // 阅读位置高亮与滚动跟随 (Scroll Spy)
+      var scrollTicking = false;
+      function updateActiveHeading() {
+        scrollTicking = false;
+        var topOffset = 100;
+        var activeHeading = null;
+        var isBottom = (window.innerHeight + (window.pageYOffset || document.documentElement.scrollTop)) >= (document.documentElement.scrollHeight - 50);
+
+        if (isBottom && headings.length > 0) {
+          activeHeading = headings[headings.length - 1];
+        } else {
+          for (var i = 0; i < headings.length; i++) {
+            var h = headings[i];
+            var rect = h.getBoundingClientRect();
+            if (rect.top <= topOffset) {
+              activeHeading = h;
+            } else {
+              break;
+            }
+          }
+          if (!activeHeading && headings.length > 0) {
+            activeHeading = headings[0];
+          }
+        }
+
+        var activeId = activeHeading && activeHeading.id ? activeHeading.id : '';
+        if (!activeId) return;
+
+        var allTocLinks = document.querySelectorAll('.toc-link');
+        var targetHref = '#' + encodeURIComponent(activeId);
+        var activeDesktopLink = null;
+
+        allTocLinks.forEach(function(link) {
+          if (link.getAttribute('href') === targetHref) {
+            link.classList.add('is-active');
+            if (link.closest('#toc-desktop-container')) {
+              activeDesktopLink = link;
+            }
+          } else {
+            link.classList.remove('is-active');
+          }
+        });
+
+        if (activeDesktopLink && desktopCard) {
+          var linkOffsetTop = activeDesktopLink.offsetTop;
+          var cardScroll = desktopCard.scrollTop;
+          var cardHeight = desktopCard.clientHeight;
+          if (linkOffsetTop < cardScroll || linkOffsetTop > cardScroll + cardHeight - 40) {
+            desktopCard.scrollTop = Math.max(0, linkOffsetTop - cardHeight / 3);
+          }
+        }
+      }
+
+      function onScroll() {
+        if (!scrollTicking) {
+          requestAnimationFrame(updateActiveHeading);
+          scrollTicking = true;
+        }
+      }
+
+      window.__tocScrollHandler__ = onScroll;
+      window.addEventListener('scroll', onScroll, { passive: true });
+      updateActiveHeading();
+    }
+
+    // 初次与 PJAX 切换后重建
+    document.addEventListener('DOMContentLoaded', buildTocFromHeadings);
+    document.addEventListener('page:updated', buildTocFromHeadings);
+    document.addEventListener('pjax:complete', buildTocFromHeadings);
+    document.addEventListener('pjax:success', buildTocFromHeadings);
+  })();
+</script>
+<div class="mdui-divider" style="margin-bottom: 39px"></div>
+
+
+</main>
+  <aside id="sidebar" class="mdui-drawer mdui-drawer-full-height">
+  <script data-pjax>var a=localStorage.getItem("mdui-drawer-close");if(a){document.getElementById("sidebar").className+=" mdui-drawer-close"};</script>
+  <div class="mdui-grid-tile">
+    <img no-lazy src="/images/banner.png" style="height: 160px;" alt="">
+    <img no-lazy src="/images/avatar.jpg@128x128.jpg" class="avatar-animation" alt="Avatar" style="position: absolute; top: 10%; left: 24px; width: 64px; height: 64px; border: 2px solid #fff; border-radius: 50%;">
+    <button class="mdui-btn mdui-btn-icon" id="theme-toggle" mdui-tooltip="{content: '切换主题'}" type="button" style="position: absolute; top: 10px; right: 10px;"><i class="mdui-icon material-icons" translate="no" style="color: white;">brightness_4</i></button>
+    <div class="mdui-grid-tile-actions">
+      <div class="mdui-grid-tile-text">
+        <div class="mdui-grid-tile-title">Steve ZMT</div>
+        <div class="mdui-grid-tile-subtitle"><i class="mdui-icon material-icons" translate="no">art_track</i>这家伙叽里咕噜说什么呢。</div>
+      </div>
+      <!--
+      
+        <div class="mdui-grid-tile-buttons">
+          <a href="mailto:admin@stevezmt.top" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'admin@stevezmt.top'}"><i class="mdui-icon material-icons" translate="no">email</i></a>
+        </div>
+       
+      -->
+      
+        <div class="mdui-grid-tile-buttons">
+          <a href="javascript:void(0);" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'admin@stevezmt.top'}" onclick="copyEmailToClipboard('admin@stevezmt.top')">
+            <i class="mdui-icon material-icons" translate="no">email</i>
+          </a>
+        </div>
+        <script data-pjax>
+          function copyEmailToClipboard(email) {
+            navigator.clipboard.writeText(email).then(function() {
+              mdui.snackbar({
+                message: '已将邮箱地址复制到剪贴板!',
+                position: 'left-top',
+                buttonText: '写邮件',
+                onButtonClick: function(){
+                  window.location.href = 'mailto:' + 'admin@stevezmt.top';
+                }
+              });
+            }, function(err) {
+              console.error('Could not copy text: ', err);
+              mdui.snackbar({
+                message: '复制邮箱地址失败!',
+                position: 'right-top',
+              });
+            });
+          }
+        </script>
+
+    </div>
+  </div>
+
+  <div class="mdui-list" mdui-collapse="{accordion: true}">
+    <a href="/" class="mdui-list-item mdui-ripple">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue" translate="no">home</i>
+      <div class="mdui-list-item-content">主页</div>
+    </a>
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-0");if(a){document.getElementsByClassName("mdui-collapse-item")[0].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-deep-orange" translate="no">archive</i>
+        <div class="mdui-list-item-content">归档</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons" translate="no">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/archives/2026/05/">五月 2026<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2026/04/">四月 2026<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2026/03/">三月 2026<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/12/">十二月 2025<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/11/">十一月 2025<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/09/">九月 2025<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/08/">八月 2025<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2025/01/">一月 2025<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/12/">十二月 2024<span class="mdui-ripple sidebar_archives-count">3</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/03/">三月 2024<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2024/02/">二月 2024<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2023/10/">十月 2023<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/archives/2023/08/">八月 2023<span class="mdui-ripple sidebar_archives-count">1</span></a>
+        
+      </div>
+    </div>
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-1");if(a){document.getElementsByClassName("mdui-collapse-item")[1].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-green" translate="no">class</i>
+        <div class="mdui-list-item-content">分类</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons" translate="no">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/categories/%E6%8A%98%E8%85%BE/">折腾<span class="mdui-ripple sidebar_archives-count">10</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E6%8A%98%E8%85%BE/%E7%94%B5%E5%AD%90%E5%9E%83%E5%9C%BE/">电子垃圾<span class="mdui-ripple sidebar_archives-count">4</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E7%9E%8E%E6%90%9E/">瞎搞<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/categories/%E7%9E%8E%E8%81%8A/">瞎聊<span class="mdui-ripple sidebar_archives-count">4</span></a>
+        
+      </div>
+    </div>
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-2");if(a){document.getElementsByClassName("mdui-collapse-item")[2].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-brown" translate="no">bookmark</i>
+        <div class="mdui-list-item-content">标签</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons"translate="no">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+        <a class="mdui-ripple sidebar_archives-link" href="/tags/AI/" rel="tag">AI<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/Cloudflare/" rel="tag">Cloudflare<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/ColorOS/" rel="tag">ColorOS<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/KDE/" rel="tag">KDE<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/PXE/" rel="tag">PXE<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/RealmeUI/" rel="tag">RealmeUI<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/chromeos/" rel="tag">chromeos<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/hexo/" rel="tag">hexo<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/iVentoy/" rel="tag">iVentoy<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/linux/" rel="tag">linux<span class="mdui-ripple sidebar_archives-count">2</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/openai/" rel="tag">openai<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/root/" rel="tag">root<span class="mdui-ripple sidebar_archives-count">6</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/usb/" rel="tag">usb<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/wsl/" rel="tag">wsl<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/xposed/" rel="tag">xposed<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/yubikey/" rel="tag">yubikey<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E4%B8%8B%E8%BD%BD/" rel="tag">下载<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E4%BA%92%E8%81%94/" rel="tag">互联<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%8D%95%E8%AF%8D%E7%AC%94/" rel="tag">单词笔<span class="mdui-ripple sidebar_archives-count">3</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%AE%89%E5%8D%93/" rel="tag">安卓<span class="mdui-ripple sidebar_archives-count">6</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E5%BC%80%E6%BA%90/" rel="tag">开源<span class="mdui-ripple sidebar_archives-count">5</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E6%84%8F%E5%A4%96/" rel="tag">意外<span class="mdui-ripple sidebar_archives-count">1</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E6%95%85%E9%9A%9C/" rel="tag">故障<span class="mdui-ripple sidebar_archives-count">3</span></a><a class="mdui-ripple sidebar_archives-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%BC%95%E5%AF%BC/" rel="tag">网络引导<span class="mdui-ripple sidebar_archives-count">1</span></a>
+        
+      </div>
+    </div>
+    <a href="/about" class="mdui-list-item mdui-ripple">
+      <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-purple" translate="no">person</i>
+      <div class="mdui-list-item-content">关于</div>
+    </a>
+  </div>
+
+  <div class="mdui-divider"></div>
+
+  <div class="mdui-list" mdui-collapse="{accordion: true}">
+    
+      <a href="/timeline"  class="mdui-list-item mdui-ripple">时间轴</a>
+    
+      <a href="/tagcloud"  class="mdui-list-item mdui-ripple">标签云</a>
+    
+      <a href="/friends"  class="mdui-list-item mdui-ripple">友情链接</a>
+    
+      <a href="/k" target="_blank" class="mdui-list-item mdui-ripple">兼容视图</a>
+    
+      <a href="https://www.travellings.cn/go.html" target="_blank" class="mdui-list-item mdui-ripple">开往</a>
+    
+    <div class="mdui-collapse-item">
+      <script data-pjax>var a=localStorage.getItem("mdui-collapse-item-3");if(a){document.getElementsByClassName("mdui-collapse-item")[3].className+=" mdui-collapse-item-open"};</script>
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <div class="mdui-list-item-content">其他链接</div>
+        <i class="mdui-list-item-icon mdui-icon material-icons" translate="no">link</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+        
+          <a href="//stevezmt.top/" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">史蒂夫ZMT 主页</a>
+        
+          <a href="//stevezmt.top/Phigros-history/" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">Phigros 历史版本收集</a>
+        
+          <a href="//rip.stevezmt.top" target="_blank" class="mdui-list-item mdui-p-l-2 mdui-text-color-theme-accent mdui-ripple" style="justify-content: center;">过气项目存档</a>
+        
+        
+      </div>
+    </div>
+  </div>
+</aside>
+
+  
+<footer id="footer" class="mdui-m-t-5 mdui-p-y-3 mdui-color-theme">
+  <div class="mdui-p-y-0 mdui-text-center">
+    
+      <a href="//twitter.com/stevezmtstudios" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Twitter"><svg class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M390.097455 157.370182l170.181818 228.119273 195.525818-228.119273h110.824727L611.851636 454.609455l299.112728 400.942545h-232.727273l-190.836364-255.767273-219.205818 255.767273h-110.824727l278.481454-324.898909-278.481454-373.294546h232.727273z m177.396363 348.974545l-35.723636 41.693091L711.586909 789.061818h66.804364L567.505455 506.356364zM356.736 223.872h-66.816l190.277818 255.045818 35.723637-41.669818-159.185455-213.376z" fill="currentColor"></path></svg></a>
+    
+    
+    
+    
+    
+    
+    
+      <a href="//github.com/stevezmtstudios/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="GitHub"><svg class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M511.6 76.3C264.3 76.2 64 276.4 64 523.5 64 718.9 189.3 885 363.8 946c23.5 5.9 19.9-10.8 19.9-22.2v-77.5c-135.7 15.9-141.2-73.9-150.3-88.9C215 726 171.5 718 184.5 703c30.9-15.9 62.4 4 98.9 57.9 26.4 39.1 77.9 32.5 104 26 5.7-23.5 17.9-44.5 34.7-60.8-140.6-25.2-199.2-111-199.2-213 0-49.5 16.3-95 48.3-131.7-20.4-60.5 1.9-112.3 4.9-120 58.1-5.2 118.5 41.6 123.2 45.3 33-8.9 70.7-13.6 112.9-13.6 42.4 0 80.2 4.9 113.5 13.9 11.3-8.6 67.3-48.8 121.3-43.9 2.9 7.7 24.7 58.3 5.5 118 32.4 36.8 48.9 82.7 48.9 132.3 0 102.2-59 188.1-200 212.9 23.5 23.2 38.1 55.4 38.1 91v112.5c0.8 9 0 17.9 15 17.9 177.1-59.7 304.6-227 304.6-424.1 0-247.2-200.4-447.3-447.5-447.3z" fill="currentColor"></path></svg></a>
+    
+    
+      <a href="//steamcommunity.com/id/stevezmt/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Steam" ><svg t="1733311031811" class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7249" width="24" height="24"><path d="M904 332.571429q0 57.714286-40.857143 98.571428T764.571429 472t-98.571429-40.857143T625.142857 332.571429t40.857143-98.571429T764.571429 193.142857t98.571428 40.857143T904 332.571429z m-440 424q0-59.428571-41.714286-101.142858t-101.142857-41.714285q-15.428571 0-30.857143 3.428571l59.428572 24q44 17.714286 62.571428 60.857143T413.142857 788.571429q-17.714286 44-61.142857 62.285714t-86.857143 0.571428q-12-4.571429-35.428571-14t-34.857143-14q18.285714 34.285714 52 55.142858t74.285714 20.857142q59.428571 0 101.142857-41.714285t41.714286-101.142857z m474.285714-423.428572q0-72-51.142857-123.142857T764 158.857143q-72.571429 0-123.714286 51.142857T589.142857 333.142857q0 72.571429 51.142857 123.428572t123.714286 50.857142q72 0 123.142857-50.857142t51.142857-123.428572z m85.714286 0q0 108-76.285714 184T764 593.142857l-249.714286 182.285714q-6.857143 73.714286-62.285714 124.571429t-130.857143 50.857143q-69.142857 0-122.285714-43.428572t-67.428572-109.714285L0 745.142857V500l222.285714 89.714286q45.142857-27.428571 98.857143-27.428572 7.428571 0 20 1.142857l162.285714-232.571428q1.142857-106.857143 77.428572-182.285714T764 73.142857q107.428571 0 183.714286 76.285714T1024 333.142857z" fill="currentColor" p-id="7250"></path></svg></a>
+    
+    
+    
+      <a href="//www.zhihu.com/people/zhang-xian-sheng-70-9" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Zhihu"><svg class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M572.228571 189.828571V844.571429h68.571429l28.8 81.6L791.2 844.571429h150.285714V189.828571H572.228571z m283.085715 568h-68.457143l-85.828572 57.6-20.342857-57.6h-20.571428V279.2h195.085714v478.628571zM528.114286 483.314286H376.342857c2.4-51.314286 4.914286-119.2 7.542857-197.6h149.6l-0.114285-9.257143c0-0.685714-0.228571-16.8-2.628572-33.257143-2.4-17.142857-7.542857-39.885714-24-39.885714H255.771429c5.028571-23.542857 17.942857-79.657143 33.6-107.2l7.314285-12.8-14.742857-0.8c-0.914286 0-22.4-1.028571-47.314286 12.114285-40.8 21.714286-59.085714 64.457143-67.085714 96.457143-21.028571 83.542857-50.971429 141.6-63.657143 166.4-3.771429 7.314286-6.057143 11.657143-7.085714 14.628572-2.057143 5.6-0.914286 11.2 3.2 14.857143 12 10.857143 43.657143-3.314286 44-3.428572 0.685714-0.342857 1.485714-0.685714 2.514286-1.142857 15.885714-7.2 62.971429-28.571429 79.771428-96.571429h64.8c0.8 36.8 3.542857 158.171429 3.314286 197.6h-161.142857l-2.4 1.714286c-26.4 19.314286-34.857143 72.228571-35.2 74.514286l-1.6 10.514286h190.857143c-14.057143 89.485714-30.285714 129.6-38.857143 145.6-4.228571 8-8.342857 16-12.228572 23.771428-24.342857 48.228571-49.6 98.057143-144.342857 175.542857-4.114286 3.2-8 9.142857-5.485714 15.657143 2.742857 7.2 10.628571 10.4 28.114286 10.4 6.171429 0 13.485714-0.342857 22.171428-1.142857 57.028571-5.028571 115.2-20.571429 154.4-100.114286 19.428571-40.114286 36.228571-81.942857 50.171429-124.457143L494.857143 898.285714l5.714286-13.714285c0.914286-2.171429 21.714286-52.914286 5.828571-109.6l-0.571429-2.057143-123.542857-140.571429-25.142857 18.971429c7.314286-29.828571 12.114286-57.028571 14.285714-81.257143h181.371429v-9.142857c0-45.828571-21.142857-73.028571-21.942857-74.171429l-2.742857-3.428571z" fill="currentColor"></path></svg></a>
+    
+    
+    
+      <a href="//space.bilibili.com/474130186" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="bilibili" ><svg t="1733305965708" class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5876" width="24" height="24"><path d="M306.005333 117.632L444.330667 256h135.296l138.368-138.325333a42.666667 42.666667 0 1 1 60.373333 60.373333l-78.037333 77.952L789.333333 256A149.333333 149.333333 0 0 1 938.666667 405.333333v341.333334a149.333333 149.333333 0 0 1-149.333334 149.333333h-554.666666A149.333333 149.333333 0 0 1 85.333333 746.666667v-341.333334A149.333333 149.333333 0 0 1 234.666667 256h88.96L245.632 177.962667a42.666667 42.666667 0 0 1 60.373333-60.373334zM789.333333 341.333333h-554.666666a64 64 0 0 0-63.701334 57.856L170.666667 405.333333v341.333334a64 64 0 0 0 57.856 63.701333L234.666667 810.666667h554.666666a64 64 0 0 0 63.701334-57.813334L853.333333 746.666667v-341.333334A64 64 0 0 0 789.333333 341.333333zM341.333333 469.333333a42.666667 42.666667 0 0 1 42.666667 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666666-42.666667z m341.333334 0a42.666667 42.666667 0 0 1 42.666666 42.666667v85.333333a42.666667 42.666667 0 1 1-85.333333 0v-85.333333a42.666667 42.666667 0 0 1 42.666667-42.666667z" p-id="5877" fill="currentColor"></path></svg></a>
+    
+    
+      <a href="tencent://message/?uin=3579946866&Menu=yes" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="QQ"><svg class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M824.8 613.2c-16-51.4-34.4-94.6-62.7-165.3C766.5 262.2 689.3 112 511.5 112 331.7 112 256.2 265.2 261 447.9c-28.4 70.8-46.7 113.7-62.7 165.3-34 109.5-23 154.8-14.6 155.8 18 2.2 70.1-82.4 70.1-82.4 0 49 25.2 112.9 79.8 159-26.4 8.1-85.7 29.9-71.6 53.8 11.4 19.3 196.2 12.3 249.5 6.3 53.3 6 238.1 13 249.5-6.3 14.1-23.8-45.3-45.7-71.6-53.8 54.6-46.2 79.8-110.1 79.8-159 0 0 52.1 84.6 70.1 82.4 8.5-1.1 19.5-46.4-14.5-155.8z" fill="currentColor"></path></svg></a>
+    
+    
+      <a href="//t.me/SteveZMTstudios" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Telegram"><svg t="1733305965708" class="mdui-icon sns-svg-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3029" width="24" height="24"><path d="M417.28 795.733333 429.226667 615.253333 756.906667 320C771.413333 306.773333 753.92 300.373333 734.72 311.893333L330.24 567.466667 155.306667 512C117.76 501.333333 117.333333 475.306667 163.84 456.533333L845.226667 193.706667C876.373333 179.626667 906.24 201.386667 894.293333 249.173333L778.24 795.733333C770.133333 834.56 746.666667 843.946667 714.24 826.026667L537.6 695.466667 452.693333 777.813333C442.88 787.626667 434.773333 795.733333 417.28 795.733333Z" p-id="3030" fill="currentColor"></path></svg></a>
+    
+    
+    
+      <a href="//stevezmt.top/" target="_blank" class="mdui-btn mdui-btn-icon mdui-text-color-theme-a100" aria-label="Link"><i class="mdui-icon material-icons" translate="no" style="transform: translate(-12px, -12px) rotate(45deg) ;">link</i></a>
+    
+  </div>
+  <div class="mdui-p-y-1 mdui-text-center" translate="no">
+    Copyright &copy; 2019 - 2026 Steve ZMT<br>
+    由 <a href="//hexo.io/" target="_blank" class="mdui-text-color-theme-accent">Hexo</a> 强力驱动  <a href="//icp.gov.moe/?keyword=20240571" target="_blank" class="mdui-text-color-theme-accent"><img style="height:1.5em;vertical-align:middle;" src="/images/loading.svg" data-original="https://icp.gov.moe/images/ico64.png" alt="萌ICP备20240571号"></a> <a href="//beian.miit.gov.cn/#/Integrated/index" target="_blank" class="mdui-text-color-theme-accent">浙ICP备2025213066号</a>
+    <br>
+      <span id="busuanzi_container_site_pv" style="display: none;"><i class="mdui-icon material-icons" translate="no">remove_red_eye</i> <span id="busuanzi_value_site_pv"></span></span> &nbsp;&nbsp;
+      <span id="busuanzi_container_site_uv" style="display: none;"><i class="mdui-icon material-icons" translate="no">group</i> <span id="busuanzi_value_site_uv"></span></span>
+    
+  </div>
+</footer>
+
+  <div id="gotop-container" class="mdui-fab-fixed mdui-fab-hide">
+    <button id="gotop" class="mdui-fab mdui-color-theme-accent mdui-ripple"><i class="mdui-icon material-icons" translate="no">arrow_upward</i></button>
+    <svg class="progress-ring" width="60" height="60">
+      <circle class="progress-ring__circle mdui-text-color-theme-a100" stroke="currentColor" stroke-width="4" fill="transparent" r="26" cx="30" cy="30"/>
+    </svg>
+  </div>
+  <!-- 
+<script src="/js/mdui.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/lightbox.js"></script>
+<script src="/js/pjax.js"></script>
+ -->
+   <script src="https://s4.zstatic.net/npm/mdui@1.0.2/dist/js/mdui.min.js"
+        crossorigin="anonymous"
+        integrity="sha384-Iw/ABpFbyL5jmtL3QSGm+kpo+Rnj0Cs4NoQm69VmGC7j4pcv5MbN55KVNMMyB4J6"
+        onerror="this.onerror=null; this.src='/js/mdui.js';"></script>
+<script>
+  // fallback
+  if (typeof window.mdui === 'undefined') {
+    var script = document.createElement('script');
+    script.src = '/js/mdui.js';
+    document.body.appendChild(script);
+  }
+</script>
+
+<script src="/js/script.js"></script>
+<script src="/js/lightbox.js"></script>
+<script src="/js/pjax.js"></script>
+
+  
+<script src="/custom.js"></script>
+
+  
+<script src="/js/sw-update.js"></script>
+
+  <script>
+  (function(){
+    if (!('serviceWorker' in navigator)) return;
+    try {
+      navigator.serviceWorker.getRegistrations().then(function(regs){
+        var rootScope = location.origin + '/';
+        var hasRoot = regs.some(function(r){ return r.scope === rootScope; });
+        if (!hasRoot) {
+          navigator.serviceWorker.register('/service-worker.js', {scope: '/'}).then(function(reg){
+            console.log('[sw-fix] registered root service-worker', reg.scope);
+          }).catch(function(err){
+            console.warn('[sw-fix] root register failed', err);
+          });
+        }
+      }).catch(function(e){ console.warn('[sw-fix] getRegistrations failed', e); });
+    } catch(e) { console.warn('[sw-fix] unexpected', e); }
+  })();
+  </script>
+
+        <style>
+            [bg-lazy] {
+                background-image: none !important;
+                background-color: #eee !important;
+            }
+        </style>
+        <script>
+            window.imageLazyLoadSetting = {
+                isSPA: true,
+                preloadRatio: 1.25,
+                processImages: null,
+            };
+        </script><script>window.addEventListener("load",function(){var t=/\.(gif|jpg|jpeg|tiff|png)$/i,r=/^data:image\/[a-z\d\-\.\+]+;base64,/;Array.prototype.slice.call(document.querySelectorAll("img[data-original]")).forEach(function(a){var e=a.parentNode;"A"===e.tagName&&(t.test(e.href)||r.test(e.href))&&(e.href=a.dataset.original)})});</script><script>(r=>{r.imageLazyLoadSetting.processImages=t;var a=r.imageLazyLoadSetting.isSPA,o=r.imageLazyLoadSetting.preloadRatio||1,d=i();function i(){var t=Array.prototype.slice.call(document.querySelectorAll("img[data-original]")),e=Array.prototype.slice.call(document.querySelectorAll("[bg-lazy]"));return t.concat(e)}function t(t){(a||t)&&(d=i());for(var e,n=0;n<d.length;n++)0<=(e=(e=d[n]).getBoundingClientRect()).bottom&&0<=e.left&&e.top<=(r.innerHeight*o||document.documentElement.clientHeight*o)&&(()=>{var t,e,a,o,i=d[n];e=function(){d=d.filter(function(t){return i!==t}),r.imageLazyLoadSetting.onImageLoaded&&r.imageLazyLoadSetting.onImageLoaded(i)},(t=i).dataset.loaded||(t.hasAttribute("bg-lazy")?(t.removeAttribute("bg-lazy"),e&&e()):(a=new Image,o=t.getAttribute("data-original"),a.onload=function(){t.src=o,t.removeAttribute("data-original"),t.setAttribute("data-loaded",!0),e&&e()},a.onerror=function(){t.removeAttribute("data-original"),t.setAttribute("data-loaded",!1),t.src=o},t.src!==o&&(a.src=o)))})()}function e(){clearTimeout(t.tId),t.tId=setTimeout(t,500)}t(),document.addEventListener("scroll",e),r.addEventListener("resize",e),r.addEventListener("orientationchange",e)})(this);</script></body>
+</html>
