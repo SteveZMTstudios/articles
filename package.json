@@ -22,7 +22,10 @@
     },
     "sourcemap-codec": "npm:@jridgewell/sourcemap-codec@^1.5.0",
     "source-map": "^0.7.6",
-    "serialize-javascript": "^7.0.5"
+    "serialize-javascript": "^7.0.5",
+    "workbox-build": {
+      "glob": "^14.0.4"
+    }
   },
   "resolutions": {
     "sourcemap-codec": "^1.5.0"
