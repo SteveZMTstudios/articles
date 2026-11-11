@@ -1,0 +1,556 @@
+/* Base & Ice Cream Sandwich Dark Holo styles
+ * Partly use of the Holo Web CSS library
+ * 
+ * Copyright 2012-2015 Zachary Yaro
+ * Released under the MIT license
+ * http://holo.zmyaro.com/LICENSE.txt
+ */
+
+/* Roboto font face */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  src: url(//fonts.gstatic.com/s/roboto/v49/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMa3yUBA.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  src: url(//fonts.gstatic.com/s/roboto/v49/KFO7CnqEu92Fr1ME7kSn66aGLdTylUAMaxKUBGEe.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+::selection {
+  background-color: #33B5E5;
+  background-color: rgba(51, 181, 229, 0.5);
+  color: #FFFFFF;
+}
+
+::-moz-selection {
+  background-color: #33B5E5;
+  background-color: rgba(51, 181, 229, 0.5);
+  color: #FFFFFF;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: Roboto, "Droid Sans", sans-serif;
+  margin: 0;
+  padding: 46px 16px 16px;
+  background-color: #000000;
+  color: #FFFFFF;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body:before {
+  z-index: -1000;
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#272D33');
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#000000', endColorstr='#272D33')";
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#000000), to(#272D33));
+  background-image: -webkit-linear-gradient(#000000, #272D33);
+  background-image: -moz-linear-gradient(#000000, #272D33);
+  background-image: -ms-linear-gradient(#000000, #272D33);
+  background-image: -o-linear-gradient(#000000, #272D33);
+  background-image: linear-gradient(#000000, #272D33);
+}
+
+a {
+  color: #33B5E5;
+  text-decoration: underline;
+}
+
+button, *[role="button"], input, select {
+  -webkit-tap-highlight-color: transparent !important;
+  text-decoration: none;
+  cursor: default;
+}
+
+button, *[role="button"],
+input[type="button"], input[type="submit"], input[type="reset"] {
+  outline-style: none;
+  outline-width: 0px;
+}
+
+button, *[role="button"],
+input[type="button"], input[type="submit"], input[type="reset"] {
+  margin: 6px;
+  padding: 4px 12px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
+  outline-style: none;
+  outline-width: 0px;
+  font: inherit;
+  font-size: 16px;
+  display: inline-block;
+  background-color: #3D3D3D;
+  background-color: rgba(153, 153, 153, 0.4);
+  border-left-color: #3B3B3B;
+  border-left-color: rgba(0, 0, 0, 0.04);
+  border-right-color: #3B3B3B;
+  border-right-color: rgba(0, 0, 0, 0.04);
+  border-top-color: #656565;
+  border-top-color: rgba(193, 193, 193, 0.31);
+  border-bottom-color: #2E2E2E;
+  border-bottom-color: rgba(0, 0, 0, 0.24);
+  -webkit-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.08);
+  -moz-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.08);
+  color: #FFFFFF;
+}
+
+button:focus, *[role="button"]:focus,
+input[type="button"]:focus, input[type="submit"]:focus, input[type="reset"]:focus {
+  background-color: #14485B;
+  background-color: rgba(51, 181, 229, 0.41);
+  border-color: #007AA3;
+  border-color: rgba(0, 153, 204, 0.62);
+  -webkit-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(0, 153, 204, 0.62);
+  -moz-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(0, 153, 204, 0.62);
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(0, 153, 204, 0.62);
+}
+
+button:enabled:active, *[role="button"]:active,
+input[type="button"]:enabled:active, input[type="submit"]:enabled:active, input[type="reset"]:enabled:active,
+button:enabled.active, *[role="button"].active,
+input[type="button"]:enabled.active, input[type="submit"]:enabled.active, input[type="reset"]:enabled.active {
+  background-color: #2D9FC9;
+  background-color: rgba(51, 181, 229, 0.88);
+  border-left-color: #2C9CC6;
+  border-left-color: rgba(0, 0, 0, 0.017);
+  border-right-color: #2C9CC6;
+  border-right-color: rgba(0, 0, 0, 0.017);
+  border-top-color: #50AFD2;
+  border-top-color: rgba(89, 195, 234, 0.51);
+  border-bottom-color: #278BB1;
+  border-bottom-color: rgba(0, 0, 0, 0.12);
+  -webkit-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.08), 0 0 0 4px rgba(51, 181, 229, 0.4);
+  -moz-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.08), 0 0 0 4px rgba(51, 181, 229, 0.4);
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.08), 0 0 0 4px rgba(51, 181, 229, 0.4);
+}
+
+/* ==========================================================================
+   Holo Action Bar
+   ========================================================================== */
+
+.actionBar, .holo-actionBar {
+  display: block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  height: 48px;
+  border-style: solid none;
+  border-width: 1px 0 2px;
+  border-color: transparent;
+  background-color: #010101;
+  border-top-color: #0F0F0F;
+  border-bottom-color: #33B5E5;
+  font-size: 16px;
+  z-index: 1000;
+}
+
+.actionBar > *, .holo-actionBar > * {
+  margin: -1px 0 -2px;
+}
+
+.actionBar span, .holo-actionBar span {
+  display: inline-block;
+  padding: 13px 0 14px;
+}
+
+.actionBar button, .holo-actionBar button,
+.actionBar *[role="button"], .holo-actionBar *[role="button"] {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 100%;
+  margin: -1px 0 -2px 0;
+  padding: 1px 10px 2px;
+  vertical-align: top;
+  background-color: transparent;
+  background-image: none;
+  border-style: none;
+  border-width: 0px;
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: transparent;
+  outline-offset: -2px;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #FFFFFF;
+}
+
+.actionBar button:focus, .holo-actionBar button:focus,
+.actionBar *[role="button"]:focus, .holo-actionBar *[role="button"]:focus {
+  background-color: rgba(51, 181, 229, 0.3);
+  outline-color: #32A5CF;
+  outline-color: rgba(51, 181, 229, 0.9);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.actionBar button:enabled:active, .holo-actionBar button:enabled:active,
+.actionBar *[role="button"]:active, .holo-actionBar *[role="button"]:active,
+.actionBar button:enabled.active, .holo-actionBar button:enabled.active,
+.actionBar *[role="button"].active, .holo-actionBar *[role="button"].active {
+  background-color: rgba(51, 181, 229, 0.75);
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.actionBar .holo-title, .holo-actionBar .holo-title {
+  font-size: 16px;
+  font-weight: inherit;
+  text-transform: inherit;
+  height: auto;
+  padding: 13px 10px 14px 16px;
+  line-height: 21px;
+}
+
+.actionBar .holo-title.holo-up, .holo-actionBar .holo-title.holo-up {
+  background-position: 0 16px;
+  background-repeat: no-repeat;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAQAAAC1+jfqAAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAAAEgAAABIAEbJaz4AAAAJdnBBZwAAABAAAAAQAFzGrcMAAADaSURBVCjPddG9SkNBFATgb5drCAhiYRUs7BQsRDCtQfIevppP4k/KgIUgiJYWEQtLxT/uXYu9N9lIMtVh9pyZYTZokbqhJ4q+1QRUFgiSbee2vLroyKq4D5JTu2pTtRgaiMVzY+BY7cG9oMmmUYkzfZ8uSyrmY0Gy70Bw60WUcsSFRRKM9LyZZCKUCiKG9vy68pHvlyzaKZR1LC80mHq2YWxTM9f/F/LGjx2jTKRyoQ356ElyYpA1VvVw7UvfeFUPJNHMncqhI0kMpULoGp+YeTdUdVXP86777j8ScUEXuCRR/QAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAxMS0wNy0wMVQxMzoxMDoyNS0wNzowMDPfgNMAAAAldEVYdGRhdGU6bW9kaWZ5ADIwMTEtMDctMDFUMTM6MTA6MjUtMDc6MDBCgjhvAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAABJRU5ErkJggg==);
+}
+
+.actionBar img, .holo-actionBar img {
+  height: 32px;
+  padding: 8px 0;
+  vertical-align: top;
+}
+
+.actionBar button img, .holo-actionBar button img,
+.actionBar *[role="button"] img, .holo-actionBar *[role="button"] img {
+  margin: -16px 0 -16px;
+}
+
+.actionBar span img, .actionBar .holo-title img, .holo-actionBar span img, .holo-actionBar .holo-title img {
+  margin: -13px 0 -14px;
+  margin-left: -4px;
+}
+
+/* ==========================================================================
+   Page Container & Meta (Gray subtitles/meta)
+   ========================================================================== */
+
+.k-container {
+  padding: 10px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.feed-header-title {
+  margin: 10px 0 4px;
+  font-weight: normal;
+  font-size: 24px;
+}
+
+.subtitle,
+.meta,
+.categories,
+.feed-note {
+  font-size: 14px;
+  color: #AAAAAA;
+  opacity: 0.85;
+}
+
+.summary {
+  margin-top: 6px;
+  font-size: 16px;
+  color: #DDDDDD;
+  line-height: 1.6;
+}
+
+footer {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #AAAAAA;
+  text-align: center;
+  border-top: 1px solid #6C6C6C;
+  padding-top: 10px;
+}
+
+/* ==========================================================================
+   Holo List & List Item Long Buttons (Button 2 Style)
+   ========================================================================== */
+
+.holo-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.holo-list li {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 16px;
+  border-width: 1px 0 0;
+  border-style: solid;
+  border-color: #262626;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.holo-list li:last-child {
+  border-bottom-width: 1px;
+}
+
+.holo-list li button,
+.holo-list li *[role="button"],
+.holo-list li .entry-button,
+.holo-list li .entry-read-original {
+  display: block;
+  width: calc(100% + 32px);
+  margin: -16px;
+  padding: 16px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 16px;
+  text-align: left;
+  border: 0 none;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  background: transparent none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent !important;
+  text-decoration: none;
+}
+
+.holo-list li .entry-read-original {
+  margin: -16px -16px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  color: #33B5E5;
+  font-weight: bold;
+}
+
+.holo-list li button:focus,
+.holo-list li *[role="button"]:focus,
+.holo-list li .entry-button:focus,
+.holo-list li .entry-read-original:focus {
+  background-color: #0F3645;
+  background-color: rgba(51, 181, 229, 0.31);
+  -webkit-box-shadow: inset 0 0 0 2px rgba(51, 181, 229, 0.42);
+  -moz-box-shadow: inset 0 0 0 2px rgba(51, 181, 229, 0.42);
+  box-shadow: inset 0 0 0 2px rgba(51, 181, 229, 0.42);
+}
+
+.holo-list li button:enabled:active,
+.holo-list li *[role="button"]:active,
+.holo-list li button:enabled.active,
+.holo-list li *[role="button"].active,
+.holo-list li .entry-button:active,
+.holo-list li .entry-button.active,
+.holo-list li .entry-read-original:active,
+.holo-list li .entry-read-original.active {
+  background-color: #1E6C89;
+  background-color: rgba(51, 181, 229, 0.6);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.holo-list li .item {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* ==========================================================================
+   Entry Toggle & Expandable Body (Hide Summary when Expanded)
+   ========================================================================== */
+
+.entry-toggle {
+  display: none;
+}
+
+.holo-list li {
+  -webkit-transition: border-color 0.25s ease, background-color 0.25s ease;
+  -moz-transition: border-color 0.25s ease, background-color 0.25s ease;
+  -o-transition: border-color 0.25s ease, background-color 0.25s ease;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+
+.holo-list li .summary {
+  max-height: 200px;
+  opacity: 1;
+  -webkit-transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, margin 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  -moz-transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, margin 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  -o-transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, margin 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, margin 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.entry-toggle:checked ~ .entry-button .summary,
+.holo-list li.is-expanded .entry-button .summary {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  pointer-events: none;
+}
+
+.entry-body {
+  display: block;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding-top: 0;
+  margin-top: 0;
+  border-top: 0 solid rgba(255, 255, 255, 0.15);
+  font-size: 16px;
+  line-height: 1.65;
+  visibility: hidden;
+  -webkit-transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease, padding-top 0.4s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s;
+  -moz-transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease, padding-top 0.4s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s;
+  -o-transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease, padding-top 0.4s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease, padding-top 0.4s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s;
+}
+
+.holo-list li.is-expanded,
+.entry-toggle:checked ~ .entry-button {
+  /* optional subtle highlight or border styling */
+}
+
+.holo-list li.is-expanded {
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.entry-toggle:checked ~ .entry-body,
+.holo-list li.is-expanded .entry-body {
+  display: block;
+  max-height: 8000px;
+  opacity: 1;
+  visibility: visible;
+  padding-top: 16px;
+  margin-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.entry-body h1,
+.entry-body h2,
+.entry-body h3,
+.entry-body h4,
+.entry-body h5,
+.entry-body h6 {
+  color: #FFFFFF;
+  margin: 1em 0 0.5em;
+}
+
+.entry-body h1 { font-size: 24px; }
+.entry-body h2 { font-size: 20px; }
+.entry-body h3 { font-size: 18px; }
+.entry-body h4 { font-size: 16px; }
+
+.entry-body p {
+  font-size: 16px;
+  margin: 0.8em 0;
+}
+
+.entry-body blockquote {
+  border-left: 4px solid #33B5E5;
+  padding-left: 10px;
+  margin: 10px 0;
+  background: rgba(51, 181, 229, 0.15);
+  color: #CCCCCC;
+}
+
+.entry-body pre {
+  background: rgba(122, 122, 122, 0.18);
+  color: #CCCCCC;
+  padding: 10px;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
+  margin: 10px 0;
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+.entry-body code {
+  background: rgba(122, 122, 122, 0.18);
+  color: #CCCCCC;
+  padding: 2px 4px;
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 0.9em;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+.entry-body pre code {
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.entry-body img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 10px auto;
+}
+
+.entry-body figure {
+  margin: 10px auto;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.entry-body a {
+  word-break: break-all;
+  text-decoration: underline;
+}
